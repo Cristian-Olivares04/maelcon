@@ -1,0 +1,85 @@
+<div class="fondo">
+  <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8 row contenedor" style="align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+          <div class="col-md-6 col-lg-6 img-login" style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+              <img src="../../../assets/login-img.png" alt="">
+          </div>
+          <div class="col-md-6 col-ls-6" style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+              <div class="login-content">
+                  <form (ngSubmit)="iniciarSesion()">
+                      <h2 style="color: #0846ffff;">Bienvenido</h2>
+                      <div class="input-div one">
+                          <div class="i">
+                              <i class="fas fa-envelope"></i>
+                          </div>
+                          <div class="div">
+                              <input type="text" placeholder="Correo" name="correo">
+                          </div>
+                      </div>
+                      <div class="input-div pass">
+                          <div class="i">
+                              <i class="fas fa-lock"></i>
+                          </div>
+                          <div class="div">
+                              <input type="password" placeholder="Contraseña" name="contrasena">
+                          </div>
+                      </div>
+                      <a [routerLink]="['/login', { outlets: { 'modal': ['recuperacion'] }}]" data-bs-toggle="modal" data-bs-target="#recup">¿Olvidaste tu contraseña?</a>
+                      <a [routerLink]="['/sign-up']" style="margin-top: 10px;">¿No tienes una cuenta? Registrate ahora.</a>
+                      <input type="button" class="btn" value="Login" (click)="iniciarSesion()">
+                  </form>
+              </div>
+          </div>
+      </div>
+      <div class="col-2">
+
+      </div>
+  </div>
+</div>
+
+<!--Modal recuperacion de contraseña-->
+<div class="modal fade" id="recup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header" style="text-align: center; display: block;">
+              <h3 style="color: #0846ffff;">Pregunta de recuperacion</h3>
+          </div>
+          <div class="modal-body">
+              <div class="login-content">
+                  <form>
+                      <!--Input de correo-->
+                      <div class="input-div one">
+                          <div class="i">
+                              <i class="fas fa-envelope"></i>
+                          </div>
+                          <div class="div">
+                              <input type="text" placeholder="Correo" name="correo">
+                          </div>
+                      </div>
+
+                      <!--Input de respuesta-->
+                      <div class="input-div one">
+                          <div class="i">
+                              <i class="fas fa-equals"></i>
+                          </div>
+                          <div class="div">
+                              <input class="" type="text" placeholder="Respuesta" name="respuesta">
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                  <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+              <div class="col-6">
+                  <button type="button" class="btn btn-primary">Enviar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

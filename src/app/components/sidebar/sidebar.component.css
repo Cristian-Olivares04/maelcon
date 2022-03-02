@@ -1,0 +1,94 @@
+.posicionar {
+  text-align: right;
+  margin-right: 1.5em;
+}
+
+.no-posicionar {
+  text-align: left;
+  Margin-left: 1em;
+  Margin-right: 1em;
+}
+
+.posicionar-perfil {
+  text-align: right;
+  border-bottom: 0;
+}
+
+.no-posicionar-perfil {
+  text-align: center;
+  border-bottom: 0;
+}
+
+.perfil {
+  width: 50px !important;
+  height: 50px !important;
+  margin-right: 0.9em;
+}
+
+.no-perfil {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.pad-line {
+  color: #fff;
+  border: 1px solid;
+  width: 50px;
+  margin-left: auto;
+  margin-right: 1em;
+}
+
+.no-pad-line {
+  color: #fff;
+  border: 1px solid;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0;
+}
+
+.icons i {
+  font-size: 25px;
+}
+
+.icons span {
+  padding-left: 1em;
+}
+
+a:-webkit-any-link:focus-visible {
+  outline-offset: 0px !important;
+}
+
+:focus-visible {
+  outline: 0;
+}
+
+#dockSidebar li {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+#dockSidebar li:hover {
+  color: rgb(255, 255, 255)
+}
+
+.sidebar-item {
+  text-align: start;
+  border-bottom: 0;
+}
+
+.nav-link {
+  color: #e4e4e4 !important;
+}
+
+.nav-link:hover {
+  color: rgb(247, 255, 12) !important;
+  border-bottom: 1px solid;
+}
+
+.nav-link:focus {
+  color: rgb(247, 255, 12) !important;
+}
+
+.nav-link:active {
+  color: rgb(247, 255, 12) !important;
+}

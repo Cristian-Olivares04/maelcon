@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #fff !important;
+  font-family: 'Roboto', sans-serif !important;
+  height: 100vh;
+}
+
+.ng-sidebar {
+  background-color: #212529;
+  width: 16rem;
+  box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
+}
+
+.contenedor {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 15px;
+}
+
+.hijo {
+  margin: 50px 50px;
+}

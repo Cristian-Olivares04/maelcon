@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Maelcon';
+  public user = false;
+
+  constructor(){}
+
+  ngOnInit(): void {
+  }
 }

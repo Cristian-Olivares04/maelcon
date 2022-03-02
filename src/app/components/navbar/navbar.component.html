@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;">
+  <div class="container-fluid">
+      <a class="navbar-brand"><img src="../../../assets/logo.png" alt="AgroMaster"></a>
+      <!-- Botones para inicio y registro de las ventanas modales -->
+      <div class="btn-group" role="group">
+          <button type="button" class="btn" [routerLink]="['/sign-up']">Registrarme</button>
+          <button type="button" class="btn" [routerLink]="['/login']">Iniciar</button>
+      </div>
+      <!-- Fin Boton para inicio y registro ventana modal -->
+  </div>
+</nav>
+<router-outlet></router-outlet>
