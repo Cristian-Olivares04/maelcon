@@ -27,7 +27,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     PreguntaRecuperacionComponent,
     SalesComponent,
     ShoppingComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
