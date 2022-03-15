@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UsuariosService } from './services/usuarios.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +9,8 @@ export class AppComponent {
   title = 'Maelcon';
   public user = false;
 
-  constructor(private UsuariosService: UsuariosService){}
+  constructor(){}
 
   ngOnInit(): void {
-    if(this.UsuariosService._usuarioActual!=null){
-      this.user = true;
-    }else{
-      this.user = false;
-    }
   }
 }
