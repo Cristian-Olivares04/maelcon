@@ -17,7 +17,6 @@ import { PreguntaRecuperacionComponent } from './pages/pregunta-recuperacion/pre
 import { SalesComponent } from './pages/sales/sales.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { MaintenanceComponent } from './pages/maintenance/maintenance.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +28,6 @@ import { MaintenanceComponent } from './pages/maintenance/maintenance.component'
     SalesComponent,
     ShoppingComponent,
     NavbarComponent,
-    MaintenanceComponent,
   ],
   imports: [
     BrowserModule,
