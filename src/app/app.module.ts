@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SidebarModule } from 'ng-sidebar';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
 
 /*Created Modules*/
 import { AppRoutingModule } from './app-routing.module';
@@ -27,12 +28,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     PreguntaRecuperacionComponent,
     SalesComponent,
     ShoppingComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     NgbModule,
     SidebarModule.forRoot(),
   ],

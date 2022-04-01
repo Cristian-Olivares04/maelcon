@@ -20,6 +20,7 @@
 	align-items: center;
 	text-align: center;
 }
+
 .btn-cancel{
 	width: 50%;
 	height: 50px;
@@ -37,7 +38,6 @@
     margin-right: auto;
     display: block;
 }
-
 
 .img img{
 	width: 500px;

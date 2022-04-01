@@ -16,7 +16,7 @@
                               <i class="fas fa-user"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Nombre" name="nombre">
+                              <input class="" type="text" placeholder="Nombre" [(ngModel)]="usuarioRegistro.NOMBRE" name="nombre">
                           </div>
                       </div>
 
@@ -26,7 +26,7 @@
                               <i class="fas fa-user"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Apellido" name="apellido">
+                              <input class="" type="text" placeholder="Apellido" [(ngModel)]="usuarioRegistro.APELLIDO" name="apellido">
                           </div>
                       </div>
 
@@ -36,7 +36,7 @@
                               <i class="fas fa-user"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Nombre de usuario" name="nombreUsuario">
+                              <input class="" type="text" placeholder="Nombre de usuario" [(ngModel)]="usuarioRegistro.USUARIO" name="nombreUsuario">
                           </div>
                       </div>
                       <!--Input numero de telefono-->
@@ -45,7 +45,7 @@
                               <i class="fas fa-phone-alt"></i>
                           </div>
                           <div class="div">
-                              <input type="number" maxlength="8" min="10000000" max="99999999" placeholder="Telefono" name="telefono">
+                              <input type="number" maxlength="8" min="10000000" max="99999999" placeholder="Telefono" [(ngModel)]="usuarioRegistro.TELEFONO" name="telefono">
                           </div>
                       </div>
                       <!--Input de contraseña-->
@@ -54,7 +54,16 @@
                               <i class="fas fa-envelope"></i>
                           </div>
                           <div class="div">
-                              <input type="text" placeholder="Correo" name="correo">
+                              <input type="text" placeholder="Correo" [(ngModel)]="usuarioRegistro.CORREO_ELECTRONICO" name="correo">
+                          </div>
+                      </div>
+                      <!--Input de RTN-->
+                      <div class="input-div one">
+                          <div class="i">
+                            <i class="fas fa-id-card"></i>
+                          </div>
+                          <div class="div">
+                              <input type="text" placeholder="RTN" [(ngModel)]="usuarioRegistro.RTN" name="rtn" maxlength="13">
                           </div>
                       </div>
                   </form>
@@ -71,10 +80,10 @@
                       <!--Input Fecha Nacimiento-->
                       <div class="input-div one">
                           <div class="i">
-                              <i class="fas fa-calendar-day"></i>
+                            <i class="fas fa-image"></i>
                           </div>
                           <div class="div">
-                              <input type="date" placeholder="fechaNacimiento" name="fechaNacimiento">
+                              <input type="file" placeholder="Imagen de perfil" [(ngModel)]="usuarioRegistro.IMG_USUARIO" name="imagenPerfil">
                           </div>
                       </div>
 
@@ -84,7 +93,7 @@
                               <i class="fas fa-question"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Pregunta de seguridad" name="pregunta">
+                              <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="usuarioRegistro.PREGUNTA" name="pregunta">
                           </div>
                       </div>
 
@@ -94,9 +103,24 @@
                               <i class="fas fa-equals"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Respuesta" name="respuesta">
+                              <input class="" type="text" placeholder="Respuesta" [(ngModel)]="usuarioRegistro.RESPUESTA" name="respuesta">
                           </div>
                       </div>
+                      <!--Input de genero-->
+                      <div class="input-div one">
+                        <div class="i">
+                          <i class="fas fa-neuter"></i>
+                        </div>
+                        <div class="div">
+                          <select class="form-control" [(ngModel)]="usuarioRegistro.GENERO" name="genero">
+                            <option value="">Genero</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                            <option value="Prefiero no especificar">Prefiero no especificar</option>
+                          </select>
+                        </div>
+                    </div>
                   </form>
               </div>
           </div>
@@ -111,7 +135,7 @@
                                   <i class="fas fa-lock"></i>
                               </div>
                               <div class="div">
-                                  <input class="" type="password" placeholder="Contraseña" name="contrasena">
+                                  <input class="" type="password" placeholder="Contraseña" [(ngModel)]="usuarioRegistro.CONTRASENA" name="contrasena">
                               </div>
                           </div>
                       </form>
@@ -127,13 +151,22 @@
                                   <i class="fas fa-lock"></i>
                               </div>
                               <div class="div">
-                                  <input type="password" placeholder="Repetir contraseña" name="repetir">
+                                  <input type="password" placeholder="Repetir contraseña" [(ngModel)]="segundaContrasena" name="repetir">
                               </div>
                           </div>
                       </form>
                   </div>
-                  <input type="button" class="btn" value="Registrarme">
+                  <input type="button" class="btn" value="Registrarme" (click)="guardarUsuario()">
               </div>
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="validacionCorreo">
+              Correo incorrecto, ingrese un correo valido
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="validacionContrasena">
+              Las contraseñas no coinciden
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="status">
+              Existen campos vacios, debe de rellenar todos campos solicitados.
           </div>
       </div>
       <div class="col-2">
