@@ -70,7 +70,7 @@ var singInSQL = /*#__PURE__*/function () {
             tokenSQL = _jsonwebtoken["default"].sign({
               id: user[0].ID_USUARIO
             }, _config["default"].SECRET, {
-              expiresIn: 86400
+              expiresIn: 120
             });
             res.json({
               token: tokenSQL,
