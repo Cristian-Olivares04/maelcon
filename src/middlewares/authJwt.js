@@ -24,10 +24,10 @@ export const verifyTokenSQL = async (req, res, next) => {
     if (!user)
       return res
         .status(404)
-        .json({ mensaje: "El usuario no ha sido encontrado" });
+        .json({ mensaje: "El usuario no ha sido encontrado", codigo: 404 });
 
     next();
   } catch (error) {
-    res.status(404).json({ mensaje: "Acceso no autorizado" });
+    res.status(404).json({ mensaje: "Acceso no autorizado", codigo: 2 });
   }
 };
