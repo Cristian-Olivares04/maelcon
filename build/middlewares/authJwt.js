@@ -53,7 +53,8 @@ var verifyTokenSQL = /*#__PURE__*/function () {
             }
 
             return _context.abrupt("return", res.status(404).json({
-              mensaje: "El usuario no ha sido encontrado"
+              mensaje: "El usuario no ha sido encontrado",
+              codigo: 404
             }));
 
           case 12:
@@ -65,7 +66,8 @@ var verifyTokenSQL = /*#__PURE__*/function () {
             _context.prev = 15;
             _context.t0 = _context["catch"](0);
             res.status(404).json({
-              mensaje: "Acceso no autorizado"
+              mensaje: "Acceso no autorizado",
+              codigo: 2
             });
 
           case 18:
