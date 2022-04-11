@@ -1,52 +1,54 @@
-<ng-sidebar-container>
-  <ng-sidebar #dockBar id="dockSidebar" [opened]='opened' [dock]="dock" [dockedSize]="'75px'" [mode]="'push'">
-      <div class="dock">
-          <div class="py-3" style="text-align-last: end; padding-right: 1em;">
-              <img *ngIf="opened==false" style="border-radius: 50%;" src="../../../assets/logo_peq.png" (click)="toggleSidebar()" style="width: 50px; height: 50px">
-              <img *ngIf="opened==true" style="border-radius: 50%;" src="../../../assets/logo.png" (click)="toggleSidebar()" style="width: 200px; height: auto">
-          </div>
+<ng-template [ngIf]="condition">
+  <ng-sidebar-container>
+    <ng-sidebar #dockBar id="dockSidebar" [opened]='opened' [dock]="dock" [dockedSize]="'75px'" [mode]="'push'">
+        <div class="dock">
+            <div class="py-3" style="text-align-last: end; padding-right: 1em;">
+                <img *ngIf="opened==false" style="border-radius: 50%;" src="../../../assets/logo_peq.png" (click)="toggleSidebar()" style="width: 50px; height: 50px">
+                <img *ngIf="opened==true" style="border-radius: 50%;" src="../../../assets/logo.png" (click)="toggleSidebar()" style="width: 200px; height: auto">
+            </div>
 
-          <ul class="navbar-nav pt-0">
-              <div class="nav-item" [ngClass]="{'posicionar-perfil':opened==false ,'no-posicionar-perfil':opened==true}">
-                  <hr [ngClass]="{'pad-line':opened==false ,'no-pad-line':opened==true}">
-                  <li class="nav-item">
-                      <a class="nav-item rounded collapsed" style="text-align-last: center;" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
-                          <img style="border-radius: 50%; margin-right: 1em;" src="../../../assets/perfil1.png" [ngClass]="{'perfil':opened==false ,'no-perfil':opened==true}">
-                          <span *ngIf="opened==true" style="color: #fff; display: block;"> nombreUsuario</span>
-                          <span *ngIf="opened==false" data-bs-toggle="tooltip" data-bs-placement="right" title="Perfil"></span>
-                      </a>
-                      <div class="collapse" id="home-collapse">
-                          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                              <li class="nav-item sidebar-item icons">
-                                  <a class="nav-link" routerLink="editar-usuario" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
-                                      <i class="fas fa-user-edit"></i>
-                                      <span *ngIf="opened==true"> Gestionar</span>
-                                  </a>
-                              </li>
-                              <li class="nav-item sidebar-item icons">
-                                  <a href="" class="nav-link" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}" (click)="cerrarSesion()">
-                                      <i class="fas fa-sign-out-alt"></i>
-                                      <span *ngIf="opened==true"> Cerrar Sesion</span>
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
-                  </li>
-                  <hr [ngClass]="{'pad-line':opened==false ,'no-pad-line':opened==true}">
-              </div>
-              <li class="nav-item sidebar-item">
-                  <a class="nav-link icons" routerLink="/sales" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
-                    <i class="fas fa-cash-register"></i><span *ngIf="opened==true">Ventas</span></a>
-              </li>
-              <li class="nav-item sidebar-item">
-                  <a class="nav-link icons" disabled routerLink="/shopping" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i><span *ngIf="opened==true">Compras</span></a>
-              </li>
-          </ul>
-      </div>
-  </ng-sidebar>
-  <div ng-sidebar-content>
-      <router-outlet></router-outlet>
-  </div>
+            <ul class="navbar-nav pt-0">
+                <div class="nav-item" [ngClass]="{'posicionar-perfil':opened==false ,'no-posicionar-perfil':opened==true}">
+                    <hr [ngClass]="{'pad-line':opened==false ,'no-pad-line':opened==true}">
+                    <li class="nav-item">
+                        <a class="nav-item rounded collapsed" style="text-align-last: center;" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                            <img style="border-radius: 50%; margin-right: 1em;" src="../../../assets/perfil1.png" [ngClass]="{'perfil':opened==false ,'no-perfil':opened==true}">
+                            <span *ngIf="opened==true" style="color: #fff; display: block;">{{user.USUARIO}}</span>
+                            <span *ngIf="opened==false" data-bs-toggle="tooltip" data-bs-placement="right" title="Perfil"></span>
+                        </a>
+                        <div class="collapse" id="home-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li class="nav-item sidebar-item icons">
+                                    <a class="nav-link" routerLink="editar-usuario" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
+                                        <i class="fas fa-user-edit"></i>
+                                        <span *ngIf="opened==true"> Gestionar</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item sidebar-item icons">
+                                    <a href="" class="nav-link" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}" (click)="cerrarSesion()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span *ngIf="opened==true"> Cerrar Sesion</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <hr [ngClass]="{'pad-line':opened==false ,'no-pad-line':opened==true}">
+                </div>
+                <li class="nav-item sidebar-item">
+                    <a class="nav-link icons" routerLink="/sales" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
+                      <i class="fas fa-cash-register"></i><span *ngIf="opened==true">Ventas</span></a>
+                </li>
+                <li class="nav-item sidebar-item">
+                    <a class="nav-link icons" disabled routerLink="/shopping" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i><span *ngIf="opened==true">Compras</span></a>
+                </li>
+            </ul>
+        </div>
+    </ng-sidebar>
+    <div ng-sidebar-content>
+        <router-outlet></router-outlet>
+    </div>
 
-</ng-sidebar-container>
+  </ng-sidebar-container>
+</ng-template>

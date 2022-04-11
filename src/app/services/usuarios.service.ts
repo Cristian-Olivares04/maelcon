@@ -40,8 +40,6 @@ export class UsuariosService {
   };
 
   constructor( private http:HttpClient){
-    this._userToken = localStorage.getItem("auth-token");
-    this._usuarioActual = localStorage.getItem("id");
     this.retornarUsuario();
   }
 
@@ -59,20 +57,29 @@ export class UsuariosService {
   }
 
   retornarUsuario(){
-    this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`)
-          .subscribe((resp:any) => {
-            if(resp['mensaje'][0]['codigo']==1){
-              console.log(resp);
-              localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
-              this.datosUsuario = resp['usuario'][0];
-            }else{
-              console.log("falso");
-
-            }
-          });
+    this._userToken = localStorage.getItem("auth-token");
+    this._usuarioActual = localStorage.getItem("id");
+    if(this._usuarioActual!=null){
+      this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`)
+        .subscribe((resp:any) => {
+          if(resp['mensaje'][0]['CODIGO']==1){
+            localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
+            this.datosUsuario = resp['usuario'][0];
+          }else{
+            console.log("falso no retorno");
+          }
+        });
+    }
   }
 
-  /* editarPersonaje( usuario:usuario){
+  obtenerUsuario(): Observable<any>{
+    this._userToken = localStorage.getItem("auth-token");
+    this._usuarioActual = localStorage.getItem("id");
+    //console.log('id', this._usuarioActual);
+    return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`);
+  }
+
+  /* editarUsuario( usuario:usuario){
     console.log(this.datosUsuario);
 
     this.http.put<usuario>(`${this.bUA}/usuarios/${this.usuarioActual}`, usuario)
@@ -90,8 +97,9 @@ export class UsuariosService {
   }
 
   cerrarSesion(){
-    this.usuarioActual='';
-
+    this._usuarioActual='';
+    localStorage.removeItem('auth-token');
+    localStorage.removeItem('id');
   }
 
   verificacionCorreo(correo: string): boolean{
