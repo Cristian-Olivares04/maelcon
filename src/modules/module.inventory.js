@@ -1,4 +1,5 @@
 import pool from "../databaseSQL";
+var cloudinary_services = require("../utils/cloudinary_services");
 
 export const createCategory = async (req, res) => {
   try {
@@ -61,12 +62,22 @@ export const createProduct = async (req, res) => {
       ESTADO,
       ID_CATEGORIA,
     } = req.body;
+
+    let img;
+    //Guarda foto
+    if(req.file){
+      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+      console.log(img);
+    }else{
+      img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+    }
+
     await pool.query("CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [
       ID_PROVEEDOR,
       NOMBRE,
       MARCA,
       DESCRIPCION,
-      IMG,
+      img,
       ESTADO,
       ID_CATEGORIA,
     ]);
@@ -99,6 +110,16 @@ export const updateProduct = async (req, res) => {
       ESTADO,
       ID_CATEGORIA,
     } = req.body;
+    
+    let img;
+    //Guarda foto
+    if(req.file){
+      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+      console.log(img);
+    }else{
+      img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+    }
+
     await pool.query(
       "CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)",
       [
@@ -107,7 +128,7 @@ export const updateProduct = async (req, res) => {
         NOMBRE,
         MARCA,
         DESCRIPCION,
-        IMG,
+        img,
         ESTADO,
         ID_CATEGORIA,
       ]

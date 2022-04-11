@@ -1,10 +1,11 @@
 import { Router } from "express";
 import * as moduleUserCtrl from "../modules/module.users";
 import { authJwt, verifySignUp } from "../middlewares";
+import upload from "../middlewares/upload";
 
 const router = Router();
 
-router.post("/", moduleUserCtrl.createUser);
+router.post("/", upload.uploadUserIMG, moduleUserCtrl.createUser);
 
 router.get("/", /*[authJwt.verifyTokenSQL],*/ moduleUserCtrl.getUsersSQL);
 router.get(
@@ -20,6 +21,7 @@ router.delete(
 router.put(
   "/:ID_USUARIO",
   //[authJwt.verifyToken, authJwt.isAdmin],
+  upload.uploadUserIMG,
   moduleUserCtrl.updateUserByIdPA
 );
 

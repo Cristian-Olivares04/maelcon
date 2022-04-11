@@ -1,11 +1,12 @@
 import express from "express";
 import morgan from "morgan";
-import pkg from "../package.json";
-import cors from "cors";
+import path from "path";
 import bodyParser from "body-parser";
+import cors from "cors";
+import pkg from "../package.json";
+import multer from "multer";
 
 //importacion de los modulos
-
 import authRoutes from "./routes/auth.routes";
 import ModuleUsersRoutes from "./routes/module.users.routes";
 import ModuleSalesRoutes from "./routes/module.sales.routes";
@@ -14,11 +15,7 @@ import ModuleSuppliesRoutes from "./routes/module.supplies.routes";
 import ModuleAdminRoutes from "./routes/module.admin.routes";
 
 const app = express();
-
-app.use(morgan("dev"));
-
 app.use(express.json());
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +30,9 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use(morgan("dev"));
+
+app.use('public/uploads', express.static('uploads'));
 app.use("/api/auth", authRoutes);
 app.use("/module/users", ModuleUsersRoutes);
 app.use("/module/sales", ModuleSalesRoutes);

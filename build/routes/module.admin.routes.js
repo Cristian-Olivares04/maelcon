@@ -37,11 +37,16 @@ router.get("/getObjects/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getObjects)
 router.get("/getObjects/:ID_OBJETO", [authJwt.verifyTokenSQL], moduleAdminCtrl.getObjectByID);
 router.get("/getPaymentMethods/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getPaymentMethods);
 router.get("/getPaymentMethods/:ID_PAGO", [authJwt.verifyTokenSQL], moduleAdminCtrl.getPaymentMethodByID);
-router.get("/getParameters/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getParameters);
+router.get("/getParameters/",
+/*[authJwt.verifyTokenSQL],*/
+moduleAdminCtrl.getParameters);
 router.get("/getParameters/:ID_PARAMETRO", [authJwt.verifyTokenSQL], moduleAdminCtrl.getParameterById);
 router.get("/getLogs/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getLogs);
 router.get("/getLogs/:ID_BITACORA", [authJwt.verifyTokenSQL], moduleAdminCtrl.getLogById);
 router.get("/comission/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getComissions);
 router.get("/comission/:ID_USUARIO", [authJwt.verifyTokenSQL], moduleAdminCtrl.getComissionById);
+router.post("/backupDB/",
+/*[authJwt.verifyTokenSQL],*/
+moduleAdminCtrl.postBackupDB);
 var _default = router;
 exports["default"] = _default;

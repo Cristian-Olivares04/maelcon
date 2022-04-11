@@ -23,9 +23,13 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+var cloudinary_services = require("../utils/cloudinary_services");
+
+var email = require('../utils/email');
+
 var createUser = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var _req$body, ID_PUESTO, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, pass2, mensaje;
+    var _req$body, ID_PUESTO, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, pass2, img, mensaje, info, contentHTML;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -37,18 +41,49 @@ var createUser = /*#__PURE__*/function () {
 
           case 3:
             pass2 = _context.sent;
-            _context.next = 6;
-            return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(\n        ".concat(ID_PUESTO, ",\n        ").concat(NOMBRE, ",\n        ").concat(APELLIDO, ",\n        ").concat(GENERO, ",\n        ").concat(RTN, ",\n        ").concat(TELEFONO, ",\n        ").concat(SUELDO, ",\n        ").concat(ID_ROL, ",\n        ").concat(USUARIO, ",\n        '").concat(pass2, "',\n        ").concat(IMG_USUARIO, ",\n        ").concat(CORREO_ELECTRONICO, ",\n        ").concat(CREADO_POR, ",\n        ").concat(FECHA_VENCIMIENTO, ",\n        @MENSAJE, \n        @CODIGO);"));
+            img = ''; //Guarda foto
 
-          case 6:
+            if (!req.file) {
+              _context.next = 11;
+              break;
+            }
+
             _context.next = 8;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
 
           case 8:
-            mensaje = _context.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
+            img = _context.sent;
+            _context.next = 12;
+            break;
 
-          case 10:
+          case 11:
+            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
+
+          case 12:
+            _context.next = 14;
+            return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(\n        ".concat(ID_PUESTO, ",\n        ").concat(NOMBRE, ",\n        ").concat(APELLIDO, ",\n        ").concat(GENERO, ",\n        ").concat(RTN, ",\n        ").concat(TELEFONO, ",\n        ").concat(SUELDO, ",\n        ").concat(ID_ROL, ",\n        ").concat(USUARIO, ",\n        '").concat(pass2, "',\n        ").concat(img, ",\n        ").concat(CORREO_ELECTRONICO, ",\n        ").concat(CREADO_POR, ",\n        ").concat(FECHA_VENCIMIENTO, ",\n        @MENSAJE, \n        @CODIGO);"));
+
+          case 14:
+            _context.next = 16;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 16:
+            mensaje = _context.sent;
+            info = JSON.parse(JSON.stringify(mensaje));
+
+            if (!(info[0]["CODIGO"] == 1)) {
+              _context.next = 22;
+              break;
+            }
+
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649635374/Maelcon/BLG2011-YM-AMS-VirtualWelcome-Card_ufn1k5.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Hola ".concat(NOMBRE, " ").concat(APELLIDO, "!</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Bienvenido al sistema de Maelcon, al recibir este correo se confirma la creaci\xF3n de su usuario el cual\n              quedar\xE1 a la espera de ser dado de alta por un administrador, los modulos de trabajo son variados y el \n              administrador ser\xE1 el encargado de asignar tus areas.\n              <b>Posibles areas de trabajo:</b></p>\n            <ul style=\"font-size: 15px;  margin: 10px 0\">\n              <li>Modulo de compras.</li>\n              <li>Modulo de ventas.</li>\n              <li>Administrador de usuarios.</li>\n              <li>Administrador de sistema.</li>\n              <li>Control de inventarios y productos.</li>\n            </ul>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            _context.next = 22;
+            return email.sendEmail(CORREO_ELECTRONICO, "Confirmación de creación de cuenta ✔", contentHTML);
+
+          case 22:
+            res.json(info);
+
+          case 23:
           case "end":
             return _context.stop();
         }
@@ -190,7 +225,7 @@ exports.deleteUserById = deleteUserById;
 
 var updateUserByIdPA = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var ID_USUARIO, _req$body2, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, mensaje;
+    var ID_USUARIO, _req$body2, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, mensaje;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
@@ -200,30 +235,49 @@ var updateUserByIdPA = /*#__PURE__*/function () {
             ID_USUARIO = req.params.ID_USUARIO;
             _req$body2 = req.body, NOMBRE = _req$body2.NOMBRE, APELLIDO = _req$body2.APELLIDO, ID_PUESTO = _req$body2.ID_PUESTO, TELEFONO = _req$body2.TELEFONO, SUELDO = _req$body2.SUELDO, ID_ROL = _req$body2.ID_ROL, IMG_USUARIO = _req$body2.IMG_USUARIO, MODIFICADO_POR = _req$body2.MODIFICADO_POR;
             console.log(ID_USUARIO, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR);
-            _context6.next = 6;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(".concat(ID_USUARIO, ",").concat(NOMBRE, ",").concat(APELLIDO, ",").concat(ID_PUESTO, ",").concat(TELEFONO, ",").concat(SUELDO, ",").concat(ID_ROL, ",").concat(IMG_USUARIO, ",").concat(MODIFICADO_POR, ",@MENSAJE,@CODIGO);"));
 
-          case 6:
-            _context6.next = 8;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            if (!req.file) {
+              _context6.next = 10;
+              break;
+            }
 
-          case 8:
-            mensaje = _context6.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context6.next = 15;
+            _context6.next = 7;
+            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
+
+          case 7:
+            img = _context6.sent;
+            _context6.next = 12;
             break;
 
+          case 10:
+            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
+            nombreImg = '';
+
           case 12:
-            _context6.prev = 12;
+            _context6.next = 14;
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(".concat(ID_USUARIO, ",").concat(NOMBRE, ",").concat(APELLIDO, ",").concat(ID_PUESTO, ",").concat(TELEFONO, ",").concat(SUELDO, ",").concat(ID_ROL, ",").concat(img, ",").concat(MODIFICADO_POR, ",@MENSAJE,@CODIGO);"));
+
+          case 14:
+            _context6.next = 16;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 16:
+            mensaje = _context6.sent;
+            res.json(JSON.parse(JSON.stringify(mensaje)));
+            _context6.next = 23;
+            break;
+
+          case 20:
+            _context6.prev = 20;
             _context6.t0 = _context6["catch"](0);
             res.json(_context6.t0);
 
-          case 15:
+          case 23:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 12]]);
+    }, _callee6, null, [[0, 20]]);
   }));
 
   return function updateUserByIdPA(_x11, _x12) {
@@ -333,7 +387,7 @@ exports.updateSecurytyQA = updateSecurytyQA;
 
 var updatePassword = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res) {
-    var ID_USUARIO, _req$body5, MODIFICADO_POR, CONTRASENA, password, mensaje;
+    var ID_USUARIO, _req$body5, MODIFICADO_POR, CONTRASENA, password, mensaje, info, contentHTML, usuarioAct, correo;
 
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
@@ -356,21 +410,39 @@ var updatePassword = /*#__PURE__*/function () {
 
           case 10:
             mensaje = _context9.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context9.next = 17;
-            break;
+            info = JSON.parse(JSON.stringify(mensaje));
+            _context9.next = 14;
+            return _databaseSQL["default"].query("SELECT * FROM tbl_ms_usuario WHERE ID_USUARIO = ?", [ID_USUARIO]);
 
           case 14:
-            _context9.prev = 14;
+            usuarioAct = _context9.sent;
+            correo = usuarioAct[0]["CORREO_ELECTRONICO"];
+
+            if (!(info[0]["CODIGO"] == 1)) {
+              _context9.next = 20;
+              break;
+            }
+
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un cambio de contrase\xF1a para tu usuario, si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ";
+            _context9.next = 20;
+            return email.sendEmail(correo, "Cambio de contraseña exitoso ✔", contentHTML);
+
+          case 20:
+            res.json(info);
+            _context9.next = 26;
+            break;
+
+          case 23:
+            _context9.prev = 23;
             _context9.t0 = _context9["catch"](0);
             res.json(_context9.t0);
 
-          case 17:
+          case 26:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 14]]);
+    }, _callee9, null, [[0, 23]]);
   }));
 
   return function updatePassword(_x17, _x18) {

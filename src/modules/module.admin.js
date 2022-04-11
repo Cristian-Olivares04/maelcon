@@ -1,4 +1,6 @@
+import { async } from "regenerator-runtime";
 import pool from "../databaseSQL";
+import backup from "../utils/backup";
 
 export const updateUserStatus = async (req, res) => {
   try {
@@ -613,3 +615,14 @@ export const getComissionById = async (req, res) => {
     });
   }
 };
+
+export const postBackupDB = async (req, res) => {
+  try {
+    let mensaje = await backup.backupDB(req.body.name, req.body.ubication);
+    console.log(mensaje);
+  } catch (error) {
+    res.status(401).json({
+      error: error.message,
+    });
+  }
+}
