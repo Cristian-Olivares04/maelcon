@@ -6,7 +6,7 @@ import { InicioSesionComponent } from './auth/inicio-sesion/inicio-sesion.compon
 import { RegistroComponent } from './auth/registro/registro.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { PreguntaRecuperacionComponent } from './pages/pregunta-recuperacion/pregunta-recuperacion.component';
+import { AdministrationComponent } from './pages/administration/administration.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 
@@ -20,11 +20,7 @@ const routes: Routes = [
       path: 'login',
       component: InicioSesionComponent,
       children: [
-        {
-            path: 'recuperacion',
-            component: PreguntaRecuperacionComponent,
-            outlet: 'modal'
-        }
+        {}
     ]
   },
   {
@@ -38,6 +34,10 @@ const routes: Routes = [
   {
       path: 'shopping',
       component: ShoppingComponent
+  },
+  {
+      path: 'administration',
+      component: AdministrationComponent
   },
   {
       path: 'home-signed',

@@ -14,10 +14,14 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { InicioSesionComponent } from './auth/inicio-sesion/inicio-sesion.component';
 import { RegistroComponent } from './auth/registro/registro.component';
-import { PreguntaRecuperacionComponent } from './pages/pregunta-recuperacion/pregunta-recuperacion.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AdministrationComponent } from './pages/administration/administration.component';
+import { FormDatabaseComponent } from './components/form-database/form-database.component';
+import { FormMailComponent } from './components/form-mail/form-mail.component';
+import { GeneralSettingsComponent } from './components/general-settings/general-settings.component';
+import { UpdatePasswordComponent } from './components/update-password/update-password.component';
 
 @NgModule({
   declarations: [
@@ -25,10 +29,14 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     SidebarComponent,
     InicioSesionComponent,
     RegistroComponent,
-    PreguntaRecuperacionComponent,
     SalesComponent,
     ShoppingComponent,
     NavbarComponent,
+    AdministrationComponent,
+    FormDatabaseComponent,
+    FormMailComponent,
+    GeneralSettingsComponent,
+    UpdatePasswordComponent,
   ],
   imports: [
     BrowserModule,
