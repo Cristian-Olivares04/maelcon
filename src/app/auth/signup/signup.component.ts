@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuariosService } from '../../services/usuarios.service';
-import { usuario } from 'src/app/interfaces/usuario.interface';
+import { usuario } from 'src/app/interfaces/user.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css', '../../../forms_styles.css']
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css', '../../../forms_styles.css']
 })
-export class RegistroComponent {
+export class SignupComponent {
   @Output() onUsuarioRegistrado = new EventEmitter();
 
   @Input() usuarioRegistro: usuario = {
@@ -29,9 +29,9 @@ export class RegistroComponent {
     RESPUESTA: '',
     GENERO: '',
     FECHA_VENCIMIENTO: '',
-    CREADO_POR: 1,
+    CREADO_POR: 0,
     ESTADO: 0
-  };
+  }
 
   public validacionCorreo: boolean = false;
   public validacionContrasena: boolean = false;

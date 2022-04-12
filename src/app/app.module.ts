@@ -12,8 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 /*Created Components*/
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { InicioSesionComponent } from './auth/inicio-sesion/inicio-sesion.component';
-import { RegistroComponent } from './auth/registro/registro.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -27,8 +27,8 @@ import { UpdatePasswordComponent } from './components/update-password/update-pas
   declarations: [
     AppComponent,
     SidebarComponent,
-    InicioSesionComponent,
-    RegistroComponent,
+    LoginComponent,
+    SignupComponent,
     SalesComponent,
     ShoppingComponent,
     NavbarComponent,
