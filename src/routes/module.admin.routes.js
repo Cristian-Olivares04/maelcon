@@ -64,7 +64,7 @@ router.put(
 
 router.get(
   "/userPermissions/:ID_USUARIO",
-  [authJwt.verifyTokenSQL],
+  [authJwt.verifyTokenSQL, authJwt.verifyAuth(1, 1)],
   moduleAdminCtrl.getPermissions
 );
 

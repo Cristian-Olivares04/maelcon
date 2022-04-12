@@ -19,7 +19,6 @@ export const verifyTokenSQL = async (req, res, next) => {
       "SELECT * FROM tbl_ms_usuario WHERE ID_USUARIO = ?",
       [req.userId]
     );
-    console.log(user);
 
     if (!user)
       return res
@@ -29,5 +28,32 @@ export const verifyTokenSQL = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(404).json({ mensaje: "Acceso no autorizado", codigo: 2 });
+  }
+};
+
+export const verifyAuth = (module, operation) => {
+  try {
+    return async (req, res, next) => {
+      const id = req.userId;
+      const permisos = await pool.query(
+        "CALL OBTENER_PERMISOS_RUTA(?,?,?,@MENSAJE, @CODIGO)",
+        [id, module, operation]
+      );
+      const authValue = Object.values(
+        JSON.parse(JSON.stringify(permisos))[0][0]
+      );
+      if (authValue[0] === 0) {
+        return res.status(301).json({
+          mensaje:
+            "No se cuentan con los permisos suficientes para acceder a la ruta",
+        });
+      }
+      next();
+    };
+  } catch (error) {
+    res.json({
+      message: "Acceso no autorizado, requiere permisos adicionales.",
+      error: error,
+    });
   }
 };
