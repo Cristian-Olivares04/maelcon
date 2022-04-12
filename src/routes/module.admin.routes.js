@@ -104,7 +104,7 @@ router.get(
 
 router.get(
   "/getParameters/",
-  [authJwt.verifyTokenSQL],
+  /*[authJwt.verifyTokenSQL],*/
   moduleAdminCtrl.getParameters
 );
 
@@ -132,6 +132,12 @@ router.get(
   "/comission/:ID_USUARIO",
   [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getComissionById
+);
+
+router.post(
+  "/backupDB/",
+  /*[authJwt.verifyTokenSQL],*/
+  moduleAdminCtrl.postBackupDB
 );
 
 export default router;

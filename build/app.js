@@ -11,11 +11,15 @@ var _express = _interopRequireDefault(require("express"));
 
 var _morgan = _interopRequireDefault(require("morgan"));
 
-var _package = _interopRequireDefault(require("../package.json"));
+var _path = _interopRequireDefault(require("path"));
+
+var _bodyParser = _interopRequireDefault(require("body-parser"));
 
 var _cors = _interopRequireDefault(require("cors"));
 
-var _bodyParser = _interopRequireDefault(require("body-parser"));
+var _package = _interopRequireDefault(require("../package.json"));
+
+var _multer = _interopRequireDefault(require("multer"));
 
 var _auth = _interopRequireDefault(require("./routes/auth.routes"));
 
@@ -31,7 +35,6 @@ var _moduleAdmin = _interopRequireDefault(require("./routes/module.admin.routes"
 
 //importacion de los modulos
 var app = (0, _express["default"])();
-app.use((0, _morgan["default"])("dev"));
 app.use(_express["default"].json());
 app.use((0, _cors["default"])());
 app.use(_bodyParser["default"].json());
@@ -46,6 +49,8 @@ app.get("/", function (req, res) {
     project: app.get("pkg").name
   });
 });
+app.use((0, _morgan["default"])("dev"));
+app.use('public/uploads', _express["default"]["static"]('uploads'));
 app.use("/api/auth", _auth["default"]);
 app.use("/module/users", _moduleUsers["default"]);
 app.use("/module/sales", _moduleSales["default"]);

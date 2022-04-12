@@ -5,13 +5,17 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.getRoles = exports.getRoleByID = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.checkUser = void 0;
+exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.checkUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _regeneratorRuntime2 = require("regenerator-runtime");
+
 var _databaseSQL = _interopRequireDefault(require("../databaseSQL"));
+
+var _backup = _interopRequireDefault(require("../utils/backup"));
 
 var updateUserStatus = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
@@ -1287,3 +1291,42 @@ var getComissionById = /*#__PURE__*/function () {
 }();
 
 exports.getComissionById = getComissionById;
+
+var postBackupDB = /*#__PURE__*/function () {
+  var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res) {
+    var mensaje;
+    return _regenerator["default"].wrap(function _callee26$(_context26) {
+      while (1) {
+        switch (_context26.prev = _context26.next) {
+          case 0:
+            _context26.prev = 0;
+            _context26.next = 3;
+            return _backup["default"].backupDB(req.body.name, req.body.ubication);
+
+          case 3:
+            mensaje = _context26.sent;
+            console.log(mensaje);
+            _context26.next = 10;
+            break;
+
+          case 7:
+            _context26.prev = 7;
+            _context26.t0 = _context26["catch"](0);
+            res.status(401).json({
+              error: _context26.t0.message
+            });
+
+          case 10:
+          case "end":
+            return _context26.stop();
+        }
+      }
+    }, _callee26, null, [[0, 7]]);
+  }));
+
+  return function postBackupDB(_x51, _x52) {
+    return _ref26.apply(this, arguments);
+  };
+}();
+
+exports.postBackupDB = postBackupDB;

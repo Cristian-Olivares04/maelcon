@@ -13,6 +13,8 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _databaseSQL = _interopRequireDefault(require("../databaseSQL"));
 
+var cloudinary_services = require("../utils/cloudinary_services");
+
 var createCategory = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     var _req$body, CATEGORIA, DESCRIPCION, mensaje, _mensaje;
@@ -118,7 +120,7 @@ exports.updateCategory = updateCategory;
 
 var createProduct = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-    var _req$body3, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, mensaje, _mensaje3;
+    var _req$body3, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, mensaje, _mensaje3;
 
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
@@ -126,38 +128,57 @@ var createProduct = /*#__PURE__*/function () {
           case 0:
             _context3.prev = 0;
             _req$body3 = req.body, ID_PROVEEDOR = _req$body3.ID_PROVEEDOR, NOMBRE = _req$body3.NOMBRE, MARCA = _req$body3.MARCA, DESCRIPCION = _req$body3.DESCRIPCION, IMG = _req$body3.IMG, ESTADO = _req$body3.ESTADO, ID_CATEGORIA = _req$body3.ID_CATEGORIA;
-            _context3.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA]);
 
-          case 4:
-            _context3.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            if (!req.file) {
+              _context3.next = 9;
+              break;
+            }
 
-          case 6:
-            mensaje = _context3.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context3.next = 16;
+            _context3.next = 5;
+            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+
+          case 5:
+            img = _context3.sent;
+            console.log(img);
+            _context3.next = 10;
             break;
 
+          case 9:
+            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+
           case 10:
-            _context3.prev = 10;
-            _context3.t0 = _context3["catch"](0);
+            _context3.next = 12;
+            return _databaseSQL["default"].query("CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
+
+          case 12:
             _context3.next = 14;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
           case 14:
+            mensaje = _context3.sent;
+            res.json(JSON.parse(JSON.stringify(mensaje)));
+            _context3.next = 24;
+            break;
+
+          case 18:
+            _context3.prev = 18;
+            _context3.t0 = _context3["catch"](0);
+            _context3.next = 22;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 22:
             _mensaje3 = _context3.sent;
             res.status(401).json({
               error: _context3.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje3))
             });
 
-          case 16:
+          case 24:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 10]]);
+    }, _callee3, null, [[0, 18]]);
   }));
 
   return function createProduct(_x5, _x6) {
@@ -169,7 +190,7 @@ exports.createProduct = createProduct;
 
 var updateProduct = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var ID_PRODUCTO, _req$body4, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, mensaje, _mensaje4;
+    var ID_PRODUCTO, _req$body4, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, mensaje, _mensaje4;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -178,38 +199,57 @@ var updateProduct = /*#__PURE__*/function () {
             _context4.prev = 0;
             ID_PRODUCTO = req.params.ID_PRODUCTO;
             _req$body4 = req.body, ID_PROVEEDOR = _req$body4.ID_PROVEEDOR, NOMBRE = _req$body4.NOMBRE, MARCA = _req$body4.MARCA, DESCRIPCION = _req$body4.DESCRIPCION, IMG = _req$body4.IMG, ESTADO = _req$body4.ESTADO, ID_CATEGORIA = _req$body4.ID_CATEGORIA;
-            _context4.next = 5;
-            return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA]);
 
-          case 5:
-            _context4.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            if (!req.file) {
+              _context4.next = 10;
+              break;
+            }
 
-          case 7:
-            mensaje = _context4.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context4.next = 17;
+            _context4.next = 6;
+            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+
+          case 6:
+            img = _context4.sent;
+            console.log(img);
+            _context4.next = 11;
             break;
 
+          case 10:
+            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+
           case 11:
-            _context4.prev = 11;
-            _context4.t0 = _context4["catch"](0);
+            _context4.next = 13;
+            return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
+
+          case 13:
             _context4.next = 15;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
           case 15:
+            mensaje = _context4.sent;
+            res.json(JSON.parse(JSON.stringify(mensaje)));
+            _context4.next = 25;
+            break;
+
+          case 19:
+            _context4.prev = 19;
+            _context4.t0 = _context4["catch"](0);
+            _context4.next = 23;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 23:
             _mensaje4 = _context4.sent;
             res.status(401).json({
               error: _context4.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje4))
             });
 
-          case 17:
+          case 25:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 11]]);
+    }, _callee4, null, [[0, 19]]);
   }));
 
   return function updateProduct(_x7, _x8) {

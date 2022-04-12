@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _typeof = require("@babel/runtime/helpers/typeof");
 
 Object.defineProperty(exports, "__esModule", {
@@ -11,6 +13,8 @@ var _express = require("express");
 
 var moduleInventoryCtrl = _interopRequireWildcard(require("../modules/module.inventory"));
 
+var _upload = _interopRequireDefault(require("../middlewares/upload"));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -20,8 +24,8 @@ router.post("/category/", moduleInventoryCtrl.createCategory);
 router.get("/category/", moduleInventoryCtrl.getCategories);
 router.get("/category/:ID_CATEGORIA", moduleInventoryCtrl.getCategoryByID);
 router.put("/category/:ID_CATEGORIA", moduleInventoryCtrl.updateCategory);
-router.post("/product/", moduleInventoryCtrl.createProduct);
-router.put("/product/:ID_PRODUCTO", moduleInventoryCtrl.updateProduct);
+router.post("/product/", _upload["default"].uploadIMG, moduleInventoryCtrl.createProduct);
+router.put("/product/:ID_PRODUCTO", _upload["default"].uploadIMG, moduleInventoryCtrl.updateProduct);
 router.put("/productAvailable/:ID_INVENTARIO", moduleInventoryCtrl.updateAvailable);
 router.put("/productExpireDate/:ID_KARDEX", moduleInventoryCtrl.updateExpireDate);
 router.get("/", moduleInventoryCtrl.getInventory);
