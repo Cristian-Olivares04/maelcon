@@ -19,9 +19,6 @@ const routes: Routes = [
   {
       path: 'login',
       component: InicioSesionComponent,
-      children: [
-        {}
-    ]
   },
   {
       path: 'sign-up',
