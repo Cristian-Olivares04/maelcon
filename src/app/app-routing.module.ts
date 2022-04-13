@@ -8,6 +8,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdministrationComponent } from './pages/administration/administration.component';
 import { SalesComponent } from './pages/sales/sales.component';
+import { SecurityComponent } from './pages/security/security.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 
 const routes: Routes = [
@@ -36,6 +37,10 @@ const routes: Routes = [
       path: 'administration',
       component: AdministrationComponent
   },
+  {
+    path: 'security',
+    component: SecurityComponent
+},
   {
       path: 'home-signed',
       component: SidebarComponent

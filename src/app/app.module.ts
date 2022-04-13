@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SidebarModule } from 'ng-sidebar';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -22,6 +22,11 @@ import { FormDatabaseComponent } from './components/form-database/form-database.
 import { FormMailComponent } from './components/form-mail/form-mail.component';
 import { GeneralSettingsComponent } from './components/general-settings/general-settings.component';
 import { UpdatePasswordComponent } from './components/update-password/update-password.component';
+import { BinnacleComponent } from './components/binnacle/binnacle.component';
+import { SecurityComponent } from './pages/security/security.component';
+import { BackupComponent } from './components/backup/backup.component';
+import { UsersComponent } from './components/users/users.component';
+import { UpdateUserComponent } from './components/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -37,11 +42,17 @@ import { UpdatePasswordComponent } from './components/update-password/update-pas
     FormMailComponent,
     GeneralSettingsComponent,
     UpdatePasswordComponent,
+    BinnacleComponent,
+    SecurityComponent,
+    BackupComponent,
+    UsersComponent,
+    UpdateUserComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
     SidebarModule.forRoot(),

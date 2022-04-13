@@ -1,0 +1,86 @@
+<div class="text-muted p-3">
+    <h2><b>Módulo de Seguridad</b></h2>
+    <p>Administración general de los sevicios y edición de variables.</p>
+    <hr>
+</div>
+
+<ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
+    <ngb-panel id="custom-panel-1">
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+            <span><b>Configuración de acceso al sistema</b></span>
+            <span>
+              <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+              <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+              <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+            </span>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+        </ng-template>
+      </ngb-panel>  
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Parametros de Seguridad</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <app-general-settings></app-general-settings>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Base de datos</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
+          
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <app-form-database></app-form-database>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Servidor de Correos</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <app-form-mail></app-form-mail>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Cloudinary</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button class="btn btn-disable btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
