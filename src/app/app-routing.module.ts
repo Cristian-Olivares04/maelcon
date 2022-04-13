@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { InicioSesionComponent } from './auth/inicio-sesion/inicio-sesion.component';
-import { RegistroComponent } from './auth/registro/registro.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdministrationComponent } from './pages/administration/administration.component';
@@ -19,11 +19,11 @@ const routes: Routes = [
   },
   {
       path: 'login',
-      component: InicioSesionComponent,
+      component: LoginComponent,
   },
   {
       path: 'sign-up',
-      component: RegistroComponent
+      component: SignupComponent
   },
   {
       path: 'sales',
@@ -66,5 +66,5 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {}
-export const ArrayOfComponents = [InicioSesionComponent, RegistroComponent]
+export const ArrayOfComponents = [LoginComponent, SignupComponent]
 

@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { UsuariosService } from '../../services/usuarios.service';
 
 @Component({
-  selector: 'app-inicio-sesion',
-  templateUrl: './inicio-sesion.component.html',
-  styleUrls: ['./inicio-sesion.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class InicioSesionComponent {
+export class LoginComponent {
 
   @Input() usuarioLogin= {
     CORREO_ELECTRONICO: '',

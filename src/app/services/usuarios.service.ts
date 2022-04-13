@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { AuthResponse, usuario } from '../interfaces/usuario.interface';
+import { AuthResponse, usuario } from '../interfaces/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 
@@ -56,6 +56,7 @@ export class UsuariosService {
     this._usuarioActual = value;
   }
 
+  //funcion para retornar un usuario en especifico desde el servicio usuario
   retornarUsuario(){
     this._userToken = localStorage.getItem("auth-token");
     this._usuarioActual = localStorage.getItem("id");
@@ -72,36 +73,72 @@ export class UsuariosService {
     }
   }
 
+  //funcion para obtener un usuario en especifico como observable
   obtenerUsuario(): Observable<any>{
     this._userToken = localStorage.getItem("auth-token");
     this._usuarioActual = localStorage.getItem("id");
-    //console.log('id', this._usuarioActual);
     return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`);
   }
 
-  /* editarUsuario( usuario:usuario){
+  //funcion para obtener un usuario en especifico como observable
+  obtenerUsuarios(): Observable<any>{
+    return this.http.get<usuario>(`${this.bUA}/module/users`);
+  }
+
+  //funcion para actualizar un usuario
+  editarUsuario( usuario:usuario, id:any): Observable<any>{
     console.log(this.datosUsuario);
+    return this.http.put<usuario>(`${this.bUA}/module/users/${id}`, usuario, {headers:this.headers})
+  }
 
-    this.http.put<usuario>(`${this.bUA}/usuarios/${this.usuarioActual}`, usuario)
-          .subscribe((resp:usuario) => {
-            console.log(resp);
-    });
-  } */
+  //funcion para crear la pregunta de usuario
+  crearPreguntaUsuario( data:any, id:any): Observable<any>{
+    return this.http.post<any>(`${this.bUA}/module/users/SQA/${id}`, data)
+  }
 
+  //funcion para actualizar la pregunta de usuario
+  actualizarPreguntaUsuario( data:any, id:any): Observable<any>{
+    return this.http.put<usuario>(`${this.bUA}/module/users/SQA/${id}`, data)
+  }
+
+  //funcion para actualizar la contraseña de usuario
+  actualizarContrasenaUsuario( data:any, id:any): Observable<any>{
+    return this.http.put<any>(`${this.bUA}/module/users/uptPWD/${id}`, data)
+  }
+
+  //funcion para obtener la pregunta de usuario
+  obtenerPreguntaUsuario(id:any): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/users/getSQ/${id}`)
+  }
+
+  //funcion para obtener la respuesta de usuario
+  obtenerRespuestaUsuario(id:any): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/users/getSA/${id}`)
+  }
+
+  //opcion para registro desde el modulo de registro
   guardarNuevoUsuario(usuario:usuario): Observable<any> {
     return this.http.post<usuario>(`${this.bUA}/api/auth/signup`, usuario);
   }
 
+  //opcion para registrar un usuario desde el admon
+  crearNuevoUsuario(usuario:usuario): Observable<any> {
+    return this.http.post<usuario>(`${this.bUA}/module/users`, usuario);
+  }
+
+  //consulta para inicio de sesion
   verifLogin(data:any): Observable<any> {
     return this.http.post<any>(`${this.bUA}/api/auth/signin`, data);
   }
 
+  //consulta para cerrar sesion
   cerrarSesion(){
     this._usuarioActual='';
     localStorage.removeItem('auth-token');
     localStorage.removeItem('id');
   }
 
+  //funcion para verificacion del correo mediante regex
   verificacionCorreo(correo: string): boolean{
     const regexi = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(regexi.test(correo)){
@@ -110,6 +147,7 @@ export class UsuariosService {
     return true;
   }
 
+  //funcion para poder validar el token session
   validarToken(){
     const url = `http://localhost:8888/auth`;
     const headers = new HttpHeaders()
