@@ -62,7 +62,7 @@ export const singUpSQL = async (req, res) => {
     let img;
     //Guarda foto
     if(req.file){
-      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/');
+      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
       console.log(img);
     }else{
       img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
