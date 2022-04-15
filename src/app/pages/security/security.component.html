@@ -5,20 +5,31 @@
 </div>
 
 <ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
-    <ngb-panel id="custom-panel-1">
-        <ng-template ngbPanelHeader let-opened="opened">
-          <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-            <span><b>Configuración de acceso al sistema</b></span>
-            <span>
-              <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
-              <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-              <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
-            </span>
-          </div>
-        </ng-template>
-        <ng-template ngbPanelContent>
-        </ng-template>
-      </ngb-panel>  
+  <ngb-panel id="custom-panel-1">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Configuración de acceso al sistema</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div class="row justify-content-between">
+        <div class="col-6 row">
+          <app-objects></app-objects>
+        </div>
+        <div class="col-6 row">
+          <app-roles></app-roles>
+        </div>
+        <div class="col-12 pt-4">
+          <app-permissions></app-permissions>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-panel>  
 
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
@@ -27,7 +38,7 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
         </span>
       </div>
     </ng-template>
@@ -35,6 +46,7 @@
       <app-general-settings></app-general-settings>
     </ng-template>
   </ngb-panel>
+
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
@@ -42,9 +54,8 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
           <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
-          
         </span>
       </div>
     </ng-template>
@@ -52,6 +63,7 @@
       <app-form-database></app-form-database>
     </ng-template>
   </ngb-panel>
+
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
@@ -59,7 +71,7 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
         </span>
       </div>
     </ng-template>
@@ -75,12 +87,12 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button class="btn btn-disable btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
         </span>
       </div>
     </ng-template>
     <ng-template ngbPanelContent>
-      
+      <app-cloudinary></app-cloudinary>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>

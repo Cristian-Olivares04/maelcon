@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./security.component.css']
 })
 export class SecurityComponent implements OnInit {
-
+  disabled = false;
+  
   constructor() { }
 
   ngOnInit(): void {

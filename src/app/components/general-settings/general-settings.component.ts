@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./general-settings.component.css', '../../../forms_styles.css']
 })
 export class GeneralSettingsComponent implements OnInit {
-
+  actionVal:any = 0;
+  
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  actionAct(value:any){
+    this.actionVal = value;
   }
 
 }

@@ -27,6 +27,10 @@ import { SecurityComponent } from './pages/security/security.component';
 import { BackupComponent } from './components/backup/backup.component';
 import { UsersComponent } from './components/users/users.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
+import { RolesComponent } from './components/roles/roles.component';
+import { ObjectsComponent } from './components/objects/objects.component';
+import { PermissionsComponent } from './components/permissions/permissions.component';
+import { CloudinaryComponent } from './components/cloudinary/cloudinary.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +51,10 @@ import { UpdateUserComponent } from './components/update-user/update-user.compon
     BackupComponent,
     UsersComponent,
     UpdateUserComponent,
+    RolesComponent,
+    ObjectsComponent,
+    PermissionsComponent,
+    CloudinaryComponent,
   ],
   imports: [
     BrowserModule,
