@@ -71,3 +71,22 @@ export interface Parameter {
   FECHA_MODIFICACION:string
 }
 
+export interface Bitacora {
+  ID_BITACORA: number,
+  ID_USUARIO: number,
+  ID_OBJETO: number,
+  ACCION: string,
+  DESCRIPCION: string,
+  INFORMACION_ANTERIOR: string,
+  INFORMACION_ACTUAL: string,
+  FECHA_BITACORA: string
+}
+
+export interface Comission {
+  ID_USUARIO: number,
+  ID_VENTA: number,
+  TOTAL_VENTA: number,
+  COMISION_EMPLEADO: number,
+  USUARIO: string,
+  CORREO_ELECTRONICO: string
+}

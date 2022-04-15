@@ -22,17 +22,17 @@ export class MantenimientoService {
 
   //funcion para chequear si existe un usuario por el correo
   chequearUsuario( data:any ): Observable<any>{
-    return this.http.get<any>(`${this.bUA}/module/admin/checkUser`);
+    return this.http.get<any>(`${this.bUA}/module/admin/checkUser`, {observe:data, headers:this.headers});
   }
 
   //funcion para actualizar el estado de un usuario
   actualizarEstadoUsuario( data:any, id:any): Observable<any>{
-    return this.http.put<any>(`${this.bUA}/module/admin/status/${id}`, data);
+    return this.http.put<any>(`${this.bUA}/module/admin/status/${id}`, data, {headers:this.headers});
   }
 
   //funcion para crear Objeto
   crearObjeto( data:Object): Observable<any>{
-    return this.http.post<Object>(`${this.bUA}/module/admin/object`, data);
+    return this.http.post<Object>(`${this.bUA}/module/admin/object`, data, {headers:this.headers});
   }
 
   //funcion para actualizar un Objeto

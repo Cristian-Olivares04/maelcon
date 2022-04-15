@@ -31,6 +31,7 @@ import { RolesComponent } from './components/roles/roles.component';
 import { ObjectsComponent } from './components/objects/objects.component';
 import { PermissionsComponent } from './components/permissions/permissions.component';
 import { CloudinaryComponent } from './components/cloudinary/cloudinary.component';
+import { SeeConfigComponent } from './pages/see-config/see-config.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CloudinaryComponent } from './components/cloudinary/cloudinary.componen
     ObjectsComponent,
     PermissionsComponent,
     CloudinaryComponent,
+    SeeConfigComponent,
   ],
   imports: [
     BrowserModule,
