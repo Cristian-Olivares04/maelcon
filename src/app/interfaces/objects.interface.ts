@@ -53,9 +53,13 @@ export interface Permission {
 }
 
 export interface Role {
+  ID_ROL: number,
   ROL:string,
   DESCRIPCION:string,
-  CREADO_POR:number
+  FECHA_CREACION: string,
+  CREADO_POR:number,
+  FECHA_MODIFICACION: string,
+  MODIFICADO_POR: number
 }
 
 export interface PayMethod {
@@ -64,6 +68,7 @@ export interface PayMethod {
 }
 
 export interface Parameter {
+  ID_PARAMETRO:number,
   PARAMETRO:string,
   ID_USUARIO: number,
   VALOR:string,

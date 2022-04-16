@@ -71,13 +71,21 @@ a:-webkit-any-link:focus-visible {
   color: rgb(255, 255, 255)
 }
 
+.blanco {
+  color: rgb(255, 255, 255)
+}
+
+.dorad {
+  color: rgb(247, 255, 12)
+}
+
 .sidebar-item {
   text-align: start;
   border-bottom: 0;
 }
 
 .nav-link {
-  color: #e4e4e4 !important;
+  color: #e4e4e4;
 }
 
 .nav-link:hover {

@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit{
   dockSize = '72px';
   regionVisible: string = 'Registro';
   user:usuario=this.UsuariosService.datosUsuario;
-  condition = false
+  condition = false;
 
   constructor(private router: Router, private UsuariosService:UsuariosService) { }
 
@@ -28,11 +28,12 @@ export class SidebarComponent implements OnInit{
           //console.log(resp);
           this.user= resp['usuario'][0];
           this.UsuariosService.datosUsuario = resp['usuario'][0];
-          this.router.navigate([`/shopping`]);
-          console.log(this.user);
+          this.router.navigate([`/sales`]);
+          //console.log(this.user);
           this.condition=true;
         }else{
           console.log("falso no retorno");
+          this.cerrarSesion();
         }
       });
   }
@@ -42,6 +43,7 @@ export class SidebarComponent implements OnInit{
     this.dockSize = this.dockSize;
     this.dock = this.dock;
     this.width = this.width;
+
   }
 
 

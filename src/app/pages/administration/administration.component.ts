@@ -30,7 +30,11 @@ export class AdministrationComponent implements OnInit {
   @Input() datosRol:Role = {
     ROL: '',
     DESCRIPCION: '',
-    CREADO_POR: 0
+    CREADO_POR: 0,
+    ID_ROL: 0,
+    FECHA_CREACION: '',
+    FECHA_MODIFICACION: '',
+    MODIFICADO_POR: 0
   };
 
   @Input() datosObjeto:Object = {
@@ -50,7 +54,8 @@ export class AdministrationComponent implements OnInit {
     ID_USUARIO: 0,
     VALOR: '',
     FECHA_CREACION: '',
-    FECHA_MODIFICACION: ''
+    FECHA_MODIFICACION: '',
+    ID_PARAMETRO: 0
   }
 
   objeto:Object = {
@@ -63,7 +68,11 @@ export class AdministrationComponent implements OnInit {
   rol:Role = {
     ROL: '',
     DESCRIPCION: '',
-    CREADO_POR: 0
+    CREADO_POR: 0,
+    ID_ROL: 0,
+    FECHA_CREACION: '',
+    FECHA_MODIFICACION: '',
+    MODIFICADO_POR: 0
   }
 
   metodoPago:PayMethod = {
@@ -76,7 +85,8 @@ export class AdministrationComponent implements OnInit {
     ID_USUARIO: 0,
     VALOR: '',
     FECHA_CREACION: '',
-    FECHA_MODIFICACION: ''
+    FECHA_MODIFICACION: '',
+    ID_PARAMETRO: 0
   }
 
   bitacora:Bitacora = {

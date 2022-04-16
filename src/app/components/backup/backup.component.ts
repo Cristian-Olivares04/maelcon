@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { saveAs } from 'file-saver';
+import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 
 @Component({
   selector: 'app-backup',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackupComponent implements OnInit {
 
-  constructor() { }
+  @Input() datosBackUp = {
+    nombre:''
+  }
+
+  constructor(private MS:MantenimientoService) { }
 
   ngOnInit(): void {
   }
 
+  download() {
+		this.MS.downloadFile().subscribe((resp) => {
+			let blob:any = new Blob([resp], { type: 'text/csv; charset=utf-8' });
+			//const url = window.URL.createObjectURL(resp);
+			//window.open(url);
+			saveAs(blob, this.datosBackUp.nombre);
+			}), (error: any) => console.log('Error downloading the file'),
+			() => console.info('File downloaded successfully');
+	}
 }

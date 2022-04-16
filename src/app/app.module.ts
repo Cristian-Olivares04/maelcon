@@ -32,6 +32,7 @@ import { ObjectsComponent } from './components/objects/objects.component';
 import { PermissionsComponent } from './components/permissions/permissions.component';
 import { CloudinaryComponent } from './components/cloudinary/cloudinary.component';
 import { SeeConfigComponent } from './pages/see-config/see-config.component';
+import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { SeeConfigComponent } from './pages/see-config/see-config.component';
     PermissionsComponent,
     CloudinaryComponent,
     SeeConfigComponent,
+    SignupAdmonComponent,
   ],
   imports: [
     BrowserModule,

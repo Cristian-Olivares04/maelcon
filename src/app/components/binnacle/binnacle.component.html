@@ -14,21 +14,26 @@
         <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Country</th>
-          <th scope="col">Area</th>
-          <th scope="col">Population</th>
+          <th scope="col">ACCION</th>
+          <th scope="col">ID_USUARIO</th>
+          <th scope="col">ID_OBJETO</th>
+          <th scope="col">DESCRIPCION</th>
+          <th scope="col">INFORMACION_ANTERIOR</th>
+          <th scope="col">INFORMACION_ACTUAL</th>
+          <th scope="col">FECHA_BITACORA</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let country of countries | async; index as i">
-          <th scope="row">{{ i + 1 }}</th>
-          <td>
-            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-            <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-          </td>
-          <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-          <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-        </tr>
+          <tr *ngFor="let bit of bitacora">
+            <td scope="row">{{ bit.ID_BITACORA}}</td>
+            <td><ngb-highlight [result]="bit.ACCION" [term]="filter.value"></ngb-highlight></td>
+            <td><ngb-highlight [result]="bit.ID_USUARIO | number" [term]="filter.value"></ngb-highlight></td>
+            <td><ngb-highlight [result]="bit.ID_OBJETO | number" [term]="filter.value"></ngb-highlight></td>
+            <td><ngb-highlight [result]="bit.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
+            <td><ngb-highlight [result]="bit.INFORMACION_ANTERIOR" [term]="filter.value"></ngb-highlight></td>
+            <td><ngb-highlight [result]="bit.INFORMACION_ACTUAL" [term]="filter.value"></ngb-highlight></td>
+            <td><ngb-highlight [result]="bit.FECHA_BITACORA" [term]="filter.value"></ngb-highlight></td>
+          </tr>
         </tbody>
       </table>
 </div>

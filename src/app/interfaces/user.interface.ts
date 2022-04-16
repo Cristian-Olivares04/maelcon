@@ -9,6 +9,7 @@ export interface usuario {
     CORREO_ELECTRONICO: string;
     TELEFONO: string;
     RTN: string;
+    SUELDO:number,
     IMG_USUARIO: string;
     PREGUNTA: string;
     RESPUESTA: string;

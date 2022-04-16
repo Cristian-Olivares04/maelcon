@@ -1,6 +1,6 @@
 <div>
-    <div class="row">
-        <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+    <div class="row m-0">
+        <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-bottom: 10px; background-color: #fff; border-radius: 15px;">
             <!--Cuadro contenedor de informacion-->
             <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar Usuario</h2>
             <i class="text-muted">Proceso de actualización</i>
@@ -15,27 +15,27 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" placeholder="Nombre" name="nombre">
+                                <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE" name="nombre">
                             </div>
                         </div>
-  
+
                         <!--Input Apellido-->
                         <div class="input-div one">
                             <div class="i">
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" placeholder="Apellido" name="apellido">
+                                <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO" name="apellido">
                             </div>
                         </div>
-  
+
                         <!--Nombre de usuario-->
                         <div class="input-div one">
                             <div class="i">
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="div">
-                                <input class="d-block" type="text" placeholder="Nombre de usuario" name="nombreUsuario" value="Alex07" readonly>
+                                <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario" value="Alex07" readonly>
                             </div>
                         </div>
                         <!--Input numero de telefono-->
@@ -44,7 +44,7 @@
                                 <i class="fas fa-phone-alt"></i>
                             </div>
                             <div class="div">
-                                <input type="number" maxlength="8" min="10000000" max="99999999" placeholder="Telefono" name="telefono">
+                                <input type="number" maxlength="8" min="10000000" max="99999999" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
                             </div>
                         </div>
                         <!--Input de contraseña-->
@@ -53,7 +53,7 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div class="div">
-                                <input type="text" placeholder="Correo" name="correo" value="alex@gmail" readonly>
+                                <input type="text" placeholder="Correo" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO" readonly>
                             </div>
                         </div>
                         <!--Input de RTN-->
@@ -62,44 +62,44 @@
                               <i class="fas fa-id-card"></i>
                             </div>
                             <div class="div">
-                                <input type="text" placeholder="RTN" name="rtn" maxlength="13" value="0801-1991-00014" readonly>
+                                <input type="text" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn" maxlength="13" readonly>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-  
+
             <!--Columna 2 de informacion-->
             <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
                 <div class="login-content">
                     <form>
-                        <!--Input Fecha Nacimiento-->
+                        <!--Input imagen perfil-->
                         <div class="input-div one">
                             <div class="i">
                               <i class="fas fa-image"></i>
                             </div>
                             <div class="div">
-                                <input type="file" placeholder="Imagen de perfil" name="imagenPerfil">
+                                <input type="file" placeholder="Imagen de perfil" (ngModel)="datosUsuario.IMG_USUARIO" name="imagenPerfil">
                             </div>
                         </div>
-  
+
                         <!--Input Pregunta de seguridad-->
                         <div class="input-div one">
                             <div class="i">
                                 <i class="fas fa-question"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" placeholder="Pregunta de seguridad" name="pregunta">
+                                <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="datosUsuario.PREGUNTA" name="pregunta">
                             </div>
                         </div>
-  
+
                         <!--Input respuesta de seguridad-->
                         <div class="input-div one">
                             <div class="i">
                                 <i class="fas fa-equals"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" placeholder="Respuesta" name="respuesta">
+                                <input class="" type="password" placeholder="Respuesta" [(ngModel)]="datosUsuario.RESPUESTA" name="respuesta">
                             </div>
                         </div>
                         <!--Input de rol-->
@@ -108,12 +108,9 @@
                             <i class="fas fa-address-book"></i>
                           </div>
                           <div class="div">
-                            <select class="form-control" name="rol">
-                              <option value="">Rol</option>
-                              <option value="Ventas">Ventas</option>
-                              <option value="Compras">Compras</option>
-                              <option value="Administración">Administración</option>
-                              <option value="Inventario">Inventario</option>
+                            <select class="form-control" [(ngModel)]="datosUsuario.ID_ROL" name="rol">
+                              <option value="">Seleccione un Rol</option>
+                              <option *ngFor="let r of _roles" [ngValue]="r.ID_ROL">{{r.ROL}}</option>
                             </select>
                           </div>
                         </div>
@@ -123,7 +120,7 @@
                               <i class="fas fa-question"></i>
                             </div>
                             <div class="div">
-                              <select class="form-control" name="puesto">
+                              <select class="form-control" [(ngModel)]="datosUsuario.ID_PUESTO" name="puesto">
                                 <option value="">Puesto</option>
                                 <option value="Gerente general">Gerente general</option>
                                 <option value="Oficial de ventas">Oficial de ventas</option>
@@ -138,7 +135,7 @@
                                 <i class="fas fa-coins"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="number" placeholder="Sueldo" name="Sueldo">
+                                <input class="" type="number" placeholder="Sueldo" [(ngModel)]="datosUsuario.SUELDO" name="Sueldo">
                             </div>
                         </div>
                     </form>

@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment'
 export class UsuariosService {
   private bUA = environment.baseUrl;
   public _usuarioActual:any = '';
+  public _usuarioActual2:any = '';
   public _userToken:any = '';
   public nombreUsuario = '';
 
@@ -36,7 +37,29 @@ export class UsuariosService {
     GENERO: '',
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
-    ESTADO: 0
+    ESTADO: 0,
+    SUELDO: 0
+  };
+
+  public datosUsuario2: usuario ={
+    ID_USUARIO: '',
+    ID_PUESTO: 0,
+    ID_ROL: 0,
+    USUARIO: '',
+    CONTRASENA: '',
+    NOMBRE: '',
+    APELLIDO: '',
+    CORREO_ELECTRONICO: '',
+    TELEFONO: '',
+    RTN: '',
+    IMG_USUARIO: '',
+    PREGUNTA: '',
+    RESPUESTA: '',
+    GENERO: '',
+    FECHA_VENCIMIENTO: '',
+    CREADO_POR: 0,
+    ESTADO: 0,
+    SUELDO: 0
   };
 
   constructor( private http:HttpClient){
@@ -87,7 +110,7 @@ export class UsuariosService {
 
   //funcion para actualizar un usuario
   editarUsuario( usuario:usuario, id:any): Observable<any>{
-    console.log(this.datosUsuario);
+    //console.log(this.datosUsuario);
     return this.http.put<usuario>(`${this.bUA}/module/users/${id}`, usuario, {headers:this.headers})
   }
 
