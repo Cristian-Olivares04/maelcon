@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../config";
-const email = require('../utils/email');
+const email = require("../utils/email");
 import pool from "../databaseSQL";
 var cloudinary_services = require("../utils/cloudinary_services");
 
@@ -27,7 +27,7 @@ export const singInSQL = async (req, res) => {
         .status(401)
         .json({ mensaje: "Contrasena SQL erronea", token: null });
     const tokenSQL = jwt.sign({ id: user[0].ID_USUARIO }, config.SECRET, {
-      expiresIn: 28800,
+      expiresIn: 84600,
     });
 
     res.json({ token: tokenSQL, user: user });
@@ -61,11 +61,15 @@ export const singUpSQL = async (req, res) => {
     const password = await encrypt.encryptPassword(CONTRASENA);
     let img;
     //Guarda foto
-    if(req.file){
-      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
+    if (req.file) {
+      img = await cloudinary_services.uploadImage(
+        req.file.path,
+        "Maelcon/Perfiles"
+      );
       console.log(img);
-    }else{
-      img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
+    } else {
+      img =
+        "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
     }
 
     await pool.query(
@@ -92,7 +96,7 @@ export const singUpSQL = async (req, res) => {
     let info = JSON.parse(JSON.stringify(mensaje));
     let contentHTML;
 
-    if(info[0]["CODIGO"] == 1){
+    if (info[0]["CODIGO"] == 1) {
       contentHTML = `
       <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
     
@@ -131,7 +135,11 @@ export const singUpSQL = async (req, res) => {
     </table>
       `;
 
-      await email.sendEmail(CORREO_ELECTRONICO, "Solicitud de registro enviada ✔", contentHTML);
+      await email.sendEmail(
+        CORREO_ELECTRONICO,
+        "Solicitud de registro enviada ✔",
+        contentHTML
+      );
     }
 
     res.json(info);
@@ -142,7 +150,7 @@ export const singUpSQL = async (req, res) => {
 
     res.status(401).json({
       error: error.message,
-      mensaje: JSON.parse(JSON.stringify(mensaje))
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
     });
   }
 };
