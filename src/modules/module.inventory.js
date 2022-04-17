@@ -117,7 +117,7 @@ export const updateProduct = async (req, res) => {
       img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
       console.log(img);
     }else{
-      img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+      img = IMG;
     }
 
     await pool.query(
