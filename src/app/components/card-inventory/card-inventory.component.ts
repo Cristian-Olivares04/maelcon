@@ -9,6 +9,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class CardInventoryComponent implements OnInit {
   actionVal:any = 0;
   activo:any = true;
+  t = {
+      id_objeto : 3,
+      consultar: true,
+      actualizar: false,
+      eliminar: false,
+      crear: false
+    };
 
   constructor(private modalService: NgbModal) { }
 
@@ -26,4 +33,6 @@ export class CardInventoryComponent implements OnInit {
   openModal(content:Object) {
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'xl' });
   }
+
+
 }

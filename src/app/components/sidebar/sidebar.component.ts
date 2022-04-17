@@ -18,6 +18,51 @@ export class SidebarComponent implements OnInit{
   user:usuario=this.UsuariosService.datosUsuario;
   condition = false;
 
+  sales = 0;
+  shopping = 0;
+  inventory = 0;
+  administration = 0;
+  security = 0;
+
+  t = [
+    {
+      id_objeto : 1,
+      consultar: true,
+      actualizar: false,
+      eliminar: false,
+      crear: true
+    },
+    {
+      id_objeto : 2,
+      consultar: true,
+      actualizar: false,
+      eliminar: false,
+      crear: true
+    },
+    {
+      id_objeto : 3,
+      consultar: true,
+      actualizar: false,
+      eliminar: false,
+      crear: true
+    },
+    {
+      id_objeto : 4,
+      consultar: true,
+      actualizar: false,
+      eliminar: false,
+      crear: true
+    },
+    {
+      id_objeto : 5,
+      consultar: true,
+      actualizar: false,
+      eliminar: false,
+      crear: true
+    },
+  ];
+  
+
   constructor(private router: Router, private UsuariosService:UsuariosService) { }
 
   ngOnInit(): void {
@@ -36,6 +81,7 @@ export class SidebarComponent implements OnInit{
           this.cerrarSesion();
         }
       });
+    this.pantallasDisponibles();
   }
 
   toggleSidebar() {
@@ -53,4 +99,19 @@ export class SidebarComponent implements OnInit{
     window.location.reload();
   }
 
+  pantallasDisponibles(){
+    for(let i = 0; i < this.t.length; i++){
+      if(this.t[i].id_objeto == 1){
+        this.sales = 1;
+      }else if(this.t[i].id_objeto == 2){
+        this.shopping = 1;
+      }else if(this.t[i].id_objeto == 3){
+        this.inventory = 1;
+      }else if(this.t[i].id_objeto == 4){
+        this.administration = 1;
+      }else if(this.t[i].id_objeto == 5){
+        this.security = 1;
+      }
+    }
+  }
 }

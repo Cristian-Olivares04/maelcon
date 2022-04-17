@@ -45,27 +45,24 @@
                         </div>
                     </div>
                 </li> -->
-                <li class="nav-item sidebar-item">
+
+                <li class="nav-item sidebar-item" *ngIf = "sales">
                     <a class="nav-link icons" routerLink="/sales" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fas fa-cash-register"></i><span *ngIf="opened==true">Ventas</span></a>
                 </li>
-                <li class="nav-item sidebar-item">
+                <li class="nav-item sidebar-item" *ngIf = "shopping">
                     <a class="nav-link icons" routerLink="/shopping" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-shopping-cart" aria-hidden="true"></i><span *ngIf="opened==true">Compras</span></a>
                 </li>
-                <li class="nav-item sidebar-item">
-<<<<<<< HEAD
+                <li class="nav-item sidebar-item" *ngIf = "inventory">
                     <a class="nav-link icons" disabled routerLink="/inventory" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-boxes" aria-hidden="true"></i><span *ngIf="opened==true">Inventario</span></a>
                 </li>
-                <li class="nav-item sidebar-item">
-                    <a class="nav-link icons" disabled routerLink="/administration" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
-=======
+                <li class="nav-item sidebar-item" *ngIf = "administration">
                     <a class="nav-link icons" routerLink="/administration" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
->>>>>>> b8f2d6e8c96cce77c409221bd5eaf02666e56176
                       <i class="fa fa-tools" aria-hidden="true"></i><span *ngIf="opened==true">Administración</span></a>
                 </li>
-                <li class="nav-item sidebar-item">
+                <li class="nav-item sidebar-item" *ngIf = "security">
                     <a class="nav-link icons" routerLink="/security" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-lock" aria-hidden="true"></i><span *ngIf="opened==true">Seguridad</span></a>
                 </li>
