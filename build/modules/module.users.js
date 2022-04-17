@@ -7,7 +7,7 @@ var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUserByIdPA = exports.updateUserById = exports.updateSecurytyQA = exports.updatePassword = exports.securityQA = exports.getUsersSQL = exports.getUsers = exports.getUserSQL = exports.getUserById = exports.getSecurityQuestion = exports.getSecurityAnswer = exports.deleteUserById = exports.createUser = void 0;
+exports.verifyRecoveryToken = exports.updateUserByIdPA = exports.updateUserById = exports.updateSecurytyQA = exports.updatePassword = exports.securityQA = exports.getUsersSQL = exports.getUsers = exports.getUserSQL = exports.getUserById = exports.getSecurityQuestionByEmail = exports.getSecurityQuestion = exports.getSecurityAnswer = exports.getMyUser = exports.getAnswerByEmail = exports.generatePasswordRecoveryTokenByEmail = exports.deleteUserById = exports.createUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -19,13 +19,17 @@ var _databaseSQL = _interopRequireDefault(require("../databaseSQL"));
 
 var encrypt = _interopRequireWildcard(require("../middlewares/encrypt"));
 
+var _config = _interopRequireDefault(require("../config"));
+
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var cloudinary_services = require("../utils/cloudinary_services");
 
-var email = require('../utils/email');
+var email = require("../utils/email");
 
 var createUser = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
@@ -41,7 +45,7 @@ var createUser = /*#__PURE__*/function () {
 
           case 3:
             pass2 = _context.sent;
-            img = ''; //Guarda foto
+            img = ""; //Guarda foto
 
             if (!req.file) {
               _context.next = 11;
@@ -49,7 +53,7 @@ var createUser = /*#__PURE__*/function () {
             }
 
             _context.next = 8;
-            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
 
           case 8:
             img = _context.sent;
@@ -57,7 +61,7 @@ var createUser = /*#__PURE__*/function () {
             break;
 
           case 11:
-            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
+            img = "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
 
           case 12:
             _context.next = 14;
@@ -242,7 +246,7 @@ var updateUserByIdPA = /*#__PURE__*/function () {
             }
 
             _context6.next = 7;
-            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
 
           case 7:
             img = _context6.sent;
@@ -250,8 +254,8 @@ var updateUserByIdPA = /*#__PURE__*/function () {
             break;
 
           case 10:
-            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
-            nombreImg = '';
+            img = "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
+            nombreImg = "";
 
           case 12:
             _context6.next = 14;
@@ -528,111 +532,445 @@ var getSecurityAnswer = /*#__PURE__*/function () {
 
 exports.getSecurityAnswer = getSecurityAnswer;
 
-var getUsersSQL = /*#__PURE__*/function () {
+var getSecurityQuestionByEmail = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res) {
-    var user, mensaje, _mensaje;
+    var _CORREO, user, userData, pregunta, mensaje, processedQuestion, _mensaje;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.prev = 0;
-            _context12.next = 3;
-            return _databaseSQL["default"].query("CALL OBTENER_USUARIOS(@MENSAJE, @CODIGO)");
+            _CORREO = req.params.CORREO;
+            _context12.next = 4;
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [_CORREO]);
 
-          case 3:
+          case 4:
             user = _context12.sent;
-            _context12.next = 6;
+            userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+            _context12.next = 8;
+            return _databaseSQL["default"].query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [userData[0]]);
+
+          case 8:
+            pregunta = _context12.sent;
+            _context12.next = 11;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 6:
+          case 11:
             mensaje = _context12.sent;
+            processedQuestion = Object.values(JSON.parse(JSON.stringify(pregunta[0][0])));
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
-              usuario: JSON.parse(JSON.stringify(user[0]))
+              pregunta: processedQuestion
             });
-            _context12.next = 16;
+            _context12.next = 22;
             break;
 
-          case 10:
-            _context12.prev = 10;
+          case 16:
+            _context12.prev = 16;
             _context12.t0 = _context12["catch"](0);
-            _context12.next = 14;
+            _context12.next = 20;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 20:
             _mensaje = _context12.sent;
             res.status(401).json({
               error: _context12.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje))
             });
 
-          case 16:
+          case 22:
           case "end":
             return _context12.stop();
         }
       }
-    }, _callee12, null, [[0, 10]]);
+    }, _callee12, null, [[0, 16]]);
   }));
 
-  return function getUsersSQL(_x23, _x24) {
+  return function getSecurityQuestionByEmail(_x23, _x24) {
     return _ref12.apply(this, arguments);
   };
 }();
 
-exports.getUsersSQL = getUsersSQL;
+exports.getSecurityQuestionByEmail = getSecurityQuestionByEmail;
 
-var getUserSQL = /*#__PURE__*/function () {
+var getAnswerByEmail = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res) {
-    var ID_USUARIO, user, mensaje, _mensaje2;
+    var _CORREO2, RESPUESTA, user, userData, respuesta, mensaje, processedAnswer, validatePassword, _mensaje2;
 
     return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
             _context13.prev = 0;
-            ID_USUARIO = req.params.ID_USUARIO;
-            _context13.next = 4;
-            return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?,@MENSAJE, @CODIGO)", [ID_USUARIO]);
+            _CORREO2 = req.params.CORREO;
+            RESPUESTA = req.body.RESPUESTA;
+            _context13.next = 5;
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [_CORREO2]);
 
-          case 4:
+          case 5:
             user = _context13.sent;
-            _context13.next = 7;
+            userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+            _context13.next = 9;
+            return _databaseSQL["default"].query("CALL OBTENER_RESPUESTA_SEGURIDAD(?)", [userData[0]]);
+
+          case 9:
+            respuesta = _context13.sent;
+            _context13.next = 12;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 7:
+          case 12:
             mensaje = _context13.sent;
+            processedAnswer = Object.values(JSON.parse(JSON.stringify(respuesta[0][0])));
+            console.log(processedAnswer[0]);
+            _context13.next = 17;
+            return encrypt.comparePassword(RESPUESTA, processedAnswer[0]);
+
+          case 17:
+            validatePassword = _context13.sent;
+
+            if (validatePassword) {
+              _context13.next = 20;
+              break;
+            }
+
+            return _context13.abrupt("return", res.status(401).json({
+              mensaje: "Respuesta a pregunta de seguridad erronea"
+            }));
+
+          case 20:
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
-              usuario: JSON.parse(JSON.stringify(user[0]))
+              respuesta: validatePassword
             });
-            _context13.next = 17;
+            _context13.next = 29;
             break;
 
-          case 11:
-            _context13.prev = 11;
+          case 23:
+            _context13.prev = 23;
             _context13.t0 = _context13["catch"](0);
-            _context13.next = 15;
+            _context13.next = 27;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 27:
             _mensaje2 = _context13.sent;
             res.status(401).json({
               error: _context13.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje2))
             });
 
-          case 17:
+          case 29:
           case "end":
             return _context13.stop();
         }
       }
-    }, _callee13, null, [[0, 11]]);
+    }, _callee13, null, [[0, 23]]);
   }));
 
-  return function getUserSQL(_x25, _x26) {
+  return function getAnswerByEmail(_x25, _x26) {
     return _ref13.apply(this, arguments);
   };
 }();
 
+exports.getAnswerByEmail = getAnswerByEmail;
+
+var generatePasswordRecoveryTokenByEmail = /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res) {
+    var _CORREO3, user, userData, CONTRASENA, password, tokenSQL, contentHTML, mensaje, confirmacion, _mensaje3;
+
+    return _regenerator["default"].wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.prev = 0;
+            _CORREO3 = req.params.CORREO;
+            _context14.next = 4;
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [_CORREO3]);
+
+          case 4:
+            user = _context14.sent;
+            userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+            CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+            _context14.next = 9;
+            return encrypt.encryptPassword(CONTRASENA.toString());
+
+          case 9:
+            password = _context14.sent;
+            tokenSQL = _jsonwebtoken["default"].sign({
+              id: userData[0],
+              password: password,
+              correo: _CORREO3
+            }, _config["default"].SECRET, {
+              expiresIn: 86400 * 7
+            });
+            _context14.next = 13;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 13:
+            mensaje = _context14.sent;
+            confirmacion = JSON.parse(JSON.stringify(mensaje));
+
+            if (!(confirmacion[0]["CODIGO"] == 1)) {
+              _context14.next = 19;
+              break;
+            }
+
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un reestablecimiento de contrase\xF1a para tu usuario, la duracion de este enlace es de 7 dias,\n               si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <a href=\"http://localhost:3000/module/users/passwordRecoveryToken/".concat(tokenSQL, "\" style=\"\" target=\"_blank\">Haz click en este enlace para ingresar tu nueva contrase\xF1a</a>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            _context14.next = 19;
+            return email.sendEmail(_CORREO3, "Reestablecimiento de contraseña exitoso ✔", contentHTML);
+
+          case 19:
+            res.json(tokenSQL);
+            _context14.next = 28;
+            break;
+
+          case 22:
+            _context14.prev = 22;
+            _context14.t0 = _context14["catch"](0);
+            _context14.next = 26;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 26:
+            _mensaje3 = _context14.sent;
+            res.status(401).json({
+              error: _context14.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje3))
+            });
+
+          case 28:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, null, [[0, 22]]);
+  }));
+
+  return function generatePasswordRecoveryTokenByEmail(_x27, _x28) {
+    return _ref14.apply(this, arguments);
+  };
+}();
+
+exports.generatePasswordRecoveryTokenByEmail = generatePasswordRecoveryTokenByEmail;
+
+var verifyRecoveryToken = /*#__PURE__*/function () {
+  var _ref15 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(req, res) {
+    var token, decoded, user, userData, mensaje;
+    return _regenerator["default"].wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.prev = 0;
+            token = req.params.token;
+
+            if (token) {
+              _context15.next = 4;
+              break;
+            }
+
+            return _context15.abrupt("return", res.status(403).json({
+              mensaje: "No se ha enviado ningun token"
+            }));
+
+          case 4:
+            decoded = _jsonwebtoken["default"].verify(token, _config["default"].SECRET);
+            _context15.next = 7;
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [CORREO]);
+
+          case 7:
+            user = _context15.sent;
+            userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+            res.json(decoded);
+            _context15.next = 18;
+            break;
+
+          case 12:
+            _context15.prev = 12;
+            _context15.t0 = _context15["catch"](0);
+            _context15.next = 16;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 16:
+            mensaje = _context15.sent;
+            res.status(401).json({
+              error: _context15.t0.message,
+              mensaje: JSON.parse(JSON.stringify(mensaje))
+            });
+
+          case 18:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15, null, [[0, 12]]);
+  }));
+
+  return function verifyRecoveryToken(_x29, _x30) {
+    return _ref15.apply(this, arguments);
+  };
+}();
+
+exports.verifyRecoveryToken = verifyRecoveryToken;
+
+var getUsersSQL = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(req, res) {
+    var user, mensaje, _mensaje4;
+
+    return _regenerator["default"].wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.prev = 0;
+            _context16.next = 3;
+            return _databaseSQL["default"].query("CALL OBTENER_USUARIOS(@MENSAJE, @CODIGO)");
+
+          case 3:
+            user = _context16.sent;
+            _context16.next = 6;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 6:
+            mensaje = _context16.sent;
+            res.json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              usuario: JSON.parse(JSON.stringify(user[0]))
+            });
+            _context16.next = 16;
+            break;
+
+          case 10:
+            _context16.prev = 10;
+            _context16.t0 = _context16["catch"](0);
+            _context16.next = 14;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 14:
+            _mensaje4 = _context16.sent;
+            res.status(401).json({
+              error: _context16.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje4))
+            });
+
+          case 16:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, null, [[0, 10]]);
+  }));
+
+  return function getUsersSQL(_x31, _x32) {
+    return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.getUsersSQL = getUsersSQL;
+
+var getUserSQL = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(req, res) {
+    var ID_USUARIO, user, mensaje, _mensaje5;
+
+    return _regenerator["default"].wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _context17.prev = 0;
+            ID_USUARIO = req.params.ID_USUARIO;
+            _context17.next = 4;
+            return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?,@MENSAJE, @CODIGO)", [ID_USUARIO]);
+
+          case 4:
+            user = _context17.sent;
+            _context17.next = 7;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 7:
+            mensaje = _context17.sent;
+            res.json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              usuario: JSON.parse(JSON.stringify(user[0]))
+            });
+            _context17.next = 17;
+            break;
+
+          case 11:
+            _context17.prev = 11;
+            _context17.t0 = _context17["catch"](0);
+            _context17.next = 15;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 15:
+            _mensaje5 = _context17.sent;
+            res.status(401).json({
+              error: _context17.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje5))
+            });
+
+          case 17:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17, null, [[0, 11]]);
+  }));
+
+  return function getUserSQL(_x33, _x34) {
+    return _ref17.apply(this, arguments);
+  };
+}();
+
 exports.getUserSQL = getUserSQL;
+
+var getMyUser = /*#__PURE__*/function () {
+  var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res) {
+    var ID_USUARIO, user, mensaje, _mensaje6;
+
+    return _regenerator["default"].wrap(function _callee18$(_context18) {
+      while (1) {
+        switch (_context18.prev = _context18.next) {
+          case 0:
+            _context18.prev = 0;
+            ID_USUARIO = req.userId;
+            _context18.next = 4;
+            return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?,@MENSAJE, @CODIGO)", [ID_USUARIO]);
+
+          case 4:
+            user = _context18.sent;
+            _context18.next = 7;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 7:
+            mensaje = _context18.sent;
+            res.json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              usuario: JSON.parse(JSON.stringify(user[0]))
+            });
+            _context18.next = 17;
+            break;
+
+          case 11:
+            _context18.prev = 11;
+            _context18.t0 = _context18["catch"](0);
+            _context18.next = 15;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 15:
+            _mensaje6 = _context18.sent;
+            res.status(401).json({
+              error: _context18.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje6))
+            });
+
+          case 17:
+          case "end":
+            return _context18.stop();
+        }
+      }
+    }, _callee18, null, [[0, 11]]);
+  }));
+
+  return function getMyUser(_x35, _x36) {
+    return _ref18.apply(this, arguments);
+  };
+}();
+
+exports.getMyUser = getMyUser;

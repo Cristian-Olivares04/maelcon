@@ -29,7 +29,7 @@ router.post("/paymentMethod/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createP
 router.put("/paymentMethod/:ID_PAGO", [authJwt.verifyTokenSQL], moduleAdminCtrl.updatePaymentMethod);
 router.post("/parameter/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createParameter);
 router.put("/parameter/:ID_PARAMETRO", [authJwt.verifyTokenSQL], moduleAdminCtrl.updateParameter);
-router.get("/userPermissions/:ID_USUARIO", [authJwt.verifyTokenSQL], moduleAdminCtrl.getPermissions);
+router.get("/userPermissions/:ID_USUARIO", [authJwt.verifyTokenSQL, authJwt.verifyAuth(1, 1)], moduleAdminCtrl.getPermissions);
 router.get("/checkUser/", [authJwt.verifyTokenSQL], moduleAdminCtrl.checkUser);
 router.get("/getRoles/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoles);
 router.get("/getRoles/:ID_ROL", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoleByID);

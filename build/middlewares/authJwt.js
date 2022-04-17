@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.verifyTokenSQL = void 0;
+exports.verifyTokenSQL = exports.verifyAuth = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -45,10 +45,9 @@ var verifyTokenSQL = /*#__PURE__*/function () {
 
           case 8:
             user = _context.sent;
-            console.log(user);
 
             if (user) {
-              _context.next = 12;
+              _context.next = 11;
               break;
             }
 
@@ -57,25 +56,25 @@ var verifyTokenSQL = /*#__PURE__*/function () {
               codigo: 404
             }));
 
-          case 12:
+          case 11:
             next();
-            _context.next = 18;
+            _context.next = 17;
             break;
 
-          case 15:
-            _context.prev = 15;
+          case 14:
+            _context.prev = 14;
             _context.t0 = _context["catch"](0);
             res.status(404).json({
               mensaje: "Acceso no autorizado",
               codigo: 2
             });
 
-          case 18:
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 15]]);
+    }, _callee, null, [[0, 14]]);
   }));
 
   return function verifyTokenSQL(_x, _x2, _x3) {
@@ -84,3 +83,54 @@ var verifyTokenSQL = /*#__PURE__*/function () {
 }();
 
 exports.verifyTokenSQL = verifyTokenSQL;
+
+var verifyAuth = function verifyAuth(module, operation) {
+  try {
+    return /*#__PURE__*/function () {
+      var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res, next) {
+        var id, permisos, authValue;
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                id = req.userId;
+                _context2.next = 3;
+                return _databaseSQL["default"].query("CALL OBTENER_PERMISOS_RUTA(?,?,?,@MENSAJE, @CODIGO)", [id, module, operation]);
+
+              case 3:
+                permisos = _context2.sent;
+                authValue = Object.values(JSON.parse(JSON.stringify(permisos))[0][0]);
+
+                if (!(authValue[0] === 0)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                return _context2.abrupt("return", res.status(301).json({
+                  mensaje: "No se cuentan con los permisos suficientes para acceder a la ruta"
+                }));
+
+              case 7:
+                next();
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      return function (_x4, _x5, _x6) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+  } catch (error) {
+    res.json({
+      message: "Acceso no autorizado, requiere permisos adicionales.",
+      error: error
+    });
+  }
+};
+
+exports.verifyAuth = verifyAuth;

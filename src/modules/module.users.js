@@ -1,8 +1,10 @@
 import { use } from "express/lib/router";
 import pool from "../databaseSQL";
 var cloudinary_services = require("../utils/cloudinary_services");
-const email = require('../utils/email');
+const email = require("../utils/email");
 import * as encrypt from "../middlewares/encrypt";
+import config from "../config";
+import jwt from "jsonwebtoken";
 
 export const createUser = async (req, res) => {
   const {
@@ -23,14 +25,18 @@ export const createUser = async (req, res) => {
   } = req.body;
   const pass2 = await encrypt.encryptPassword(CONTRASENA);
 
-  let img = '';
+  let img = "";
   //Guarda foto
-  if(req.file){
-    img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
-  }else{
-      img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
+  if (req.file) {
+    img = await cloudinary_services.uploadImage(
+      req.file.path,
+      "Maelcon/Perfiles"
+    );
+  } else {
+    img =
+      "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
   }
-  
+
   await pool.query(
     `CALL CREAR_MS_USUARIO(
         ${ID_PUESTO},
@@ -54,10 +60,10 @@ export const createUser = async (req, res) => {
     "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
   );
   let info = JSON.parse(JSON.stringify(mensaje));
-    let contentHTML;
+  let contentHTML;
 
-    if(info[0]["CODIGO"] == 1){
-      contentHTML = `
+  if (info[0]["CODIGO"] == 1) {
+    contentHTML = `
       <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
       <tr>
         <td style="padding: 0">
@@ -94,10 +100,14 @@ export const createUser = async (req, res) => {
     </table>
       `;
 
-      await email.sendEmail(CORREO_ELECTRONICO, "Confirmación de creación de cuenta ✔", contentHTML);
-    }
+    await email.sendEmail(
+      CORREO_ELECTRONICO,
+      "Confirmación de creación de cuenta ✔",
+      contentHTML
+    );
+  }
 
-    res.json(info);
+  res.json(info);
 };
 
 export const getUsers = async (req, res) => {
@@ -158,13 +168,17 @@ export const updateUserByIdPA = async (req, res) => {
       IMG_USUARIO,
       MODIFICADO_POR
     );
-    
+
     let img;
-    if(req.file){
-      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Perfiles');
-    }else{
-        img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
-        nombreImg = '';
+    if (req.file) {
+      img = await cloudinary_services.uploadImage(
+        req.file.path,
+        "Maelcon/Perfiles"
+      );
+    } else {
+      img =
+        "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
+      nombreImg = "";
     }
 
     await pool.query(
@@ -237,8 +251,7 @@ export const updatePassword = async (req, res) => {
     );
     const correo = usuarioAct[0]["CORREO_ELECTRONICO"];
 
-    if(info[0]["CODIGO"] == 1){
-
+    if (info[0]["CODIGO"] == 1) {
       contentHTML = `
       <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
       <tr>
@@ -267,7 +280,11 @@ export const updatePassword = async (req, res) => {
     </table>
       `;
 
-      await email.sendEmail(correo, "Cambio de contraseña exitoso ✔", contentHTML);
+      await email.sendEmail(
+        correo,
+        "Cambio de contraseña exitoso ✔",
+        contentHTML
+      );
     }
 
     res.json(info);
@@ -300,6 +317,184 @@ export const getSecurityAnswer = async (req, res) => {
   }
 };
 
+export const getSecurityQuestionByEmail = async (req, res) => {
+  try {
+    const { CORREO } = req.params;
+    const user = await pool.query(
+      "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
+      [CORREO]
+    );
+    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+    const pregunta = await pool.query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [
+      userData[0],
+    ]);
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    const processedQuestion = Object.values(
+      JSON.parse(JSON.stringify(pregunta[0][0]))
+    );
+    res.json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      pregunta: processedQuestion,
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const getAnswerByEmail = async (req, res) => {
+  try {
+    const { CORREO } = req.params;
+    const { RESPUESTA } = req.body;
+    const user = await pool.query(
+      "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
+      [CORREO]
+    );
+    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+    const respuesta = await pool.query("CALL OBTENER_RESPUESTA_SEGURIDAD(?)", [
+      userData[0],
+    ]);
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    const processedAnswer = Object.values(
+      JSON.parse(JSON.stringify(respuesta[0][0]))
+    );
+    console.log(processedAnswer[0]);
+    const validatePassword = await encrypt.comparePassword(
+      RESPUESTA,
+      processedAnswer[0]
+    );
+
+    if (!validatePassword)
+      return res
+        .status(401)
+        .json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
+    res.json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      respuesta: validatePassword,
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
+  try {
+    const { CORREO } = req.params;
+    const user = await pool.query(
+      "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
+      [CORREO]
+    );
+    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+
+    const password = await encrypt.encryptPassword(CONTRASENA.toString());
+    const tokenSQL = jwt.sign(
+      { id: userData[0], password: password, correo: CORREO },
+      config.SECRET,
+      {
+        expiresIn: 86400 * 7,
+      }
+    );
+
+    let contentHTML;
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    const confirmacion = JSON.parse(JSON.stringify(mensaje));
+    if (confirmacion[0]["CODIGO"] == 1) {
+      contentHTML = `
+      <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 0">
+          <img style="padding: 0; display: block" src="https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png" width="100%">
+        </td>
+      </tr>
+      
+      <tr>
+        <td style="background-color: #ecf0f1">
+          <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+            <h2 style="color: #e67e22; margin: 0 0 7px">Cambio de contraseña 🔒</h2>
+            <p style="margin: 2px; font-size: 15px">
+              Se ha registrado un reestablecimiento de contraseña para tu usuario, la duracion de este enlace es de 7 dias,
+               si no has sido tu reporte de forma inmediata esta actividad
+              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>
+            <a href="http://localhost:3000/module/users/passwordRecoveryToken/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
+            <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
+              <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
+            </div>
+            <div style="width: 100%; text-align: center">
+              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://www.google.com">Ir a la página</a>	
+            </div>
+            <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+      `;
+
+      await email.sendEmail(
+        CORREO,
+        "Reestablecimiento de contraseña exitoso ✔",
+        contentHTML
+      );
+    }
+
+    res.json(tokenSQL);
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const verifyRecoveryToken = async (req, res) => {
+  try {
+    const { token } = req.params;
+    if (!token) {
+      return res.status(403).json({ mensaje: "No se ha enviado ningun token" });
+    }
+
+    const decoded = jwt.verify(token, config.SECRET);
+
+    const user = await pool.query(
+      "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
+      [CORREO]
+    );
+    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+
+    res.json(decoded);
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
 export const getUsersSQL = async (req, res) => {
   try {
     const user = await pool.query("CALL OBTENER_USUARIOS(@MENSAJE, @CODIGO)");
@@ -326,6 +521,32 @@ export const getUsersSQL = async (req, res) => {
 export const getUserSQL = async (req, res) => {
   try {
     const { ID_USUARIO } = req.params;
+    const user = await pool.query("CALL OBTENER_USUARIO(?,@MENSAJE, @CODIGO)", [
+      ID_USUARIO,
+    ]);
+
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      usuario: JSON.parse(JSON.stringify(user[0])),
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const getMyUser = async (req, res) => {
+  try {
+    const ID_USUARIO = req.userId;
     const user = await pool.query("CALL OBTENER_USUARIO(?,@MENSAJE, @CODIGO)", [
       ID_USUARIO,
     ]);
