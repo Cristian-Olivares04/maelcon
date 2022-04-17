@@ -209,9 +209,7 @@ export const createParameter = async (req, res) => {
     await pool.query("CALL CREAR_MS_PARAMETRO(?,?,?,?,?,@MENSAJE, @CODIGO)", [
       PARAMETRO,
       ID_USUARIO,
-      VALOR,
-      FECHA_CREACION,
-      FECHA_MODIFICACION,
+      VALOR
     ]);
 
     const mensaje = await pool.query(
@@ -232,21 +230,28 @@ export const createParameter = async (req, res) => {
 
 export const updateParameter = async (req, res) => {
   try {
-    const { ID_PARAMETRO } = req.params;
-    const { ID_USUARIO, VALOR, FECHA_MODIFICACION } = req.body;
-    await pool.query(
-      "CALL ACTUALIZAR_MS_PARAMETRO(?,?,?,?,@MENSAJE, @CODIGO)",
-      [ID_PARAMETRO, ID_USUARIO, VALOR, FECHA_MODIFICACION]
-    );
+    
+    const parameters = req.body;
+    
+    for(let i = 0; i < parameters.length; i++){
+      const {ID_PARAMETRO, ID_USUARIO, VALOR} = req.body[i];
+      console.log(req.body[i]);
+      await pool.query(
+        "CALL ACTUALIZAR_MS_PARAMETRO(?,?,?,@MENSAJE, @CODIGO)",
+        [ID_PARAMETRO, ID_USUARIO, VALOR]
+      );
+    }
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = {
+        "MENSAJE": "Parametros actualizados exitosamente.",
+        "CODIGO": 1
+      };
     res.json(JSON.parse(JSON.stringify(mensaje)));
   } catch (error) {
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = {
+        "MENSAJE": "Ha ocurrido un error inesperado, parametros no actualizados.",
+        "CODIGO": 0
+      };
 
     res.status(401).json({
       error: error.message,
