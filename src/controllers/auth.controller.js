@@ -27,7 +27,7 @@ export const singInSQL = async (req, res) => {
         .status(401)
         .json({ mensaje: "Contrasena SQL erronea", token: null });
     const tokenSQL = jwt.sign({ id: user[0].ID_USUARIO }, config.SECRET, {
-      expiresIn: 84601,
+      expiresIn: 84600,
     });
 
     res.json({ token: tokenSQL, user: user });
