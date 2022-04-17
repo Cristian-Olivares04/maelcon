@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
 import { UsuariosService } from '../../services/usuarios.service';
 
 @Component({
@@ -41,6 +42,9 @@ export class LoginComponent {
             //console.log('no',resp);
             this.status = true;
           }
+        }, error => {
+          console.error('Ocurrió un error',error);
+          this.status = true;
         });
     }
   }

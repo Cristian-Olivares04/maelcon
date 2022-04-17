@@ -34,17 +34,7 @@
                         </div>
                     </li>
                     <hr [ngClass]="{'pad-line':opened==false ,'no-pad-line':opened==true}">
-                </div><!--
-                <li class="nav-item" (ngModel)="ordenes" style="margin-right: 29%" (click)="cambiarActiveIcon(1)" routerLink="orders">
-                    <div class="text-center" [ngClass]="{'morad': ordenes==true, 'grisaceo': ordenes==false}">
-                        <div class="py-0">
-                            <i class="fa fa-shipping-fast fa-2x"></i>
-                        </div>
-                        <div class="py-0">
-                            <span>Ordenes</span>
-                        </div>
-                    </div>
-                </li> -->
+                </div>
 
                 <li class="nav-item sidebar-item" *ngIf = "sales">
                     <a class="nav-link icons" routerLink="/sales" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">

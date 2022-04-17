@@ -20,7 +20,7 @@ export class BackupComponent implements OnInit {
 
   download() {
 		this.MS.downloadFile().subscribe((resp) => {
-			let blob:any = new Blob([resp], { type: 'text/csv; charset=utf-8' });
+			let blob:any = new Blob([resp], { type: 'text/csv' });
 			//const url = window.URL.createObjectURL(resp);
 			//window.open(url);
 			saveAs(blob, this.datosBackUp.nombre);

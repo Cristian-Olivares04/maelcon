@@ -12,7 +12,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 export class AdministrationComponent implements OnInit {
   disabled = false;
-  _params:Parameter[]=[];
+  refrescarUsers = true;
   _objects:Object[]=[];
   _roles:Role[]=[];
   _paysMethods:PayMethod[]=[];
@@ -53,8 +53,6 @@ export class AdministrationComponent implements OnInit {
     PARAMETRO: '',
     ID_USUARIO: 0,
     VALOR: '',
-    FECHA_CREACION: '',
-    FECHA_MODIFICACION: '',
     ID_PARAMETRO: 0
   }
 
@@ -84,8 +82,6 @@ export class AdministrationComponent implements OnInit {
     PARAMETRO: '',
     ID_USUARIO: 0,
     VALOR: '',
-    FECHA_CREACION: '',
-    FECHA_MODIFICACION: '',
     ID_PARAMETRO: 0
   }
 
@@ -311,30 +307,6 @@ export class AdministrationComponent implements OnInit {
     });
   }
 
-  actualizarParametro(id:any){
-    this.MS.actualizarParametro(this.datosParametro, id).subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp[0]['CODIGO']==1){
-        this.msjCheck=`${resp[0]['MENSAJE']}`
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo actualizar el parametro`
-      }
-    });
-  }
-
-  obtenerParametros(){
-    this.MS.obtenerParametros().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._params=resp['parametros'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de parametros`
-      }
-    });
-  }
-
   obtenerParametro(id:any){
     this.MS.obtenerParametro(id).subscribe((resp) => {
       //console.log('resp',resp);
@@ -393,6 +365,15 @@ export class AdministrationComponent implements OnInit {
         this.msjCheck=`No se encontro la lista de comisiones para el usuario con id ${id}`
       }
     });
+  }
+
+  refrescarBitacora(){
+
+  }
+
+  refrescarUsuarios(){
+    this.refrescarUsers = false;
+    this.refrescarUsers = true;
   }
 
 }

@@ -12,14 +12,13 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2" (click)="refrescarUsuarios()"><i class="fa fa-refresh"></i></button>
           <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#newUser"><i class="fas fa-user-plus"></i></button>
         </span>
       </div>
     </ng-template>
-    <ng-template ngbPanelContent>
+    <ng-template *ngIf="refrescarUsers" ngbPanelContent>
       <app-users></app-users>
-      <app-general-settings></app-general-settings>
     </ng-template>
   </ngb-panel>
   <ngb-panel>
@@ -29,9 +28,6 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
-
         </span>
       </div>
     </ng-template>
@@ -46,7 +42,6 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
         </span>
       </div>
     </ng-template>
@@ -62,7 +57,6 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button class="btn btn-disable btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
         </span>
       </div>
     </ng-template>
@@ -74,11 +68,10 @@
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Backup y restore de la base de datos</b></span>
+        <span><b>Backup de la base de datos</b></span>
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button class="btn btn-disable btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
           <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
         </span>
       </div>
@@ -95,7 +88,7 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i></button>
+          <button class="btn btn-sm btn-outline-primary ms-2" (click)="refrescarBitacora()"><i class="fa fa-refresh"></i></button>
           <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#backup"><i class="fas fa-download"></i></button>
         </span>
       </div>

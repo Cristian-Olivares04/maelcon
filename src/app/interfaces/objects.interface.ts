@@ -72,8 +72,6 @@ export interface Parameter {
   PARAMETRO:string,
   ID_USUARIO: number,
   VALOR:string,
-  FECHA_CREACION:string,
-  FECHA_MODIFICACION:string
 }
 
 export interface Bitacora {

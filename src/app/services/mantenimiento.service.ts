@@ -12,6 +12,7 @@ export class MantenimientoService {
   private bUA = environment.baseUrl;
   public _usuarioActual = this.US._usuarioActual;
   public _userToken=this.US._userToken;
+  public _params:Parameter[]=[];
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -112,13 +113,20 @@ export class MantenimientoService {
   }
 
   //funcion para actualizar un Parametro
-  actualizarParametro( data:Parameter, id:any): Observable<any>{
-    return this.http.put<Parameter>(`${this.bUA}/module/admin/parameter/${id}`, data, {headers:this.headers});
+  actualizarParametros( data:any): Observable<any>{
+    return this.http.put<Parameter>(`${this.bUA}/module/admin/parameter`, data, {headers:this.headers});
   }
 
   //funcion para obtener Parametros
-  obtenerParametros(): Observable<any>{
-    return this.http.get<Parameter>(`${this.bUA}/module/admin/getParameters`, {headers:this.headers});
+  obtenerParametros(){
+    this.http.get<any>(`${this.bUA}/module/admin/getParameters`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp',resp['parametros']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._params=resp['parametros'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un Parametro
