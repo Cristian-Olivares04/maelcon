@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../services/usuarios.service';
 import { usuario } from 'src/app/interfaces/user.interface';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css', '../../../forms_styles.css']
+  selector: 'app-signup-admon',
+  templateUrl: './signup-admon.component.html',
+  styleUrls: ['./signup-admon.component.css', '../../../forms_styles.css']
 })
-export class SignupComponent {
+export class SignupAdmonComponent {
   @Output() onUsuarioRegistrado = new EventEmitter();
 
   @Input() usuarioRegistro: usuario = {
@@ -62,7 +62,6 @@ export class SignupComponent {
               this._Router.navigate(['login']);
             } else {
               console.log(`modal was dismissed by ${result.dismiss}`);
-              this._Router.navigate(['login']);
             }
           })
         }else{

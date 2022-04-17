@@ -19,6 +19,39 @@
     </ng-template>
     <ng-template ngbPanelContent>
       <app-users></app-users>
+      <app-general-settings></app-general-settings>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Base de datos</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
+
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <app-form-database></app-form-database>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Servidor de Correos</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <app-form-mail></app-form-mail>
     </ng-template>
   </ngb-panel>
 
@@ -33,8 +66,8 @@
         </span>
       </div>
     </ng-template>
-    <ng-template ngbPanelContent>   
-      <app-update-password></app-update-password>  
+    <ng-template ngbPanelContent>
+      <app-update-password></app-update-password>
     </ng-template>
   </ngb-panel>
 
@@ -50,8 +83,8 @@
         </span>
       </div>
     </ng-template>
-    <ng-template ngbPanelContent>  
-      <app-backup></app-backup>  
+    <ng-template ngbPanelContent>
+      <app-backup></app-backup>
     </ng-template>
   </ngb-panel>
 
@@ -67,8 +100,8 @@
         </span>
       </div>
     </ng-template>
-    <ng-template ngbPanelContent>  
-      <app-binnacle></app-binnacle>   
+    <ng-template ngbPanelContent>
+      <app-binnacle></app-binnacle>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
@@ -98,11 +131,11 @@
           <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <app-signup></app-signup>
+          <div class="modal-body p-0">
+            <app-signup-admon></app-signup-admon>
           </div>
           <div class="row">
-              <p class="text-muted text-center">Guardar registros de la bitacora Maelcon S de R. L.</p>
+              <p class="text-muted text-center">Guardar nuevo usuario, Maelcon S de R. L.</p>
           </div>
       </div>
   </div>

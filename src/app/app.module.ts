@@ -31,10 +31,15 @@ import { RolesComponent } from './components/roles/roles.component';
 import { ObjectsComponent } from './components/objects/objects.component';
 import { PermissionsComponent } from './components/permissions/permissions.component';
 import { CloudinaryComponent } from './components/cloudinary/cloudinary.component';
+<<<<<<< HEAD
 import { CardInventoryComponent } from './components/card-inventory/card-inventory.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProvidersComponent } from './components/providers/providers.component';
+=======
+import { SeeConfigComponent } from './pages/see-config/see-config.component';
+import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component';
+>>>>>>> b8f2d6e8c96cce77c409221bd5eaf02666e56176
 
 @NgModule({
   declarations: [
@@ -59,10 +64,15 @@ import { ProvidersComponent } from './components/providers/providers.component';
     ObjectsComponent,
     PermissionsComponent,
     CloudinaryComponent,
+<<<<<<< HEAD
     CardInventoryComponent,
     InventoryComponent,
     ProductComponent,
     ProvidersComponent
+=======
+    SeeConfigComponent,
+    SignupAdmonComponent,
+>>>>>>> b8f2d6e8c96cce77c409221bd5eaf02666e56176
   ],
   imports: [
     BrowserModule,

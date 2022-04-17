@@ -28,20 +28,20 @@ export class LoginComponent {
     //console.log(this.usuarioLogin)
     this.validacionCorreo = this.UsuariosService.verificacionCorreo(this.usuarioLogin.CORREO_ELECTRONICO);
     if(!this.validacionCorreo){
-      this.UsuariosService.verifLogin(this.usuarioLogin).subscribe((resp) => {
-        //console.log('resp',resp);
-        if(resp['token']!=null){
-          localStorage.setItem('auth-token', resp['token']);
-          localStorage.setItem('id', resp['user'][0]['ID_USUARIO']);
-          this.UsuariosService.retornarUsuario();
-          //console.log('yes',resp);
-          this.status = false;
-          window.location.reload();
-        }else{
-          //console.log('no',resp);
-          this.status = true;
-        }
-      });
+        this.UsuariosService.verifLogin(this.usuarioLogin).subscribe((resp) => {
+          console.log('resp',resp);
+          if(resp['token']!=null){
+            localStorage.setItem('auth-token', resp['token']);
+            localStorage.setItem('id', resp['user'][0]['ID_USUARIO']);
+            this.UsuariosService.retornarUsuario();
+            //console.log('yes',resp);
+            this.status = false;
+            window.location.reload();
+          }else{
+            //console.log('no',resp);
+            this.status = true;
+          }
+        });
     }
   }
 

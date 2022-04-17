@@ -4,12 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { GeneralSettingsComponent } from './components/general-settings/general-settings.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdministrationComponent } from './pages/administration/administration.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { SecurityComponent } from './pages/security/security.component';
+import { SeeConfigComponent } from './pages/see-config/see-config.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 
 const routes: Routes = [
@@ -53,6 +55,14 @@ const routes: Routes = [
   {
       path: 'home-usigned',
       component: NavbarComponent
+  },
+  {
+      path: 'edit-config',
+      component: GeneralSettingsComponent
+  },
+  {
+      path: 'see-config',
+      component: SeeConfigComponent
   },
   {
       path: '**',
