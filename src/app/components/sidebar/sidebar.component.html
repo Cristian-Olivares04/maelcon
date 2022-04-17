@@ -44,6 +44,10 @@
                       <i class="fa fa-shopping-cart" aria-hidden="true"></i><span *ngIf="opened==true">Compras</span></a>
                 </li>
                 <li class="nav-item sidebar-item">
+                    <a class="nav-link icons" disabled routerLink="/inventory" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
+                      <i class="fa fa-boxes" aria-hidden="true"></i><span *ngIf="opened==true">Inventario</span></a>
+                </li>
+                <li class="nav-item sidebar-item">
                     <a class="nav-link icons" disabled routerLink="/administration" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-tools" aria-hidden="true"></i><span *ngIf="opened==true">Administración</span></a>
                 </li>

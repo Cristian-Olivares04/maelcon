@@ -31,6 +31,10 @@ import { RolesComponent } from './components/roles/roles.component';
 import { ObjectsComponent } from './components/objects/objects.component';
 import { PermissionsComponent } from './components/permissions/permissions.component';
 import { CloudinaryComponent } from './components/cloudinary/cloudinary.component';
+import { CardInventoryComponent } from './components/card-inventory/card-inventory.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
+import { ProductComponent } from './components/product/product.component';
+import { ProvidersComponent } from './components/providers/providers.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +59,10 @@ import { CloudinaryComponent } from './components/cloudinary/cloudinary.componen
     ObjectsComponent,
     PermissionsComponent,
     CloudinaryComponent,
+    CardInventoryComponent,
+    InventoryComponent,
+    ProductComponent,
+    ProvidersComponent
   ],
   imports: [
     BrowserModule,

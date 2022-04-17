@@ -7,6 +7,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdministrationComponent } from './pages/administration/administration.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { SecurityComponent } from './pages/security/security.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
@@ -40,7 +41,11 @@ const routes: Routes = [
   {
     path: 'security',
     component: SecurityComponent
-},
+  },
+  {
+    path: 'inventory',
+    component: InventoryComponent
+  },
   {
       path: 'home-signed',
       component: SidebarComponent
