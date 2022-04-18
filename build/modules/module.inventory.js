@@ -215,7 +215,7 @@ var updateProduct = /*#__PURE__*/function () {
             break;
 
           case 10:
-            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+            img = IMG;
 
           case 11:
             _context4.next = 13;

@@ -58,18 +58,30 @@ var verifyTokenSQL = /*#__PURE__*/function () {
 
           case 11:
             next();
-            _context.next = 17;
+            _context.next = 19;
             break;
 
           case 14:
             _context.prev = 14;
             _context.t0 = _context["catch"](0);
+
+            if (!(_context.t0.name == "TokenExpiredError")) {
+              _context.next = 18;
+              break;
+            }
+
+            return _context.abrupt("return", res.status(404).json({
+              mensaje: "El token enviado ha expirado",
+              codigo: 203
+            }));
+
+          case 18:
             res.status(404).json({
               mensaje: "Acceso no autorizado",
               codigo: 2
             });
 
-          case 17:
+          case 19:
           case "end":
             return _context.stop();
         }

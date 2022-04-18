@@ -27,6 +27,11 @@ export const verifyTokenSQL = async (req, res, next) => {
 
     next();
   } catch (error) {
+    if (error.name == "TokenExpiredError") {
+      return res
+        .status(404)
+        .json({ mensaje: "El token enviado ha expirado", codigo: 203 });
+    }
     res.status(404).json({ mensaje: "Acceso no autorizado", codigo: 2 });
   }
 };

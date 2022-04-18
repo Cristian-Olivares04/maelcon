@@ -554,6 +554,7 @@ export const getMyUser = async (req, res) => {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
+    console.log(ID_USUARIO);
     res.json({
       mensaje: JSON.parse(JSON.stringify(mensaje)),
       usuario: JSON.parse(JSON.stringify(user[0])),

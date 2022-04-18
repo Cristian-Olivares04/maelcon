@@ -940,32 +940,33 @@ var getMyUser = /*#__PURE__*/function () {
 
           case 7:
             mensaje = _context18.sent;
+            console.log(ID_USUARIO);
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
               usuario: JSON.parse(JSON.stringify(user[0]))
             });
-            _context18.next = 17;
+            _context18.next = 18;
             break;
 
-          case 11:
-            _context18.prev = 11;
+          case 12:
+            _context18.prev = 12;
             _context18.t0 = _context18["catch"](0);
-            _context18.next = 15;
+            _context18.next = 16;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 16:
             _mensaje6 = _context18.sent;
             res.status(401).json({
               error: _context18.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje6))
             });
 
-          case 17:
+          case 18:
           case "end":
             return _context18.stop();
         }
       }
-    }, _callee18, null, [[0, 11]]);
+    }, _callee18, null, [[0, 12]]);
   }));
 
   return function getMyUser(_x35, _x36) {

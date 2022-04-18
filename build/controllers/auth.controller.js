@@ -25,7 +25,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var email = require('../utils/email');
+var email = require("../utils/email");
 
 var cloudinary_services = require("../utils/cloudinary_services");
 
@@ -74,7 +74,7 @@ var singInSQL = /*#__PURE__*/function () {
             tokenSQL = _jsonwebtoken["default"].sign({
               id: user[0].ID_USUARIO
             }, _config["default"].SECRET, {
-              expiresIn: 28800
+              expiresIn: 84600
             });
             res.json({
               token: tokenSQL,
@@ -133,7 +133,7 @@ var singUpSQL = /*#__PURE__*/function () {
             }
 
             _context2.next = 8;
-            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/');
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
 
           case 8:
             img = _context2.sent;
@@ -142,7 +142,7 @@ var singUpSQL = /*#__PURE__*/function () {
             break;
 
           case 12:
-            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png';
+            img = "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
 
           case 13:
             _context2.next = 15;

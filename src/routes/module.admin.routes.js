@@ -140,4 +140,10 @@ router.post(
   moduleAdminCtrl.postBackupDB
 );
 
+router.get("/jobs/", moduleAdminCtrl.getJobs);
+
+router.post("/jobs/", moduleAdminCtrl.createJob);
+
+router.put("/jobs/:ID_PUESTO", moduleAdminCtrl.updateJob);
+
 export default router;
