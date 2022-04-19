@@ -1,39 +1,53 @@
-<h3 class="text-muted"><b>Historial de actividades</b></h3>
-<p class="text-muted">Registro general de las actividades realizadas dentro del sistema Maelcon.</p>
-
-<form>
-  <div class="mb-3 row">
-    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
-    <div class="col-xs-3 col-sm-auto">
-      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+<div *ngIf = "binnacle; else downloadBinnacle">
+  <div class="row">
+    <div class="col-8">
+      <h3 class="text-muted"><b>Historial de actividades</b></h3>
+      <p class="text-muted">Registro general de las actividades realizadas dentro del sistema Maelcon.</p>
+    </div>
+    <div class="col-4">
+      <button class="btn-download ms-2" (click) = "viewDownload(false)"><i class="fas fa-download"></i> Generar reporte</button>
     </div>
   </div>
-</form>
-<div class="" style="width: auto; height: 400px; overflow: scroll;">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">ID_USUARIO</th>
-          <th scope="col">ID_OBJETO</th>
-          <th scope="col">ACCION</th>
-          <th scope="col">DESCRIPCION</th>
-          <th scope="col">INFORMACION_ANTERIOR</th>
-          <th scope="col">INFORMACION_ACTUAL</th>
-          <th scope="col">FECHA_BITACORA</th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let bit of bitacora">
-            <td scope="row">{{ bit.ID_BITACORA}}</td>
-            <td><ngb-highlight [result]="bit.ID_USUARIO | number" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="bit.ID_OBJETO | number" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="bit.ACCION" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="bit.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="bit.INFORMACION_ANTERIOR" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="bit.INFORMACION_ACTUAL" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="bit.FECHA_BITACORA" [term]="filter.value"></ngb-highlight></td>
+  
+  
+  <form>
+    <div class="mb-3 row">
+      <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
+      <div class="col-xs-3 col-sm-auto">
+        <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+      </div>
+    </div>
+  </form>
+  <div class="" style="width: auto; height: 400px; overflow: scroll;">
+      <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID_USUARIO</th>
+            <th scope="col">ID_OBJETO</th>
+            <th scope="col">ACCION</th>
+            <th scope="col">DESCRIPCION</th>
+            <th scope="col">INFORMACION_ANTERIOR</th>
+            <th scope="col">INFORMACION_ACTUAL</th>
+            <th scope="col">FECHA_BITACORA</th>
           </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bit of bitacoraInter | async; index as i">
+              <td scope="row">{{ bit.ID_BITACORA}}</td>
+              <td><ngb-highlight [result]="bit.ID_USUARIO | number" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.ID_OBJETO | number" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.ACCION" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.INFORMACION_ANTERIOR" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.INFORMACION_ACTUAL" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.FECHA_BITACORA" [term]="filter.value"></ngb-highlight></td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
 </div>
+
+<ng-template #downloadBinnacle>
+  <app-download [INFORMATION] = bitacora2 [HEADERS] = headersArray></app-download>
+</ng-template>

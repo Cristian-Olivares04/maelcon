@@ -1,0 +1,22 @@
+<div class="">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-9" style="border: 5px;">
+            <div id="htmlData">
+                <h2>Sección de reportes Maelcon S. de R. L.</h2>
+                <table class="table table-bordered mt-4">
+                  <tr class="table table-striped">
+                    <th *ngFor="let head of HEADERS">{{head}}</th>
+                  </tr>
+                  <tr *ngFor="let info of INFORMATION">
+                    <th *ngFor="let head of HEADERS">{{info.ID_USUARIO}}</th>
+                  </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-2 justify-content-between">
+            <button class="btn-download " (click)="downloadPDF()"><i class="fas fa-download fa-2x"></i></button>
+            <button class="btn-cancel " routerLink = "/administration"><b>X</b></button>
+        </div>
+    </div>
+  </div>

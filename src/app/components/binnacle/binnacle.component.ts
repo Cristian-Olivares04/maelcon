@@ -6,6 +6,30 @@ import { map, startWith } from 'rxjs/operators';
 import { Bitacora } from 'src/app/interfaces/objects.interface';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 
+
+function search(BITACORA: any, text: string, pipe: PipeTransform): Bitacora[] {
+  console.log(BITACORA);
+  return BITACORA.filter(bita => {
+    const term = text.toLowerCase();
+    if( bita.INFORMACION_ANTERIOR == null){
+      return pipe.transform(bita.ID_USUARIO).includes(term)
+        || pipe.transform(bita.ID_OBJETO).toLowerCase().includes(term)
+        || bita.ACCION.toLowerCase().includes(term)
+        || bita.DESCRIPCION.toLowerCase().includes(term)
+        || bita.INFORMACION_ACTUAL.toLowerCase().includes(term)
+        || bita.FECHA_BITACORA.toLowerCase().includes(term);
+    }else{
+      return pipe.transform(bita.ID_USUARIO).includes(term)
+        || pipe.transform(bita.ID_OBJETO).toLowerCase().includes(term)
+        || bita.ACCION.toLowerCase().includes(term)
+        || bita.DESCRIPCION.toLowerCase().includes(term)
+        || bita.INFORMACION_ANTERIOR.toLowerCase().includes(term)
+        || bita.INFORMACION_ACTUAL.toLowerCase().includes(term)
+        || bita.FECHA_BITACORA.toLowerCase().includes(term);
+    }
+  });
+}
+
 @Component({
   selector: 'app-binnacle',
   templateUrl: './binnacle.component.html',
@@ -14,28 +38,48 @@ import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 })
 export class BinnacleComponent implements OnInit {
   msjCheck='';
-  bitacora: Bitacora[] = [];
-  bitacora2: Bitacora[] = [];
-
+  binnacle:Boolean = true;
+  bitacora2:Bitacora[] = [];
   bitacoraInter: Observable<Bitacora[]>;
   filter = new FormControl('');
+  
+  headersArray:any = [
+    "ID_USUARIO",
+    "ID_OBJETO",
+    "ACCION",
+    "DESCRIPCION",
+    "INFORMACION_ANTERIOR",
+    "INFORMACION_ACTUAL",
+    "FECHA_BITACORA"
+  ];
 
-  constructor(pipe: DecimalPipe, private MS:MantenimientoService) {
+  constructor( private pipe: DecimalPipe, private MS:MantenimientoService) {
     this.bitacoraInter = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => this.search(text, pipe))
+      map(text => search(this.bitacora2, text, this.pipe))
     );
   }
 
   ngOnInit(): void {
-    this.obtenerUsuarios();
-  }
-
-  obtenerUsuarios(){
     this.MS.obtenerRegistrosBitacora().subscribe((resp) => {
       //console.log('resp',resp);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this.bitacora = resp['BITACORA'];
+        this.bitacora2 = resp['BITACORA'];
+        this.bitacoraInter = this.filter.valueChanges.pipe(
+          startWith(''),
+          map(text => search(this.bitacora2, text, this.pipe))
+        );
+      }else{
+        //console.log('no',resp);
+        this.msjCheck=`No se pudo obtener la lista de usuarios`
+      }
+    });
+  }
+
+  obtenerBitacora(){
+    this.MS.obtenerRegistrosBitacora().subscribe((resp) => {
+      //console.log('resp',resp);
+      if(resp['mensaje'][0]['CODIGO']==1){
         this.bitacora2 = resp['BITACORA'];
       }else{
         //console.log('no',resp);
@@ -44,18 +88,8 @@ export class BinnacleComponent implements OnInit {
     });
   }
 
-  search(text: string, pipe: PipeTransform): Bitacora[] {
-    return this.bitacora2.filter(bita => {
-      const term = text.toLowerCase();
-      return bita.ID_USUARIO
-          || pipe.transform(bita.ID_USUARIO).includes(term)
-          || pipe.transform(bita.ID_OBJETO).includes(term)
-          || pipe.transform(bita.ACCION).toLowerCase.includes(term)
-          || pipe.transform(bita.DESCRIPCION).toLowerCase.includes(term)
-          || pipe.transform(bita.INFORMACION_ANTERIOR).toLowerCase.includes(term)
-          || pipe.transform(bita.INFORMACION_ACTUAL).toLowerCase.includes(term)
-          || pipe.transform(bita.FECHA_BITACORA).toLowerCase.includes(term);
-    });
+  viewDownload(value:Boolean){
+    this.binnacle = value;
   }
 
 }

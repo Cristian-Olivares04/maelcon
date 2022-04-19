@@ -37,6 +37,7 @@ import { ProductComponent } from './components/product/product.component';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { SeeConfigComponent } from './pages/see-config/see-config.component';
 import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component';
+import { DownloadComponent } from './components/download/download.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component
     ProvidersComponent,
     SeeConfigComponent,
     SignupAdmonComponent,
+    DownloadComponent,
   ],
   imports: [
     BrowserModule,
