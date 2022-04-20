@@ -59,6 +59,7 @@ export const singUpSQL = async (req, res) => {
     } = req.body;
 
     const password = await encrypt.encryptPassword(CONTRASENA);
+    const answer = await encrypt.encryptPassword(RESPUESTA);
     let img;
     //Guarda foto
     if (req.file) {
@@ -85,7 +86,7 @@ export const singUpSQL = async (req, res) => {
         img,
         CORREO_ELECTRONICO,
         PREGUNTA,
-        RESPUESTA,
+        answer,
       ]
     );
 

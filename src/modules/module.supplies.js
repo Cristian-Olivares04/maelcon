@@ -384,3 +384,55 @@ export const getPurchaseByID = async (req, res) => {
     });
   }
 };
+
+export const getProductData = async (req, res) => {
+  try {
+    const suppliers = await pool.query(
+      "CALL OBTENER_PRODUCTOS_FULL(@MENSAJE, @CODIGO)"
+    );
+
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      proveedores: JSON.parse(JSON.stringify(suppliers[0])),
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const getProductDataByID = async (req, res) => {
+  try {
+    const { ID_PRODUCTO } = req.params;
+    const supplier = await pool.query(
+      "CALL OBTENER_PRODUCTOS_FULL_ID(?,@MENSAJE, @CODIGO)",
+      [ID_PRODUCTO]
+    );
+
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      inventario: JSON.parse(JSON.stringify(supplier[0])),
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};

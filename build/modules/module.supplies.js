@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateSupplyHeader = exports.updateSupply = exports.updateSupplier = exports.processSupply = exports.getSupplyByID = exports.getSupplies = exports.getSuppliers = exports.getSupplierByID = exports.getPurchases = exports.getPurchaseByID = exports.eliminateSupply = exports.deleteSupply = exports.createSupplyHeader = exports.createSupplier = exports.addSupply = void 0;
+exports.updateSupplyHeader = exports.updateSupply = exports.updateSupplier = exports.processSupply = exports.getSupplyByID = exports.getSupplies = exports.getSuppliers = exports.getSupplierByID = exports.getPurchases = exports.getPurchaseByID = exports.getProductDataByID = exports.getProductData = exports.eliminateSupply = exports.deleteSupply = exports.createSupplyHeader = exports.createSupplier = exports.addSupply = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -802,3 +802,112 @@ var getPurchaseByID = /*#__PURE__*/function () {
 }();
 
 exports.getPurchaseByID = getPurchaseByID;
+
+var getProductData = /*#__PURE__*/function () {
+  var _ref16 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(req, res) {
+    var suppliers, mensaje, _mensaje16;
+
+    return _regenerator["default"].wrap(function _callee16$(_context16) {
+      while (1) {
+        switch (_context16.prev = _context16.next) {
+          case 0:
+            _context16.prev = 0;
+            _context16.next = 3;
+            return _databaseSQL["default"].query("CALL OBTENER_PRODUCTOS_FULL(@MENSAJE, @CODIGO)");
+
+          case 3:
+            suppliers = _context16.sent;
+            _context16.next = 6;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 6:
+            mensaje = _context16.sent;
+            res.json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              proveedores: JSON.parse(JSON.stringify(suppliers[0]))
+            });
+            _context16.next = 16;
+            break;
+
+          case 10:
+            _context16.prev = 10;
+            _context16.t0 = _context16["catch"](0);
+            _context16.next = 14;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 14:
+            _mensaje16 = _context16.sent;
+            res.status(401).json({
+              error: _context16.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje16))
+            });
+
+          case 16:
+          case "end":
+            return _context16.stop();
+        }
+      }
+    }, _callee16, null, [[0, 10]]);
+  }));
+
+  return function getProductData(_x31, _x32) {
+    return _ref16.apply(this, arguments);
+  };
+}();
+
+exports.getProductData = getProductData;
+
+var getProductDataByID = /*#__PURE__*/function () {
+  var _ref17 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(req, res) {
+    var ID_PRODUCTO, supplier, mensaje, _mensaje17;
+
+    return _regenerator["default"].wrap(function _callee17$(_context17) {
+      while (1) {
+        switch (_context17.prev = _context17.next) {
+          case 0:
+            _context17.prev = 0;
+            ID_PRODUCTO = req.params.ID_PRODUCTO;
+            _context17.next = 4;
+            return _databaseSQL["default"].query("CALL OBTENER_PRODUCTOS_FULL_ID(?,@MENSAJE, @CODIGO)", [ID_PRODUCTO]);
+
+          case 4:
+            supplier = _context17.sent;
+            _context17.next = 7;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 7:
+            mensaje = _context17.sent;
+            res.json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              inventario: JSON.parse(JSON.stringify(supplier[0]))
+            });
+            _context17.next = 17;
+            break;
+
+          case 11:
+            _context17.prev = 11;
+            _context17.t0 = _context17["catch"](0);
+            _context17.next = 15;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 15:
+            _mensaje17 = _context17.sent;
+            res.status(401).json({
+              error: _context17.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje17))
+            });
+
+          case 17:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17, null, [[0, 11]]);
+  }));
+
+  return function getProductDataByID(_x33, _x34) {
+    return _ref17.apply(this, arguments);
+  };
+}();
+
+exports.getProductDataByID = getProductDataByID;

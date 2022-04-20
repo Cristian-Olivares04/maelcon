@@ -373,10 +373,60 @@ export const getAnswerByEmail = async (req, res) => {
       processedAnswer[0]
     );
 
-    if (!validatePassword)
+    if (!validatePassword) {
       return res
         .status(401)
         .json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
+    }
+    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+
+    const password = await encrypt.encryptPassword(CONTRASENA.toString());
+    const tokenSQL = jwt.sign(
+      { id: userData[0], password: password, correo: CORREO },
+      config.SECRET,
+      {
+        expiresIn: 86400 * 7,
+      }
+    );
+    let contentHTML;
+    const confirmacion = JSON.parse(JSON.stringify(mensaje));
+    if (confirmacion[0]["CODIGO"] == 1) {
+      contentHTML = `
+      <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 0">
+          <img style="padding: 0; display: block" src="https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png" width="100%">
+        </td>
+      </tr>
+      
+      <tr>
+        <td style="background-color: #ecf0f1">
+          <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+            <h2 style="color: #e67e22; margin: 0 0 7px">Cambio de contraseña 🔒</h2>
+            <p style="margin: 2px; font-size: 15px">
+              Se ha registrado un reestablecimiento de contraseña para tu usuario, la duracion de este enlace es de 7 dias,
+               si no has sido tu reporte de forma inmediata esta actividad
+              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>
+            <a href="http://localhost:3000/module/users/passwordRecoveryToken/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
+            <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
+              <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
+            </div>
+            <div style="width: 100%; text-align: center">
+              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://www.google.com">Ir a la página</a>	
+            </div>
+            <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+      `;
+
+      await email.sendEmail(
+        CORREO,
+        "Reestablecimiento de contraseña exitoso ✔",
+        contentHTML
+      );
+    }
     res.json({
       mensaje: JSON.parse(JSON.stringify(mensaje)),
       respuesta: validatePassword,
@@ -550,7 +600,10 @@ export const getMyUser = async (req, res) => {
     const user = await pool.query("CALL OBTENER_USUARIO(?,@MENSAJE, @CODIGO)", [
       ID_USUARIO,
     ]);
-
+    const permisos = await pool.query(
+      "CALL OBTENER_PERMISOS(?,@MENSAJE, @CODIGO)",
+      [ID_USUARIO]
+    );
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
@@ -558,6 +611,7 @@ export const getMyUser = async (req, res) => {
     res.json({
       mensaje: JSON.parse(JSON.stringify(mensaje)),
       usuario: JSON.parse(JSON.stringify(user[0])),
+      permisos: JSON.parse(JSON.stringify(permisos[0])),
     });
   } catch (error) {
     const mensaje = await pool.query(

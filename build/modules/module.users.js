@@ -596,7 +596,7 @@ exports.getSecurityQuestionByEmail = getSecurityQuestionByEmail;
 
 var getAnswerByEmail = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res) {
-    var _CORREO2, RESPUESTA, user, userData, respuesta, mensaje, processedAnswer, validatePassword, _mensaje2;
+    var _CORREO2, RESPUESTA, user, userData, respuesta, mensaje, processedAnswer, validatePassword, CONTRASENA, password, tokenSQL, contentHTML, confirmacion, _mensaje2;
 
     return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
@@ -639,32 +639,57 @@ var getAnswerByEmail = /*#__PURE__*/function () {
             }));
 
           case 20:
+            CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+            _context13.next = 23;
+            return encrypt.encryptPassword(CONTRASENA.toString());
+
+          case 23:
+            password = _context13.sent;
+            tokenSQL = _jsonwebtoken["default"].sign({
+              id: userData[0],
+              password: password,
+              correo: _CORREO2
+            }, _config["default"].SECRET, {
+              expiresIn: 86400 * 7
+            });
+            confirmacion = JSON.parse(JSON.stringify(mensaje));
+
+            if (!(confirmacion[0]["CODIGO"] == 1)) {
+              _context13.next = 30;
+              break;
+            }
+
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un reestablecimiento de contrase\xF1a para tu usuario, la duracion de este enlace es de 7 dias,\n               si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <a href=\"http://localhost:3000/module/users/passwordRecoveryToken/".concat(tokenSQL, "\" style=\"\" target=\"_blank\">Haz click en este enlace para ingresar tu nueva contrase\xF1a</a>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            _context13.next = 30;
+            return email.sendEmail(_CORREO2, "Reestablecimiento de contraseña exitoso ✔", contentHTML);
+
+          case 30:
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
               respuesta: validatePassword
             });
-            _context13.next = 29;
+            _context13.next = 39;
             break;
 
-          case 23:
-            _context13.prev = 23;
+          case 33:
+            _context13.prev = 33;
             _context13.t0 = _context13["catch"](0);
-            _context13.next = 27;
+            _context13.next = 37;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 27:
+          case 37:
             _mensaje2 = _context13.sent;
             res.status(401).json({
               error: _context13.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje2))
             });
 
-          case 29:
+          case 39:
           case "end":
             return _context13.stop();
         }
       }
-    }, _callee13, null, [[0, 23]]);
+    }, _callee13, null, [[0, 33]]);
   }));
 
   return function getAnswerByEmail(_x25, _x26) {
@@ -922,7 +947,7 @@ exports.getUserSQL = getUserSQL;
 
 var getMyUser = /*#__PURE__*/function () {
   var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res) {
-    var ID_USUARIO, user, mensaje, _mensaje6;
+    var ID_USUARIO, user, permisos, mensaje, _mensaje6;
 
     return _regenerator["default"].wrap(function _callee18$(_context18) {
       while (1) {
@@ -936,37 +961,43 @@ var getMyUser = /*#__PURE__*/function () {
           case 4:
             user = _context18.sent;
             _context18.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            return _databaseSQL["default"].query("CALL OBTENER_PERMISOS(?,@MENSAJE, @CODIGO)", [ID_USUARIO]);
 
           case 7:
+            permisos = _context18.sent;
+            _context18.next = 10;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 10:
             mensaje = _context18.sent;
             console.log(ID_USUARIO);
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
-              usuario: JSON.parse(JSON.stringify(user[0]))
+              usuario: JSON.parse(JSON.stringify(user[0])),
+              permisos: JSON.parse(JSON.stringify(permisos[0]))
             });
-            _context18.next = 18;
+            _context18.next = 21;
             break;
 
-          case 12:
-            _context18.prev = 12;
+          case 15:
+            _context18.prev = 15;
             _context18.t0 = _context18["catch"](0);
-            _context18.next = 16;
+            _context18.next = 19;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 16:
+          case 19:
             _mensaje6 = _context18.sent;
             res.status(401).json({
               error: _context18.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje6))
             });
 
-          case 18:
+          case 21:
           case "end":
             return _context18.stop();
         }
       }
-    }, _callee18, null, [[0, 12]]);
+    }, _callee18, null, [[0, 15]]);
   }));
 
   return function getMyUser(_x35, _x36) {
