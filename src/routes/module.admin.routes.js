@@ -58,7 +58,7 @@ router.post(
 
 router.put(
   "/parameter/",
-  /*[authJwt.verifyTokenSQL]*/
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updateParameter
 );
 
