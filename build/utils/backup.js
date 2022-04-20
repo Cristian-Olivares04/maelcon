@@ -21,9 +21,9 @@ var backupDB = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            _context.prev = 0;
             fileName = "".concat(name, "_").concat(moment().format('YYYY_MM_DD'), ".sql");
             wstream = fs.createWriteStream("".concat(path, "/").concat(fileName));
-            console.log(wstream.path);
             _context.next = 5;
             return (0, _mysqldump["default"])({
               connection: {
@@ -36,14 +36,22 @@ var backupDB = /*#__PURE__*/function () {
             });
 
           case 5:
-            return _context.abrupt("return", _context.sent);
+            return _context.abrupt("return", {
+              mensaje: "Respaldo de la base de datos creado.",
+              codigo: 1
+            });
 
-          case 6:
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](0);
+            return _context.abrupt("return", _context.t0);
+
+          case 11:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[0, 8]]);
   }));
 
   return function backupDB(_x, _x2) {

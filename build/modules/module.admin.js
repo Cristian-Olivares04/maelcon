@@ -1371,24 +1371,25 @@ var postBackupDB = /*#__PURE__*/function () {
 
           case 3:
             mensaje = _context27.sent;
-            console.log(req.body);
-            res.json(mensaje);
-            _context27.next = 11;
+            res.json({
+              mensaje: mensaje
+            });
+            _context27.next = 10;
             break;
 
-          case 8:
-            _context27.prev = 8;
+          case 7:
+            _context27.prev = 7;
             _context27.t0 = _context27["catch"](0);
             res.status(401).json({
               error: _context27.t0.message
             });
 
-          case 11:
+          case 10:
           case "end":
             return _context27.stop();
         }
       }
-    }, _callee27, null, [[0, 8]]);
+    }, _callee27, null, [[0, 7]]);
   }));
 
   return function postBackupDB(_x53, _x54) {
