@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Role } from 'src/app/interfaces/objects.interface';
+import { Puesto, Role } from 'src/app/interfaces/objects.interface';
 import { usuario } from 'src/app/interfaces/user.interface';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -12,6 +12,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class UpdateUserComponent implements OnInit {
   _usAct=this.US._usuarioActual2;
   _roles:Role[]=[];
+  _puestos:Puesto[]=this.MS._puestos;
   msjCheck='';
 
   @Input() datosUsuario:usuario={
@@ -20,8 +21,6 @@ export class UpdateUserComponent implements OnInit {
     ID_ROL: 0,
     USUARIO: '',
     CONTRASENA: '',
-    NOMBRE: '',
-    APELLIDO: '',
     CORREO_ELECTRONICO: '',
     TELEFONO: '',
     RTN: '',
@@ -32,10 +31,18 @@ export class UpdateUserComponent implements OnInit {
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
     ESTADO: 0,
-    SUELDO: 0
+    SUELDO: 0,
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: ''
   }
 
-  constructor(private US:UsuariosService, private MS:MantenimientoService) { }
+  constructor(private US:UsuariosService, private MS:MantenimientoService) {
+    this.MS.obtenerRoles();
+    this.MS.obtenerPuestos();
+    this._puestos=this.MS._puestos;
+    this._roles=this.MS._roles;
+    console.log('puestos', this._puestos)
+  }
 
   ngOnInit(): void {
     this.obtenerRoles();
@@ -56,14 +63,10 @@ export class UpdateUserComponent implements OnInit {
   }
 
   obtenerRoles(){
-    this.MS.obtenerRoles().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._roles=resp['roles'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de roles`
-      }
-    });
+    this.MS.obtenerRoles();
+    this.MS.obtenerPuestos();
+    this._puestos=this.MS._puestos;
+    this._roles=this.MS._roles;
+    //console.log('roles',this._roles)
   }
 }

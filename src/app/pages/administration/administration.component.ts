@@ -13,8 +13,6 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class AdministrationComponent implements OnInit {
   disabled = false;
   refrescarUsers = true;
-  _objects:Object[]=[];
-  _roles:Role[]=[];
   _paysMethods:PayMethod[]=[];
   _users:usuario[]=[];
   _comissions:Comission[]=[];
@@ -38,10 +36,11 @@ export class AdministrationComponent implements OnInit {
   };
 
   @Input() datosObjeto:Object = {
-    OBJETO: '',
+    OBJETOS: '',
     TIPO_OBJETO: '',
     DESCRIPCION: '',
-    CREADO_POR: 0
+    CREADO_POR: 0,
+    ID_OBJETO: 0
   }
 
   @Input() datosMetodoPago:PayMethod = {
@@ -57,10 +56,11 @@ export class AdministrationComponent implements OnInit {
   }
 
   objeto:Object = {
-    OBJETO: '',
+    OBJETOS: '',
     TIPO_OBJETO: '',
     DESCRIPCION: '',
-    CREADO_POR: 0
+    CREADO_POR: 0,
+    ID_OBJETO: 0
   }
 
   rol:Role = {
@@ -160,33 +160,6 @@ export class AdministrationComponent implements OnInit {
     });
   }
 
-  obtenerObjetos(){
-    this.MS.obtenerObjetos().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._objects=resp['Objetos'];
-        /* for(var i=0; i<resp['Objetos'].lenght;i++){
-          var js = {
-                    ID_OBJETO: resp['Objetos'][i]['ID_OBJETO'],
-                    OBJETOS: resp['Objetos'][i]['OBJETOS'],
-                    TIPO_OBJETO: resp['Objetos'][i]['TIPO_OBJETO'],
-                    DESCRIPCION: resp['Objetos'][i]['DESCRIPCION'],
-                    FECHA_CREACION: resp['Objetos'][i]['FECHA_CREACION'],
-                    CREADO_POR: resp['Objetos'][i]['CREADO_POR'],
-                    FECHA_MODIFICACION: resp['Objetos'][i]['FECHA_MODIFICACION'],
-                    MODIFICADO_POR: resp['Objetos'][i]['MODIFICADO_POR']
-          }
-          this.msjCheck+=`${js}
-
-          `
-        } */
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de objetos`
-      }
-    });
-  }
-
   obtenerObjeto(id:any){
     this.MS.obtenerObjeto(id).subscribe((resp) => {
       //console.log('resp',resp);
@@ -219,18 +192,6 @@ export class AdministrationComponent implements OnInit {
       }else{
         //console.log('no',resp);
         this.msjCheck=`No se pudo actualizar el rol`
-      }
-    });
-  }
-
-  obtenerRoles(){
-    this.MS.obtenerRoles().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._roles=resp['roles'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de roles`
       }
     });
   }
@@ -374,6 +335,10 @@ export class AdministrationComponent implements OnInit {
   refrescarUsuarios(){
     this.refrescarUsers = false;
     this.refrescarUsers = true;
+  }
+
+  cambiarActVal(num:any){
+    this.MS.actionVal=num;
   }
 
 }

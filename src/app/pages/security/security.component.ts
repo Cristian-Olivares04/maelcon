@@ -7,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SecurityComponent implements OnInit {
   disabled = false;
-  
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  descargarDB(){
+    console.log('Descargando archivo DB');
   }
 
 }

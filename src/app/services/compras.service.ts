@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Purchase, purchaseProduct } from '../interfaces/objects.interface';
+import { Product, Purchase, purchaseProduct } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 import { Proveedor } from '../interfaces/characters.interface';
@@ -14,35 +14,23 @@ export class ComprasService {
   public _usuarioActual = this.US._usuarioActual;
   public _userToken=this.US._userToken;
   public _compraActual = '';
+  public _products:Product[]=[]
+  public _proveedores:Proveedor[]=[]
+  public _kardex=[]
+  public _compras=[]
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'auth-token': this._userToken
   });
 
-  constructor(private US:UsuariosService, private http:HttpClient) { }
-
-  public datosCompraEncabezado:Purchase = {
-    ID_USUARIO: 0,
-    ID_PROVEEDOR: 0,
-    ID_PAGO: 0,
-    OBSERVACION: ''
+  constructor(private US:UsuariosService, private http:HttpClient) {
+    this.obtenerCompras();
+    this.obtenerKardex();
+    this.obtenerProductos();
+    this.obtenerProveedores();
   }
 
-  public datosProveedor: Proveedor = {
-    RTN: '',
-    NOMBRE: '',
-    TELEFONO: '',
-    CORREO: ''
-  }
-
-  public datosProducto:purchaseProduct = {
-    ID_PRODUCTO: 0,
-    ID_COMPRA: 0,
-    PRECIO_UNITARIO: 0,
-    DESCRIPCION: '',
-    CANTIDAD: 0
-  }
 
   //funcion para crear proveedor
   crearProveedor( data:Proveedor): Observable<any>{
@@ -90,8 +78,15 @@ export class ComprasService {
   }
 
   //funcion para obtener productos
-  obtenerProductos(): Observable<any>{
-    return this.http.get<purchaseProduct>(`${this.bUA}/module/supplies/supplies`);
+  obtenerProductos(){
+    this.http.get<any>(`${this.bUA}/module/supplies/supplies`).subscribe((resp) => {
+      //console.log('resp',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._products=resp['inventario'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un producto en especifico
@@ -100,13 +95,27 @@ export class ComprasService {
   }
 
   //funcion para obtener la tabla kardex
-  obtenerKardex(): Observable<any>{
-    return this.http.get<any>(`${this.bUA}/module/inventory/kardex`);
+  obtenerKardex(){
+    this.http.get<any>(`${this.bUA}/module/inventory/kardex`).subscribe((resp) => {
+      //console.log('resp',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._kardex=resp['inventario'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener proveedores
-  obtenerProveedores(): Observable<any>{
-    return this.http.get<Proveedor>(`${this.bUA}/module/supplies/providers`);
+  obtenerProveedores(){
+    this.http.get<any>(`${this.bUA}/module/supplies/providers`).subscribe((resp) => {
+      //console.log('resp',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._proveedores=resp['proveedores'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un proveedor en especifico
@@ -115,8 +124,15 @@ export class ComprasService {
   }
 
   //funcion para obtener compras
-  obtenerCompras(): Observable<any>{
-    return this.http.get<Purchase>(`${this.bUA}/module/supplies/purchases`);
+  obtenerCompras(){
+    this.http.get<any>(`${this.bUA}/module/supplies/purchases`).subscribe((resp) => {
+      //console.log('resp',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._compras=resp['proveedores'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener una compra en especifica

@@ -26,17 +26,19 @@ export interface Category {
 }
 
 export interface Product {
+  ID_PRODUCTO:number,
   ID_PROVEEDOR: number,
-  NOMBRE: string,
-  MARCA: string,
-  DESCRIPCION: string,
-  IMG: string,
+  NOMBRE_PRODUCTO: string,
+  MARCA_PRODUCTO: string,
+  DESCRIPCION_PRODUCTO: string,
+  IMG_PRODUCTO: string,
   ESTADO: number,
   ID_CATEGORIA: number
 }
 
 export interface Object {
-  OBJETO:string,
+  ID_OBJETO:number,
+  OBJETOS:string,
   TIPO_OBJETO:string,
   DESCRIPCION:string,
   CREADO_POR:number
@@ -92,4 +94,20 @@ export interface Comission {
   COMISION_EMPLEADO: number,
   USUARIO: string,
   CORREO_ELECTRONICO: string
+}
+
+export interface Puesto {
+  ID_PUESTO: number,
+  PUESTO: string,
+  DESCRIPCION: string
+}
+
+export interface PermisosRol {
+  OBJETOS: string,
+  PERMISO_INSERCION: number,
+  PERMISO_ELIMINACION: number,
+  PERMISO_ACTUALIZACION: number,
+  PERMISO_CONSULTAR: number,
+  ROL: string,
+  ID_ROL: number
 }

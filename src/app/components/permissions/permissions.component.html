@@ -1,4 +1,4 @@
-<div>
+<div class="mb-5">
     <div class="row">
         <div class="col-8">
             <h3 class="text-muted"><b>Permisos asignados por rol</b></h3>
@@ -22,22 +22,24 @@
                   <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">Area</th>
-                    <th scope="col">Population</th>
-                    <th scope="col">Editar</th>
+                    <th scope="col">OBJETO</th>
+                    <th scope="col">ROL</th>
+                    <th scope="col">INSERCION</th>
+                    <th scope="col">ELIMINACION</th>
+                    <th scope="col">ACTUALIZACION</th>
+                    <th scope="col">CONSULTAR</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let country of countries | async; index as i">
+                  <tr *ngFor="let per of permisosRol; index as i">
                     <th scope="row">{{ i + 1 }}</th>
-                    <td>
-                      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                      <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                    </td>
-                    <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                    <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                    <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="openModal(editPermissions)"><i class="fas fa-pen"></i></button></td>
+                    <td><ngb-highlight [result]="per.OBJETOS" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="per.ROL" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="per.PERMISO_INSERCION | number" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="per.PERMISO_ELIMINACION | number" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="per.PERMISO_ACTUALIZACION | number" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="per.PERMISO_CONSULTAR | number" [term]="filter.value"></ngb-highlight></td>
+                    <!-- <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="openModal(editPermissions)"><i class="fas fa-pen"></i></button></td> -->
                   </tr>
                   </tbody>
                 </table>
@@ -89,7 +91,7 @@
                                 </div>
                                 <div class="col-12 mt-3">
                                     <div class="login-content">
-                                        <form> 
+                                        <form>
                                             <div class="d-flex row text-muted text-center align-items-center">
                                                 <i class="fas fa-check fa-2x"></i>
                                                 <h6 class="m-2">Asignación de permisos</h6>
@@ -185,7 +187,7 @@
                                 </div>
                                 <div class="col-12 mt-3">
                                     <div class="login-content">
-                                        <form> 
+                                        <form>
                                             <div class="d-flex row text-muted text-center align-items-center">
                                                 <i class="fas fa-check fa-2x"></i>
                                                 <h6 class="m-2">Asignación de permisos</h6>

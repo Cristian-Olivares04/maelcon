@@ -1,7 +1,7 @@
 <div *ngIf = "actionVal == 0; else editCloudinary">
     <div class="row">
         <div class="col-2"></div>
-        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+        <div class="col-8 row contenedor p-4" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
             <!--Cuadro contenedor de informacion-->
             <h2 style="color: #0846ffff; margin-top: 20px;">Servidor Cloudinary</h2>
             <p class="text-muted">Configuración para el almacenamiento de imagenes</p>
@@ -14,22 +14,22 @@
                                 <i class="fas fa-cloud"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" value="Nombre de la nube" name="cloud" readonly>
+                                <input class="" type="text" value="Nombre de la nube" [(ngModel)]="_params[15]['VALOR']" name="cloud" readonly>
                             </div>
                         </div>
-  
+
                         <div class="input-div one">
                             <div class="i">
                                 <i class="fas fa-key"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="password" value="Api key" name="apikey" readonly>
+                                <input class="" type="password" value="Api key" name="apikey" [(ngModel)]="_params[16]['VALOR']" readonly>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-  
+
             <!--Columna 2 de informacion-->
             <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
                 <div class="login-content">
@@ -39,7 +39,7 @@
                                 <i class="fas fa-key"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="password" value="Api Secret" name="apisecret" readonly>
+                                <input class="" type="password" value="Api Secret" [(ngModel)]="_params[17]['VALOR']" name="apisecret" readonly>
                             </div>
                         </div>
                     </form>
@@ -51,12 +51,12 @@
         </div>
     </div>
 </div>
-  
+
 <ng-template #editCloudinary>
     <div>
         <div class="row">
             <div class="col-2"></div>
-            <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+            <div class="col-8 row contenedor p-4" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
                 <!--Cuadro contenedor de informacion-->
                 <h2 style="color: #0846ffff; margin-top: 20px;">Servidor de Correos</h2>
                 <p class="text-muted">Configuración para el envio de correos eléctronicos</p>
@@ -69,22 +69,22 @@
                                     <i class="fas fa-cloud"></i>
                                 </div>
                                 <div class="div">
-                                    <input class="" type="text" placeholder="Nombre de la nube" name="cloud" readonly>
+                                    <input class="" type="text" placeholder="Nombre de la nube" [(ngModel)]="datosParametros.nombreNube" name="cloud">
                                 </div>
                             </div>
-      
+
                             <div class="input-div one">
                                 <div class="i">
                                     <i class="fas fa-key"></i>
                                 </div>
                                 <div class="div">
-                                    <input class="" type="password" placeholder="Api key" name="apikey" readonly>
+                                    <input class="" type="password" placeholder="Api key" name="apikey" [(ngModel)]="datosParametros.apiKey">
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-      
+
                 <!--Columna 2 de informacion-->
                 <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
                     <div class="login-content">
@@ -94,7 +94,7 @@
                                     <i class="fas fa-key"></i>
                                 </div>
                                 <div class="div">
-                                    <input class="" type="password" placeholder="Api Secret" name="apisecret" readonly>
+                                    <input class="" type="password" placeholder="Api Secret" [(ngModel)]="datosParametros.apiSecret" name="apisecret">
                                 </div>
                             </div>
                         </form>
@@ -105,7 +105,7 @@
                         <input type="button" class="btn btn-cancel" value="Cancelar" (click) = "actionAct(0);">
                     </div>
                     <div class="col-6">
-                        <input type="button" class="btn" value="Actualizar" (click) = "actionAct(0);">
+                        <input type="button" class="btn" value="Actualizar" (click) = "actionAct(0); actualizarParametros();">
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button class="btn btn-sm btn-outline-primary ms-2" (click)="refrescarUsuarios()"><i class="fa fa-refresh"></i></button>
+          <!-- <button class="btn btn-sm btn-outline-primary ms-2" (click)="refrescarUsuarios()"><i class="fa fa-refresh"></i></button> -->
           <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#newUser"><i class="fas fa-user-plus"></i></button>
         </span>
       </div>
@@ -21,42 +21,14 @@
       <app-users></app-users>
     </ng-template>
   </ngb-panel>
-  <ngb-panel>
-    <ng-template ngbPanelHeader let-opened="opened">
-      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Base de datos</b></span>
-        <span>
-          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
-          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-        </span>
-      </div>
-    </ng-template>
-    <ng-template ngbPanelContent>
-      <app-form-database></app-form-database>
-    </ng-template>
-  </ngb-panel>
-  <ngb-panel>
-    <ng-template ngbPanelHeader let-opened="opened">
-      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Servidor de Correos</b></span>
-        <span>
-          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
-          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-        </span>
-      </div>
-    </ng-template>
-    <ng-template ngbPanelContent>
-      <app-form-mail></app-form-mail>
-    </ng-template>
-  </ngb-panel>
 
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
         <span><b>Cambio de contraseña</b></span>
         <span>
-          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
-          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2" (click)="cambiarActVal(0)"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2" (click)="cambiarActVal(0)"><i class="fas fa-eye-slash"></i></button>
         </span>
       </div>
     </ng-template>
@@ -68,23 +40,24 @@
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Backup de la base de datos</b></span>
+        <span><b>Bitacora</b></span>
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
+          <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#backup"><i class="fas fa-download"></i></button>
         </span>
       </div>
     </ng-template>
     <ng-template ngbPanelContent>
-      <app-backup></app-backup>
+      <app-binnacle></app-binnacle>
     </ng-template>
   </ngb-panel>
 
-  <ngb-panel>
+
+  <ngb-panel id="custom-panel-2">
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Bitacora</b></span>
+        <span><b>Configuración de acceso al sistema</b></span>
         <span>
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
@@ -93,7 +66,17 @@
       </div>
     </ng-template>
     <ng-template ngbPanelContent>
-      <app-binnacle></app-binnacle>
+      <div class="row justify-content-between">
+        <div class="col-12 row">
+          <app-objects></app-objects>
+        </div>
+        <div class="col-12 row">
+          <app-roles></app-roles>
+        </div>
+        <div class="col-12 pt-4">
+          <app-permissions></app-permissions>
+        </div>
+      </div>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>

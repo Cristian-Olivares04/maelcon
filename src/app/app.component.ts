@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { ComprasService } from './services/compras.service';
+import { InventarioService } from './services/inventario.service';
+import { MantenimientoService } from './services/mantenimiento.service';
 import { UsuariosService } from './services/usuarios.service';
 
 @Component({
@@ -10,7 +13,9 @@ export class AppComponent {
   title = 'Maelcon';
   public user = false;
 
-  constructor(private UsuariosService: UsuariosService){}
+  constructor(private UsuariosService: UsuariosService, private MS:MantenimientoService, private CP:ComprasService, private IN:InventarioService){
+    this.MS.obtenerInfo();
+  }
 
   ngOnInit(): void {
     if(this.UsuariosService._usuarioActual!=null){

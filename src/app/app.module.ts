@@ -35,7 +35,6 @@ import { CardInventoryComponent } from './components/card-inventory/card-invento
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProvidersComponent } from './components/providers/providers.component';
-import { SeeConfigComponent } from './pages/see-config/see-config.component';
 import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component';
 import { DownloadComponent } from './components/download/download.component';
 import { CardShoppingComponent } from './components/card-shopping/card-shopping.component';
@@ -75,7 +74,6 @@ import { InformationComponent } from './pages/information/information.component'
     InventoryComponent,
     ProductComponent,
     ProvidersComponent,
-    SeeConfigComponent,
     SignupAdmonComponent,
     DownloadComponent,
     CardShoppingComponent,

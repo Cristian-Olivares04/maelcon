@@ -4,6 +4,9 @@ import { Observable, of } from 'rxjs';
 import { AuthResponse, usuario } from '../interfaces/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { MantenimientoService } from './mantenimiento.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +17,7 @@ export class UsuariosService {
   public _usuarioActual2:any = '';
   public _userToken:any = '';
   public nombreUsuario = '';
+  public _usuarios:usuario[]=[];
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -26,8 +30,6 @@ export class UsuariosService {
     ID_ROL: 0,
     USUARIO: '',
     CONTRASENA: '',
-    NOMBRE: '',
-    APELLIDO: '',
     CORREO_ELECTRONICO: '',
     TELEFONO: '',
     RTN: '',
@@ -38,7 +40,9 @@ export class UsuariosService {
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
     ESTADO: 0,
-    SUELDO: 0
+    SUELDO: 0,
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: ''
   };
 
   public datosUsuario2: usuario ={
@@ -47,8 +51,6 @@ export class UsuariosService {
     ID_ROL: 0,
     USUARIO: '',
     CONTRASENA: '',
-    NOMBRE: '',
-    APELLIDO: '',
     CORREO_ELECTRONICO: '',
     TELEFONO: '',
     RTN: '',
@@ -59,11 +61,14 @@ export class UsuariosService {
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
     ESTADO: 0,
-    SUELDO: 0
+    SUELDO: 0,
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: ''
   };
 
-  constructor( private http:HttpClient){
+  constructor( private http:HttpClient, private _Router:Router){
     this.retornarUsuario();
+    this.obtenerUsuarios();
   }
 
   get usuario(): usuario {
@@ -87,11 +92,27 @@ export class UsuariosService {
       this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`)
         .subscribe((resp:any) => {
           if(resp['mensaje'][0]['CODIGO']==1){
+            //console.log("[webpack]");
             localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
             this.datosUsuario = resp['usuario'][0];
           }else{
             console.log("falso no retorno");
           }
+        }, error => {
+          console.error('Ocurrió un error',error);
+          Swal.fire({
+            title: `Token expirado...`,
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.cerrarSesion();
+              this._Router.navigate(['login']);
+            } else {
+              console.log(`modal was dismissed by ${result.dismiss}`);
+              this.cerrarSesion();
+              this._Router.navigate(['login']);
+            }
+          })
         });
     }
   }
@@ -104,8 +125,15 @@ export class UsuariosService {
   }
 
   //funcion para obtener un usuario en especifico como observable
-  obtenerUsuarios(): Observable<any>{
-    return this.http.get<usuario>(`${this.bUA}/module/users`);
+  obtenerUsuarios(){
+    this.http.get<any>(`${this.bUA}/module/users`).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._usuarios=resp['usuario'];
+      }else{
+        console.log('no',resp);
+      }
+    });
   }
 
   //funcion para actualizar un usuario

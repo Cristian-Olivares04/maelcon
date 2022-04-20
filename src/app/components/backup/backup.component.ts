@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
+import { parseJsonText } from 'typescript';
 
 @Component({
   selector: 'app-backup',
@@ -19,12 +20,13 @@ export class BackupComponent implements OnInit {
   }
 
   download() {
-		this.MS.downloadFile().subscribe((resp) => {
-			let blob:any = new Blob([resp], { type: 'text/csv' });
-			//const url = window.URL.createObjectURL(resp);
-			//window.open(url);
+    this.MS.obtenerRegistrosBitacora().subscribe((resp) => {
+      var Bita = JSON.stringify(resp['BITACORA'])
+			let blob:any = new Blob([Bita], { type: 'text' });
+      console.log(blob)
 			saveAs(blob, this.datosBackUp.nombre);
 			}), (error: any) => console.log('Error downloading the file'),
 			() => console.info('File downloaded successfully');
+
 	}
 }

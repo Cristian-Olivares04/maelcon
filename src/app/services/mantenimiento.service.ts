@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Object, Parameter, PayMethod, Permission, Role } from '../interfaces/objects.interface';
+import { Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 
@@ -13,13 +13,36 @@ export class MantenimientoService {
   public _usuarioActual = this.US._usuarioActual;
   public _userToken=this.US._userToken;
   public _params:Parameter[]=[];
+  public _roles:Role[]=[];
+  public _puestos:Puesto[]=[];
+  public _objects:Object[]=[];
+  public _permissions:Permission[]=[];
+  public _permisosRol:PermisosRol[]=[];
+  public condition=false;
+  public actionVal = 0;
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'auth-token': this._userToken
   });
 
-  constructor(private US:UsuariosService, private http:HttpClient) { }
+  constructor(private US:UsuariosService, private http:HttpClient) {
+    this.obtenerPermisosUsuarios(this._usuarioActual);
+    this.obtenerPermisos();
+    this.obtenerObjetos();
+    this.obtenerRoles();
+    this.obtenerParametros();
+    this.obtenerPuestos();
+  }
+
+  obtenerInfo(){
+    this.obtenerPermisosUsuarios(this._usuarioActual);
+    this.obtenerPermisos();
+    this.obtenerObjetos();
+    this.obtenerRoles();
+    this.obtenerParametros();
+    this.obtenerPuestos();
+  }
 
   //funcion para chequear si existe un usuario por el correo
   chequearUsuario( data:any ): Observable<any>{
@@ -42,8 +65,15 @@ export class MantenimientoService {
   }
 
   //funcion para obtener Objetos
-  obtenerObjetos(): Observable<any>{
-    return this.http.get<Object>(`${this.bUA}/module/admin/objects`, {headers:this.headers});
+  obtenerObjetos(){
+    this.http.get<any>(`${this.bUA}/module/admin/getObjects`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._objects=resp['Objetos'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un Objeto
@@ -61,9 +91,29 @@ export class MantenimientoService {
     return this.http.put<Permission>(`${this.bUA}/module/admin/permission/${id}`, data, {headers:this.headers});
   }
 
+  //funcion para obtener puestos de trabajo
+  obtenerPermisos(){
+    this.http.get<any>(`${this.bUA}/module/admin/rolePermissions`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._permisosRol=resp['permisosRol'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
+  }
+
   //funcion para obtener permisos para un usuario
-  obtenerPermisosUsuarios( id:any ): Observable<any>{
-    return this.http.get<Permission>(`${this.bUA}/module/admin/userPermissions/${id}`, {headers:this.headers});
+  obtenerPermisosUsuarios( id:any ){
+    this.http.get<any>(`${this.bUA}/module/admin/userPermissions/${id}`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp permisos',resp['permisos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._permissions=resp['permisos'];
+        this.condition=true;
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para crear rol
@@ -77,9 +127,16 @@ export class MantenimientoService {
   }
 
   //funcion para obtener roles
-  obtenerRoles(): Observable<any>{
+  obtenerRoles(){
     //console.log('token para obtener roles', this._userToken)
-    return this.http.get<Role>(`${this.bUA}/module/admin/getRoles`, {headers: this.headers});
+    this.http.get<any>(`${this.bUA}/module/admin/getRoles`, {headers: this.headers}).subscribe((resp) => {
+      //console.log('resp roles',resp['roles']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._roles=resp['roles'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un Rol
@@ -132,6 +189,28 @@ export class MantenimientoService {
   //funcion para obtener un Parametro
   obtenerParametro( id:any ): Observable<any>{
     return this.http.get<Parameter>(`${this.bUA}/module/admin/getParameters/${id}`, {headers:this.headers});
+  }
+
+  //funcion para crear puesto de trabajo
+  crearPuesto( data:Puesto ): Observable<any>{
+    return this.http.post<Puesto>(`${this.bUA}/module/admin/jobs/`, data, {headers:this.headers});
+  }
+
+  //funcion para actualizar un puesto de trabajo
+  actualizarPuesto( data:Puesto, id:any): Observable<any>{
+    return this.http.put<Puesto>(`${this.bUA}/module/admin/jobs//${id}`, data, {headers:this.headers});
+  }
+
+  //funcion para obtener puestos de trabajo
+  obtenerPuestos(){
+    this.http.get<any>(`${this.bUA}/module/admin/jobs`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._puestos=resp['puestos'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener los registro de la tabla bitacora
