@@ -209,7 +209,7 @@ export const createParameter = async (req, res) => {
     await pool.query("CALL CREAR_MS_PARAMETRO(?,?,?,?,?,@MENSAJE, @CODIGO)", [
       PARAMETRO,
       ID_USUARIO,
-      VALOR
+      VALOR,
     ]);
 
     const mensaje = await pool.query(
@@ -230,11 +230,10 @@ export const createParameter = async (req, res) => {
 
 export const updateParameter = async (req, res) => {
   try {
-    
     const parameters = req.body;
-    
-    for(let i = 0; i < parameters.length; i++){
-      const {ID_PARAMETRO, ID_USUARIO, VALOR} = req.body[i];
+
+    for (let i = 0; i < parameters.length; i++) {
+      const { ID_PARAMETRO, ID_USUARIO, VALOR } = req.body[i];
       console.log(req.body[i]);
       await pool.query(
         "CALL ACTUALIZAR_MS_PARAMETRO(?,?,?,@MENSAJE, @CODIGO)",
@@ -243,15 +242,15 @@ export const updateParameter = async (req, res) => {
     }
 
     const mensaje = {
-        "MENSAJE": "Parametros actualizados exitosamente.",
-        "CODIGO": 1
-      };
+      MENSAJE: "Parametros actualizados exitosamente.",
+      CODIGO: 1,
+    };
     res.json(JSON.parse(JSON.stringify(mensaje)));
   } catch (error) {
     const mensaje = {
-        "MENSAJE": "Ha ocurrido un error inesperado, parametros no actualizados.",
-        "CODIGO": 0
-      };
+      MENSAJE: "Ha ocurrido un error inesperado, parametros no actualizados.",
+      CODIGO: 0,
+    };
 
     res.status(401).json({
       error: error.message,
@@ -632,4 +631,76 @@ export const postBackupDB = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
+
+export const createJob = async (req, res) => {
+  try {
+    const { PUESTO, DESCRIPCION } = req.body;
+    await pool.query("CALL CREAR_MP_PUESTO(?,?,@MENSAJE, @CODIGO);", [
+      PUESTO,
+      DESCRIPCION,
+    ]);
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const updateJob = async (req, res) => {
+  try {
+    const { ID_PUESTO } = req.params;
+    const { PUESTO, DESCRIPCION } = req.body;
+    await pool.query("CALL ACTUALIZAR_MP_PUESTO(?,?,?,@MENSAJE, @CODIGO);", [
+      ID_PUESTO,
+      PUESTO,
+      DESCRIPCION,
+    ]);
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const getJobs = async (req, res) => {
+  try {
+    const puestos = await pool.query(
+      "CALL OBTENER_PUESTOS(@MENSAJE, @CODIGO);"
+    );
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(200).json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      puestos: JSON.parse(JSON.stringify(puestos))[0],
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};

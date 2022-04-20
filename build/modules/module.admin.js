@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.checkUser = void 0;
+exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.updateJob = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getJobs = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.createJob = exports.checkUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -436,7 +436,7 @@ var createParameter = /*#__PURE__*/function () {
             _context10.prev = 0;
             _req$body10 = req.body, PARAMETRO = _req$body10.PARAMETRO, ID_USUARIO = _req$body10.ID_USUARIO, VALOR = _req$body10.VALOR, FECHA_CREACION = _req$body10.FECHA_CREACION, FECHA_MODIFICACION = _req$body10.FECHA_MODIFICACION;
             _context10.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_MS_PARAMETRO(?,?,?,?,?,@MENSAJE, @CODIGO)", [PARAMETRO, ID_USUARIO, VALOR, FECHA_CREACION, FECHA_MODIFICACION]);
+            return _databaseSQL["default"].query("CALL CREAR_MS_PARAMETRO(?,?,?,?,?,@MENSAJE, @CODIGO)", [PARAMETRO, ID_USUARIO, VALOR]);
 
           case 4:
             _context10.next = 6;
@@ -478,47 +478,59 @@ exports.createParameter = createParameter;
 
 var updateParameter = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res) {
-    var ID_PARAMETRO, _req$body11, ID_USUARIO, VALOR, FECHA_MODIFICACION, mensaje, _mensaje4;
+    var parameters, i, _req$body$i, ID_PARAMETRO, ID_USUARIO, VALOR, mensaje, _mensaje4;
 
     return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.prev = 0;
-            ID_PARAMETRO = req.params.ID_PARAMETRO;
-            _req$body11 = req.body, ID_USUARIO = _req$body11.ID_USUARIO, VALOR = _req$body11.VALOR, FECHA_MODIFICACION = _req$body11.FECHA_MODIFICACION;
-            _context11.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_PARAMETRO(?,?,?,?,@MENSAJE, @CODIGO)", [ID_PARAMETRO, ID_USUARIO, VALOR, FECHA_MODIFICACION]);
+            parameters = req.body;
+            i = 0;
 
-          case 5:
-            _context11.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+          case 3:
+            if (!(i < parameters.length)) {
+              _context11.next = 11;
+              break;
+            }
 
-          case 7:
-            mensaje = _context11.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context11.next = 17;
+            _req$body$i = req.body[i], ID_PARAMETRO = _req$body$i.ID_PARAMETRO, ID_USUARIO = _req$body$i.ID_USUARIO, VALOR = _req$body$i.VALOR;
+            console.log(req.body[i]);
+            _context11.next = 8;
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_PARAMETRO(?,?,?,@MENSAJE, @CODIGO)", [ID_PARAMETRO, ID_USUARIO, VALOR]);
+
+          case 8:
+            i++;
+            _context11.next = 3;
             break;
 
           case 11:
-            _context11.prev = 11;
-            _context11.t0 = _context11["catch"](0);
-            _context11.next = 15;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            mensaje = {
+              MENSAJE: "Parametros actualizados exitosamente.",
+              CODIGO: 1
+            };
+            res.json(JSON.parse(JSON.stringify(mensaje)));
+            _context11.next = 19;
+            break;
 
           case 15:
-            _mensaje4 = _context11.sent;
+            _context11.prev = 15;
+            _context11.t0 = _context11["catch"](0);
+            _mensaje4 = {
+              MENSAJE: "Ha ocurrido un error inesperado, parametros no actualizados.",
+              CODIGO: 0
+            };
             res.status(401).json({
               error: _context11.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje4))
             });
 
-          case 17:
+          case 19:
           case "end":
             return _context11.stop();
         }
       }
-    }, _callee11, null, [[0, 11]]);
+    }, _callee11, null, [[0, 15]]);
   }));
 
   return function updateParameter(_x21, _x22) {
@@ -1330,3 +1342,160 @@ var postBackupDB = /*#__PURE__*/function () {
 }();
 
 exports.postBackupDB = postBackupDB;
+
+var createJob = /*#__PURE__*/function () {
+  var _ref27 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(req, res) {
+    var _req$body11, PUESTO, DESCRIPCION, mensaje, _mensaje19;
+
+    return _regenerator["default"].wrap(function _callee27$(_context27) {
+      while (1) {
+        switch (_context27.prev = _context27.next) {
+          case 0:
+            _context27.prev = 0;
+            _req$body11 = req.body, PUESTO = _req$body11.PUESTO, DESCRIPCION = _req$body11.DESCRIPCION;
+            _context27.next = 4;
+            return _databaseSQL["default"].query("CALL CREAR_MP_PUESTO(?,?,@MENSAJE, @CODIGO);", [PUESTO, DESCRIPCION]);
+
+          case 4:
+            _context27.next = 6;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 6:
+            mensaje = _context27.sent;
+            res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+            _context27.next = 16;
+            break;
+
+          case 10:
+            _context27.prev = 10;
+            _context27.t0 = _context27["catch"](0);
+            _context27.next = 14;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 14:
+            _mensaje19 = _context27.sent;
+            res.status(401).json({
+              error: _context27.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje19))
+            });
+
+          case 16:
+          case "end":
+            return _context27.stop();
+        }
+      }
+    }, _callee27, null, [[0, 10]]);
+  }));
+
+  return function createJob(_x53, _x54) {
+    return _ref27.apply(this, arguments);
+  };
+}();
+
+exports.createJob = createJob;
+
+var updateJob = /*#__PURE__*/function () {
+  var _ref28 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28(req, res) {
+    var ID_PUESTO, _req$body12, PUESTO, DESCRIPCION, mensaje, _mensaje20;
+
+    return _regenerator["default"].wrap(function _callee28$(_context28) {
+      while (1) {
+        switch (_context28.prev = _context28.next) {
+          case 0:
+            _context28.prev = 0;
+            ID_PUESTO = req.params.ID_PUESTO;
+            _req$body12 = req.body, PUESTO = _req$body12.PUESTO, DESCRIPCION = _req$body12.DESCRIPCION;
+            _context28.next = 5;
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MP_PUESTO(?,?,?,@MENSAJE, @CODIGO);", [ID_PUESTO, PUESTO, DESCRIPCION]);
+
+          case 5:
+            _context28.next = 7;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 7:
+            mensaje = _context28.sent;
+            res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+            _context28.next = 17;
+            break;
+
+          case 11:
+            _context28.prev = 11;
+            _context28.t0 = _context28["catch"](0);
+            _context28.next = 15;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 15:
+            _mensaje20 = _context28.sent;
+            res.status(401).json({
+              error: _context28.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje20))
+            });
+
+          case 17:
+          case "end":
+            return _context28.stop();
+        }
+      }
+    }, _callee28, null, [[0, 11]]);
+  }));
+
+  return function updateJob(_x55, _x56) {
+    return _ref28.apply(this, arguments);
+  };
+}();
+
+exports.updateJob = updateJob;
+
+var getJobs = /*#__PURE__*/function () {
+  var _ref29 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee29(req, res) {
+    var puestos, mensaje, _mensaje21;
+
+    return _regenerator["default"].wrap(function _callee29$(_context29) {
+      while (1) {
+        switch (_context29.prev = _context29.next) {
+          case 0:
+            _context29.prev = 0;
+            _context29.next = 3;
+            return _databaseSQL["default"].query("CALL OBTENER_PUESTOS(@MENSAJE, @CODIGO);");
+
+          case 3:
+            puestos = _context29.sent;
+            _context29.next = 6;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 6:
+            mensaje = _context29.sent;
+            res.status(200).json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              puestos: JSON.parse(JSON.stringify(puestos))[0]
+            });
+            _context29.next = 16;
+            break;
+
+          case 10:
+            _context29.prev = 10;
+            _context29.t0 = _context29["catch"](0);
+            _context29.next = 14;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 14:
+            _mensaje21 = _context29.sent;
+            res.status(401).json({
+              error: _context29.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje21))
+            });
+
+          case 16:
+          case "end":
+            return _context29.stop();
+        }
+      }
+    }, _callee29, null, [[0, 10]]);
+  }));
+
+  return function getJobs(_x57, _x58) {
+    return _ref29.apply(this, arguments);
+  };
+}();
+
+exports.getJobs = getJobs;

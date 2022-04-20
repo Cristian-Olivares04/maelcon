@@ -7,10 +7,10 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 require("dotenv").config({
-  path: "../.env"
+  path: "./.env"
 });
 
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
 
 var sendEmail = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(email, subject, text) {
@@ -42,15 +42,17 @@ var sendEmail = /*#__PURE__*/function () {
 
           case 4:
             console.log(process.env.HOST_MAIL);
-            _context.next = 10;
+            _context.next = 12;
             break;
 
           case 7:
             _context.prev = 7;
             _context.t0 = _context["catch"](0);
             console.log("Correo no enviado");
+            console.log(_context.t0.message);
+            console.log(process.env.PORT_MAIL, process.env.HOST_MAIL, process.env.PASS, process.env.USER);
 
-          case 10:
+          case 12:
           case "end":
             return _context.stop();
         }

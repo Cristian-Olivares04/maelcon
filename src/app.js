@@ -13,6 +13,7 @@ import ModuleSalesRoutes from "./routes/module.sales.routes";
 import ModuleInventoryRoutes from "./routes/module.inventory.routes";
 import ModuleSuppliesRoutes from "./routes/module.supplies.routes";
 import ModuleAdminRoutes from "./routes/module.admin.routes";
+import ModuleHelpersRoutes from "./routes/module.helpers.routes";
 
 const app = express();
 app.use(express.json());
@@ -32,12 +33,13 @@ app.get("/", (req, res) => {
 
 app.use(morgan("dev"));
 
-app.use('public/uploads', express.static('uploads'));
+app.use("public/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
 app.use("/module/users", ModuleUsersRoutes);
 app.use("/module/sales", ModuleSalesRoutes);
 app.use("/module/inventory", ModuleInventoryRoutes);
 app.use("/module/supplies", ModuleSuppliesRoutes);
 app.use("/module/admin", ModuleAdminRoutes);
+app.use("/module/helpers", ModuleHelpersRoutes);
 
 export default app;

@@ -33,6 +33,8 @@ var _moduleSupplies = _interopRequireDefault(require("./routes/module.supplies.r
 
 var _moduleAdmin = _interopRequireDefault(require("./routes/module.admin.routes"));
 
+var _moduleHelpers = _interopRequireDefault(require("./routes/module.helpers.routes"));
+
 //importacion de los modulos
 var app = (0, _express["default"])();
 app.use(_express["default"].json());
@@ -50,12 +52,13 @@ app.get("/", function (req, res) {
   });
 });
 app.use((0, _morgan["default"])("dev"));
-app.use('public/uploads', _express["default"]["static"]('uploads'));
+app.use("public/uploads", _express["default"]["static"]("uploads"));
 app.use("/api/auth", _auth["default"]);
 app.use("/module/users", _moduleUsers["default"]);
 app.use("/module/sales", _moduleSales["default"]);
 app.use("/module/inventory", _moduleInventory["default"]);
 app.use("/module/supplies", _moduleSupplies["default"]);
 app.use("/module/admin", _moduleAdmin["default"]);
+app.use("/module/helpers", _moduleHelpers["default"]);
 var _default = app;
 exports["default"] = _default;

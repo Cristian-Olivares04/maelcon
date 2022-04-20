@@ -28,8 +28,10 @@ router.put("/permission/:ID_OBJETO", [authJwt.verifyTokenSQL], moduleAdminCtrl.u
 router.post("/paymentMethod/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createPaymentMethod);
 router.put("/paymentMethod/:ID_PAGO", [authJwt.verifyTokenSQL], moduleAdminCtrl.updatePaymentMethod);
 router.post("/parameter/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createParameter);
-router.put("/parameter/:ID_PARAMETRO", [authJwt.verifyTokenSQL], moduleAdminCtrl.updateParameter);
-router.get("/userPermissions/:ID_USUARIO", [authJwt.verifyTokenSQL], moduleAdminCtrl.getPermissions);
+router.put("/parameter/",
+/*[authJwt.verifyTokenSQL]*/
+moduleAdminCtrl.updateParameter);
+router.get("/userPermissions/:ID_USUARIO", [authJwt.verifyTokenSQL, authJwt.verifyAuth(1, 1)], moduleAdminCtrl.getPermissions);
 router.get("/checkUser/", [authJwt.verifyTokenSQL], moduleAdminCtrl.checkUser);
 router.get("/getRoles/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoles);
 router.get("/getRoles/:ID_ROL", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoleByID);
@@ -48,5 +50,8 @@ router.get("/comission/:ID_USUARIO", [authJwt.verifyTokenSQL], moduleAdminCtrl.g
 router.post("/backupDB/",
 /*[authJwt.verifyTokenSQL],*/
 moduleAdminCtrl.postBackupDB);
+router.get("/jobs/", moduleAdminCtrl.getJobs);
+router.post("/jobs/", moduleAdminCtrl.createJob);
+router.put("/jobs/:ID_PUESTO", moduleAdminCtrl.updateJob);
 var _default = router;
 exports["default"] = _default;
