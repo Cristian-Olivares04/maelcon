@@ -1,0 +1,254 @@
+<div class="contenedor row justify-content-between" style="position: relative;">
+    <div class="col-12 p-3 row">
+        <div class="col-4 login-content">
+            <form>   
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="text" placeholder="Producto, proveedor, estado..." >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-8 d-flex justify-content-end wrapper" >
+            <div class="col-3 pt-3 pb-3 align-items-center justify-content-center">
+                <button class="btn-success" (click) = "openModal(newShopping)"><i class="fas fa-plus"></i> Nueva compra</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-12 justify-content-rounded wrapper" style="text-align: center; align-items: center; margin-top: 20px; margin-bottom: 30px; background-color: #fff; border-radius: 15px;">
+            <!--Cuadro contenedor de informacion-->
+            <div class="car-inventary row contenedor" style="position: relative;">
+                <div>
+                    <h4 style="color: #0846ffff; margin-top: 20px;">Compra #25</h4>
+                    <p class="text-muted">Información tarjeta de compra</p>
+                    <button class="btn-xs btn-edit" (click)="openModal(editCard)"><i class="fas fa-pen"></i></button>
+                </div>
+                
+                <!--Columna 1 de informacion-->
+                <div class="col-6 p-3">
+                    <div class="login-content">
+                        <form>   
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Proveedor" name="proveedor" readonly>
+                                </div>
+                                <span class="text-muted details">Proveedor del producto</span>
+                            </div>
+ 
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Usuario" name="usuario" readonly>
+                                </div>
+                                <span class="text-muted details">Usuario encargado</span>
+                            </div>
+
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="2022-12-12" name="fecha" readonly>
+                                </div>
+                                <span class="text-muted details">Fecha de compra</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Observacion" name="observacion" readonly>
+                                </div>
+                                <span class="text-muted details">Observaciones</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--Columna 2 de informacion-->
+                <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+                    <div class="login-content">
+                        <form>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Tipo de pago" name="pago" readonly>
+                                </div>
+                                <span class="text-muted details">Tipo de pago</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="number" value="500.25" name="total" readonly>
+                                </div>
+                                <span class="text-muted details">Total Compra</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="number" value="25.30" name="isv" readonly>
+                                </div>
+                                <span class="text-muted details">ISV sobre compra</span>
+                            </div>
+                            <div class="justify-content-center">
+                                <span style="position: absolute;">
+                                    <div *ngIf = "activo; else inactivo" class="form-check form-switch text-success">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked disabled>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">En proceso</label>
+                                    </div>
+                                    <ng-template #inactivo>
+                                        <div class="form-check form-switch text-danger">
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" disabled>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Finalizada</label>
+                                        </div>
+                                    </ng-template>
+                                </span>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 row justify-content-between">
+                    <div class="col-6">
+                       
+                    </div>
+                    <div class="col-6">
+                        <input type="button" class="btn" value="Ver detalles" (click)="openModal(listProducts)">
+                    </div>
+                </div>
+            </div>
+
+            <!--Segunda card-->
+            
+            <!--Fin segunda card-->
+        </div>
+    </div>
+</div>
+
+<!--Modal para actualizar-->
+<ng-template #editCard let-modal>
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                        <!--Cuadro contenedor de informacion-->
+                        <app-details-shopping></app-details-shopping>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+        </div>
+</div>
+</ng-template>
+
+<!--Crear nueva compra-->
+<ng-template #newShopping let-modal>
+    <div class="modal-content">
+        <div class=" d-flex justify-content-end m-2" style="text-align: center; display: block;">
+            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <hr>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                            <!--Cuadro contenedor de informacion-->
+                            <h2 style="color: #0846ffff; margin-top: 20px;">Nuevo encabezado de compra</h2>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="login-content">
+                                        <form>
+                                            <div class="input-div">
+                                                <div class="i">
+                                                    <i class="fas fa-handshake"></i>
+                                                </div>
+                                                <div class="div">
+                                                    <select class="form-control" name="proveedorSelect">
+                                                        <option value="">Seleccione un proveedor</option>
+                                                        <option value="LUMEX">LUMEX</option>
+                                                        <option value="LINEAL">LINEAL</option>
+                                                        <option value="etc...">etc...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-div">
+                                                <div class="i">
+                                                    <i class="fas fa-credit-card"></i>
+                                                </div>
+                                                <div class="div">
+                                                    <select class="form-control" name="proveedorSelect">
+                                                        <option value="">Seleccione método de pago</option>
+                                                        <option value="Efectivo">Efectivo</option>
+                                                        <option value="Credito">Credito</option>
+                                                        <option value="etc...">etc...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="login-content">
+                                        <form>
+                                            <div class="input-div">
+                                                <div class="i">
+                                                    <i class="fas fa-info"></i>
+                                                </div>
+                                                <div class="div">
+                                                    <input type="text" placeholder="Observacion" name="observacion">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <input type="button" class="btn" value="Crear compra" (click)="openModal(editCard)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+            </div>
+            <div class="row">
+                <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!--Modal para ver lista de productos-->
+<ng-template #listProducts let-modal>
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+                <app-view-products [viewOption] = "shopping"></app-view-products>
+            <div class="row">
+            </div>
+        </div>
+</div>
+</ng-template>

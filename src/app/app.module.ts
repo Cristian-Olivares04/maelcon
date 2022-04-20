@@ -38,6 +38,15 @@ import { ProvidersComponent } from './components/providers/providers.component';
 import { SeeConfigComponent } from './pages/see-config/see-config.component';
 import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component';
 import { DownloadComponent } from './components/download/download.component';
+import { CardShoppingComponent } from './components/card-shopping/card-shopping.component';
+import { ListProductsComponent } from './components/list-products/list-products.component';
+import { DetailsShoppingComponent } from './components/details-shopping/details-shopping.component';
+import { ViewProductsComponent } from './components/view-products/view-products.component';
+import { CardSalesComponent } from './components/card-sales/card-sales.component';
+import { DetailsSalesComponent } from './components/details-sales/details-sales.component';
+import { CustomersComponent } from './components/customers/customers.component';
+import { CommissionsComponent } from './components/commissions/commissions.component';
+import { InformationComponent } from './pages/information/information.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +78,15 @@ import { DownloadComponent } from './components/download/download.component';
     SeeConfigComponent,
     SignupAdmonComponent,
     DownloadComponent,
+    CardShoppingComponent,
+    ListProductsComponent,
+    DetailsShoppingComponent,
+    ViewProductsComponent,
+    CardSalesComponent,
+    DetailsSalesComponent,
+    CustomersComponent,
+    CommissionsComponent,
+    InformationComponent,
   ],
   imports: [
     BrowserModule,

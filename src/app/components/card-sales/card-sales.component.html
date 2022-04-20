@@ -1,0 +1,299 @@
+<div class="contenedor row justify-content-between" style="position: relative;">
+    <div class="col-12 p-3 row">
+        <div class="col-4 login-content">
+            <form>   
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="text" placeholder="Producto, proveedor, estado..." >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-8 d-flex justify-content-end wrapper" >
+            <div class="col-3 pt-3 pb-3 align-items-center justify-content-center">
+                <button class="btn-success" (click) = "openModal(newSales)"><i class="fas fa-plus"></i> Nueva venta</button>
+            </div>
+            <div class="col-3 pt-3 pb-3 align-items-center justify-content-center">
+                <button class="btn-success" (click) = "openModal(commissions)"><i class="fas fa-eye"></i> Ver comisiones</button>
+            </div>
+            <div class="col-5 pt-3 pb-3 align-items-center justify-content-center">
+                <button class="btn" (click) = "openModal(customers)"><i class="fa fa-gear"></i> Gestión de clientes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-12 justify-content-rounded wrapper" style="text-align: center; align-items: center; margin-top: 20px; margin-bottom: 30px; background-color: #fff; border-radius: 15px;">
+            <!--Cuadro contenedor de informacion-->
+            <div class="car-inventary row contenedor" style="position: relative;">
+                <div>
+                    <h4 style="color: #0846ffff; margin-top: 20px;">Venta #25</h4>
+                    <p class="text-muted">Información tarjeta de venta</p>
+                    <button class="btn-xs btn-edit" (click)="openModal(editCard)"><i class="fas fa-pen"></i></button>
+                </div>
+                
+                <!--Columna 1 de informacion-->
+                <div class="col-6 p-3">
+                    <div class="login-content">
+                        <form>   
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Cliente" name="cliente" readonly>
+                                </div>
+                                <span class="text-muted details">Cliente</span>
+                            </div>
+ 
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Usuario" name="usuario" readonly>
+                                </div>
+                                <span class="text-muted details">Usuario encargado</span>
+                            </div>
+
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="2022-12-12" name="fecha" readonly>
+                                </div>
+                                <span class="text-muted details">Fecha de venta</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Descripción" name="descripción" readonly>
+                                </div>
+                                <span class="text-muted details">Descripción</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--Columna 2 de informacion-->
+                <div class="col-6" style=" padding-top: 16px; align-items: center;">
+                    <div class="login-content">
+                        <form>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="text" value="Tipo de pago" name="pago" readonly>
+                                </div>
+                                <span class="text-muted details">Tipo de pago</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="number" value="500.25" name="total" readonly>
+                                </div>
+                                <span class="text-muted details">Total venta</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="number" value="25.30" name="isv" readonly>
+                                </div>
+                                <span class="text-muted details">ISV de esta venta</span>
+                            </div>
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="number" value="0.00" name="comision" readonly>
+                                </div>
+                                <span class="text-muted details">Comision por venta</span>
+                            </div>
+                            <div class="justify-content-center">
+                                <span style="position: absolute;">
+                                    <div *ngIf = "activo; else inactivo" class="form-check form-switch text-success">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked disabled>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">En proceso</label>
+                                    </div>
+                                    <ng-template #inactivo>
+                                        <div class="form-check form-switch text-danger">
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" disabled>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Finalizada</label>
+                                        </div>
+                                    </ng-template>
+                                </span>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 row justify-content-between">
+                    <div class="col-6">
+                       
+                    </div>
+                    <div class="col-6">
+                        <input type="button" class="btn" value="Ver detalles" (click)="openModal(listProducts)">
+                    </div>
+                </div>
+            </div>
+
+            <!--Segunda card-->
+            
+            <!--Fin segunda card-->
+        </div>
+    </div>
+</div>
+
+<!--Modal para actualizar-->
+<ng-template #editCard let-modal>
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                        <!--Cuadro contenedor de informacion-->
+                        <app-details-sales></app-details-sales>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+        </div>
+</div>
+</ng-template>
+
+<!--Crear nueva venta-->
+<ng-template #newSales let-modal>
+    <div class="modal-content">
+        <div class=" d-flex justify-content-end m-2" style="text-align: center; display: block;">
+            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <hr>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                            <!--Cuadro contenedor de informacion-->
+                            <h2 style="color: #0846ffff; margin-top: 20px;">Nuevo proceso de venta</h2>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="login-content">
+                                        <form>
+                                            <div class="input-div">
+                                                <div class="i">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                <div class="div">
+                                                    <select class="form-control" name="client">
+                                                        <option value="">Seleccione un cliente</option>
+                                                        <option value="Juan Perez">Juan Perez</option>
+                                                        <option value="Lola Flores">Lola Flores</option>
+                                                        <option value="etc...">etc...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-div">
+                                                <div class="i">
+                                                    <i class="fas fa-credit-card"></i>
+                                                </div>
+                                                <div class="div">
+                                                    <select class="form-control" name="proveedorSelect">
+                                                        <option value="">Seleccione método de pago</option>
+                                                        <option value="Efectivo">Efectivo</option>
+                                                        <option value="Credito">Credito</option>
+                                                        <option value="etc...">etc...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="login-content">
+                                        <form>
+                                            <div class="input-div">
+                                                <div class="i">
+                                                    <i class="fas fa-info"></i>
+                                                </div>
+                                                <div class="div">
+                                                    <input type="text" placeholder="Observacion" name="observacion">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <input type="button" class="btn" value="Crear venta" (click)="openModal(editCard)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+            </div>
+            <div class="row">
+                <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!--Modal para lista de productos -->
+<ng-template #listProducts let-modal>
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+                <app-view-products [viewOption] = "shopping"></app-view-products>
+            <div class="row">
+                <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
+            </div>
+        </div>
+</div>
+</ng-template>
+
+<!--Modal para administrar clientes-->
+<ng-template #customers let-modal>
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+                <app-customers></app-customers>
+            <div class="row">
+                <p class="text-muted text-center">Sistema de gestión de clientes Maelcon S de R. L.</p>
+            </div>
+        </div>
+</div>
+</ng-template>
+
+<!--Modal para mostrar comsiones -->
+<ng-template #commissions let-modal>
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+                <app-commissions></app-commissions>
+            <div class="row">
+                <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
+            </div>
+        </div>
+</div>
+</ng-template>

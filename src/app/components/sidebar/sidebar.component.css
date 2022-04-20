@@ -3,6 +3,13 @@
   margin-right: 1.5em;
 }
 
+.help-item {
+  padding-top: 100%;
+  text-align: center !important;
+  align-items: center;
+  justify-content: center;
+}
+
 .no-posicionar {
   text-align: left;
   Margin-left: 1em;

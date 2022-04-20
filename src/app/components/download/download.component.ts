@@ -40,6 +40,5 @@ export class DownloadComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.INFORMATION);
   }
 }

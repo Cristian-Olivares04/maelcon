@@ -42,15 +42,16 @@ export class BinnacleComponent implements OnInit {
   bitacora2:Bitacora[] = [];
   bitacoraInter: Observable<Bitacora[]>;
   filter = new FormControl('');
-  
+
   headersArray:any = [
-    "ID_USUARIO",
-    "ID_OBJETO",
+    "#",
+    "USUARIO",
+    "OBJETO",
     "ACCION",
     "DESCRIPCION",
-    "INFORMACION_ANTERIOR",
-    "INFORMACION_ACTUAL",
-    "FECHA_BITACORA"
+    "INFORMACION ANTERIOR",
+    "INFORMACION ACTUAL",
+    "FECHA"
   ];
 
   constructor( private pipe: DecimalPipe, private MS:MantenimientoService) {

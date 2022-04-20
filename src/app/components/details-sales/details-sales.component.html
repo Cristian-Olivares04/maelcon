@@ -1,0 +1,145 @@
+<div class="car-inventary row" style="position: relative;">
+    <div class="row">
+        <div class="col-9">
+            <h4 style="color: #0846ffff; margin-top: 20px;">Venta #25</h4>
+            <p class="text-muted">Información tarjeta de venta</p>
+        </div>
+        <div class="col-3">
+            <div *ngIf = "actionOption; else viewActual">
+                <button class="btn btn-sm btn-outline-primary ms-2" (click)="changeOption(false)"><i class="fas fa-plus"></i> Agregar producto</button>
+            </div>
+            <ng-template #viewActual>
+                <button class="btn btn-sm btn-outline-primary ms-2" (click)="changeOption(true)"><i class="fas fa-eye"></i> Ver productos</button>
+            </ng-template>
+        </div>
+    </div>
+    
+    <!--Columna 1 de informacion-->
+    <div class="col-4 p-3">
+        <div class="login-content">
+            <form>   
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="text" value="Cliente" name="cliente" readonly>
+                    </div>
+                    <span class="text-muted details">Cliente</span>
+                </div>
+
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="text" value="Usuario" name="usuario" readonly>
+                    </div>
+                    <span class="text-muted details">Usuario encargado</span>
+                </div>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="number" value="500.25" name="total" readonly>
+                    </div>
+                    <span class="text-muted details">Total venta</span>
+                </div>   
+            </form>
+        </div>
+    </div>
+    <!--Columna 2-->
+    <div class="col-4 p-3">
+        <div class="login-content">
+            <form> 
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="text" placeholder="Descripción" name="descripción" >
+                    </div>
+                    <span class="text-muted details">Descripción</span>
+                </div>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="div">
+                        <select class="form-control" name="proveedorSelect">
+                            <option value="">Seleccione método de pago</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Credito">Credito</option>
+                            <option value="etc...">etc...</option>
+                        </select>
+                    </div>
+                    <span class="text-muted details">Tipo de pago</span>
+                </div>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="number" value="25.30" name="isv" readonly>
+                    </div>
+                    <span class="text-muted details">ISV de esta venta</span>
+                </div>             
+            </form>
+        </div>
+    </div>
+    <!--Columna 3 de informacion-->
+    <div class="col-4" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+        <div class="login-content">
+            <form>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="text" value="2022-12-12" name="fecha" readonly>
+                    </div>
+                    <span class="text-muted details">Fecha de venta</span>
+                </div>
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <div class="div">
+                        <input class="" type="number" value="0.00" name="comision" readonly>
+                    </div>
+                    <span class="text-muted details">Comision por venta</span>
+                </div>
+                <div class="justify-content-center">
+                    <span style="position: absolute;">
+                        <div *ngIf = "activo; else inactivo" class="form-check form-switch text-success">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked disabled>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">En proceso</label>
+                        </div>
+                        <ng-template #inactivo>
+                            <div class="form-check form-switch text-danger">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" disabled>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Finalizada</label>
+                            </div>
+                        </ng-template>
+                    </span>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Llamado a la lista-->
+    <app-list-products [viewOption]= shopping [typeTable] = actionOption></app-list-products>
+    
+    <div >
+    </div>
+    <div class="col-12 row justify-content-between">
+        <div class="col-6">
+            <input type="button" class="btn-cancel" value="Cancelar">
+        </div>
+        <div class="col-6">
+            <input type="button" class="btn" value="Finalizar compra">
+        </div>
+    </div>
+</div>

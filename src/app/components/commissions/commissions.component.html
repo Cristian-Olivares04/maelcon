@@ -1,0 +1,44 @@
+<div class=" contenedor p-4 m-4">
+    <div class="row">
+        <div class="col-8">
+            <h4 class="text-muted"><b>Comisión por ventas finalizadas</b></h4>
+            <p class="text-muted">comisión de los usuarios por ventas finalizadas en el sistema.</p>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-sm btn-outline-primary ms-2"><i class="fa fa-refresh"></i> Actualizar</button>
+        </div>
+        <div class="col-12">
+            <form>
+                <div class="mb-2 mt-2 row">
+                  <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar:</label>
+                  <div class="col-xs-3 col-sm-auto">
+                    <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+                  </div>
+                </div>
+              </form>
+              <div class="" style="width: auto; height: 400px; overflow: scroll;">
+                  <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Area</th>
+                        <th scope="col">Population</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let country of countries | async; index as i">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>
+                          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
+                          <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
+                        </td>
+                        <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
+                      </tr>
+                      </tbody>
+                    </table>
+              </div>
+        </div>
+    </div>
+</div>
