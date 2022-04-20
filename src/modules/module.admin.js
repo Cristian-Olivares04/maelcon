@@ -648,8 +648,14 @@ export const getComissionById = async (req, res) => {
 export const postBackupDB = async (req, res) => {
   try {
     let mensaje = await backup.backupDB(req.body.name, req.body.ubication);
+<<<<<<< HEAD
     console.log(req.body);
     res.json(mensaje);
+=======
+    res.json({
+      mensaje: mensaje,
+    });
+>>>>>>> 16bdc3b9b096a46d68275643d8bec7c6fc80d022
   } catch (error) {
     res.status(401).json({
       error: error.message,
