@@ -23,14 +23,14 @@
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">TIPO OBJETO</th>
-                          <th scope="col">OBJETOS</th>
+                          <th scope="col">OBJETO</th>
                           <th scope="col">DESCRIPCION</th>
                           <th scope="col">CREADO POR</th>
-                          <th scope="col">Editar</th>
+                          <th scope="col">EDITAR</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let ob of objects; index as i">
+                        <tr *ngFor="let ob of objectsInter | async; index as i">
                           <th scope="row">{{ i + 1 }}</th>
                           <td><ngb-highlight [result]="ob.TIPO_OBJETO" [term]="filter.value"></ngb-highlight></td>
                           <td><ngb-highlight [result]="ob.OBJETOS" [term]="filter.value"></ngb-highlight></td>

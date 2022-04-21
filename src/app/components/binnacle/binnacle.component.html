@@ -8,8 +8,8 @@
       <button class="btn-download ms-2" (click) = "viewDownload(false)"><i class="fas fa-download"></i> Generar reporte</button>
     </div>
   </div>
-  
-  
+
+
   <form>
     <div class="mb-3 row">
       <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
@@ -34,7 +34,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let bit of bitacoraInter | async; index as i">
-              <td scope="row">{{ bit.ID_BITACORA}}</td>
+              <th scope="row">{{ i + 1 }}</th>
               <td><ngb-highlight [result]="bit.ID_USUARIO | number" [term]="filter.value"></ngb-highlight></td>
               <td><ngb-highlight [result]="bit.ID_OBJETO | number" [term]="filter.value"></ngb-highlight></td>
               <td><ngb-highlight [result]="bit.ACCION" [term]="filter.value"></ngb-highlight></td>

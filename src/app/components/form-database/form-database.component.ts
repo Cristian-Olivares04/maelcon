@@ -35,7 +35,6 @@ export class FormDatabaseComponent implements OnInit {
   }
 
   obtenerParametros(){
-    this.MS.obtenerParametros();
     if(this.MS._params!=[]){
       this._params=this.MS._params;
       this.datosParametros.host = this.MS._params[5]['VALOR'];
@@ -89,14 +88,16 @@ export class FormDatabaseComponent implements OnInit {
         this._params[8]['ID_USUARIO'] = this.usAct;
         Swal.fire({
           title: `Bien hecho...`,
-          text: `Parametros actualizados exitosamente`,
+          text:  `Los Parametros se actualizaron exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
           } else {
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
           }
         });
       }else{

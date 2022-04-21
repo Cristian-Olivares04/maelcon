@@ -10,6 +10,17 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
+function search(ROLES: any, text: string, pipe: PipeTransform): Role[] {
+  console.log('roles',ROLES);
+  return ROLES.filter(ob => {
+    const term = text.toLowerCase();
+    return ob.ROL.toLowerCase().includes(term)
+        || ob.DESCRIPCION.toLowerCase().includes(term)
+        || ob.FECHA_CREACION.toLowerCase().includes(term)
+        || pipe.transform(ob.CREADO_POR).includes(term);
+  });
+}
+
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
@@ -23,16 +34,19 @@ export class RolesComponent implements OnInit {
   condition=false;
 
 
-  constructor(private MS:MantenimientoService, pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router, private US:UsuariosService) {
+  constructor(private MS:MantenimientoService,private pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router, private US:UsuariosService) {
     this.rolesInter = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => this.search(text, pipe))
+      map(text => search(this.roles, text, this.pipe))
     );
   }
 
   ngOnInit(): void {
-    this.MS.obtenerObjetos();
     this.roles=this.MS._roles;
+    this.rolesInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this.roles, text, this.pipe))
+    );
     //console.log('ROLES', this.roles)
     this.condition=true
   }
@@ -71,11 +85,15 @@ export class RolesComponent implements OnInit {
   }
 
   actRol(id:any){
-    //console.log(this.datoRole)
-    var fechaAct = new Date();
-    this.datoRole.FECHA_MODIFICACION=fechaAct.toLocaleDateString();
-    this.MS.actualizarRol(this.datoRole, id).subscribe((resp) => {
-      //console.log('resp rol',resp)
+    console.log('id',id)
+    var js={
+      ROL:this.datoRole.ROL,
+      DESCRIPCION:this.datoRole.DESCRIPCION,
+      MODIFICADO_POR: parseInt(this.US._usuarioActual)
+    }
+    console.log('datoRol', js)
+    this.MS.actualizarRol(js, id).subscribe((resp) => {
+      console.log('resp rol',resp)
       if(resp[0]['CODIGO']==1){
         Swal.fire({
           title: `Bien hecho...`,
@@ -90,7 +108,8 @@ export class RolesComponent implements OnInit {
               }
             }
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
             for (let i = 0; i < this.roles.length; i++) {
               if(this.roles[i].ID_ROL==id){
@@ -99,8 +118,9 @@ export class RolesComponent implements OnInit {
               }
             }
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
@@ -122,26 +142,18 @@ export class RolesComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
         //console.log('no',resp);
       }
-    });
-  }
-
-  search(text: string, pipe: PipeTransform): Role[] {
-    return this.roles.filter(ob => {
-      const term = text.toLowerCase();
-      return ob.ROL.toLowerCase().includes(term)
-          || pipe.transform(ob.DESCRIPCION).toLowerCase().includes(term)
-          || pipe.transform(ob.FECHA_CREACION).toLowerCase().includes(term)
-          || pipe.transform(ob.CREADO_POR).includes(term);
     });
   }
 

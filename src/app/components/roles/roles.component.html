@@ -24,15 +24,17 @@
                         <th scope="col">Rol</th>
                         <th scope="col">Descripcion</th>
                         <th scope="col">Fecha Creacion</th>
+                        <th scope="col">Creado Por</th>
                         <th scope="col">Editar</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let rol of roles; index as i">
+                      <tr *ngFor="let rol of rolesInter | async; index as i">
                         <th scope="row">{{ i + 1 }}</th>
                         <td><ngb-highlight [result]="rol.ROL" [term]="filter.value"></ngb-highlight></td>
                         <td><ngb-highlight [result]="rol.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
                         <td><ngb-highlight [result]="rol.FECHA_CREACION" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="rol.CREADO_POR | number" [term]="filter.value"></ngb-highlight></td>
                         <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="editarRol(editRol,rol.ID_ROL)"><i class="fas fa-pen"></i></button></td>
                       </tr>
                       </tbody>

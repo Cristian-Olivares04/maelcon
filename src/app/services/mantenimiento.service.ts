@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
+import { Bitacora, Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 
@@ -18,6 +18,7 @@ export class MantenimientoService {
   public _objects:Object[]=[];
   public _permissions:Permission[]=[];
   public _permisosRol:PermisosRol[]=[];
+  public _bitacora:Bitacora[]=[];
   public condition=false;
   public actionVal = 0;
 
@@ -33,6 +34,7 @@ export class MantenimientoService {
     this.obtenerRoles();
     this.obtenerParametros();
     this.obtenerPuestos();
+    this.obtenerRegistrosBitacora();
   }
 
   obtenerInfo(){
@@ -42,6 +44,7 @@ export class MantenimientoService {
     this.obtenerRoles();
     this.obtenerParametros();
     this.obtenerPuestos();
+    this.obtenerRegistrosBitacora();
   }
 
   //funcion para chequear si existe un usuario por el correo
@@ -122,8 +125,8 @@ export class MantenimientoService {
   }
 
   //funcion para actualizar un permiso
-  actualizarRol( data:Role, id:any): Observable<any>{
-    return this.http.put<Role>(`${this.bUA}/module/admin/role/${id}`, data, {headers:this.headers});
+  actualizarRol( data:any, id:any): Observable<any>{
+    return this.http.put<any>(`${this.bUA}/module/admin/role/${id}`, data, {headers:this.headers});
   }
 
   //funcion para obtener roles
@@ -214,13 +217,20 @@ export class MantenimientoService {
   }
 
   //funcion para obtener los registro de la tabla bitacora
-  obtenerRegistrosBitacora(): Observable<any>{
-    return this.http.get<any>(`${this.bUA}/module/admin/getLogs`, {headers:this.headers});
+  obtenerRegistrosBitacora(){
+    return this.http.get<any>(`${this.bUA}/module/admin/getLogs`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._bitacora=resp['BITACORA'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un registro de la tabla bitacora
   obtenerRegistroBitacora( id:any ): Observable<any>{
-    return this.http.get<any>(`${this.bUA}/module/admin/getLogs/${id}`, {headers:this.headers});
+    return this.http.get<any>(`${this.bUA}/module/admin/getLogs/${id}`, {headers:this.headers})
   }
 
   //funcion para descargar la bitacora

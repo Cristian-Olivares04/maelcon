@@ -6,7 +6,6 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { MantenimientoService } from './mantenimiento.service';
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +93,39 @@ export class UsuariosService {
           if(resp['mensaje'][0]['CODIGO']==1){
             //console.log("[webpack]");
             localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
+            this.datosUsuario = resp['usuario'][0];
+          }else{
+            console.log("falso no retorno");
+          }
+        }, error => {
+          console.error('Ocurrió un error',error);
+          Swal.fire({
+            title: `Token expirado...`,
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.cerrarSesion();
+              this._Router.navigate(['login']);
+            } else {
+              console.log(`modal was dismissed by ${result.dismiss}`);
+              this.cerrarSesion();
+              this._Router.navigate(['login']);
+            }
+          })
+        });
+    }
+  }
+
+  //funcion para retornar un usuario en especifico desde el servicio usuario
+  obtenerInfoUsuario(){
+    this._userToken = localStorage.getItem("auth-token");
+    if(this._userToken!=null){
+      this.http.get<usuario>(`${this.bUA}/module/users/myinfo/userInfo`)
+        .subscribe((resp:any) => {
+          if(resp['mensaje'][0]['CODIGO']==1){
+            //console.log("[webpack]");
+            this._usuarioActual=resp['usuario'][0]['ID_USUARIO'];
+            this._usuarioActual2=resp['usuario'][0]['ID_USUARIO'];
             this.datosUsuario = resp['usuario'][0];
           }else{
             console.log("falso no retorno");

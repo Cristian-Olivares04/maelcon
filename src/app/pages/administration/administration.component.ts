@@ -16,7 +16,7 @@ export class AdministrationComponent implements OnInit {
   _paysMethods:PayMethod[]=[];
   _users:usuario[]=[];
   _comissions:Comission[]=[];
-  _bitacora:Bitacora[]=[];
+  _bitacora:Bitacora[]=this.MS._bitacora;
   msjCheck='';
 
   @Input() usuarioInput= {
@@ -102,6 +102,8 @@ export class AdministrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.MS.obtenerRegistrosBitacora();
+    this._bitacora=this.MS._bitacora;
   }
 
   checkUser(){
@@ -276,18 +278,6 @@ export class AdministrationComponent implements OnInit {
       }else{
         //console.log('no',resp);
         this.msjCheck=`No se encontro el parametro con id ${id}`
-      }
-    });
-  }
-
-  obtenerRegistroBitacora(){
-    this.MS.obtenerRegistrosBitacora().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._bitacora=resp['BITACORA'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener el registro de bitacora`
       }
     });
   }

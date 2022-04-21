@@ -10,6 +10,17 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
+function search(OBJECT: any, text: string, pipe: PipeTransform): Object[] {
+  //console.log('ob',OBJECT);
+  return OBJECT.filter(ob => {
+    const term = text.toLowerCase();
+    return ob.OBJETOS.toLowerCase().includes(term)
+        || ob.TIPO_OBJETO.toLowerCase().includes(term)
+        || ob.DESCRIPCION.toLowerCase().includes(term)
+        || pipe.transform(ob.CREADO_POR).includes(term);
+  });
+}
+
 @Component({
   selector: 'app-objects',
   templateUrl: './objects.component.html',
@@ -22,17 +33,20 @@ export class ObjectsComponent implements OnInit {
   objects:Object[]=this.MS._objects;
   condition=false;
 
-  constructor( private MS:MantenimientoService, pipe: DecimalPipe, private modalService: NgbModal, private US:UsuariosService, private _Router:Router) {
+  constructor( private MS:MantenimientoService, private pipe: DecimalPipe, private modalService: NgbModal, private US:UsuariosService, private _Router:Router) {
+    this.objects=this.MS._objects;
     this.objectsInter = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => this.search(text, pipe))
+      map(text => search(this.objects, text, this.pipe))
     );
   }
 
   ngOnInit(): void {
-    this.MS.obtenerObjetos();
     this.objects=this.MS._objects;
-    //console.log('OBJETOS', this.objects)
+    this.objectsInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this.objects, text, this.pipe))
+    );
     this.condition=true
   }
 
@@ -74,26 +88,14 @@ export class ObjectsComponent implements OnInit {
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            for (let i = 0; i < this.objects.length; i++) {
-              if(this.objects[i].ID_OBJETO==id){
-                this.objects[i].OBJETOS=this.datoObjeto.OBJETOS;
-                this.objects[i].TIPO_OBJETO=this.datoObjeto.TIPO_OBJETO;
-                this.objects[i].DESCRIPCION=this.datoObjeto.DESCRIPCION;
-              }
-            }
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
-            for (let i = 0; i < this.objects.length; i++) {
-              if(this.objects[i].ID_OBJETO==id){
-                this.objects[i].OBJETOS=this.datoObjeto.OBJETOS;
-                this.objects[i].TIPO_OBJETO=this.datoObjeto.TIPO_OBJETO;
-                this.objects[i].DESCRIPCION=this.datoObjeto.DESCRIPCION;
-              }
-            }
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
@@ -113,26 +115,18 @@ export class ObjectsComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'administration');
+            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
         //console.log('no',resp);
       }
-    });
-  }
-
-  search(text: string, pipe: PipeTransform): Object[] {
-    return this.objects.filter(ob => {
-      const term = text.toLowerCase();
-      return ob.OBJETOS.toLowerCase().includes(term)
-          || pipe.transform(ob.TIPO_OBJETO).includes(term)
-          || pipe.transform(ob.DESCRIPCION).toLowerCase().includes(term)
-          || pipe.transform(ob.CREADO_POR).includes(term);
     });
   }
 

@@ -40,7 +40,12 @@ export class SidebarComponent implements OnInit{
           this.UsuariosService.datosUsuario = resp['usuario'][0];
           console.log('obs',this._obs);
           //this.pantallasDisponibles();
-          this.router.navigate([`/sales`]);
+          if(localStorage.getItem("ruta")!=null){
+            this.router.navigate([`/${localStorage.getItem("ruta")}`]);
+          }else{
+            this.router.navigate([`/sales`]);
+            localStorage.setItem('ruta', 'sales');
+          }
           this.condition2=true;
           this.condition=this.MS.condition;
         }else{

@@ -31,7 +31,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let per of permisosRol; index as i">
+                  <tr *ngFor="let per of permisosInter | async; index as i">
                     <th scope="row">{{ i + 1 }}</th>
                     <td><ngb-highlight [result]="per.OBJETOS" [term]="filter.value"></ngb-highlight></td>
                     <td><ngb-highlight [result]="per.ROL" [term]="filter.value"></ngb-highlight></td>
@@ -153,12 +153,9 @@
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <select class="form-control" name="rol">
-                                                        <option value="">Seleccionar rol</option>
-                                                        <option value="Admin">Admin</option>
-                                                        <option value="oficial de ventas">oficial de ventas</option>
-                                                        <option value="oficial de compras">oficial de compras</option>
-                                                        <option value="etc">etc</option>
+                                                    <select class="form-control" [(ngModel)]="datosPermiso.ID_ROL" name="rol">
+                                                        <option selected disabled>Seleccionar rol</option>
+                                                        <option *ngFor="let r of roles" [ngValue]="r.ID_ROL">{{r.ROL}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -173,12 +170,9 @@
                                                     <i class="fas fa-sitemap"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <select class="form-control" name="objeto">
-                                                        <option value="">Seleccione objeto</option>
-                                                        <option value="Administración">Administración</option>
-                                                        <option value="Ventas">Ventas</option>
-                                                        <option value="Compras">Compras</option>
-                                                        <option value="Almacen">Almacen</option>
+                                                    <select class="form-control" [(ngModel)]="datosPermiso.ID_OBJETO" name="objeto">
+                                                      <option selected disabled>Seleccionar Objeto</option>
+                                                      <option *ngFor="let ob of objetos" [ngValue]="ob.ID_OBJETO">{{ob.OBJETOS}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -203,16 +197,16 @@
                                                 </thead>
                                                 <tbody>
                                                   <tr>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="con" id="flexCheckCONSULTAR" name="flexCheckCONSULTAR"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="ins" id="flexCheckINSERTAR" name="flexCheckINSERTAR"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="act" id="flexCheckACTUALIZAR" name="flexCheckACTUALIZAR"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="elim" id="flexCheckELIMINAR" name="flexCheckELIMINAR"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Crear Permisos">
+                                    <input type="button" class="btn" value="Crear Permisos" (click)="crearPermiso()">
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,19 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { Router } from '@angular/router';
 
+function search(USUARIOS: any, text: string, pipe: PipeTransform): usuario[] {
+  //console.log('Usuarios',USUARIOS);
+  return USUARIOS.filter(user => {
+    const term = text.toLowerCase();
+    return user.USUARIO.toLowerCase().includes(term)
+        || user.CORREO_ELECTRONICO.toLowerCase().includes(term)
+        || pipe.transform(user.SUELDO).includes(term)
+        || pipe.transform(user.ID_ROL).includes(term)
+        || pipe.transform(user.ID_PUESTO).includes(term)
+        || pipe.transform(user.ESTADO).includes(term);
+  });
+}
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -23,17 +36,21 @@ export class UsersComponent implements OnInit {
   usuariosInter: Observable<usuario[]>;
   filter = new FormControl('');
 
-  constructor(pipe: DecimalPipe, private US:UsuariosService, private MS:MantenimientoService, private router:Router) {
+  constructor(private pipe: DecimalPipe, private US:UsuariosService, private MS:MantenimientoService, private router:Router) {
     //this.US.obtenerUsuarios();
     this.usuariosInter = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => this.search(text, pipe))
+      map(text => search(this.usuarios,text, this.pipe))
     );
 
   }
 
   ngOnInit(): void {
     this.usuarios = this.US._usuarios;
+    this.usuariosInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this.usuarios,text, this.pipe))
+    );
   }
 
   goUser(id:any){
@@ -59,17 +76,5 @@ export class UsersComponent implements OnInit {
 
   cerrarModal(){
     this.modal=false;
-  }
-
-  search(text: string, pipe: PipeTransform): usuario[] {
-    return this.usuarios.filter(user => {
-      const term = text.toLowerCase();
-      return user.USUARIO.toLowerCase().includes(term)
-          || pipe.transform(user.CORREO_ELECTRONICO).includes(term)
-          || pipe.transform(user.SUELDO).includes(term)
-          || pipe.transform(user.ID_ROL).includes(term)
-          || pipe.transform(user.ID_PUESTO).includes(term)
-          || pipe.transform(user.ESTADO).includes(term);
-    });
   }
 }

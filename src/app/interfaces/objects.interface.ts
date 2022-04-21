@@ -111,3 +111,9 @@ export interface PermisosRol {
   ROL: string,
   ID_ROL: number
 }
+
+export interface Help {
+  TITULO:string,
+  ENLACE:string,
+  ESTADO:boolean
+}

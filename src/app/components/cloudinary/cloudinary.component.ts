@@ -38,7 +38,6 @@ export class CloudinaryComponent implements OnInit {
   }
 
   obtenerParametros() {
-    this.MS.obtenerParametros();
     if (this.MS._params != []) {
       this._params = this.MS._params;
       this.datosParametros.nombreNube = this.MS._params[15]['VALOR'];
@@ -52,8 +51,6 @@ export class CloudinaryComponent implements OnInit {
   }
 
   actualizarParametros() {
-    //console.log('datosParametros', this.datosParametros);
-
     var parameters = [
       {
         ID_PARAMETRO: this._params[15]['ID_PARAMETRO'],
@@ -73,7 +70,6 @@ export class CloudinaryComponent implements OnInit {
     ];
 
     this.MS.actualizarParametros(parameters).subscribe((resp) => {
-      //console.log('resp',resp);
       if (resp['CODIGO'] == 1) {
         this._params[15]['VALOR'] = this.datosParametros.nombreNube;
         this._params[15]['ID_USUARIO'] = this.usAct;
@@ -83,14 +79,16 @@ export class CloudinaryComponent implements OnInit {
         this._params[17]['ID_USUARIO'] = this.usAct;
         Swal.fire({
           title: `Bien hecho...`,
-          text: `Parametros actualizados exitosamente`,
+          text:  `Los Parametros se actualizaron exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
           } else {
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
           }
         });
       } else {

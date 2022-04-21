@@ -1,4 +1,4 @@
-<div>
+<div *ngIf = "actionVal == 1; else admon">
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
@@ -20,8 +20,38 @@
                 </div>
             </div>
             <div class="col-6 p-3">
-                <input type="button" class="btn" (click)="download()" value="Crear" data-bs-dismiss="modal" aria-label="Close">
+                <a href="assets/maelcon-main-backend.zip" class="btn" target="_blank" [download]="datosBackUp.nombre">Crear</a>
             </div>
         </div>
     </div>
   </div>
+
+  <ng-template #admon>
+    <div>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+            <!--Cuadro contenedor de informacion-->
+            <h2 style="color: #0846ffff; margin-top: 20px;">Crear respaldo</h2>
+
+            <div class="col-6 p-3">
+                <div class="login-content">
+                    <form>
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-file"></i>
+                            </div>
+                            <div class="div">
+                                <input class="" type="text" placeholder="Nombre del archivo" [(ngModel)]="datosBackUp.nombre" name="nombre">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6 p-3">
+                <input type="button" class="btn" (click)="exportCsv()" value="Crear" data-bs-dismiss="modal" aria-label="Close">
+            </div>
+          </div>
+      </div>
+    </div>
+  </ng-template>

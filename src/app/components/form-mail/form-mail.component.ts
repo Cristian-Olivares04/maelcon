@@ -36,10 +36,9 @@ export class FormMailComponent implements OnInit {
   }
 
   obtenerParametros(){
-    this.MS.obtenerParametros();
     if(this.MS._params!=[]){
       this._params=this.MS._params;
-      console.log('params',this.MS._params)
+      //console.log('params',this.MS._params)
       this.datosParametros.host = this.MS._params[9]['VALOR'];
       this.datosParametros.usuario =this.MS._params[10]['VALOR'];
       this.datosParametros.contrasena =this.MS._params[11]['VALOR'];
@@ -54,7 +53,6 @@ export class FormMailComponent implements OnInit {
 
   actualizarParametros(){
     //console.log('datosParametros',this.datosParametros);
-
     var parameters = [
       {
         "ID_PARAMETRO": this._params[9]['ID_PARAMETRO'],
@@ -86,7 +84,6 @@ export class FormMailComponent implements OnInit {
     this.MS.actualizarParametros(parameters).subscribe((resp) => {
       //console.log('resp',resp);
       if(resp['CODIGO']==1){
-
         this._params[9]['VALOR'] = this.datosParametros.host;
         this._params[9]['ID_USUARIO'] = this.usAct;
         this._params[10]['VALOR'] = this.datosParametros.usuario;
@@ -99,14 +96,16 @@ export class FormMailComponent implements OnInit {
         this._params[13]['ID_USUARIO'] = this.usAct;
         Swal.fire({
           title: `Bien hecho...`,
-          text: `Parametros actualizados exitosamente`,
+          text:  `Los Parametros se actualizaron exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            this._Router.navigate(['/security']);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
           } else {
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
           }
         });
       }else{
