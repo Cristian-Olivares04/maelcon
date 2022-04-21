@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.updateJob = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getJobs = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.createJob = exports.checkUser = void 0;
+exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.updateJob = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissionsByRole = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getJobs = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.createJob = exports.checkUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -150,16 +150,16 @@ exports.updateRole = updateRole;
 
 var createObject = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body4, OBJETO, TIPO_OBJETO, DESCRIPCION, CREADO_POR, mensaje;
+    var _req$body4, OBJETOS, TIPO_OBJETO, DESCRIPCION, CREADO_POR, mensaje;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.prev = 0;
-            _req$body4 = req.body, OBJETO = _req$body4.OBJETO, TIPO_OBJETO = _req$body4.TIPO_OBJETO, DESCRIPCION = _req$body4.DESCRIPCION, CREADO_POR = _req$body4.CREADO_POR;
+            _req$body4 = req.body, OBJETOS = _req$body4.OBJETOS, TIPO_OBJETO = _req$body4.TIPO_OBJETO, DESCRIPCION = _req$body4.DESCRIPCION, CREADO_POR = _req$body4.CREADO_POR;
             _context4.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_OBJETOS(?,?,?,?,@MENSAJE, @CODIGO)", [OBJETO, TIPO_OBJETO, DESCRIPCION, CREADO_POR]);
+            return _databaseSQL["default"].query("CALL CREAR_OBJETOS(?,?,?,?,@MENSAJE, @CODIGO)", [OBJETOS, TIPO_OBJETO, DESCRIPCION, CREADO_POR]);
 
           case 4:
             _context4.next = 6;
@@ -193,7 +193,7 @@ exports.createObject = createObject;
 
 var updateObject = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-    var ID_OBJETO, _req$body5, OBJETO, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR, mensaje;
+    var ID_OBJETO, _req$body5, OBJETOS, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR, mensaje;
 
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
@@ -201,9 +201,9 @@ var updateObject = /*#__PURE__*/function () {
           case 0:
             _context5.prev = 0;
             ID_OBJETO = req.params.ID_OBJETO;
-            _req$body5 = req.body, OBJETO = _req$body5.OBJETO, TIPO_OBJETO = _req$body5.TIPO_OBJETO, DESCRIPCION = _req$body5.DESCRIPCION, MODIFICADO_POR = _req$body5.MODIFICADO_POR;
+            _req$body5 = req.body, OBJETOS = _req$body5.OBJETOS, TIPO_OBJETO = _req$body5.TIPO_OBJETO, DESCRIPCION = _req$body5.DESCRIPCION, MODIFICADO_POR = _req$body5.MODIFICADO_POR;
             _context5.next = 5;
-            return _databaseSQL["default"].query("CALL MODIFICAR_OBJETOS(?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_OBJETO, OBJETO, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR]);
+            return _databaseSQL["default"].query("CALL MODIFICAR_OBJETOS(?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_OBJETO, OBJETOS, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR]);
 
           case 5:
             _context5.next = 7;
@@ -1249,252 +1249,308 @@ var getComissions = /*#__PURE__*/function () {
 
 exports.getComissions = getComissions;
 
-var getComissionById = /*#__PURE__*/function () {
+var getPermissionsByRole = /*#__PURE__*/function () {
   var _ref25 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(req, res) {
-    var ID_USUARIO, COMISION, mensaje, _mensaje18;
+    var rolePermissions, mensaje, _mensaje18;
 
     return _regenerator["default"].wrap(function _callee25$(_context25) {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
             _context25.prev = 0;
-            ID_USUARIO = req.params.ID_USUARIO;
-            _context25.next = 4;
-            return _databaseSQL["default"].query("CALL OBTENER_COMISIONES_USUARIO(?,@MENSAJE, @CODIGO, @COMISIONES_TOTAL)", [ID_USUARIO]);
+            _context25.next = 3;
+            return _databaseSQL["default"].query("CALL OBTENER_PERMISOS_ROL(@MENSAJE, @CODIGO)");
 
-          case 4:
-            COMISION = _context25.sent;
-            _context25.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO, @COMISIONES_TOTAL as COMISIONES_TOTAL;");
+          case 3:
+            rolePermissions = _context25.sent;
+            _context25.next = 6;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 7:
+          case 6:
             mensaje = _context25.sent;
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
-              COMISION: JSON.parse(JSON.stringify(COMISION[0]))
+              permisosRol: JSON.parse(JSON.stringify(rolePermissions[0]))
             });
-            _context25.next = 17;
+            _context25.next = 16;
             break;
 
-          case 11:
-            _context25.prev = 11;
+          case 10:
+            _context25.prev = 10;
             _context25.t0 = _context25["catch"](0);
-            _context25.next = 15;
+            _context25.next = 14;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 14:
             _mensaje18 = _context25.sent;
             res.status(401).json({
               error: _context25.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje18))
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context25.stop();
         }
       }
-    }, _callee25, null, [[0, 11]]);
+    }, _callee25, null, [[0, 10]]);
   }));
 
-  return function getComissionById(_x49, _x50) {
+  return function getPermissionsByRole(_x49, _x50) {
     return _ref25.apply(this, arguments);
+  };
+}();
+
+exports.getPermissionsByRole = getPermissionsByRole;
+
+var getComissionById = /*#__PURE__*/function () {
+  var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res) {
+    var ID_USUARIO, COMISION, mensaje, _mensaje19;
+
+    return _regenerator["default"].wrap(function _callee26$(_context26) {
+      while (1) {
+        switch (_context26.prev = _context26.next) {
+          case 0:
+            _context26.prev = 0;
+            ID_USUARIO = req.params.ID_USUARIO;
+            _context26.next = 4;
+            return _databaseSQL["default"].query("CALL OBTENER_COMISIONES_USUARIO(?,@MENSAJE, @CODIGO, @COMISIONES_TOTAL)", [ID_USUARIO]);
+
+          case 4:
+            COMISION = _context26.sent;
+            _context26.next = 7;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO, @COMISIONES_TOTAL as COMISIONES_TOTAL;");
+
+          case 7:
+            mensaje = _context26.sent;
+            res.json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              COMISION: JSON.parse(JSON.stringify(COMISION[0]))
+            });
+            _context26.next = 17;
+            break;
+
+          case 11:
+            _context26.prev = 11;
+            _context26.t0 = _context26["catch"](0);
+            _context26.next = 15;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 15:
+            _mensaje19 = _context26.sent;
+            res.status(401).json({
+              error: _context26.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje19))
+            });
+
+          case 17:
+          case "end":
+            return _context26.stop();
+        }
+      }
+    }, _callee26, null, [[0, 11]]);
+  }));
+
+  return function getComissionById(_x51, _x52) {
+    return _ref26.apply(this, arguments);
   };
 }();
 
 exports.getComissionById = getComissionById;
 
 var postBackupDB = /*#__PURE__*/function () {
-  var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res) {
+  var _ref27 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(req, res) {
     var mensaje;
-    return _regenerator["default"].wrap(function _callee26$(_context26) {
+    return _regenerator["default"].wrap(function _callee27$(_context27) {
       while (1) {
-        switch (_context26.prev = _context26.next) {
+        switch (_context27.prev = _context27.next) {
           case 0:
-            _context26.prev = 0;
-            _context26.next = 3;
+            _context27.prev = 0;
+            _context27.next = 3;
             return _backup["default"].backupDB(req.body.name, req.body.ubication);
 
           case 3:
-            mensaje = _context26.sent;
-            console.log(mensaje);
-            _context26.next = 10;
+            mensaje = _context27.sent;
+            res.json({
+              mensaje: mensaje
+            });
+            _context27.next = 10;
             break;
 
           case 7:
-            _context26.prev = 7;
-            _context26.t0 = _context26["catch"](0);
+            _context27.prev = 7;
+            _context27.t0 = _context27["catch"](0);
             res.status(401).json({
-              error: _context26.t0.message
+              error: _context27.t0.message
             });
 
           case 10:
           case "end":
-            return _context26.stop();
+            return _context27.stop();
         }
       }
-    }, _callee26, null, [[0, 7]]);
+    }, _callee27, null, [[0, 7]]);
   }));
 
-  return function postBackupDB(_x51, _x52) {
-    return _ref26.apply(this, arguments);
+  return function postBackupDB(_x53, _x54) {
+    return _ref27.apply(this, arguments);
   };
 }();
 
 exports.postBackupDB = postBackupDB;
 
 var createJob = /*#__PURE__*/function () {
-  var _ref27 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(req, res) {
-    var _req$body11, PUESTO, DESCRIPCION, mensaje, _mensaje19;
-
-    return _regenerator["default"].wrap(function _callee27$(_context27) {
-      while (1) {
-        switch (_context27.prev = _context27.next) {
-          case 0:
-            _context27.prev = 0;
-            _req$body11 = req.body, PUESTO = _req$body11.PUESTO, DESCRIPCION = _req$body11.DESCRIPCION;
-            _context27.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_MP_PUESTO(?,?,@MENSAJE, @CODIGO);", [PUESTO, DESCRIPCION]);
-
-          case 4:
-            _context27.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context27.sent;
-            res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
-            _context27.next = 16;
-            break;
-
-          case 10:
-            _context27.prev = 10;
-            _context27.t0 = _context27["catch"](0);
-            _context27.next = 14;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 14:
-            _mensaje19 = _context27.sent;
-            res.status(401).json({
-              error: _context27.t0.message,
-              mensaje: JSON.parse(JSON.stringify(_mensaje19))
-            });
-
-          case 16:
-          case "end":
-            return _context27.stop();
-        }
-      }
-    }, _callee27, null, [[0, 10]]);
-  }));
-
-  return function createJob(_x53, _x54) {
-    return _ref27.apply(this, arguments);
-  };
-}();
-
-exports.createJob = createJob;
-
-var updateJob = /*#__PURE__*/function () {
   var _ref28 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28(req, res) {
-    var ID_PUESTO, _req$body12, PUESTO, DESCRIPCION, mensaje, _mensaje20;
+    var _req$body11, PUESTO, DESCRIPCION, mensaje, _mensaje20;
 
     return _regenerator["default"].wrap(function _callee28$(_context28) {
       while (1) {
         switch (_context28.prev = _context28.next) {
           case 0:
             _context28.prev = 0;
-            ID_PUESTO = req.params.ID_PUESTO;
-            _req$body12 = req.body, PUESTO = _req$body12.PUESTO, DESCRIPCION = _req$body12.DESCRIPCION;
-            _context28.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MP_PUESTO(?,?,?,@MENSAJE, @CODIGO);", [ID_PUESTO, PUESTO, DESCRIPCION]);
+            _req$body11 = req.body, PUESTO = _req$body11.PUESTO, DESCRIPCION = _req$body11.DESCRIPCION;
+            _context28.next = 4;
+            return _databaseSQL["default"].query("CALL CREAR_MP_PUESTO(?,?,@MENSAJE, @CODIGO);", [PUESTO, DESCRIPCION]);
 
-          case 5:
-            _context28.next = 7;
+          case 4:
+            _context28.next = 6;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 7:
+          case 6:
             mensaje = _context28.sent;
             res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
-            _context28.next = 17;
+            _context28.next = 16;
             break;
 
-          case 11:
-            _context28.prev = 11;
+          case 10:
+            _context28.prev = 10;
             _context28.t0 = _context28["catch"](0);
-            _context28.next = 15;
+            _context28.next = 14;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 14:
             _mensaje20 = _context28.sent;
             res.status(401).json({
               error: _context28.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje20))
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context28.stop();
         }
       }
-    }, _callee28, null, [[0, 11]]);
+    }, _callee28, null, [[0, 10]]);
   }));
 
-  return function updateJob(_x55, _x56) {
+  return function createJob(_x55, _x56) {
     return _ref28.apply(this, arguments);
   };
 }();
 
-exports.updateJob = updateJob;
+exports.createJob = createJob;
 
-var getJobs = /*#__PURE__*/function () {
+var updateJob = /*#__PURE__*/function () {
   var _ref29 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee29(req, res) {
-    var puestos, mensaje, _mensaje21;
+    var ID_PUESTO, _req$body12, PUESTO, DESCRIPCION, mensaje, _mensaje21;
 
     return _regenerator["default"].wrap(function _callee29$(_context29) {
       while (1) {
         switch (_context29.prev = _context29.next) {
           case 0:
             _context29.prev = 0;
-            _context29.next = 3;
-            return _databaseSQL["default"].query("CALL OBTENER_PUESTOS(@MENSAJE, @CODIGO);");
+            ID_PUESTO = req.params.ID_PUESTO;
+            _req$body12 = req.body, PUESTO = _req$body12.PUESTO, DESCRIPCION = _req$body12.DESCRIPCION;
+            _context29.next = 5;
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MP_PUESTO(?,?,?,@MENSAJE, @CODIGO);", [ID_PUESTO, PUESTO, DESCRIPCION]);
 
-          case 3:
-            puestos = _context29.sent;
-            _context29.next = 6;
+          case 5:
+            _context29.next = 7;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 6:
+          case 7:
             mensaje = _context29.sent;
-            res.status(200).json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
-              puestos: JSON.parse(JSON.stringify(puestos))[0]
-            });
-            _context29.next = 16;
+            res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+            _context29.next = 17;
             break;
 
-          case 10:
-            _context29.prev = 10;
+          case 11:
+            _context29.prev = 11;
             _context29.t0 = _context29["catch"](0);
-            _context29.next = 14;
+            _context29.next = 15;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 15:
             _mensaje21 = _context29.sent;
             res.status(401).json({
               error: _context29.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje21))
             });
 
-          case 16:
+          case 17:
           case "end":
             return _context29.stop();
         }
       }
-    }, _callee29, null, [[0, 10]]);
+    }, _callee29, null, [[0, 11]]);
   }));
 
-  return function getJobs(_x57, _x58) {
+  return function updateJob(_x57, _x58) {
     return _ref29.apply(this, arguments);
+  };
+}();
+
+exports.updateJob = updateJob;
+
+var getJobs = /*#__PURE__*/function () {
+  var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(req, res) {
+    var puestos, mensaje, _mensaje22;
+
+    return _regenerator["default"].wrap(function _callee30$(_context30) {
+      while (1) {
+        switch (_context30.prev = _context30.next) {
+          case 0:
+            _context30.prev = 0;
+            _context30.next = 3;
+            return _databaseSQL["default"].query("CALL OBTENER_PUESTOS(@MENSAJE, @CODIGO);");
+
+          case 3:
+            puestos = _context30.sent;
+            _context30.next = 6;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 6:
+            mensaje = _context30.sent;
+            res.status(200).json({
+              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              puestos: JSON.parse(JSON.stringify(puestos))[0]
+            });
+            _context30.next = 16;
+            break;
+
+          case 10:
+            _context30.prev = 10;
+            _context30.t0 = _context30["catch"](0);
+            _context30.next = 14;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 14:
+            _mensaje22 = _context30.sent;
+            res.status(401).json({
+              error: _context30.t0.message,
+              mensaje: JSON.parse(JSON.stringify(_mensaje22))
+            });
+
+          case 16:
+          case "end":
+            return _context30.stop();
+        }
+      }
+    }, _callee30, null, [[0, 10]]);
+  }));
+
+  return function getJobs(_x59, _x60) {
+    return _ref30.apply(this, arguments);
   };
 }();
 

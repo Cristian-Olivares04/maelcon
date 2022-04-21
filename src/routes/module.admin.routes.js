@@ -68,6 +68,12 @@ router.get(
   moduleAdminCtrl.getPermissions
 );
 
+router.get(
+  "/rolePermissions/",
+  [authJwt.verifyTokenSQL, authJwt.verifyAuth(1, 1)],
+  moduleAdminCtrl.getPermissionsByRole
+);
+
 router.get("/checkUser/", [authJwt.verifyTokenSQL], moduleAdminCtrl.checkUser);
 
 router.get("/getRoles/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoles);

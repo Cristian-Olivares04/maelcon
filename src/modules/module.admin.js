@@ -51,9 +51,9 @@ export const updateRole = async (req, res) => {
 
 export const createObject = async (req, res) => {
   try {
-    const { OBJETO, TIPO_OBJETO, DESCRIPCION, CREADO_POR } = req.body;
+    const { OBJETOS, TIPO_OBJETO, DESCRIPCION, CREADO_POR } = req.body;
     await pool.query("CALL CREAR_OBJETOS(?,?,?,?,@MENSAJE, @CODIGO)", [
-      OBJETO,
+      OBJETOS,
       TIPO_OBJETO,
       DESCRIPCION,
       CREADO_POR,
@@ -70,10 +70,10 @@ export const createObject = async (req, res) => {
 export const updateObject = async (req, res) => {
   try {
     const { ID_OBJETO } = req.params;
-    const { OBJETO, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR } = req.body;
+    const { OBJETOS, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR } = req.body;
     await pool.query("CALL MODIFICAR_OBJETOS(?,?,?,?,?,@MENSAJE, @CODIGO)", [
       ID_OBJETO,
-      OBJETO,
+      OBJETOS,
       TIPO_OBJETO,
       DESCRIPCION,
       MODIFICADO_POR,
@@ -580,6 +580,31 @@ export const getComissions = async (req, res) => {
     res.json({
       mensaje: JSON.parse(JSON.stringify(mensaje)),
       COMISION: JSON.parse(JSON.stringify(COMISION[0])),
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+export const getPermissionsByRole = async (req, res) => {
+  try {
+    const rolePermissions = await pool.query(
+      "CALL OBTENER_PERMISOS_ROL(@MENSAJE, @CODIGO)"
+    );
+
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    res.json({
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      permisosRol: JSON.parse(JSON.stringify(rolePermissions[0])),
     });
   } catch (error) {
     const mensaje = await pool.query(

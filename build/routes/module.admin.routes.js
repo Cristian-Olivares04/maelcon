@@ -28,10 +28,9 @@ router.put("/permission/:ID_OBJETO", [authJwt.verifyTokenSQL], moduleAdminCtrl.u
 router.post("/paymentMethod/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createPaymentMethod);
 router.put("/paymentMethod/:ID_PAGO", [authJwt.verifyTokenSQL], moduleAdminCtrl.updatePaymentMethod);
 router.post("/parameter/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createParameter);
-router.put("/parameter/",
-/*[authJwt.verifyTokenSQL]*/
-moduleAdminCtrl.updateParameter);
+router.put("/parameter/", [authJwt.verifyTokenSQL], moduleAdminCtrl.updateParameter);
 router.get("/userPermissions/:ID_USUARIO", [authJwt.verifyTokenSQL, authJwt.verifyAuth(1, 1)], moduleAdminCtrl.getPermissions);
+router.get("/rolePermissions/", [authJwt.verifyTokenSQL, authJwt.verifyAuth(1, 1)], moduleAdminCtrl.getPermissionsByRole);
 router.get("/checkUser/", [authJwt.verifyTokenSQL], moduleAdminCtrl.checkUser);
 router.get("/getRoles/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoles);
 router.get("/getRoles/:ID_ROL", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoleByID);

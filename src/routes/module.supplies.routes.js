@@ -26,7 +26,7 @@ router.post("/processSupply/:ID_COMPRA", moduleSuppliesCtrl.processSupply);
 
 router.get("/supplies/", moduleSuppliesCtrl.getSupplies);
 
-router.get("/supplies/:ID_COMPRA", moduleSuppliesCtrl.getSupplyByID);
+router.get("/supplies/:ID_PRODUCTO", moduleSuppliesCtrl.getSupplyByID);
 
 router.get("/providers/", moduleSuppliesCtrl.getSuppliers);
 
@@ -35,5 +35,9 @@ router.get("/providers/:ID_PROVEEDOR", moduleSuppliesCtrl.getSupplierByID);
 router.get("/purchases/", moduleSuppliesCtrl.getPurchases);
 
 router.get("/purchases/:ID_COMPRA", moduleSuppliesCtrl.getPurchaseByID);
+
+router.get("/productData/", moduleSuppliesCtrl.getProductData);
+
+router.get("/productData/:ID_PRODUCTO", moduleSuppliesCtrl.getProductDataByID);
 
 export default router;
