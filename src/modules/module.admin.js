@@ -6,9 +6,11 @@ export const updateUserStatus = async (req, res) => {
   try {
     const { ID_USUARIO } = req.params;
     const { ESTADO, MODIFICADO_POR } = req.body;
-    await pool.query(
-      `CALL ESTADO_USUARIO(${ID_USUARIO}, ${ESTADO}, ${MODIFICADO_POR}, @MENSAJE, @CODIGO);`
-    );
+    await pool.query("CALL ESTADO_USUARIO?,?,?, @MENSAJE, @CODIGO);", [
+      ID_USUARIO,
+      ESTADO,
+      MODIFICADO_POR,
+    ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
@@ -21,9 +23,11 @@ export const updateUserStatus = async (req, res) => {
 export const createRoles = async (req, res) => {
   try {
     const { ROL, DESCRIPCION, CREADO_POR } = req.body;
-    await pool.query(
-      `CALL CREAR_MS_ROL(${ROL}, ${DESCRIPCION}, ${CREADO_POR}, @MENSAJE, @CODIGO);`
-    );
+    await pool.query("CALL CREAR_MS_ROL(?,?,?,@MENSAJE, @CODIGO);", [
+      ROL,
+      DESCRIPCION,
+      CREADO_POR,
+    ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
@@ -37,9 +41,12 @@ export const updateRole = async (req, res) => {
   try {
     const { ID_ROL } = req.params;
     const { ROL, DESCRIPCION, MODIFICADO_POR } = req.body;
-    await pool.query(
-      `CALL ACTUALIZAR_MS_ROL(${ID_ROL},${ROL}, ${DESCRIPCION}, ${MODIFICADO_POR}, @MENSAJE, @CODIGO);`
-    );
+    await pool.query("CALL ACTUALIZAR_MS_ROL(?,?,?,?, @MENSAJE, @CODIGO);", [
+      ID_ROL,
+      ROL,
+      DESCRIPCION,
+      MODIFICADO_POR,
+    ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );

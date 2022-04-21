@@ -29,7 +29,7 @@ var updateUserStatus = /*#__PURE__*/function () {
             ID_USUARIO = req.params.ID_USUARIO;
             _req$body = req.body, ESTADO = _req$body.ESTADO, MODIFICADO_POR = _req$body.MODIFICADO_POR;
             _context.next = 5;
-            return _databaseSQL["default"].query("CALL ESTADO_USUARIO(".concat(ID_USUARIO, ", ").concat(ESTADO, ", ").concat(MODIFICADO_POR, ", @MENSAJE, @CODIGO);"));
+            return _databaseSQL["default"].query("CALL ESTADO_USUARIO?,?,?, @MENSAJE, @CODIGO);", [ID_USUARIO, ESTADO, MODIFICADO_POR]);
 
           case 5:
             _context.next = 7;
@@ -72,7 +72,7 @@ var createRoles = /*#__PURE__*/function () {
             _context2.prev = 0;
             _req$body2 = req.body, ROL = _req$body2.ROL, DESCRIPCION = _req$body2.DESCRIPCION, CREADO_POR = _req$body2.CREADO_POR;
             _context2.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_MS_ROL(".concat(ROL, ", ").concat(DESCRIPCION, ", ").concat(CREADO_POR, ", @MENSAJE, @CODIGO);"));
+            return _databaseSQL["default"].query("CALL CREAR_MS_ROL(?,?,?,@MENSAJE, @CODIGO);", [ROL, DESCRIPCION, CREADO_POR]);
 
           case 4:
             _context2.next = 6;
@@ -116,7 +116,7 @@ var updateRole = /*#__PURE__*/function () {
             ID_ROL = req.params.ID_ROL;
             _req$body3 = req.body, ROL = _req$body3.ROL, DESCRIPCION = _req$body3.DESCRIPCION, MODIFICADO_POR = _req$body3.MODIFICADO_POR;
             _context3.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_ROL(".concat(ID_ROL, ",").concat(ROL, ", ").concat(DESCRIPCION, ", ").concat(MODIFICADO_POR, ", @MENSAJE, @CODIGO);"));
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_ROL(?,?,?,?, @MENSAJE, @CODIGO);", [ID_ROL, ROL, DESCRIPCION, MODIFICADO_POR]);
 
           case 5:
             _context3.next = 7;

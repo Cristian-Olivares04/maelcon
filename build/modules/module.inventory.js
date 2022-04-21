@@ -190,7 +190,7 @@ exports.createProduct = createProduct;
 
 var updateProduct = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var ID_PRODUCTO, _req$body4, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, mensaje, _mensaje4;
+    var ID_PRODUCTO, _req$body4, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, productoAct, mensaje, _mensaje4;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -211,45 +211,51 @@ var updateProduct = /*#__PURE__*/function () {
           case 6:
             img = _context4.sent;
             console.log(img);
-            _context4.next = 11;
+            _context4.next = 15;
             break;
 
           case 10:
-            img = IMG;
+            _context4.next = 12;
+            return _databaseSQL["default"].query("CALL OBTENER_PRODUCTO(?, @MENSAJE, @CODIGO)", [ID_PRODUCTO]);
 
-          case 11:
-            _context4.next = 13;
-            return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
-
-          case 13:
-            _context4.next = 15;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+          case 12:
+            productoAct = _context4.sent;
+            console.log(productoAct[0][0].IMG_PRODUCTO);
+            img = productoAct[0][0].IMG_PRODUCTO;
 
           case 15:
-            mensaje = _context4.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context4.next = 25;
-            break;
+            _context4.next = 17;
+            return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
 
-          case 19:
-            _context4.prev = 19;
-            _context4.t0 = _context4["catch"](0);
-            _context4.next = 23;
+          case 17:
+            _context4.next = 19;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
+          case 19:
+            mensaje = _context4.sent;
+            res.json(JSON.parse(JSON.stringify(mensaje)));
+            _context4.next = 29;
+            break;
+
           case 23:
+            _context4.prev = 23;
+            _context4.t0 = _context4["catch"](0);
+            _context4.next = 27;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 27:
             _mensaje4 = _context4.sent;
             res.status(401).json({
               error: _context4.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje4))
             });
 
-          case 25:
+          case 29:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 19]]);
+    }, _callee4, null, [[0, 23]]);
   }));
 
   return function updateProduct(_x7, _x8) {

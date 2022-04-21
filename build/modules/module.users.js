@@ -65,7 +65,7 @@ var createUser = /*#__PURE__*/function () {
 
           case 12:
             _context.next = 14;
-            return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(\n        ".concat(ID_PUESTO, ",\n        ").concat(NOMBRE, ",\n        ").concat(APELLIDO, ",\n        ").concat(GENERO, ",\n        ").concat(RTN, ",\n        ").concat(TELEFONO, ",\n        ").concat(SUELDO, ",\n        ").concat(ID_ROL, ",\n        ").concat(USUARIO, ",\n        '").concat(pass2, "',\n        ").concat(img, ",\n        ").concat(CORREO_ELECTRONICO, ",\n        ").concat(CREADO_POR, ",\n        ").concat(FECHA_VENCIMIENTO, ",\n        @MENSAJE, \n        @CODIGO);"));
+            return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_PUESTO, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, pass2, img, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO]);
 
           case 14:
             _context.next = 16;
@@ -229,7 +229,7 @@ exports.deleteUserById = deleteUserById;
 
 var updateUserByIdPA = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var ID_USUARIO, _req$body2, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, mensaje;
+    var ID_USUARIO, _req$body2, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, usuarioAct, mensaje;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
@@ -250,38 +250,42 @@ var updateUserByIdPA = /*#__PURE__*/function () {
 
           case 7:
             img = _context6.sent;
-            _context6.next = 12;
+            _context6.next = 14;
             break;
 
           case 10:
-            img = "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
-            nombreImg = "";
+            _context6.next = 12;
+            return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)", [ID_USUARIO]);
 
           case 12:
-            _context6.next = 14;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(".concat(ID_USUARIO, ",").concat(NOMBRE, ",").concat(APELLIDO, ",").concat(ID_PUESTO, ",").concat(TELEFONO, ",").concat(SUELDO, ",").concat(ID_ROL, ",").concat(img, ",").concat(MODIFICADO_POR, ",@MENSAJE,@CODIGO);"));
+            usuarioAct = _context6.sent;
+            img = usuarioAct[0][0].IMG_USUARIO;
 
           case 14:
             _context6.next = 16;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, img, MODIFICADO_POR]);
 
           case 16:
+            _context6.next = 18;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 18:
             mensaje = _context6.sent;
             res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context6.next = 23;
+            _context6.next = 25;
             break;
 
-          case 20:
-            _context6.prev = 20;
+          case 22:
+            _context6.prev = 22;
             _context6.t0 = _context6["catch"](0);
             res.json(_context6.t0);
 
-          case 23:
+          case 25:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 20]]);
+    }, _callee6, null, [[0, 22]]);
   }));
 
   return function updateUserByIdPA(_x11, _x12) {
@@ -416,7 +420,7 @@ var updatePassword = /*#__PURE__*/function () {
             mensaje = _context9.sent;
             info = JSON.parse(JSON.stringify(mensaje));
             _context9.next = 14;
-            return _databaseSQL["default"].query("SELECT * FROM tbl_ms_usuario WHERE ID_USUARIO = ?", [ID_USUARIO]);
+            return _databaseSQL["default"].query("SELECT * FROM TBL_MS_USUARIO WHERE ID_USUARIO = ?", [ID_USUARIO]);
 
           case 14:
             usuarioAct = _context9.sent;
