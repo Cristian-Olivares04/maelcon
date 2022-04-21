@@ -1,6 +1,11 @@
 import { async } from "regenerator-runtime";
 import pool from "../databaseSQL";
 import backup from "../utils/backup";
+import keys from "../keys";
+import mysqldump from "mysqldump";
+const fs = require("fs");
+import { dir } from "../backups/directory";
+const moment = require("moment");
 
 export const updateUserStatus = async (req, res) => {
   try {
@@ -654,10 +659,8 @@ export const getComissionById = async (req, res) => {
 
 export const postBackupDB = async (req, res) => {
   try {
-    let mensaje = await backup.backupDB(req.body.name, req.body.ubication);
-    res.json({
-      mensaje: mensaje,
-    });
+    let mensaje = await backup.backupDB(req.body.name);
+    res.json(mensaje);
   } catch (error) {
     res.status(401).json({
       error: error.message,
@@ -665,6 +668,28 @@ export const postBackupDB = async (req, res) => {
   }
 };
 
+export const postBackupDB2 = async (req, res) => {
+  try {
+    const fileName = `${req.body.name}_${moment().format("YYYY_MM_DD")}.sql`;
+    const wstream = fs.createWriteStream(`${dir}/${fileName}`);
+
+    await mysqldump({
+      connection: {
+        host: keys.database["host"],
+        user: keys.database["user"],
+        password: keys.database["password"],
+        database: keys.database["database"],
+      },
+      dumpToFile: wstream.path,
+    });
+
+    res.download(wstream.path);
+  } catch (error) {
+    res.status(401).json({
+      error: error.message,
+    });
+  }
+};
 export const createJob = async (req, res) => {
   try {
     const { PUESTO, DESCRIPCION } = req.body;
