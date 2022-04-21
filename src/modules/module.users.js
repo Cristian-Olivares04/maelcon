@@ -38,23 +38,23 @@ export const createUser = async (req, res) => {
   }
 
   await pool.query(
-    `CALL CREAR_MS_USUARIO(
-        ${ID_PUESTO},
-        ${NOMBRE},
-        ${APELLIDO},
-        ${GENERO},
-        ${RTN},
-        ${TELEFONO},
-        ${SUELDO},
-        ${ID_ROL},
-        ${USUARIO},
-        '${pass2}',
-        ${img},
-        ${CORREO_ELECTRONICO},
-        ${CREADO_POR},
-        ${FECHA_VENCIMIENTO},
-        @MENSAJE, 
-        @CODIGO);`
+    `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+    [
+      ID_PUESTO,
+      NOMBRE,
+      APELLIDO,
+      GENERO,
+      RTN,
+      TELEFONO,
+      SUELDO,
+      ID_ROL,
+      USUARIO,
+      pass2,
+      img,
+      CORREO_ELECTRONICO,
+      CREADO_POR,
+      FECHA_VENCIMIENTO,
+    ]
   );
   const mensaje = await pool.query(
     "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -176,13 +176,26 @@ export const updateUserByIdPA = async (req, res) => {
         "Maelcon/Perfiles"
       );
     } else {
-      img =
-        "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
-      nombreImg = "";
+      const usuarioAct = await pool.query(
+        "CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)",
+        [ID_USUARIO]
+      );
+      img = usuarioAct[0][0].IMG_USUARIO;
     }
 
     await pool.query(
-      `CALL ACTUALIZAR_MS_USUARIO(${ID_USUARIO},${NOMBRE},${APELLIDO},${ID_PUESTO},${TELEFONO},${SUELDO},${ID_ROL},${img},${MODIFICADO_POR},@MENSAJE,@CODIGO);`
+      `CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+      [
+        ID_USUARIO,
+        NOMBRE,
+        APELLIDO,
+        ID_PUESTO,
+        TELEFONO,
+        SUELDO,
+        ID_ROL,
+        img,
+        MODIFICADO_POR
+      ]
     );
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -246,7 +259,7 @@ export const updatePassword = async (req, res) => {
     let contentHTML;
 
     const usuarioAct = await pool.query(
-      "SELECT * FROM tbl_ms_usuario WHERE ID_USUARIO = ?",
+      "SELECT * FROM TBL_MS_USUARIO WHERE ID_USUARIO = ?",
       [ID_USUARIO]
     );
     const correo = usuarioAct[0]["CORREO_ELECTRONICO"];
