@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 function search(PERMISOS: any, text: string, pipe: PipeTransform): PermisosRol[] {
-  console.log('permisos',PERMISOS);
+  //console.log('permisos',PERMISOS);
   return PERMISOS.filter(ob => {
     const term = text.toLowerCase();
     return ob.OBJETOS.toLowerCase().includes(term)
@@ -157,12 +157,18 @@ export class PermissionsComponent implements OnInit {
     //console.log(this.datosPermiso)
     this.MS.crearPermiso(this.datosPermiso).subscribe((resp) => {
       if(resp[0]['CODIGO']==1){
+        this.MS.obtenerPermisos();
         Swal.fire({
           title: `Bien hecho...`,
           text:  `Permiso creado exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
+            this.permisosRol=this.MS._permisosRol;
+            this.permisosInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this.permisosRol, text, this.pipe))
+            );
             this.modalService.dismissAll();
             localStorage.setItem('ruta', 'administration');
             this._Router.navigate(['/administration/path?refresh=1']);

@@ -5,7 +5,7 @@ import { AuthResponse, usuario } from '../interfaces/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { Permission } from '../interfaces/objects.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,8 @@ export class UsuariosService {
   public _userToken:any = '';
   public nombreUsuario = '';
   public _usuarios:usuario[]=[];
+  public _permisos:Permission[]=[];
+  public ruta:any = '';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -65,13 +67,13 @@ export class UsuariosService {
     APELLIDO_PERSONA: ''
   };
 
-  constructor( private http:HttpClient, private _Router:Router){
-    this.retornarUsuario();
+  constructor( private http:HttpClient ){
+    this._userToken = localStorage.getItem("auth-token");
+    this.ruta = localStorage.getItem("ruta");
     this.obtenerUsuarios();
   }
 
   get usuario(): usuario {
-    this.retornarUsuario();
     return this.datosUsuario;
   }
 
@@ -84,75 +86,48 @@ export class UsuariosService {
   }
 
   //funcion para retornar un usuario en especifico desde el servicio usuario
-  retornarUsuario(){
-    this._userToken = localStorage.getItem("auth-token");
-    this._usuarioActual = localStorage.getItem("id");
-    if(this._usuarioActual!=null){
-      this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`)
-        .subscribe((resp:any) => {
-          if(resp['mensaje'][0]['CODIGO']==1){
-            //console.log("[webpack]");
-            localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
-            this.datosUsuario = resp['usuario'][0];
-          }else{
-            console.log("falso no retorno");
+  retornarUsuario(id:any): Observable<any>{
+    return this.http.get<usuario>(`${this.bUA}/module/users/${id}`);
+      /* .subscribe((resp:any) => {
+        if(resp['mensaje'][0]['CODIGO']==1){
+          //console.log("[webpack]");
+          localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
+          this.datosUsuario = resp['usuario'][0];
+        }else{
+          console.log("falso no retorno");
+        }
+      }, error => {
+        console.error('Ocurrió un error',error);
+        Swal.fire({
+          title: `Token expirado...`,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.cerrarSesion();
+            this._Router.navigate(['login']);
+          } else {
+            console.log(`modal was dismissed by ${result.dismiss}`);
+            this.cerrarSesion();
+            this._Router.navigate(['login']);
           }
-        }, error => {
-          console.error('Ocurrió un error',error);
-          Swal.fire({
-            title: `Token expirado...`,
-            confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.cerrarSesion();
-              this._Router.navigate(['login']);
-            } else {
-              console.log(`modal was dismissed by ${result.dismiss}`);
-              this.cerrarSesion();
-              this._Router.navigate(['login']);
-            }
-          })
-        });
-    }
+        })
+      }); */
   }
 
   //funcion para retornar un usuario en especifico desde el servicio usuario
-  obtenerInfoUsuario(){
-    this._userToken = localStorage.getItem("auth-token");
-    if(this._userToken!=null){
-      this.http.get<usuario>(`${this.bUA}/module/users/myinfo/userInfo`)
-        .subscribe((resp:any) => {
-          if(resp['mensaje'][0]['CODIGO']==1){
-            //console.log("[webpack]");
-            this._usuarioActual=resp['usuario'][0]['ID_USUARIO'];
-            this._usuarioActual2=resp['usuario'][0]['ID_USUARIO'];
-            this.datosUsuario = resp['usuario'][0];
-          }else{
-            console.log("falso no retorno");
-          }
-        }, error => {
-          console.error('Ocurrió un error',error);
-          Swal.fire({
-            title: `Token expirado...`,
-            confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.cerrarSesion();
-              this._Router.navigate(['login']);
-            } else {
-              console.log(`modal was dismissed by ${result.dismiss}`);
-              this.cerrarSesion();
-              this._Router.navigate(['login']);
-            }
-          })
-        });
-    }
+  obtenerInfoUsuario(): Observable<any>{
+    //console.log('token',this._userToken);
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'auth-token': this._userToken
+    });
+    //console.log('token',this.headers);
+    return this.http.get<any>(`${this.bUA}/module/users/myinfo/userInfo`, {headers:this.headers});
   }
 
   //funcion para obtener un usuario en especifico como observable
   obtenerUsuario(): Observable<any>{
     this._userToken = localStorage.getItem("auth-token");
-    this._usuarioActual = localStorage.getItem("id");
     return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`);
   }
 
@@ -217,8 +192,10 @@ export class UsuariosService {
   //consulta para cerrar sesion
   cerrarSesion(){
     this._usuarioActual='';
+    this._usuarioActual2='';
+    this._userToken='';
     localStorage.removeItem('auth-token');
-    localStorage.removeItem('id');
+    localStorage.removeItem('ruta');
   }
 
   //funcion para verificacion del correo mediante regex

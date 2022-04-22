@@ -104,6 +104,7 @@ export class AdministrationComponent implements OnInit {
   ngOnInit(): void {
     this.MS.obtenerRegistrosBitacora();
     this._bitacora=this.MS._bitacora;
+    localStorage.setItem('ruta', 'administration');
   }
 
   checkUser(){

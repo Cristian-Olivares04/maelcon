@@ -108,12 +108,18 @@ export class ObjectsComponent implements OnInit {
     //console.log(this.datoObjeto)
     this.MS.crearObjeto(this.datoObjeto).subscribe((resp) => {
       if(resp[0]['CODIGO']==1){
+        this.MS.obtenerObjetos();
         Swal.fire({
           title: `Bien hecho...`,
           text:  `Objeto creado exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
+            this.objects=this.MS._objects;
+            this.objectsInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this.objects, text, this.pipe))
+            );
             this.modalService.dismissAll();
             localStorage.setItem('ruta', 'administration');
             this._Router.navigate(['/administration/path?refresh=1']);

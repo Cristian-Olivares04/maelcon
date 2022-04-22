@@ -1,6 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { UsuariosService } from '../../services/usuarios.service';
 
 @Component({
@@ -23,18 +21,17 @@ export class LoginComponent {
   public status: boolean = false;
   public validacionCorreo: boolean = false;
 
-  constructor(private UsuariosService:UsuariosService, private _Router: Router) { }
+  constructor(private US:UsuariosService) { }
 
   iniciarSesion(){
     //console.log(this.usuarioLogin)
-    this.validacionCorreo = this.UsuariosService.verificacionCorreo(this.usuarioLogin.CORREO_ELECTRONICO);
+    this.validacionCorreo = this.US.verificacionCorreo(this.usuarioLogin.CORREO_ELECTRONICO);
     if(!this.validacionCorreo){
-        this.UsuariosService.verifLogin(this.usuarioLogin).subscribe((resp) => {
+        this.US.verifLogin(this.usuarioLogin).subscribe((resp) => {
           console.log('resp',resp);
           if(resp['token']!=null){
             localStorage.setItem('auth-token', resp['token']);
-            localStorage.setItem('id', resp['user'][0]['ID_USUARIO']);
-            this.UsuariosService.retornarUsuario();
+            //this.US.obtenerInfoUsuario();
             //console.log('yes',resp);
             this.status = false;
             window.location.reload();

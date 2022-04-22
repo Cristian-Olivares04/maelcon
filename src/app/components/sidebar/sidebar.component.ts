@@ -18,56 +18,68 @@ export class SidebarComponent implements OnInit{
   width = '170px';
   dockSize = '72px';
   regionVisible: string = 'Registro';
-  user:usuario=this.UsuariosService.datosUsuario;
   condition2 = false;
-  condition=this.MS.condition;
-  _obs:Permission[]=this.MS._permissions;
+  _obs:Permission[]=[];
 
-  sales = 1;
-  shopping = 1;
-  inventory = 1;
-  administration = 1;
-  security = 1;
+  user:usuario={
+    ID_USUARIO: '',
+    ID_PUESTO: 0,
+    ID_ROL: 0,
+    USUARIO: '',
+    CONTRASENA: '',
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: '',
+    CORREO_ELECTRONICO: '',
+    TELEFONO: '',
+    RTN: '',
+    SUELDO: 0,
+    IMG_USUARIO: '',
+    PREGUNTA: '',
+    RESPUESTA: '',
+    GENERO: '',
+    FECHA_VENCIMIENTO: '',
+    CREADO_POR: 0,
+    ESTADO: 0
+  };
 
-  constructor(private MS:MantenimientoService,private UsuariosService:UsuariosService,  private router: Router ) { }
+  sales = 0;
+  shopping = 0;
+  inventory = 0;
+  administration = 0;
+  security = 0;
+
+  constructor(private US:UsuariosService, private router:Router, private MS:MantenimientoService) {}
 
   ngOnInit(): void {
-      this.UsuariosService.obtenerUsuario()
-      .subscribe((resp:any) => {
-        if(resp['mensaje'][0]['CODIGO']==1){
-          this._obs=this.MS._permissions;
-          this.user= resp['usuario'][0];
-          this.UsuariosService.datosUsuario = resp['usuario'][0];
-          console.log('obs',this._obs);
-          //this.pantallasDisponibles();
-          if(localStorage.getItem("ruta")!=null){
-            this.router.navigate([`/${localStorage.getItem("ruta")}`]);
-          }else{
-            this.router.navigate([`/sales`]);
-            localStorage.setItem('ruta', 'sales');
-          }
-          this.condition2=true;
-          this.condition=this.MS.condition;
-        }else{
-          console.log("falso no retorno");
+    this.US._userToken = localStorage.getItem("auth-token");
+    this.US.obtenerInfoUsuario().subscribe((resp) => {
+      //console.log('resp my info: ',resp)
+      if(resp['mensaje'][0]['CODIGO']==1){
+        //console.log("[webpack]");
+        this.user = resp['usuario'][0];
+        this._obs=resp['permisos'];
+        this.US._usuarioActual=resp['usuario'][0]['ID_USUARIO'];
+        this.US._usuarioActual2=resp['usuario'][0]['ID_USUARIO'];
+        this.US.datosUsuario = resp['usuario'][0];
+        this.US._permisos = resp['permisos'];
+        this.pantallasDisponibles();
+      }else{
+        console.log("falso no retorno");
+      }
+    }, error => {
+      console.error('Ocurrió un error',error);
+      Swal.fire({
+        title: `Token expirado...`,
+        confirmButtonText: 'OK',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cerrarSesion();
+        } else {
+          console.log(`modal was dismissed by ${result.dismiss}`);
           this.cerrarSesion();
         }
-      }, error => {
-        console.error('Ocurrió un error',error);
-        Swal.fire({
-          title: `Token expirado...`,
-          confirmButtonText: 'OK',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.cerrarSesion();
-            this.router.navigate(['login']);
-          } else {
-            console.log(`modal was dismissed by ${result.dismiss}`);
-            this.cerrarSesion();
-            this.router.navigate(['login']);
-          }
-        })
-      });
+      })
+    });
   }
 
   toggleSidebar() {
@@ -80,24 +92,36 @@ export class SidebarComponent implements OnInit{
 
   cerrarSesion(){
     //console.log('Funciona!!')
-    this.UsuariosService.cerrarSesion();
+    this.US.cerrarSesion();
     window.location.reload();
   }
 
   pantallasDisponibles(){
+    var rutaTemp:any='';
     //console.log('obs for',this._obs);
     for(let i = 0; i < this._obs.length; i++){
       if(this._obs[i].ID_OBJETO == 1){
         this.sales = 1;
+        rutaTemp='sales';
       }else if(this._obs[i].ID_OBJETO == 2){
         this.shopping = 1;
+        rutaTemp='shopping';
       }else if(this._obs[i].ID_OBJETO == 3){
         this.inventory = 1;
+        rutaTemp='inventory';
       }else if(this._obs[i].ID_OBJETO == 4){
         this.administration = 1;
+        rutaTemp='administration';
       }else if(this._obs[i].ID_OBJETO == 5){
         this.security = 1;
+        rutaTemp='security';
       }
     }
+    if(localStorage.getItem("ruta")!=null){
+      this.router.navigate([`/${localStorage.getItem("ruta")}`]);
+    }else{
+      this.router.navigate([`/${rutaTemp}`]);
+    }
+    this.condition2=true;
   }
 }

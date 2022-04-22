@@ -11,6 +11,7 @@ export class SecurityComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'security');
   }
 
   descargarDB(){

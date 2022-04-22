@@ -14,12 +14,14 @@ export class AppComponent {
   title = 'Maelcon';
   public user = false;
 
-  constructor(private UsuariosService: UsuariosService, private MS:MantenimientoService, private CP:ComprasService, private IN:InventarioService, private _Router:Router){}
+  constructor(private US: UsuariosService){}
 
   ngOnInit(): void {
-    if(this.UsuariosService._usuarioActual!=null){
+    if(this.US._userToken!=null){
+      //console.log('usuario si',this.US._userToken);
       this.user = true;
     }else{
+      //console.log('usuario no',this.US._userToken);
       this.user = false;
     }
   }

@@ -12,6 +12,7 @@ import { parseJsonText } from 'typescript';
 export class BackupComponent implements OnInit {
   bitacora:Bitacora[]=this.MS._bitacora;
   public actionVal = this.MS.actionVal;
+  contenido = '';
 
   @Input() datosBackUp = {
     nombre:''
@@ -30,7 +31,7 @@ export class BackupComponent implements OnInit {
   downloadFile(data) {
     let arrHeader = ["ID_USUARIO", "ID_OBJETO", "ACCION", "DESCRIPCION", "INFORMACION_ANTERIOR", "INFORMACION_ACTUAL", "FECHA_BITACORA"];
     let csvData = this.ConvertToCSV(data, arrHeader);
-    console.log(csvData)
+    //console.log(csvData)
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement("a");
     let url = URL.createObjectURL(blob);
@@ -44,6 +45,7 @@ export class BackupComponent implements OnInit {
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
+    this.datosBackUp.nombre='';
   }
 
   ConvertToCSV(objArray, headerList) {
@@ -68,6 +70,7 @@ export class BackupComponent implements OnInit {
       }
       str += line + '\r\n';
     }
+    this.contenido=str;
     return str;
   }
 

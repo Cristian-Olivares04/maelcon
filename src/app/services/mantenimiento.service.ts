@@ -28,7 +28,6 @@ export class MantenimientoService {
   });
 
   constructor(private US:UsuariosService, private http:HttpClient) {
-    this.obtenerPermisosUsuarios(this._usuarioActual);
     this.obtenerPermisos();
     this.obtenerObjetos();
     this.obtenerRoles();
@@ -38,7 +37,6 @@ export class MantenimientoService {
   }
 
   obtenerInfo(){
-    this.obtenerPermisosUsuarios(this._usuarioActual);
     this.obtenerPermisos();
     this.obtenerObjetos();
     this.obtenerRoles();
@@ -108,6 +106,7 @@ export class MantenimientoService {
 
   //funcion para obtener permisos para un usuario
   obtenerPermisosUsuarios( id:any ){
+    //console.log('usAct', id)
     this.http.get<any>(`${this.bUA}/module/admin/userPermissions/${id}`, {headers:this.headers}).subscribe((resp) => {
       //console.log('resp permisos',resp['permisos']);
       if(resp['mensaje'][0]['CODIGO']==1){

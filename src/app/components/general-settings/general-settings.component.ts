@@ -83,6 +83,16 @@ export class GeneralSettingsComponent implements OnInit {
     this.MS.actualizarParametros(parameters).subscribe((resp) => {
       console.log('resp',resp);
       if(resp['CODIGO']==1){
+        this._params[0]['VALOR'] = this.datosParametros.ISV.toString();
+        this._params[0]['ID_USUARIO'] = this.usAct;
+        this._params[1]['VALOR'] = this.datosParametros.comision.toString();
+        this._params[1]['ID_USUARIO'] = this.usAct;
+        this._params[2]['VALOR'] = this.datosParametros.intentos_sesion.toString();
+        this._params[2]['ID_USUARIO'] = this.usAct;
+        this._params[3]['VALOR'] = this.datosParametros.intentos_recuperacion.toString();
+        this._params[3]['ID_USUARIO'] = this.usAct;
+        this._params[4]['VALOR'] = this.datosParametros.tiempo_duracion.toString();
+        this._params[4]['ID_USUARIO'] = this.usAct;
         Swal.fire({
           title: `Bien hecho...`,
           text:  `Los Parametros se actualizaron exitosamente`,

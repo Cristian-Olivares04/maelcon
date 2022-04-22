@@ -12,6 +12,7 @@ export class InventoryComponent implements OnInit {
   constructor(private modalService: NgbModal, private IN:InventarioService) { }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'inventory');
   }
 
   openModal(content:Object) {

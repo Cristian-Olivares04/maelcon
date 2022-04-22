@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 function search(ROLES: any, text: string, pipe: PipeTransform): Role[] {
-  console.log('roles',ROLES);
+  //console.log('roles',ROLES);
   return ROLES.filter(ob => {
     const term = text.toLowerCase();
     return ob.ROL.toLowerCase().includes(term)
@@ -85,15 +85,15 @@ export class RolesComponent implements OnInit {
   }
 
   actRol(id:any){
-    console.log('id',id)
+    //console.log('id',id)
     var js={
       ROL:this.datoRole.ROL,
       DESCRIPCION:this.datoRole.DESCRIPCION,
       MODIFICADO_POR: parseInt(this.US._usuarioActual)
     }
-    console.log('datoRol', js)
+    //console.log('datoRol', js)
     this.MS.actualizarRol(js, id).subscribe((resp) => {
-      console.log('resp rol',resp)
+      //console.log('resp rol',resp)
       if(resp[0]['CODIGO']==1){
         Swal.fire({
           title: `Bien hecho...`,
@@ -141,6 +141,11 @@ export class RolesComponent implements OnInit {
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
+            this.roles=this.MS._roles;
+            this.rolesInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this.roles, text, this.pipe))
+            );
             this.modalService.dismissAll();
             localStorage.setItem('ruta', 'administration');
             this._Router.navigate(['/administration/path?refresh=1']);
