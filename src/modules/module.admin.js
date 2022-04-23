@@ -2,14 +2,21 @@ import { async } from "regenerator-runtime";
 import pool from "../databaseSQL";
 import backup from "../utils/backup";
 var cloudinary_services = require("../utils/cloudinary_services");
+import keys from "../keys";
+import mysqldump from "mysqldump";
+const fs = require("fs");
+import { dir } from "../backups/directory";
+const moment = require("moment");
 
 export const updateUserStatus = async (req, res) => {
   try {
     const { ID_USUARIO } = req.params;
     const { ESTADO, MODIFICADO_POR } = req.body;
-    await pool.query(
-      `CALL ESTADO_USUARIO(${ID_USUARIO}, ${ESTADO}, ${MODIFICADO_POR}, @MENSAJE, @CODIGO);`
-    );
+    await pool.query("CALL ESTADO_USUARIO?,?,?, @MENSAJE, @CODIGO);", [
+      ID_USUARIO,
+      ESTADO,
+      MODIFICADO_POR,
+    ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
@@ -22,9 +29,11 @@ export const updateUserStatus = async (req, res) => {
 export const createRoles = async (req, res) => {
   try {
     const { ROL, DESCRIPCION, CREADO_POR } = req.body;
-    await pool.query(
-      `CALL CREAR_MS_ROL(${ROL}, ${DESCRIPCION}, ${CREADO_POR}, @MENSAJE, @CODIGO);`
-    );
+    await pool.query("CALL CREAR_MS_ROL(?,?,?,@MENSAJE, @CODIGO);", [
+      ROL,
+      DESCRIPCION,
+      CREADO_POR,
+    ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
@@ -38,9 +47,12 @@ export const updateRole = async (req, res) => {
   try {
     const { ID_ROL } = req.params;
     const { ROL, DESCRIPCION, MODIFICADO_POR } = req.body;
-    await pool.query(
-      `CALL ACTUALIZAR_MS_ROL(${ID_ROL},${ROL}, ${DESCRIPCION}, ${MODIFICADO_POR}, @MENSAJE, @CODIGO);`
-    );
+    await pool.query("CALL ACTUALIZAR_MS_ROL(?,?,?,?, @MENSAJE, @CODIGO);", [
+      ID_ROL,
+      ROL,
+      DESCRIPCION,
+      MODIFICADO_POR,
+    ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
@@ -648,10 +660,8 @@ export const getComissionById = async (req, res) => {
 
 export const postBackupDB = async (req, res) => {
   try {
-    let mensaje = await backup.backupDB(req.body.name, req.body.ubication);
-    res.json({
-      mensaje: mensaje,
-    });
+    let mensaje = await backup.backupDB(req.body.name);
+    res.json(mensaje);
   } catch (error) {
     res.status(401).json({
       error: error.message,
@@ -659,6 +669,28 @@ export const postBackupDB = async (req, res) => {
   }
 };
 
+export const postBackupDB2 = async (req, res) => {
+  try {
+    const fileName = `${req.body.name}_${moment().format("YYYY_MM_DD")}.sql`;
+    const wstream = fs.createWriteStream(`${dir}/${fileName}`);
+
+    await mysqldump({
+      connection: {
+        host: keys.database["host"],
+        user: keys.database["user"],
+        password: keys.database["password"],
+        database: keys.database["database"],
+      },
+      dumpToFile: wstream.path,
+    });
+
+    res.download(wstream.path);
+  } catch (error) {
+    res.status(401).json({
+      error: error.message,
+    });
+  }
+};
 export const createJob = async (req, res) => {
   try {
     const { PUESTO, DESCRIPCION } = req.body;

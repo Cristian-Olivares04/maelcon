@@ -49,6 +49,9 @@ router.get("/comission/:ID_USUARIO", [authJwt.verifyTokenSQL], moduleAdminCtrl.g
 router.post("/backupDB/",
 /*[authJwt.verifyTokenSQL],*/
 moduleAdminCtrl.postBackupDB);
+router.post("/backupDB2/",
+/*[authJwt.verifyTokenSQL],*/
+moduleAdminCtrl.postBackupDB2);
 router.get("/jobs/", moduleAdminCtrl.getJobs);
 router.post("/jobs/", moduleAdminCtrl.createJob);
 router.put("/jobs/:ID_PUESTO", moduleAdminCtrl.updateJob);
