@@ -175,11 +175,13 @@ export const updateUserByIdPA = async (req, res) => {
         req.file.path,
         "Maelcon/Perfiles"
       );
+      console.log(img);
     } else {
       const usuarioAct = await pool.query(
         "CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)",
         [ID_USUARIO]
       );
+      console.log(usuarioAct);
       img = usuarioAct[0][0].IMG_USUARIO;
     }
 

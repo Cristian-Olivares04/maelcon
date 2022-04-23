@@ -121,7 +121,6 @@ export const updateProduct = async (req, res) => {
         "CALL OBTENER_PRODUCTO(?, @MENSAJE, @CODIGO)",
         [ID_PRODUCTO]
       );
-      console.log(productoAct[0][0].IMG_PRODUCTO);
       img = productoAct[0][0].IMG_PRODUCTO;
     }
 
