@@ -10,6 +10,7 @@ export class ShoppingComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'shopping');
   }
 
 }

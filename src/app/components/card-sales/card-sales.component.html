@@ -1,7 +1,7 @@
 <div class="contenedor row justify-content-between" style="position: relative;">
     <div class="col-12 p-3 row">
-        <div class="col-4 login-content">
-            <form>   
+        <div class="col-3 login-content">
+            <form>
                 <div class="input-div one">
                     <div class="i">
                         <i class="fas fa-search"></i>
@@ -12,15 +12,15 @@
                 </div>
             </form>
         </div>
-        <div class="col-8 d-flex justify-content-end wrapper" >
-            <div class="col-3 pt-3 pb-3 align-items-center justify-content-center">
-                <button class="btn-success" (click) = "openModal(newSales)"><i class="fas fa-plus"></i> Nueva venta</button>
+        <div class="col-9 d-flex ml-2 justify-content-left wrapper" >
+            <div class="col pt-3 pb-3 align-items-center justify-content-left">
+                <button class="btn-success m-2" (click) = "openModal(newSales)"><i class="fas fa-plus"></i> venta</button>
             </div>
-            <div class="col-3 pt-3 pb-3 align-items-center justify-content-center">
-                <button class="btn-success" (click) = "openModal(commissions)"><i class="fas fa-eye"></i> Ver comisiones</button>
+            <div class="col pt-3 pb-3 align-items-center justify-content-center">
+                <button class="btn-success m-2" (click) = "openModal(commissions)"><i class="fas fa-eye"></i> comisiones</button>
             </div>
-            <div class="col-5 pt-3 pb-3 align-items-center justify-content-center">
-                <button class="btn" (click) = "openModal(customers)"><i class="fa fa-gear"></i> Gestión de clientes</button>
+            <div class="col pt-3 pb-3 align-items-center justify-content-right">
+                <button class="btn m-2" (click) = "openModal(customers)"><i class="fa fa-gear"></i> Clientes</button>
             </div>
         </div>
     </div>
@@ -36,11 +36,11 @@
                     <p class="text-muted">Información tarjeta de venta</p>
                     <button class="btn-xs btn-edit" (click)="openModal(editCard)"><i class="fas fa-pen"></i></button>
                 </div>
-                
+
                 <!--Columna 1 de informacion-->
                 <div class="col-6 p-3">
                     <div class="login-content">
-                        <form>   
+                        <form>
                             <div class="input-div one">
                                 <div class="i">
                                     <i class="fas fa-user"></i>
@@ -50,7 +50,7 @@
                                 </div>
                                 <span class="text-muted details">Cliente</span>
                             </div>
- 
+
                             <div class="input-div one">
                                 <div class="i">
                                     <i class="fas fa-user"></i>
@@ -135,14 +135,14 @@
                                         </div>
                                     </ng-template>
                                 </span>
-                                
+
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="col-12 row justify-content-between">
                     <div class="col-6">
-                       
+
                     </div>
                     <div class="col-6">
                         <input type="button" class="btn" value="Ver detalles" (click)="openModal(listProducts)">
@@ -151,7 +151,7 @@
             </div>
 
             <!--Segunda card-->
-            
+
             <!--Fin segunda card-->
         </div>
     </div>

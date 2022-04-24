@@ -14,7 +14,7 @@
                                 <i class="fas fa-cloud"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" value="HOST" [(ngModel)]="_params[0]['VALOR']" name="host" readonly>
+                                <input class="" type="text" value="HOST" [(ngModel)]="_params[9]['VALOR']" name="host" readonly>
                             </div>
                         </div>
 
@@ -23,7 +23,7 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="text" value="Usuario del correo" [(ngModel)]="_params[5]['VALOR']" name="usuario" readonly>
+                                <input class="" type="text" value="Usuario del correo" [(ngModel)]="_params[10]['VALOR']" name="usuario" readonly>
                             </div>
                         </div>
 
@@ -32,7 +32,7 @@
                                 <i class="fas fa-key"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="password" value="App Contraseña" [(ngModel)]="_params[9]['VALOR']" name="contraseña" readonly>
+                                <input class="" type="password" value="App Contraseña" [(ngModel)]="_params[11]['VALOR']" name="contraseña" readonly>
                             </div>
                         </div>
                     </form>
@@ -48,7 +48,7 @@
                               <i class="fas fa-envelope"></i>
                             </div>
                             <div class="div">
-                                <input type="text" value="Proveedor de servicio" [(ngModel)]="_params[8]['VALOR']" name="proveedor" readonly>
+                                <input type="text" value="Proveedor de servicio" [(ngModel)]="_params[12]['VALOR']" name="proveedor" readonly>
                             </div>
                         </div>
 
@@ -57,7 +57,7 @@
                                 <i class="fas fa-sitemap"></i>
                             </div>
                             <div class="div">
-                                <input class="" type="number" value="Puerto del servicio" [(ngModel)]="_params[7]['VALOR']" name="puerto" readonly>
+                                <input class="" type="number" value="Puerto del servicio" [(ngModel)]="_params[13]['VALOR']" name="puerto" readonly>
                             </div>
                         </div>
                     </form>
@@ -138,10 +138,10 @@
                 </div>
                 <div class="col-12 row justify-content-between">
                     <div class="col-6">
-                        <input type="button" class="btn btn-cancel" value="Cancelar" (click) = "actionAct(0);">
+                        <input type="button" class="btn btn-cancel" value="Cancelar" (click)="actionAct(0);">
                     </div>
                     <div class="col-6">
-                        <input type="button" class="btn" value="Actualizar" (click) = "actionAct(0); actualizarParametros();">
+                        <input type="button" class="btn" value="Actualizar" (click)="actionAct(0); actualizarParametros();">
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-<ng-template [ngIf]="condition">
+<ng-template [ngIf]="condition2">
   <ng-sidebar-container>
     <ng-sidebar #dockBar id="dockSidebar" [opened]='opened' [dock]="dock" [dockedSize]="'75px'" [mode]="'push'">
         <div class="dock">
@@ -54,9 +54,9 @@
                 </li>
                 <li class="nav-item sidebar-item" *ngIf = "security">
                     <a class="nav-link icons" routerLink="/security" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
-                      <i class="fa fa-lock" aria-hidden="true"></i><span *ngIf="opened==true">Seguridad</span></a>
+                      <i class="fas fa-lock" aria-hidden="true"></i><span *ngIf="opened==true">Seguridad</span></a>
                 </li>
-                <li class="nav-item sidebar-item help-item">
+                <li class="nav-item sidebar-item">
                     <a class="nav-link icons" routerLink="/information" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-question" aria-hidden="true"></i><span *ngIf="opened==true">Ayuda</span></a>
                 </li>

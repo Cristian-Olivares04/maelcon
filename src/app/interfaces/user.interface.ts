@@ -4,8 +4,8 @@ export interface usuario {
     ID_ROL: number;
     USUARIO: string;
     CONTRASENA: string;
-    NOMBRE: string;
-    APELLIDO: string;
+    NOMBRE_PERSONA: string;
+    APELLIDO_PERSONA: string;
     CORREO_ELECTRONICO: string;
     TELEFONO: string;
     RTN: string;

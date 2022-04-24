@@ -39,7 +39,7 @@ function search(BITACORA: any, text: string, pipe: PipeTransform): Bitacora[] {
 export class BinnacleComponent implements OnInit {
   msjCheck='';
   binnacle:Boolean = true;
-  bitacora2:Bitacora[] = [];
+  bitacora2:Bitacora[] = this.MS._bitacora;
   bitacoraInter: Observable<Bitacora[]>;
   filter = new FormControl('');
 
@@ -54,7 +54,8 @@ export class BinnacleComponent implements OnInit {
     "FECHA"
   ];
 
-  constructor( private pipe: DecimalPipe, private MS:MantenimientoService) {
+  constructor(private MS:MantenimientoService, private pipe: DecimalPipe) {
+    this.bitacora2 = this.MS._bitacora;
     this.bitacoraInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this.bitacora2, text, this.pipe))
@@ -62,31 +63,12 @@ export class BinnacleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.MS.obtenerRegistrosBitacora().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this.bitacora2 = resp['BITACORA'];
-        this.bitacoraInter = this.filter.valueChanges.pipe(
-          startWith(''),
-          map(text => search(this.bitacora2, text, this.pipe))
-        );
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de usuarios`
-      }
-    });
-  }
-
-  obtenerBitacora(){
-    this.MS.obtenerRegistrosBitacora().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this.bitacora2 = resp['BITACORA'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de usuarios`
-      }
-    });
+    this.MS.obtenerRegistrosBitacora();
+    this.bitacora2 = this.MS._bitacora;
+    this.bitacoraInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this.bitacora2, text, this.pipe))
+    );
   }
 
   viewDownload(value:Boolean){

@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Parameter } from 'src/app/interfaces/objects.interface';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-general-settings',
@@ -23,7 +25,7 @@ export class GeneralSettingsComponent implements OnInit {
     comision:0,
   }
 
-  constructor(private MS:MantenimientoService, private US:UsuariosService) { }
+  constructor(private MS:MantenimientoService, private US:UsuariosService, private _Router:Router) { }
 
   ngOnInit(): void {
     this.obtenerParametros();
@@ -34,8 +36,6 @@ export class GeneralSettingsComponent implements OnInit {
   }
 
   obtenerParametros(){
-    this.MS.obtenerParametros();
-    //console.log('resp',resp['parametros']);
     if(this.MS._params!=[]){
       this._params=this.MS._params;
       this.datosParametros.ISV = Number(this.MS._params[0]['VALOR']);
@@ -81,10 +81,8 @@ export class GeneralSettingsComponent implements OnInit {
     ];
 
     this.MS.actualizarParametros(parameters).subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp[0]['CODIGO']==1){
-        this.msjCheck=`${resp[0]['MENSAJE']}`
-
+      console.log('resp',resp);
+      if(resp['CODIGO']==1){
         this._params[0]['VALOR'] = this.datosParametros.ISV.toString();
         this._params[0]['ID_USUARIO'] = this.usAct;
         this._params[1]['VALOR'] = this.datosParametros.comision.toString();
@@ -95,6 +93,21 @@ export class GeneralSettingsComponent implements OnInit {
         this._params[3]['ID_USUARIO'] = this.usAct;
         this._params[4]['VALOR'] = this.datosParametros.tiempo_duracion.toString();
         this._params[4]['ID_USUARIO'] = this.usAct;
+        Swal.fire({
+          title: `Bien hecho...`,
+          text:  `Los Parametros se actualizaron exitosamente`,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.actionAct(0);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
+          } else {
+            console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
+          }
+        })
       }else{
         //console.log('no',resp);
         this.msjCheck=`No se pudo actualizar los parametros`

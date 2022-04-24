@@ -13,7 +13,6 @@ import { InformationComponent } from './pages/information/information.component'
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { SecurityComponent } from './pages/security/security.component';
-import { SeeConfigComponent } from './pages/see-config/see-config.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 
 const routes: Routes = [
@@ -69,10 +68,6 @@ const routes: Routes = [
   {
       path: 'edit-config',
       component: GeneralSettingsComponent
-  },
-  {
-      path: 'see-config',
-      component: SeeConfigComponent
   },
   {
       path: '**',

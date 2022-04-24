@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Parameter } from 'src/app/interfaces/objects.interface';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-mail',
@@ -23,7 +25,7 @@ export class FormMailComponent implements OnInit {
     puerto:''
   }
 
-  constructor(private MS:MantenimientoService, private US:UsuariosService) { }
+  constructor(private MS:MantenimientoService, private US:UsuariosService, private _Router:Router) { }
 
   ngOnInit(): void {
     this.obtenerParametros();
@@ -34,14 +36,14 @@ export class FormMailComponent implements OnInit {
   }
 
   obtenerParametros(){
-    this.MS.obtenerParametros();
     if(this.MS._params!=[]){
       this._params=this.MS._params;
-      this.datosParametros.host = this.MS._params[0]['VALOR'];
-      this.datosParametros.usuario =this.MS._params[5]['VALOR'];
-      this.datosParametros.contrasena =this.MS._params[9]['VALOR'];
-      this.datosParametros.proveedor =this.MS._params[8]['VALOR'];
-      this.datosParametros.puerto =this.MS._params[7]['VALOR'];
+      //console.log('params',this.MS._params)
+      this.datosParametros.host = this.MS._params[9]['VALOR'];
+      this.datosParametros.usuario =this.MS._params[10]['VALOR'];
+      this.datosParametros.contrasena =this.MS._params[11]['VALOR'];
+      this.datosParametros.proveedor =this.MS._params[12]['VALOR'];
+      this.datosParametros.puerto =this.MS._params[13]['VALOR'];
       this.rend=true;
     }else{
       //console.log('no',resp);
@@ -50,31 +52,30 @@ export class FormMailComponent implements OnInit {
   }
 
   actualizarParametros(){
-    console.log('datosParametros',this.datosParametros);
-
+    //console.log('datosParametros',this.datosParametros);
     var parameters = [
       {
-        "ID_PARAMETRO": this._params[0]['ID_PARAMETRO'],
+        "ID_PARAMETRO": this._params[9]['ID_PARAMETRO'],
         "ID_USUARIO": this.usAct,
         "VALOR": this.datosParametros.host.toString(),
       },
       {
-        "ID_PARAMETRO": this._params[5]['ID_PARAMETRO'],
+        "ID_PARAMETRO": this._params[10]['ID_PARAMETRO'],
         "ID_USUARIO": this.usAct,
         "VALOR": this.datosParametros.usuario.toString(),
       },
       {
-        "ID_PARAMETRO": this._params[9]['ID_PARAMETRO'],
+        "ID_PARAMETRO": this._params[11]['ID_PARAMETRO'],
         "ID_USUARIO": this.usAct,
         "VALOR": this.datosParametros.contrasena.toString(),
       },
       {
-        "ID_PARAMETRO": this._params[8]['ID_PARAMETRO'],
+        "ID_PARAMETRO": this._params[12]['ID_PARAMETRO'],
         "ID_USUARIO": this.usAct,
         "VALOR": this.datosParametros.proveedor.toString(),
       },
       {
-        "ID_PARAMETRO": this._params[7]['ID_PARAMETRO'],
+        "ID_PARAMETRO": this._params[13]['ID_PARAMETRO'],
         "ID_USUARIO": this.usAct,
         "VALOR": this.datosParametros.puerto.toString(),
       }
@@ -82,22 +83,45 @@ export class FormMailComponent implements OnInit {
 
     this.MS.actualizarParametros(parameters).subscribe((resp) => {
       //console.log('resp',resp);
-      if(resp[0]['CODIGO']==1){
-        this.msjCheck=`${resp[0]['MENSAJE']}`
-
-        this._params[0]['VALOR'] = this.datosParametros.host;
-        this._params[0]['ID_USUARIO'] = this.usAct;
-        this._params[5]['VALOR'] = this.datosParametros.usuario;
-        this._params[5]['ID_USUARIO'] = this.usAct;
-        this._params[9]['VALOR'] = this.datosParametros.contrasena;
+      if(resp['CODIGO']==1){
+        this._params[9]['VALOR'] = this.datosParametros.host;
         this._params[9]['ID_USUARIO'] = this.usAct;
-        this._params[8]['VALOR'] = this.datosParametros.proveedor;
-        this._params[8]['ID_USUARIO'] = this.usAct;
-        this._params[7]['VALOR'] = this.datosParametros.puerto.toString();
-        this._params[7]['ID_USUARIO'] = this.usAct;
+        this._params[10]['VALOR'] = this.datosParametros.usuario;
+        this._params[10]['ID_USUARIO'] = this.usAct;
+        this._params[11]['VALOR'] = this.datosParametros.contrasena;
+        this._params[11]['ID_USUARIO'] = this.usAct;
+        this._params[12]['VALOR'] = this.datosParametros.proveedor;
+        this._params[12]['ID_USUARIO'] = this.usAct;
+        this._params[13]['VALOR'] = this.datosParametros.puerto.toString();
+        this._params[13]['ID_USUARIO'] = this.usAct;
+        Swal.fire({
+          title: `Bien hecho...`,
+          text:  `Los Parametros se actualizaron exitosamente`,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
+          } else {
+            console.log(`modal was dismissed by ${result.dismiss}`);
+            localStorage.setItem('ruta', 'security');
+            this._Router.navigate(['/security/path?refresh=1']);
+          }
+        });
       }else{
         //console.log('no',resp);
-        this.msjCheck=`No se pudo actualizar los parametros`
+        Swal.fire({
+          title: `Algo salio mal...`,
+          text: `No se pudo actualizar los parametros`,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this._Router.navigate(['/security']);
+          } else {
+            this._Router.navigate(['/security']);
+            console.log(`modal was dismissed by ${result.dismiss}`);
+          }
+        });
       }
     });
 

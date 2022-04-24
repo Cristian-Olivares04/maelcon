@@ -19,8 +19,6 @@ export class SignupComponent {
     ID_ROL: 0,
     USUARIO: '',
     CONTRASENA: '',
-    NOMBRE: '',
-    APELLIDO: '',
     CORREO_ELECTRONICO: '',
     TELEFONO: '',
     RTN: '',
@@ -31,7 +29,9 @@ export class SignupComponent {
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
     ESTADO: 0,
-    SUELDO: 0
+    SUELDO: 0,
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: ''
   }
 
   public validacionCorreo: boolean = false;
@@ -86,7 +86,7 @@ export class SignupComponent {
   }
 
   validadCampos(){
-    if(this.usuarioRegistro.NOMBRE =='' || this.usuarioRegistro.APELLIDO =='' || this.usuarioRegistro.CONTRASENA =='' || this.usuarioRegistro.RTN=='' || this.usuarioRegistro.USUARIO==''
+    if(this.usuarioRegistro.NOMBRE_PERSONA =='' || this.usuarioRegistro.APELLIDO_PERSONA =='' || this.usuarioRegistro.CONTRASENA =='' || this.usuarioRegistro.RTN=='' || this.usuarioRegistro.USUARIO==''
         || this.usuarioRegistro.PREGUNTA == '' || this.usuarioRegistro.RESPUESTA =='' || this.usuarioRegistro.GENERO==''){
       this.status = true;
       this.activate=false;

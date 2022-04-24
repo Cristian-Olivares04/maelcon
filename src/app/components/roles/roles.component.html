@@ -1,4 +1,4 @@
-<div class="">
+<div class="mb-5">
     <div class="row">
         <div class="col-8">
             <h4 class="text-muted"><b>Roles de usuario</b></h4>
@@ -21,22 +21,21 @@
                       <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Area</th>
-                        <th scope="col">Population</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Fecha Creacion</th>
+                        <th scope="col">Creado Por</th>
                         <th scope="col">Editar</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let country of countries | async; index as i">
+                      <tr *ngFor="let rol of rolesInter | async; index as i">
                         <th scope="row">{{ i + 1 }}</th>
-                        <td>
-                          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                          <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                        </td>
-                        <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="openModal(editRol)"><i class="fas fa-pen"></i></button></td>
+                        <td><ngb-highlight [result]="rol.ROL" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="rol.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="rol.FECHA_CREACION" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="rol.CREADO_POR | number" [term]="filter.value"></ngb-highlight></td>
+                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="editarRol(editRol,rol.ID_ROL)"><i class="fas fa-pen"></i></button></td>
                       </tr>
                       </tbody>
                     </table>
@@ -68,15 +67,7 @@
                                                 <i class="fas fa-user"></i>
                                             </div>
                                             <div class="div">
-                                                <input class="" type="text" placeholder="Nombre del rol" name="rol">
-                                            </div>
-                                        </div>
-                                        <div class="input-div">
-                                            <div class="i">
-                                                <i class="fas fa-calendar"></i>
-                                            </div>
-                                            <div class="div">
-                                                <input type="text" value="2022-12-12" name="fecha" readonly>
+                                                <input class="" type="text" placeholder="Nombre del rol" [(ngModel)]="datoRole.ROL" name="rol">
                                             </div>
                                         </div>
                                     </form>
@@ -90,13 +81,13 @@
                                                 <i class="fas fa-file"></i>
                                             </div>
                                             <div class="div">
-                                                <input type="text" placeholder="Descripción" name="descripcion">
+                                                <input type="text" placeholder="Descripción" [(ngModel)]="datoRole.DESCRIPCION" name="descripcion">
                                             </div>
                                         </div>
-                                
+
                                     </form>
                                 </div>
-                                <input type="button" class="btn" value="Actualizar">
+                                <input type="button" class="btn" value="Actualizar" (click)="actRol(datoRole.ID_ROL)">
                             </div>
                         </div>
                     </div>
@@ -134,7 +125,7 @@
                                                 <i class="fas fa-user"></i>
                                             </div>
                                             <div class="div">
-                                                <input class="" type="text" placeholder="Nombre del rol" name="rol">
+                                                <input class="" type="text" placeholder="Nombre del rol" [(ngModel)]="datoRole.ROL" name="rol">
                                             </div>
                                         </div>
                                     </form>
@@ -148,13 +139,13 @@
                                                 <i class="fas fa-file"></i>
                                             </div>
                                             <div class="div">
-                                                <input type="text" placeholder="Descripción" name="descripcion">
+                                                <input type="text" placeholder="Descripción" [(ngModel)]="datoRole.DESCRIPCION" name="descripcion">
                                             </div>
                                         </div>
-                                
+
                                     </form>
                                 </div>
-                                <input type="button" class="btn" value="Crear rol">
+                                <input type="button" class="btn" value="Crear rol" (click)="crearRol()">
                             </div>
                         </div>
                     </div>

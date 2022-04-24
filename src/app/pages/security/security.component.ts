@@ -7,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SecurityComponent implements OnInit {
   disabled = false;
-  
+
   constructor() { }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'security');
+  }
+
+  descargarDB(){
+    console.log('Descargando archivo DB');
   }
 
 }

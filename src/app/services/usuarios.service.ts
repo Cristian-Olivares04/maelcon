@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { AuthResponse, usuario } from '../interfaces/user.interface';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
+import Swal from 'sweetalert2';
+import { Permission } from '../interfaces/objects.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,9 @@ export class UsuariosService {
   public _usuarioActual2:any = '';
   public _userToken:any = '';
   public nombreUsuario = '';
+  public _usuarios:usuario[]=[];
+  public _permisos:Permission[]=[];
+  public ruta:any = '';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -26,8 +31,6 @@ export class UsuariosService {
     ID_ROL: 0,
     USUARIO: '',
     CONTRASENA: '',
-    NOMBRE: '',
-    APELLIDO: '',
     CORREO_ELECTRONICO: '',
     TELEFONO: '',
     RTN: '',
@@ -38,7 +41,9 @@ export class UsuariosService {
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
     ESTADO: 0,
-    SUELDO: 0
+    SUELDO: 0,
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: ''
   };
 
   public datosUsuario2: usuario ={
@@ -47,8 +52,6 @@ export class UsuariosService {
     ID_ROL: 0,
     USUARIO: '',
     CONTRASENA: '',
-    NOMBRE: '',
-    APELLIDO: '',
     CORREO_ELECTRONICO: '',
     TELEFONO: '',
     RTN: '',
@@ -59,15 +62,18 @@ export class UsuariosService {
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
     ESTADO: 0,
-    SUELDO: 0
+    SUELDO: 0,
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: ''
   };
 
-  constructor( private http:HttpClient){
-    this.retornarUsuario();
+  constructor( private http:HttpClient ){
+    this._userToken = localStorage.getItem("auth-token");
+    this.ruta = localStorage.getItem("ruta");
+    this.obtenerUsuarios();
   }
 
   get usuario(): usuario {
-    this.retornarUsuario();
     return this.datosUsuario;
   }
 
@@ -80,32 +86,66 @@ export class UsuariosService {
   }
 
   //funcion para retornar un usuario en especifico desde el servicio usuario
-  retornarUsuario(){
-    this._userToken = localStorage.getItem("auth-token");
-    this._usuarioActual = localStorage.getItem("id");
-    if(this._usuarioActual!=null){
-      this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`)
-        .subscribe((resp:any) => {
-          if(resp['mensaje'][0]['CODIGO']==1){
-            localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
-            this.datosUsuario = resp['usuario'][0];
-          }else{
-            console.log("falso no retorno");
+  retornarUsuario(id:any): Observable<any>{
+    return this.http.get<usuario>(`${this.bUA}/module/users/${id}`);
+      /* .subscribe((resp:any) => {
+        if(resp['mensaje'][0]['CODIGO']==1){
+          //console.log("[webpack]");
+          localStorage.setItem('id', JSON.stringify(resp['usuario'][0]['ID_USUARIO']));
+          this.datosUsuario = resp['usuario'][0];
+        }else{
+          console.log("falso no retorno");
+        }
+      }, error => {
+        console.error('Ocurrió un error',error);
+        Swal.fire({
+          title: `Token expirado...`,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.cerrarSesion();
+            this._Router.navigate(['login']);
+          } else {
+            console.log(`modal was dismissed by ${result.dismiss}`);
+            this.cerrarSesion();
+            this._Router.navigate(['login']);
           }
-        });
-    }
+        })
+      }); */
+  }
+
+  //funcion para retornar un usuario en especifico desde el servicio usuario
+  obtenerInfoUsuario(): Observable<any>{
+    //console.log('token',this._userToken);
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'auth-token': this._userToken
+    });
+    //console.log('token',this.headers);
+    return this.http.get<any>(`${this.bUA}/module/users/myinfo/userInfo`, {headers:this.headers});
   }
 
   //funcion para obtener un usuario en especifico como observable
   obtenerUsuario(): Observable<any>{
     this._userToken = localStorage.getItem("auth-token");
+<<<<<<< HEAD
     this._usuarioActual = localStorage.getItem("id");
     return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`, );
+=======
+    return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`);
+>>>>>>> ffdf9f2a2a00afc782247f62bd6a0860f6be0556
   }
 
   //funcion para obtener un usuario en especifico como observable
-  obtenerUsuarios(): Observable<any>{
-    return this.http.get<usuario>(`${this.bUA}/module/users`);
+  obtenerUsuarios(){
+    this.http.get<any>(`${this.bUA}/module/users`).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._usuarios=resp['usuario'];
+      }else{
+        console.log('no',resp);
+      }
+    });
   }
 
   //funcion para actualizar un usuario
@@ -157,8 +197,10 @@ export class UsuariosService {
   //consulta para cerrar sesion
   cerrarSesion(){
     this._usuarioActual='';
+    this._usuarioActual2='';
+    this._userToken='';
     localStorage.removeItem('auth-token');
-    localStorage.removeItem('id');
+    localStorage.removeItem('ruta');
   }
 
   //funcion para verificacion del correo mediante regex
