@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUserStatus = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.updateJob = exports.postBackupDB2 = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissionsByRole = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getJobs = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.createJob = exports.checkUser = void 0;
+exports.updateUserStatus = exports.updateUserByAdmin = exports.updateRole = exports.updatePermission = exports.updatePaymentMethod = exports.updateParameter = exports.updateObject = exports.updateJob = exports.postBackupDB2 = exports.postBackupDB = exports.getRoles = exports.getRoleByID = exports.getPermissionsByRole = exports.getPermissions = exports.getPaymentMethods = exports.getPaymentMethodByID = exports.getParameters = exports.getParameterById = exports.getObjects = exports.getObjectByID = exports.getLogs = exports.getLogById = exports.getJobs = exports.getComissions = exports.getComissionById = exports.createRoles = exports.createPermission = exports.createPaymentMethod = exports.createParameter = exports.createObject = exports.createJob = exports.checkUser = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -22,6 +22,8 @@ var _keys = _interopRequireDefault(require("../keys"));
 var _mysqldump = _interopRequireDefault(require("mysqldump"));
 
 var _directory = require("../backups/directory");
+
+var cloudinary_services = require("../utils/cloudinary_services");
 
 var fs = require("fs");
 
@@ -1618,6 +1620,72 @@ var getJobs = /*#__PURE__*/function () {
   return function getJobs(_x61, _x62) {
     return _ref31.apply(this, arguments);
   };
-}();
+}(); //Actualizar usuario
+
 
 exports.getJobs = getJobs;
+
+var updateUserByAdmin = /*#__PURE__*/function () {
+  var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res) {
+    var ID_USUARIO, _req$body13, NOMBRE, APELLIDO, GENERO, RTN, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, USUARIO, CORREO_ELECTRONICO, IMG_USUARIO, FECHA_VENCIMIENTO, MODIFICADO_POR, PREGUNTA, RESPUESTA, img, usuarioAct, mensaje;
+
+    return _regenerator["default"].wrap(function _callee32$(_context32) {
+      while (1) {
+        switch (_context32.prev = _context32.next) {
+          case 0:
+            _context32.prev = 0;
+            ID_USUARIO = req.params.ID_USUARIO;
+            _req$body13 = req.body, NOMBRE = _req$body13.NOMBRE, APELLIDO = _req$body13.APELLIDO, GENERO = _req$body13.GENERO, RTN = _req$body13.RTN, ID_PUESTO = _req$body13.ID_PUESTO, TELEFONO = _req$body13.TELEFONO, SUELDO = _req$body13.SUELDO, ID_ROL = _req$body13.ID_ROL, USUARIO = _req$body13.USUARIO, CORREO_ELECTRONICO = _req$body13.CORREO_ELECTRONICO, IMG_USUARIO = _req$body13.IMG_USUARIO, FECHA_VENCIMIENTO = _req$body13.FECHA_VENCIMIENTO, MODIFICADO_POR = _req$body13.MODIFICADO_POR, PREGUNTA = _req$body13.PREGUNTA, RESPUESTA = _req$body13.RESPUESTA;
+
+            if (!req.file) {
+              _context32.next = 10;
+              break;
+            }
+
+            console.log(req.file);
+            _context32.next = 7;
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
+
+          case 7:
+            img = _context32.sent;
+            _context32.next = 15;
+            break;
+
+          case 10:
+            _context32.next = 12;
+            return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)", [ID_USUARIO]);
+
+          case 12:
+            usuarioAct = _context32.sent;
+            console.log(usuarioAct);
+            img = usuarioAct[0][0].IMG_USUARIO;
+
+          case 15:
+            _context32.next = 17;
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE, APELLIDO, GENERO, RTN, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, USUARIO, CORREO_ELECTRONICO, img, MODIFICADO_POR, FECHA_VENCIMIENTO, PREGUNTA, RESPUESTA]);
+
+          case 17:
+            mensaje = _context32.sent;
+            res.json(JSON.parse(JSON.stringify(mensaje)));
+            _context32.next = 24;
+            break;
+
+          case 21:
+            _context32.prev = 21;
+            _context32.t0 = _context32["catch"](0);
+            res.json(_context32.t0);
+
+          case 24:
+          case "end":
+            return _context32.stop();
+        }
+      }
+    }, _callee32, null, [[0, 21]]);
+  }));
+
+  return function updateUserByAdmin(_x63, _x64) {
+    return _ref32.apply(this, arguments);
+  };
+}();
+
+exports.updateUserByAdmin = updateUserByAdmin;

@@ -212,7 +212,7 @@ var updateProduct = /*#__PURE__*/function () {
           case 6:
             img = _context4.sent;
             console.log(img);
-            _context4.next = 15;
+            _context4.next = 14;
             break;
 
           case 10:
@@ -221,14 +221,13 @@ var updateProduct = /*#__PURE__*/function () {
 
           case 12:
             productoAct = _context4.sent;
-            console.log(productoAct[0][0].IMG_PRODUCTO);
             img = productoAct[0][0].IMG_PRODUCTO;
 
-          case 15:
-            _context4.next = 17;
+          case 14:
+            _context4.next = 16;
             return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE_PRODUCTO, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
 
-          case 17:
+          case 16:
             objetos = _context4.sent;
             mensaje = JSON.parse(JSON.stringify(objetos[0]));
             res.json({
@@ -237,28 +236,28 @@ var updateProduct = /*#__PURE__*/function () {
                 CODIGO: mensaje[0]["CODIGO"]
               }]
             });
-            _context4.next = 28;
+            _context4.next = 27;
             break;
 
-          case 22:
-            _context4.prev = 22;
+          case 21:
+            _context4.prev = 21;
             _context4.t0 = _context4["catch"](0);
-            _context4.next = 26;
+            _context4.next = 25;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 26:
+          case 25:
             _mensaje4 = _context4.sent;
             res.status(401).json({
               error: _context4.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje4))
             });
 
-          case 28:
+          case 27:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 22]]);
+    }, _callee4, null, [[0, 21]]);
   }));
 
   return function updateProduct(_x7, _x8) {

@@ -32,6 +32,8 @@ router.get("/providers/:ID_PROVEEDOR", moduleSuppliesCtrl.getSupplierByID);
 router.get("/purchases/", moduleSuppliesCtrl.getPurchases);
 router.get("/purchases/:ID_COMPRA", moduleSuppliesCtrl.getPurchaseByID);
 router.get("/productData/", moduleSuppliesCtrl.getProductData);
-router.get("/productData/:ID_PRODUCTO", moduleSuppliesCtrl.getProductDataByID);
+router.get("/productData/:ID_PRODUCTO", moduleSuppliesCtrl.getProductDataByID); //Obtener detalles de la compra
+
+router.get("/detailsSupply/:ID_COMPRA", moduleSuppliesCtrl.getDetailsSupplyById);
 var _default = router;
 exports["default"] = _default;

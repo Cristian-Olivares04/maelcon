@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateSupplyHeader = exports.updateSupply = exports.updateSupplier = exports.processSupply = exports.getSupplyByID = exports.getSupplies = exports.getSuppliers = exports.getSupplierByID = exports.getPurchases = exports.getPurchaseByID = exports.getProductDataByID = exports.getProductData = exports.eliminateSupply = exports.deleteSupply = exports.createSupplyHeader = exports.createSupplier = exports.addSupply = void 0;
+exports.updateSupplyHeader = exports.updateSupply = exports.updateSupplier = exports.processSupply = exports.getSupplyByID = exports.getSupplies = exports.getSuppliers = exports.getSupplierByID = exports.getPurchases = exports.getPurchaseByID = exports.getProductDataByID = exports.getProductData = exports.getDetailsSupplyById = exports.eliminateSupply = exports.deleteSupply = exports.createSupplyHeader = exports.createSupplier = exports.addSupply = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -918,6 +918,55 @@ var getProductDataByID = /*#__PURE__*/function () {
   return function getProductDataByID(_x33, _x34) {
     return _ref17.apply(this, arguments);
   };
-}();
+}(); //Obtener detalles de la compra
+
 
 exports.getProductDataByID = getProductDataByID;
+
+var getDetailsSupplyById = /*#__PURE__*/function () {
+  var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res) {
+    var ID_COMPRA, details, mensaje;
+    return _regenerator["default"].wrap(function _callee18$(_context18) {
+      while (1) {
+        switch (_context18.prev = _context18.next) {
+          case 0:
+            _context18.prev = 0;
+            ID_COMPRA = req.params.ID_COMPRA;
+            _context18.next = 4;
+            return _databaseSQL["default"].query("CALL OBTENER_DETALLE_COMPRA(?,@MENSAJE, @CODIGO)", [ID_COMPRA]);
+
+          case 4:
+            details = _context18.sent;
+            res.json({
+              detalles: JSON.parse(JSON.stringify(details))
+            });
+            _context18.next = 14;
+            break;
+
+          case 8:
+            _context18.prev = 8;
+            _context18.t0 = _context18["catch"](0);
+            _context18.next = 12;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 12:
+            mensaje = _context18.sent;
+            res.status(401).json({
+              error: _context18.t0.message,
+              mensaje: JSON.parse(JSON.stringify(mensaje))
+            });
+
+          case 14:
+          case "end":
+            return _context18.stop();
+        }
+      }
+    }, _callee18, null, [[0, 8]]);
+  }));
+
+  return function getDetailsSupplyById(_x35, _x36) {
+    return _ref18.apply(this, arguments);
+  };
+}();
+
+exports.getDetailsSupplyById = getDetailsSupplyById;

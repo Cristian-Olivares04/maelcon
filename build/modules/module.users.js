@@ -250,7 +250,7 @@ var updateUserByIdPA = /*#__PURE__*/function () {
             console.log(ID_USUARIO, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR);
 
             if (!req.file) {
-              _context6.next = 10;
+              _context6.next = 11;
               break;
             }
 
@@ -259,22 +259,24 @@ var updateUserByIdPA = /*#__PURE__*/function () {
 
           case 7:
             img = _context6.sent;
-            _context6.next = 14;
+            console.log(img);
+            _context6.next = 16;
             break;
 
-          case 10:
-            _context6.next = 12;
+          case 11:
+            _context6.next = 13;
             return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)", [ID_USUARIO]);
 
-          case 12:
+          case 13:
             usuarioAct = _context6.sent;
+            console.log(usuarioAct);
             img = usuarioAct[0][0].IMG_USUARIO;
 
-          case 14:
-            _context6.next = 16;
+          case 16:
+            _context6.next = 18;
             return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, img, MODIFICADO_POR]);
 
-          case 16:
+          case 18:
             objetos = _context6.sent;
             mensaje = JSON.parse(JSON.stringify(objetos[0]));
             res.json({
@@ -283,20 +285,20 @@ var updateUserByIdPA = /*#__PURE__*/function () {
                 CODIGO: mensaje[0]["CODIGO"]
               }]
             });
-            _context6.next = 24;
+            _context6.next = 26;
             break;
 
-          case 21:
-            _context6.prev = 21;
+          case 23:
+            _context6.prev = 23;
             _context6.t0 = _context6["catch"](0);
             res.json(_context6.t0);
 
-          case 24:
+          case 26:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 21]]);
+    }, _callee6, null, [[0, 23]]);
   }));
 
   return function updateUserByIdPA(_x11, _x12) {
