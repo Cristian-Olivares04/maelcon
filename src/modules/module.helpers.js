@@ -105,6 +105,7 @@ export const getHelpActiveData = async (req, res) => {
     const information = await pool.query(
       "CALL OBTENER_INFORMACION_ACTIVA(@MENSAJE, @CODIGO);"
     );
+    console.log(information);
     const mensaje = JSON.parse(JSON.stringify(information[0]));
 
     res.status(200).json({

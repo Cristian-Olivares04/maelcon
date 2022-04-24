@@ -240,6 +240,7 @@ var getHelpActiveData = /*#__PURE__*/function () {
 
           case 3:
             information = _context5.sent;
+            console.log(information);
             mensaje = JSON.parse(JSON.stringify(information[0]));
             res.status(200).json({
               mensaje: [{
@@ -248,28 +249,28 @@ var getHelpActiveData = /*#__PURE__*/function () {
               }],
               data: JSON.parse(JSON.stringify(information))[0]
             });
-            _context5.next = 14;
+            _context5.next = 15;
             break;
 
-          case 8:
-            _context5.prev = 8;
+          case 9:
+            _context5.prev = 9;
             _context5.t0 = _context5["catch"](0);
-            _context5.next = 12;
+            _context5.next = 13;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 12:
+          case 13:
             _mensaje5 = _context5.sent;
             res.status(401).json({
               error: _context5.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje5))
             });
 
-          case 14:
+          case 15:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 8]]);
+    }, _callee5, null, [[0, 9]]);
   }));
 
   return function getHelpActiveData(_x9, _x10) {

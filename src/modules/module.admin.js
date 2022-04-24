@@ -408,7 +408,6 @@ export const getObjectByID = async (req, res) => {
       "CALL OBTENER_OBJETO(?,@MENSAJE, @CODIGO)",
       [ID_OBJETO]
     );
-    mm;
     const mensaje = JSON.parse(JSON.stringify(OBJETO[0]));
     res.json({
       mensaje: [
@@ -793,7 +792,7 @@ export const updateUserByAdmin = async (req, res) => {
       FECHA_VENCIMIENTO,
       MODIFICADO_POR,
       PREGUNTA,
-      RESPUESTA
+      RESPUESTA,
     } = req.body;
 
     let img;
@@ -830,10 +829,10 @@ export const updateUserByAdmin = async (req, res) => {
         MODIFICADO_POR,
         FECHA_VENCIMIENTO,
         PREGUNTA,
-        RESPUESTA
+        RESPUESTA,
       ]
     );
-    
+
     res.json(JSON.parse(JSON.stringify(mensaje)));
   } catch (error) {
     res.json(error);

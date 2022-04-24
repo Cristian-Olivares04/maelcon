@@ -855,7 +855,6 @@ var getObjectByID = /*#__PURE__*/function () {
 
           case 4:
             OBJETO = _context17.sent;
-            mm;
             mensaje = JSON.parse(JSON.stringify(OBJETO[0]));
             res.json({
               mensaje: [{
@@ -864,28 +863,28 @@ var getObjectByID = /*#__PURE__*/function () {
               }],
               OBJETO: JSON.parse(JSON.stringify(OBJETO[0]))
             });
-            _context17.next = 16;
+            _context17.next = 15;
             break;
 
-          case 10:
-            _context17.prev = 10;
+          case 9:
+            _context17.prev = 9;
             _context17.t0 = _context17["catch"](0);
-            _context17.next = 14;
+            _context17.next = 13;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 13:
             _mensaje10 = _context17.sent;
             res.status(401).json({
               error: _context17.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje10))
             });
 
-          case 16:
+          case 15:
           case "end":
             return _context17.stop();
         }
       }
-    }, _callee17, null, [[0, 10]]);
+    }, _callee17, null, [[0, 9]]);
   }));
 
   return function getObjectByID(_x33, _x34) {
