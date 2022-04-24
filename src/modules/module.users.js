@@ -37,7 +37,7 @@ export const createUser = async (req, res) => {
       "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
   }
 
-  await pool.query(
+  const objetos = await pool.query(
     `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
     [
       ID_PUESTO,
@@ -56,9 +56,7 @@ export const createUser = async (req, res) => {
       FECHA_VENCIMIENTO,
     ]
   );
-  const mensaje = await pool.query(
-    "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-  );
+  const mensaje = JSON.parse(JSON.stringify(objetos[0]));
   let info = JSON.parse(JSON.stringify(mensaje));
   let contentHTML;
 
@@ -112,7 +110,10 @@ export const createUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   const usuarios = await pool.query("SELECT * FROM tbl_ms_usuario");
-  res.json(JSON.parse(JSON.stringify(usuarios)));
+  res.json({
+    usuarios: JSON.parse(JSON.stringify(usuarios)),
+    mensaje: [{ MENSAJE: "Lista de Usuarios Retornada", CODIGO: 1 }],
+  });
 };
 
 export const getUserById = async (req, res) => {
@@ -122,7 +123,10 @@ export const getUserById = async (req, res) => {
     "SELECT * FROM tbl_ms_usuario WHERE ID_USUARIO = ?",
     [id]
   );
-  res.json(JSON.parse(JSON.stringify(usuario)));
+  res.json({
+    usuarios: JSON.parse(JSON.stringify(usuario)),
+    mensaje: [{ MENSAJE: "UsuariosRetornada", CODIGO: 1 }],
+  });
 };
 
 export const updateUserById = async (req, res) => {
@@ -183,7 +187,7 @@ export const updateUserByIdPA = async (req, res) => {
       img = usuarioAct[0][0].IMG_USUARIO;
     }
 
-    await pool.query(
+    const objetos = await pool.query(
       `CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
       [
         ID_USUARIO,
@@ -194,13 +198,15 @@ export const updateUserByIdPA = async (req, res) => {
         SUELDO,
         ID_ROL,
         img,
-        MODIFICADO_POR
+        MODIFICADO_POR,
       ]
     );
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -211,13 +217,16 @@ export const securityQA = async (req, res) => {
     const { ID_USUARIO } = req.params;
     const { PREGUNTA, RESPUESTA, CREADO_POR } = req.body;
     const pass = await encrypt.encryptPassword(RESPUESTA);
-    await pool.query(
-      `CALL CREAR_MS_PREGUNTA_RECUPERACION(${ID_USUARIO},${PREGUNTA},'${pass}',${CREADO_POR},@MENSAJE, @CODIGO);`
+    const objetos = await pool.query(
+      "CALL CREAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);",
+      [ID_USUARIO, PREGUNTA, RESPUESTA, CREADO_POR]
     );
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -229,13 +238,16 @@ export const updateSecurytyQA = async (req, res) => {
     const { PREGUNTA, RESPUESTA, MODIFICADO_POR } = req.body;
     const pass = await encrypt.encryptPassword(RESPUESTA);
 
-    await pool.query(
-      `CALL ACTUALIZAR_MS_PREGUNTA_RECUPERACION(${ID_USUARIO},${PREGUNTA},'${pass}',${MODIFICADO_POR},@MENSAJE, @CODIGO);`
+    const objetos = await pool.query(
+      "CALL ACTUALIZAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);",
+      [ID_USUARIO, PREGUNTA, pass, MODIFICADO_POR]
     );
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -246,17 +258,17 @@ export const updatePassword = async (req, res) => {
     const { ID_USUARIO } = req.params;
     const { MODIFICADO_POR, CONTRASENA } = req.body;
     const password = await encrypt.encryptPassword(CONTRASENA);
-    await pool.query("CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);", [
-      ID_USUARIO,
-      MODIFICADO_POR,
-      password,
-    ]);
+    const objetos = await pool.query(
+      "CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);",
+      [ID_USUARIO, MODIFICADO_POR, password]
+    );
 
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
     let info = JSON.parse(JSON.stringify(mensaje));
     let contentHTML;
+    const mensaje2 = JSON.parse(JSON.stringify(objetos[0]));
 
     const usuarioAct = await pool.query(
       "SELECT * FROM TBL_MS_USUARIO WHERE ID_USUARIO = ?",
@@ -300,7 +312,12 @@ export const updatePassword = async (req, res) => {
       );
     }
 
-    res.json(info);
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+      info: info,
+    });
   } catch (error) {
     res.json(error);
   }
@@ -562,11 +579,11 @@ export const getUsersSQL = async (req, res) => {
   try {
     const user = await pool.query("CALL OBTENER_USUARIOS(@MENSAJE, @CODIGO)");
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(user[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       usuario: JSON.parse(JSON.stringify(user[0])),
     });
   } catch (error) {
@@ -588,11 +605,11 @@ export const getUserSQL = async (req, res) => {
       ID_USUARIO,
     ]);
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(user[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       usuario: JSON.parse(JSON.stringify(user[0])),
     });
   } catch (error) {
@@ -617,12 +634,12 @@ export const getMyUser = async (req, res) => {
       "CALL OBTENER_PERMISOS(?,@MENSAJE, @CODIGO)",
       [ID_USUARIO]
     );
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(user[0]));
     console.log(ID_USUARIO);
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       usuario: JSON.parse(JSON.stringify(user[0])),
       permisos: JSON.parse(JSON.stringify(permisos[0])),
     });

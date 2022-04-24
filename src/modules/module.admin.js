@@ -11,15 +11,16 @@ export const updateUserStatus = async (req, res) => {
   try {
     const { ID_USUARIO } = req.params;
     const { ESTADO, MODIFICADO_POR } = req.body;
-    await pool.query("CALL ESTADO_USUARIO?,?,?, @MENSAJE, @CODIGO);", [
-      ID_USUARIO,
-      ESTADO,
-      MODIFICADO_POR,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL ESTADO_USUARIO(?,?,?, @MENSAJE, @CODIGO);",
+      [ID_USUARIO, ESTADO, MODIFICADO_POR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -28,15 +29,16 @@ export const updateUserStatus = async (req, res) => {
 export const createRoles = async (req, res) => {
   try {
     const { ROL, DESCRIPCION, CREADO_POR } = req.body;
-    await pool.query("CALL CREAR_MS_ROL(?,?,?,@MENSAJE, @CODIGO);", [
-      ROL,
-      DESCRIPCION,
-      CREADO_POR,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const Objetos = await pool.query(
+      "CALL CREAR_MS_ROL(?,?,?,@MENSAJE, @CODIGO);",
+      [ROL, DESCRIPCION, CREADO_POR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(Objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -46,16 +48,16 @@ export const updateRole = async (req, res) => {
   try {
     const { ID_ROL } = req.params;
     const { ROL, DESCRIPCION, MODIFICADO_POR } = req.body;
-    await pool.query("CALL ACTUALIZAR_MS_ROL(?,?,?,?, @MENSAJE, @CODIGO);", [
-      ID_ROL,
-      ROL,
-      DESCRIPCION,
-      MODIFICADO_POR,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL ACTUALIZAR_MS_ROL(?,?,?,?, @MENSAJE, @CODIGO);",
+      [ID_ROL, ROL, DESCRIPCION, MODIFICADO_POR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -64,16 +66,16 @@ export const updateRole = async (req, res) => {
 export const createObject = async (req, res) => {
   try {
     const { OBJETOS, TIPO_OBJETO, DESCRIPCION, CREADO_POR } = req.body;
-    await pool.query("CALL CREAR_OBJETOS(?,?,?,?,@MENSAJE, @CODIGO)", [
-      OBJETOS,
-      TIPO_OBJETO,
-      DESCRIPCION,
-      CREADO_POR,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL CREAR_OBJETOS(?,?,?,?,@MENSAJE, @CODIGO)",
+      [OBJETOS, TIPO_OBJETO, DESCRIPCION, CREADO_POR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -83,17 +85,16 @@ export const updateObject = async (req, res) => {
   try {
     const { ID_OBJETO } = req.params;
     const { OBJETOS, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR } = req.body;
-    await pool.query("CALL MODIFICAR_OBJETOS(?,?,?,?,?,@MENSAJE, @CODIGO)", [
-      ID_OBJETO,
-      OBJETOS,
-      TIPO_OBJETO,
-      DESCRIPCION,
-      MODIFICADO_POR,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL MODIFICAR_OBJETOS(?,?,?,?,?,@MENSAJE, @CODIGO)",
+      [ID_OBJETO, OBJETOS, TIPO_OBJETO, DESCRIPCION, MODIFICADO_POR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -111,20 +112,17 @@ export const createPermission = async (req, res) => {
       CREADO_POR,
     } = req.body;
 
-    await pool.query("CALL CREAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [
-      ID_OBJETO,
-      ID_ROL,
-      INSERTAR,
-      ELIMINAR,
-      ACTUALIZAR,
-      CONSULTAR,
-      CREADO_POR,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL CREAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
+      [ID_OBJETO, ID_ROL, INSERTAR, ELIMINAR, ACTUALIZAR, CONSULTAR, CREADO_POR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -142,7 +140,7 @@ export const updatePermission = async (req, res) => {
       MODIFICADO_POR,
     } = req.body;
 
-    await pool.query(
+    const objetos = await pool.query(
       "CALL ACTUALIZAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
       [
         ID_OBJETO,
@@ -155,10 +153,12 @@ export const updatePermission = async (req, res) => {
       ]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     res.json(error);
   }
@@ -167,15 +167,17 @@ export const updatePermission = async (req, res) => {
 export const createPaymentMethod = async (req, res) => {
   try {
     const { FORMA_PAGO, DESCRIPCION } = req.body;
-    await pool.query("CALL CREAR_METODO_PAGO(?,?,@MENSAJE, @CODIGO)", [
-      FORMA_PAGO,
-      DESCRIPCION,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL CREAR_METODO_PAGO(?,?,@MENSAJE, @CODIGO)",
+      [FORMA_PAGO, DESCRIPCION]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -192,16 +194,17 @@ export const updatePaymentMethod = async (req, res) => {
   try {
     const { ID_PAGO } = req.params;
     const { FORMA_PAGO, DESCRIPCION } = req.body;
-    await pool.query("CALL MODIFICAR_METODO_PAGO(?,?,?,@MENSAJE, @CODIGO)", [
-      ID_PAGO,
-      FORMA_PAGO,
-      DESCRIPCION,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL MODIFICAR_METODO_PAGO(?,?,?,@MENSAJE, @CODIGO)",
+      [ID_PAGO, FORMA_PAGO, DESCRIPCION]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -218,16 +221,17 @@ export const createParameter = async (req, res) => {
   try {
     const { PARAMETRO, ID_USUARIO, VALOR, FECHA_CREACION, FECHA_MODIFICACION } =
       req.body;
-    await pool.query("CALL CREAR_MS_PARAMETRO(?,?,?,?,?,@MENSAJE, @CODIGO)", [
-      PARAMETRO,
-      ID_USUARIO,
-      VALOR,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL CREAR_MS_PARAMETRO(?,?,?,?,?,@MENSAJE, @CODIGO)",
+      [PARAMETRO, ID_USUARIO, VALOR]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -279,11 +283,11 @@ export const getPermissions = async (req, res) => {
       [ID_USUARIO]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(permisos[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       permisos: JSON.parse(JSON.stringify(permisos[0])),
     });
   } catch (error) {
@@ -305,12 +309,11 @@ export const checkUser = async (req, res) => {
       "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
       [CORREO]
     );
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(user[1]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       usuario: JSON.parse(JSON.stringify(user[0])),
     });
   } catch (error) {
@@ -329,11 +332,11 @@ export const getRoles = async (req, res) => {
   try {
     const roles = await pool.query("CALL OBTENER_ROLES(@MENSAJE, @CODIGO)");
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(roles[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       roles: JSON.parse(JSON.stringify(roles[0])),
     });
   } catch (error) {
@@ -355,11 +358,11 @@ export const getRoleByID = async (req, res) => {
       ID_ROL,
     ]);
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(rol[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       rol: JSON.parse(JSON.stringify(rol[0])),
     });
   } catch (error) {
@@ -378,11 +381,11 @@ export const getObjects = async (req, res) => {
   try {
     const Objetos = await pool.query("CALL OBTENER_OBJETOS(@MENSAJE, @CODIGO)");
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(Objetos[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       Objetos: JSON.parse(JSON.stringify(Objetos[0])),
     });
   } catch (error) {
@@ -404,12 +407,12 @@ export const getObjectByID = async (req, res) => {
       "CALL OBTENER_OBJETO(?,@MENSAJE, @CODIGO)",
       [ID_OBJETO]
     );
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    mm;
+    const mensaje = JSON.parse(JSON.stringify(OBJETO[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       OBJETO: JSON.parse(JSON.stringify(OBJETO[0])),
     });
   } catch (error) {
@@ -430,11 +433,11 @@ export const getPaymentMethods = async (req, res) => {
       "CALL OBTENER_MET_PAGO(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(met_pag[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       Objetos: JSON.parse(JSON.stringify(met_pag[0])),
     });
   } catch (error) {
@@ -457,11 +460,11 @@ export const getPaymentMethodByID = async (req, res) => {
       [ID_PAGO]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(PAGO[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       OBJETO: JSON.parse(JSON.stringify(PAGO[0])),
     });
   } catch (error) {
@@ -482,11 +485,11 @@ export const getParameters = async (req, res) => {
       "CALL OBTENER_PARAMETROS(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(parametros[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       parametros: JSON.parse(JSON.stringify(parametros[0])),
     });
   } catch (error) {
@@ -509,11 +512,11 @@ export const getParameterById = async (req, res) => {
       [ID_PARAMETRO]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(PARAMETRO[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       parametro: JSON.parse(JSON.stringify(PARAMETRO[0])),
     });
   } catch (error) {
@@ -534,11 +537,11 @@ export const getLogs = async (req, res) => {
       "CALL OBTENER_BITACORA(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(BITACORA[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       BITACORA: JSON.parse(JSON.stringify(BITACORA[0])),
     });
   } catch (error) {
@@ -561,11 +564,11 @@ export const getLogById = async (req, res) => {
       [ID_BITACORA]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(BITACORA[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       bitacora: JSON.parse(JSON.stringify(BITACORA[0])),
     });
   } catch (error) {
@@ -586,11 +589,11 @@ export const getComissions = async (req, res) => {
       "CALL OBTENER_COMISIONES(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(COMISION[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       COMISION: JSON.parse(JSON.stringify(COMISION[0])),
     });
   } catch (error) {
@@ -611,11 +614,11 @@ export const getPermissionsByRole = async (req, res) => {
       "CALL OBTENER_PERMISOS_ROL(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(rolePermissions[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       permisosRol: JSON.parse(JSON.stringify(rolePermissions[0])),
     });
   } catch (error) {
@@ -638,11 +641,15 @@ export const getComissionById = async (req, res) => {
       [ID_USUARIO]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO, @COMISIONES_TOTAL as COMISIONES_TOTAL;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(COMISION[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        {
+          MENSAJE: mensaje[0]["MENSAJE"],
+          CODIGO: mensaje[0]["CODIGO"],
+          COMISIONES_TOTAL: mensaje[0]["COMISIONES_TOTAL"],
+        },
+      ],
       COMISION: JSON.parse(JSON.stringify(COMISION[0])),
     });
   } catch (error) {
@@ -690,18 +697,21 @@ export const postBackupDB2 = async (req, res) => {
     });
   }
 };
+
 export const createJob = async (req, res) => {
   try {
     const { PUESTO, DESCRIPCION } = req.body;
-    await pool.query("CALL CREAR_MP_PUESTO(?,?,@MENSAJE, @CODIGO);", [
-      PUESTO,
-      DESCRIPCION,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL CREAR_MP_PUESTO(?,?,@MENSAJE, @CODIGO);",
+      [PUESTO, DESCRIPCION]
     );
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
 
-    res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+    res.status(200).json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -717,16 +727,17 @@ export const updateJob = async (req, res) => {
   try {
     const { ID_PUESTO } = req.params;
     const { PUESTO, DESCRIPCION } = req.body;
-    await pool.query("CALL ACTUALIZAR_MP_PUESTO(?,?,?,@MENSAJE, @CODIGO);", [
-      ID_PUESTO,
-      PUESTO,
-      DESCRIPCION,
-    ]);
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL ACTUALIZAR_MP_PUESTO(?,?,?,@MENSAJE, @CODIGO);",
+      [ID_PUESTO, PUESTO, DESCRIPCION]
     );
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
 
-    res.status(200).json(JSON.parse(JSON.stringify(mensaje)));
+    res.status(200).json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -743,12 +754,12 @@ export const getJobs = async (req, res) => {
     const puestos = await pool.query(
       "CALL OBTENER_PUESTOS(@MENSAJE, @CODIGO);"
     );
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(puestos[0]));
 
     res.status(200).json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       puestos: JSON.parse(JSON.stringify(puestos))[0],
     });
   } catch (error) {

@@ -2,18 +2,19 @@ import pool from "../databaseSQL";
 
 export const createSupplier = async (req, res) => {
   try {
-    const { RTN, NOMBRE, TELEFONO, CORREO } = req.body;
-    await pool.query("CALL CREAR_PROVEEDOR(?,?,?,?,@MENSAJE, @CODIGO)", [
-      RTN,
-      NOMBRE,
-      TELEFONO,
-      CORREO,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const { RTN, NOMBRE_PROVEEDOR, TELEFONO_PROVEEDOR, CORREO_PROVEEDOR } =
+      req.body;
+    const objetos = await pool.query(
+      "CALL CREAR_PROVEEDOR(?,?,?,?,@MENSAJE, @CODIGO)",
+      [RTN, NOMBRE, TELEFONO, CORREO]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -29,19 +30,26 @@ export const createSupplier = async (req, res) => {
 export const updateSupplier = async (req, res) => {
   try {
     const { ID_PROVEEDOR } = req.params;
-    const { RTN, NOMBRE, TELEFONO, CORREO } = req.body;
-    await pool.query("CALL MODIFICAR_PROVEEDOR(?,?,?,?,?,@MENSAJE, @CODIGO)", [
-      ID_PROVEEDOR,
-      RTN,
-      NOMBRE,
-      TELEFONO,
-      CORREO,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const { RTN, NOMBRE_PROVEEDOR, TELEFONO_PROVEEDOR, CORREO_PROVEEDOR } =
+      req.body;
+    const objetos = await pool.query(
+      "CALL MODIFICAR_PROVEEDOR(?,?,?,?,?,@MENSAJE, @CODIGO)",
+      [
+        ID_PROVEEDOR,
+        RTN,
+        NOMBRE_PROVEEDOR,
+        TELEFONO_PROVEEDOR,
+        CORREO_PROVEEDOR,
+      ]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -57,17 +65,17 @@ export const updateSupplier = async (req, res) => {
 export const createSupplyHeader = async (req, res) => {
   try {
     const { ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION } = req.body;
-    await pool.query("CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO, @ID)", [
-      ID_USUARIO,
-      ID_PROVEEDOR,
-      ID_PAGO,
-      OBSERVACION,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO, @ID as ID;"
+    const objetos = await pool.query(
+      "CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO, @ID)",
+      [ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO, @ID as ID;"
@@ -84,15 +92,17 @@ export const updateSupplyHeader = async (req, res) => {
   try {
     const { ID_COMPRA } = req.params;
     const { ID_PAGO, OBSERVACION } = req.body;
-    await pool.query(
+    const objetos = await pool.query(
       "CALL MODIFICAR_ENCABEZADO_COMPRA(?,?,?,@MENSAJE, @CODIGO)",
       [ID_COMPRA, ID_PAGO, OBSERVACION]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -109,15 +119,17 @@ export const addSupply = async (req, res) => {
   try {
     const { ID_PRODUCTO, ID_COMPRA, PRECIO_UNITARIO, DESCRIPCION, CANTIDAD } =
       req.body;
-    await pool.query(
+    const objetos = await pool.query(
       "CALL AGREGAR_PRODUCTO_COMPRA(?,?,?,?,?,@MENSAJE, @CODIGO)",
       [ID_PRODUCTO, ID_COMPRA, PRECIO_UNITARIO, DESCRIPCION, CANTIDAD]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -134,15 +146,17 @@ export const updateSupply = async (req, res) => {
   try {
     const { ID_PRODUCTO, ID_COMPRA, PRECIO_UNITARIO, DESCRIPCION, CANTIDAD } =
       req.body;
-    await pool.query(
+    const objetos = await pool.query(
       "CALL ACTUALIZAR_PRODUCTO_COMPRA(?,?,?,?,?,@MENSAJE, @CODIGO)",
       [ID_PRODUCTO, ID_COMPRA, PRECIO_UNITARIO, DESCRIPCION, CANTIDAD]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -158,15 +172,17 @@ export const updateSupply = async (req, res) => {
 export const deleteSupply = async (req, res) => {
   try {
     const { ID_PRODUCTO, ID_COMPRA } = req.body;
-    await pool.query("CALL ELIMINAR_PRODUCTO_COMPRA(?,?,@MENSAJE, @CODIGO)", [
-      ID_PRODUCTO,
-      ID_COMPRA,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL ELIMINAR_PRODUCTO_COMPRA(?,?,@MENSAJE, @CODIGO)",
+      [ID_PRODUCTO, ID_COMPRA]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -183,15 +199,17 @@ export const processSupply = async (req, res) => {
   try {
     const { ID_COMPRA } = req.params;
     const { ID_USUARIO } = req.body;
-    await pool.query("CALL PROCESAR_COMPRA(?,?,@MENSAJE, @CODIGO)", [
-      ID_COMPRA,
-      ID_USUARIO,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL PROCESAR_COMPRA(?,?,@MENSAJE, @CODIGO)",
+      [ID_COMPRA, ID_USUARIO]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -208,15 +226,17 @@ export const eliminateSupply = async (req, res) => {
   try {
     const { ID_COMPRA } = req.params;
     const { ID_USUARIO } = req.body;
-    await pool.query("CALL ELIMINAR_COMPRA(?,?,@MENSAJE, @CODIGO)", [
-      ID_COMPRA,
-      ID_USUARIO,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL ELIMINAR_COMPRA(?,?,@MENSAJE, @CODIGO)",
+      [ID_COMPRA, ID_USUARIO]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -235,11 +255,12 @@ export const getSupplies = async (req, res) => {
       "CALL OBTENER_PRODUCTOS(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(supplies[0]));
+
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       inventario: JSON.parse(JSON.stringify(supplies[0])),
     });
   } catch (error) {
@@ -262,11 +283,11 @@ export const getSupplyByID = async (req, res) => {
       [ID_PRODUCTO]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(supply[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       inventario: JSON.parse(JSON.stringify(supply[0])),
     });
   } catch (error) {
@@ -287,11 +308,11 @@ export const getSuppliers = async (req, res) => {
       "CALL OBTENER_PROVEEDORES(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(suppliers[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       proveedores: JSON.parse(JSON.stringify(suppliers[0])),
     });
   } catch (error) {
@@ -314,11 +335,11 @@ export const getSupplierByID = async (req, res) => {
       [ID_PROVEEDOR]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(supplier[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       inventario: JSON.parse(JSON.stringify(supplier[0])),
     });
   } catch (error) {
@@ -339,11 +360,11 @@ export const getPurchases = async (req, res) => {
       "CALL OBTENER_COMPRAS(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(purchase[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       proveedores: JSON.parse(JSON.stringify(purchase[0])),
     });
   } catch (error) {
@@ -366,11 +387,11 @@ export const getPurchaseByID = async (req, res) => {
       [ID_COMPRA]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(purchase[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       inventario: JSON.parse(JSON.stringify(purchase[0])),
     });
   } catch (error) {
@@ -391,11 +412,11 @@ export const getProductData = async (req, res) => {
       "CALL OBTENER_PRODUCTOS_FULL(@MENSAJE, @CODIGO)"
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(suppliers[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       proveedores: JSON.parse(JSON.stringify(suppliers[0])),
     });
   } catch (error) {
@@ -418,11 +439,11 @@ export const getProductDataByID = async (req, res) => {
       [ID_PRODUCTO]
     );
 
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
+    const mensaje = JSON.parse(JSON.stringify(supplier[0]));
     res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
       inventario: JSON.parse(JSON.stringify(supplier[0])),
     });
   } catch (error) {

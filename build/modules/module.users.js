@@ -33,7 +33,7 @@ var email = require("../utils/email");
 
 var createUser = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var _req$body, ID_PUESTO, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, pass2, img, mensaje, info, contentHTML;
+    var _req$body, ID_PUESTO, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, pass2, img, objetos, mensaje, info, contentHTML;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -68,26 +68,23 @@ var createUser = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_PUESTO, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, pass2, img, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO]);
 
           case 14:
-            _context.next = 16;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 16:
-            mensaje = _context.sent;
+            objetos = _context.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
             info = JSON.parse(JSON.stringify(mensaje));
 
             if (!(info[0]["CODIGO"] == 1)) {
-              _context.next = 22;
+              _context.next = 21;
               break;
             }
 
             contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649635374/Maelcon/BLG2011-YM-AMS-VirtualWelcome-Card_ufn1k5.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Hola ".concat(NOMBRE, " ").concat(APELLIDO, "!</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Bienvenido al sistema de Maelcon, al recibir este correo se confirma la creaci\xF3n de su usuario el cual\n              quedar\xE1 a la espera de ser dado de alta por un administrador, los modulos de trabajo son variados y el \n              administrador ser\xE1 el encargado de asignar tus areas.\n              <b>Posibles areas de trabajo:</b></p>\n            <ul style=\"font-size: 15px;  margin: 10px 0\">\n              <li>Modulo de compras.</li>\n              <li>Modulo de ventas.</li>\n              <li>Administrador de usuarios.</li>\n              <li>Administrador de sistema.</li>\n              <li>Control de inventarios y productos.</li>\n            </ul>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
-            _context.next = 22;
+            _context.next = 21;
             return email.sendEmail(CORREO_ELECTRONICO, "Confirmación de creación de cuenta ✔", contentHTML);
 
-          case 22:
+          case 21:
             res.json(info);
 
-          case 23:
+          case 22:
           case "end":
             return _context.stop();
         }
@@ -114,7 +111,13 @@ var getUsers = /*#__PURE__*/function () {
 
           case 2:
             usuarios = _context2.sent;
-            res.json(JSON.parse(JSON.stringify(usuarios)));
+            res.json({
+              usuarios: JSON.parse(JSON.stringify(usuarios)),
+              mensaje: [{
+                MENSAJE: "Lista de Usuarios Retornada",
+                CODIGO: 1
+              }]
+            });
 
           case 4:
           case "end":
@@ -145,7 +148,13 @@ var getUserById = /*#__PURE__*/function () {
 
           case 4:
             usuario = _context3.sent;
-            res.json(JSON.parse(JSON.stringify(usuario)));
+            res.json({
+              usuarios: JSON.parse(JSON.stringify(usuario)),
+              mensaje: [{
+                MENSAJE: "UsuariosRetornada",
+                CODIGO: 1
+              }]
+            });
 
           case 6:
           case "end":
@@ -229,7 +238,7 @@ exports.deleteUserById = deleteUserById;
 
 var updateUserByIdPA = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var ID_USUARIO, _req$body2, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, usuarioAct, mensaje;
+    var ID_USUARIO, _req$body2, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, usuarioAct, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
@@ -266,26 +275,28 @@ var updateUserByIdPA = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, img, MODIFICADO_POR]);
 
           case 16:
-            _context6.next = 18;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 18:
-            mensaje = _context6.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context6.next = 25;
+            objetos = _context6.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context6.next = 24;
             break;
 
-          case 22:
-            _context6.prev = 22;
+          case 21:
+            _context6.prev = 21;
             _context6.t0 = _context6["catch"](0);
             res.json(_context6.t0);
 
-          case 25:
+          case 24:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 22]]);
+    }, _callee6, null, [[0, 21]]);
   }));
 
   return function updateUserByIdPA(_x11, _x12) {
@@ -297,7 +308,7 @@ exports.updateUserByIdPA = updateUserByIdPA;
 
 var securityQA = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
-    var ID_USUARIO, _req$body3, PREGUNTA, RESPUESTA, CREADO_POR, pass, mensaje;
+    var ID_USUARIO, _req$body3, PREGUNTA, RESPUESTA, CREADO_POR, pass, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
@@ -312,29 +323,31 @@ var securityQA = /*#__PURE__*/function () {
           case 5:
             pass = _context7.sent;
             _context7.next = 8;
-            return _databaseSQL["default"].query("CALL CREAR_MS_PREGUNTA_RECUPERACION(".concat(ID_USUARIO, ",").concat(PREGUNTA, ",'").concat(pass, "',").concat(CREADO_POR, ",@MENSAJE, @CODIGO);"));
+            return _databaseSQL["default"].query("CALL CREAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);", [ID_USUARIO, PREGUNTA, RESPUESTA, CREADO_POR]);
 
           case 8:
-            _context7.next = 10;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 10:
-            mensaje = _context7.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context7.next = 17;
+            objetos = _context7.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context7.next = 16;
             break;
 
-          case 14:
-            _context7.prev = 14;
+          case 13:
+            _context7.prev = 13;
             _context7.t0 = _context7["catch"](0);
             res.json(_context7.t0);
 
-          case 17:
+          case 16:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 14]]);
+    }, _callee7, null, [[0, 13]]);
   }));
 
   return function securityQA(_x13, _x14) {
@@ -346,7 +359,7 @@ exports.securityQA = securityQA;
 
 var updateSecurytyQA = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res) {
-    var ID_USUARIO, _req$body4, PREGUNTA, RESPUESTA, MODIFICADO_POR, pass, mensaje;
+    var ID_USUARIO, _req$body4, PREGUNTA, RESPUESTA, MODIFICADO_POR, pass, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
@@ -361,29 +374,31 @@ var updateSecurytyQA = /*#__PURE__*/function () {
           case 5:
             pass = _context8.sent;
             _context8.next = 8;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_PREGUNTA_RECUPERACION(".concat(ID_USUARIO, ",").concat(PREGUNTA, ",'").concat(pass, "',").concat(MODIFICADO_POR, ",@MENSAJE, @CODIGO);"));
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);", [ID_USUARIO, PREGUNTA, pass, MODIFICADO_POR]);
 
           case 8:
-            _context8.next = 10;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 10:
-            mensaje = _context8.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context8.next = 17;
+            objetos = _context8.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context8.next = 16;
             break;
 
-          case 14:
-            _context8.prev = 14;
+          case 13:
+            _context8.prev = 13;
             _context8.t0 = _context8["catch"](0);
             res.json(_context8.t0);
 
-          case 17:
+          case 16:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[0, 14]]);
+    }, _callee8, null, [[0, 13]]);
   }));
 
   return function updateSecurytyQA(_x15, _x16) {
@@ -395,7 +410,7 @@ exports.updateSecurytyQA = updateSecurytyQA;
 
 var updatePassword = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res) {
-    var ID_USUARIO, _req$body5, MODIFICADO_POR, CONTRASENA, password, mensaje, info, contentHTML, usuarioAct, correo;
+    var ID_USUARIO, _req$body5, MODIFICADO_POR, CONTRASENA, password, objetos, mensaje, info, contentHTML, mensaje2, usuarioAct, correo;
 
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
@@ -413,44 +428,52 @@ var updatePassword = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);", [ID_USUARIO, MODIFICADO_POR, password]);
 
           case 8:
-            _context9.next = 10;
+            objetos = _context9.sent;
+            _context9.next = 11;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 10:
+          case 11:
             mensaje = _context9.sent;
             info = JSON.parse(JSON.stringify(mensaje));
-            _context9.next = 14;
+            mensaje2 = JSON.parse(JSON.stringify(objetos[0]));
+            _context9.next = 16;
             return _databaseSQL["default"].query("SELECT * FROM TBL_MS_USUARIO WHERE ID_USUARIO = ?", [ID_USUARIO]);
 
-          case 14:
+          case 16:
             usuarioAct = _context9.sent;
             correo = usuarioAct[0]["CORREO_ELECTRONICO"];
 
             if (!(info[0]["CODIGO"] == 1)) {
-              _context9.next = 20;
+              _context9.next = 22;
               break;
             }
 
             contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un cambio de contrase\xF1a para tu usuario, si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ";
-            _context9.next = 20;
+            _context9.next = 22;
             return email.sendEmail(correo, "Cambio de contraseña exitoso ✔", contentHTML);
 
-          case 20:
-            res.json(info);
-            _context9.next = 26;
+          case 22:
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
+              info: info
+            });
+            _context9.next = 28;
             break;
 
-          case 23:
-            _context9.prev = 23;
+          case 25:
+            _context9.prev = 25;
             _context9.t0 = _context9["catch"](0);
             res.json(_context9.t0);
 
-          case 26:
+          case 28:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 23]]);
+    }, _callee9, null, [[0, 25]]);
   }));
 
   return function updatePassword(_x17, _x18) {
@@ -854,37 +877,36 @@ var getUsersSQL = /*#__PURE__*/function () {
 
           case 3:
             user = _context16.sent;
-            _context16.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context16.sent;
+            mensaje = JSON.parse(JSON.stringify(user[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               usuario: JSON.parse(JSON.stringify(user[0]))
             });
-            _context16.next = 16;
+            _context16.next = 14;
             break;
 
-          case 10:
-            _context16.prev = 10;
+          case 8:
+            _context16.prev = 8;
             _context16.t0 = _context16["catch"](0);
-            _context16.next = 14;
+            _context16.next = 12;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 12:
             _mensaje4 = _context16.sent;
             res.status(401).json({
               error: _context16.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje4))
             });
 
-          case 16:
+          case 14:
           case "end":
             return _context16.stop();
         }
       }
-    }, _callee16, null, [[0, 10]]);
+    }, _callee16, null, [[0, 8]]);
   }));
 
   return function getUsersSQL(_x31, _x32) {
@@ -909,37 +931,36 @@ var getUserSQL = /*#__PURE__*/function () {
 
           case 4:
             user = _context17.sent;
-            _context17.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 7:
-            mensaje = _context17.sent;
+            mensaje = JSON.parse(JSON.stringify(user[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               usuario: JSON.parse(JSON.stringify(user[0]))
             });
-            _context17.next = 17;
+            _context17.next = 15;
             break;
 
-          case 11:
-            _context17.prev = 11;
+          case 9:
+            _context17.prev = 9;
             _context17.t0 = _context17["catch"](0);
-            _context17.next = 15;
+            _context17.next = 13;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 13:
             _mensaje5 = _context17.sent;
             res.status(401).json({
               error: _context17.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje5))
             });
 
-          case 17:
+          case 15:
           case "end":
             return _context17.stop();
         }
       }
-    }, _callee17, null, [[0, 11]]);
+    }, _callee17, null, [[0, 9]]);
   }));
 
   return function getUserSQL(_x33, _x34) {
@@ -969,39 +990,38 @@ var getMyUser = /*#__PURE__*/function () {
 
           case 7:
             permisos = _context18.sent;
-            _context18.next = 10;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 10:
-            mensaje = _context18.sent;
+            mensaje = JSON.parse(JSON.stringify(user[0]));
             console.log(ID_USUARIO);
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               usuario: JSON.parse(JSON.stringify(user[0])),
               permisos: JSON.parse(JSON.stringify(permisos[0]))
             });
-            _context18.next = 21;
+            _context18.next = 19;
             break;
 
-          case 15:
-            _context18.prev = 15;
+          case 13:
+            _context18.prev = 13;
             _context18.t0 = _context18["catch"](0);
-            _context18.next = 19;
+            _context18.next = 17;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 19:
+          case 17:
             _mensaje6 = _context18.sent;
             res.status(401).json({
               error: _context18.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje6))
             });
 
-          case 21:
+          case 19:
           case "end":
             return _context18.stop();
         }
       }
-    }, _callee18, null, [[0, 15]]);
+    }, _callee18, null, [[0, 13]]);
   }));
 
   return function getMyUser(_x35, _x36) {
