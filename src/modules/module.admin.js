@@ -1,6 +1,7 @@
 import { async } from "regenerator-runtime";
 import pool from "../databaseSQL";
 import backup from "../utils/backup";
+var cloudinary_services = require("../utils/cloudinary_services");
 import keys from "../keys";
 import mysqldump from "mysqldump";
 const fs = require("fs");
@@ -770,5 +771,71 @@ export const getJobs = async (req, res) => {
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
     });
+  }
+};
+
+//Actualizar usuario
+export const updateUserByAdmin = async (req, res) => {
+  try {
+    const { ID_USUARIO } = req.params;
+    const {
+      NOMBRE,
+      APELLIDO,
+      GENERO,
+      RTN,
+      ID_PUESTO,
+      TELEFONO,
+      SUELDO,
+      ID_ROL,
+      USUARIO,
+      CORREO_ELECTRONICO,
+      IMG_USUARIO,
+      FECHA_VENCIMIENTO,
+      MODIFICADO_POR,
+      PREGUNTA,
+      RESPUESTA
+    } = req.body;
+
+    let img;
+    if (req.file) {
+      console.log(req.file);
+      img = await cloudinary_services.uploadImage(
+        req.file.path,
+        "Maelcon/Perfiles"
+      );
+    } else {
+      const usuarioAct = await pool.query(
+        "CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)",
+        [ID_USUARIO]
+      );
+      console.log(usuarioAct);
+      img = usuarioAct[0][0].IMG_USUARIO;
+    }
+
+    const mensaje = await pool.query(
+      `CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+      [
+        ID_USUARIO,
+        NOMBRE,
+        APELLIDO,
+        GENERO,
+        RTN,
+        ID_PUESTO,
+        TELEFONO,
+        SUELDO,
+        ID_ROL,
+        USUARIO,
+        CORREO_ELECTRONICO,
+        img,
+        MODIFICADO_POR,
+        FECHA_VENCIMIENTO,
+        PREGUNTA,
+        RESPUESTA
+      ]
+    );
+    
+    res.json(JSON.parse(JSON.stringify(mensaje)));
+  } catch (error) {
+    res.json(error);
   }
 };

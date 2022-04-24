@@ -457,3 +457,27 @@ export const getProductDataByID = async (req, res) => {
     });
   }
 };
+
+//Obtener detalles de la compra
+export const getDetailsSupplyById = async (req, res) => {
+  try {
+    const { ID_COMPRA } = req.params;
+    const details = await pool.query(
+      "CALL OBTENER_DETALLE_COMPRA(?,@MENSAJE, @CODIGO)",
+      [ID_COMPRA]
+    );
+
+    res.json({
+      detalles: JSON.parse(JSON.stringify(details)),
+    });
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};

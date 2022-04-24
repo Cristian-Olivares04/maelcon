@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as moduleAdminCtrl from "../modules/module.admin";
 import * as authJwt from "../middlewares/authJwt";
+import upload from "../middlewares/upload";
 
 const router = Router();
 
@@ -156,4 +157,8 @@ router.post("/jobs/", moduleAdminCtrl.createJob);
 
 router.put("/jobs/:ID_PUESTO", moduleAdminCtrl.updateJob);
 
+//Para actualizar usuario
+router.put("/updateUser/:ID_USUARIO", upload.uploadUserIMG, moduleAdminCtrl.updateUserByAdmin);
+
 export default router;
+
