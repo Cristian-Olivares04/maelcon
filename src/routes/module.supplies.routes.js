@@ -40,4 +40,7 @@ router.get("/productData/", moduleSuppliesCtrl.getProductData);
 
 router.get("/productData/:ID_PRODUCTO", moduleSuppliesCtrl.getProductDataByID);
 
+//Obtener detalles de la compra
+router.get("/detailsSupply/:ID_COMPRA", moduleSuppliesCtrl.getDetailsSupplyById);
+
 export default router;
