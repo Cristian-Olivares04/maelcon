@@ -781,6 +781,8 @@ export const updateUserByAdmin = async (req, res) => {
       IMG_USUARIO,
       FECHA_VENCIMIENTO,
       MODIFICADO_POR,
+      PREGUNTA,
+      RESPUESTA
     } = req.body;
 
     let img;
@@ -800,7 +802,7 @@ export const updateUserByAdmin = async (req, res) => {
     }
 
     const mensaje = await pool.query(
-      `CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+      `CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
       [
         ID_USUARIO,
         NOMBRE,
@@ -815,7 +817,9 @@ export const updateUserByAdmin = async (req, res) => {
         CORREO_ELECTRONICO,
         img,
         MODIFICADO_POR,
-        FECHA_VENCIMIENTO
+        FECHA_VENCIMIENTO,
+        PREGUNTA,
+        RESPUESTA
       ]
     );
     
