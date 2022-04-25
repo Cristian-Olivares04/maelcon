@@ -18,5 +18,5 @@ const storage = multer.diskStorage({
 
 let upload = multer({ storage: storage, fileFilter: fileFilter,});
 
-exports.uploadIMG = upload.single('IMG');
+exports.uploadIMG = upload.single('IMG_PRODUCTO');
 exports.uploadUserIMG = upload.single('IMG_USUARIO');
