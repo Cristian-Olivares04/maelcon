@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _typeof = require("@babel/runtime/helpers/typeof");
 
 Object.defineProperty(exports, "__esModule", {
@@ -12,6 +14,8 @@ var _express = require("express");
 var moduleAdminCtrl = _interopRequireWildcard(require("../modules/module.admin"));
 
 var authJwt = _interopRequireWildcard(require("../middlewares/authJwt"));
+
+var _upload = _interopRequireDefault(require("../middlewares/upload"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -54,6 +58,8 @@ router.post("/backupDB2/",
 moduleAdminCtrl.postBackupDB2);
 router.get("/jobs/", moduleAdminCtrl.getJobs);
 router.post("/jobs/", moduleAdminCtrl.createJob);
-router.put("/jobs/:ID_PUESTO", moduleAdminCtrl.updateJob);
+router.put("/jobs/:ID_PUESTO", moduleAdminCtrl.updateJob); //Para actualizar usuario
+
+router.put("/updateUser/:ID_USUARIO", _upload["default"].uploadUserIMG, moduleAdminCtrl.updateUserByAdmin);
 var _default = router;
 exports["default"] = _default;

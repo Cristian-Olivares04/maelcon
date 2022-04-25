@@ -17,7 +17,7 @@ var cloudinary_services = require("../utils/cloudinary_services");
 
 var createCategory = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var _req$body, CATEGORIA, DESCRIPCION, mensaje, _mensaje;
+    var _req$body, CATEGORIA, DESCRIPCION, objetos, mensaje, _mensaje;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -29,34 +29,31 @@ var createCategory = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL CREAR_CATEGORIA(?,?,@MENSAJE, @CODIGO)", [CATEGORIA, DESCRIPCION]);
 
           case 4:
-            _context.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context.sent;
+            objetos = _context.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
             res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context.next = 16;
+            _context.next = 15;
             break;
 
-          case 10:
-            _context.prev = 10;
+          case 9:
+            _context.prev = 9;
             _context.t0 = _context["catch"](0);
-            _context.next = 14;
+            _context.next = 13;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 13:
             _mensaje = _context.sent;
             res.status(401).json({
               error: _context.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje))
             });
 
-          case 16:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 10]]);
+    }, _callee, null, [[0, 9]]);
   }));
 
   return function createCategory(_x, _x2) {
@@ -68,7 +65,7 @@ exports.createCategory = createCategory;
 
 var updateCategory = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var ID_CATEGORIA, _req$body2, CATEGORIA, DESCRIPCION, mensaje, _mensaje2;
+    var ID_CATEGORIA, _req$body2, CATEGORIA, DESCRIPCION, objetos, mensaje, _mensaje2;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
@@ -81,34 +78,36 @@ var updateCategory = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL MODIFICAR_CATEGORIA(?,?,?,@MENSAJE, @CODIGO)", [ID_CATEGORIA, CATEGORIA, DESCRIPCION]);
 
           case 5:
-            _context2.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 7:
-            mensaje = _context2.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context2.next = 17;
+            objetos = _context2.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context2.next = 16;
             break;
 
-          case 11:
-            _context2.prev = 11;
+          case 10:
+            _context2.prev = 10;
             _context2.t0 = _context2["catch"](0);
-            _context2.next = 15;
+            _context2.next = 14;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 14:
             _mensaje2 = _context2.sent;
             res.status(401).json({
               error: _context2.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje2))
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 11]]);
+    }, _callee2, null, [[0, 10]]);
   }));
 
   return function updateCategory(_x3, _x4) {
@@ -120,14 +119,14 @@ exports.updateCategory = updateCategory;
 
 var createProduct = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-    var _req$body3, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, mensaje, _mensaje3;
+    var _req$body3, ID_PROVEEDOR, NOMBRE_PRODUCTO, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, objetos, mensaje, _mensaje3;
 
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            _req$body3 = req.body, ID_PROVEEDOR = _req$body3.ID_PROVEEDOR, NOMBRE = _req$body3.NOMBRE, MARCA = _req$body3.MARCA, DESCRIPCION = _req$body3.DESCRIPCION, IMG = _req$body3.IMG, ESTADO = _req$body3.ESTADO, ID_CATEGORIA = _req$body3.ID_CATEGORIA;
+            _req$body3 = req.body, ID_PROVEEDOR = _req$body3.ID_PROVEEDOR, NOMBRE_PRODUCTO = _req$body3.NOMBRE_PRODUCTO, MARCA = _req$body3.MARCA, DESCRIPCION = _req$body3.DESCRIPCION, IMG = _req$body3.IMG, ESTADO = _req$body3.ESTADO, ID_CATEGORIA = _req$body3.ID_CATEGORIA;
 
             if (!req.file) {
               _context3.next = 9;
@@ -135,7 +134,7 @@ var createProduct = /*#__PURE__*/function () {
             }
 
             _context3.next = 5;
-            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Productos");
 
           case 5:
             img = _context3.sent;
@@ -144,41 +143,43 @@ var createProduct = /*#__PURE__*/function () {
             break;
 
           case 9:
-            img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+            img = "https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png";
 
           case 10:
             _context3.next = 12;
-            return _databaseSQL["default"].query("CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
+            return _databaseSQL["default"].query("CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PROVEEDOR, NOMBRE_PRODUCTO, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
 
           case 12:
-            _context3.next = 14;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 14:
-            mensaje = _context3.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context3.next = 24;
+            objetos = _context3.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context3.next = 23;
             break;
 
-          case 18:
-            _context3.prev = 18;
+          case 17:
+            _context3.prev = 17;
             _context3.t0 = _context3["catch"](0);
-            _context3.next = 22;
+            _context3.next = 21;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 22:
+          case 21:
             _mensaje3 = _context3.sent;
             res.status(401).json({
               error: _context3.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje3))
             });
 
-          case 24:
+          case 23:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 18]]);
+    }, _callee3, null, [[0, 17]]);
   }));
 
   return function createProduct(_x5, _x6) {
@@ -190,7 +191,7 @@ exports.createProduct = createProduct;
 
 var updateProduct = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var ID_PRODUCTO, _req$body4, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, productoAct, mensaje, _mensaje4;
+    var ID_PRODUCTO, _req$body4, ID_PROVEEDOR, NOMBRE_PRODUCTO, MARCA, DESCRIPCION, IMG, ESTADO, ID_CATEGORIA, img, productoAct, objetos, mensaje, _mensaje4;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -198,7 +199,7 @@ var updateProduct = /*#__PURE__*/function () {
           case 0:
             _context4.prev = 0;
             ID_PRODUCTO = req.params.ID_PRODUCTO;
-            _req$body4 = req.body, ID_PROVEEDOR = _req$body4.ID_PROVEEDOR, NOMBRE = _req$body4.NOMBRE, MARCA = _req$body4.MARCA, DESCRIPCION = _req$body4.DESCRIPCION, IMG = _req$body4.IMG, ESTADO = _req$body4.ESTADO, ID_CATEGORIA = _req$body4.ID_CATEGORIA;
+            _req$body4 = req.body, ID_PROVEEDOR = _req$body4.ID_PROVEEDOR, NOMBRE_PRODUCTO = _req$body4.NOMBRE_PRODUCTO, MARCA = _req$body4.MARCA, DESCRIPCION = _req$body4.DESCRIPCION, IMG = _req$body4.IMG, ESTADO = _req$body4.ESTADO, ID_CATEGORIA = _req$body4.ID_CATEGORIA;
 
             if (!req.file) {
               _context4.next = 10;
@@ -206,12 +207,12 @@ var updateProduct = /*#__PURE__*/function () {
             }
 
             _context4.next = 6;
-            return cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Productos");
 
           case 6:
             img = _context4.sent;
             console.log(img);
-            _context4.next = 15;
+            _context4.next = 14;
             break;
 
           case 10:
@@ -220,42 +221,43 @@ var updateProduct = /*#__PURE__*/function () {
 
           case 12:
             productoAct = _context4.sent;
-            console.log(productoAct[0][0].IMG_PRODUCTO);
             img = productoAct[0][0].IMG_PRODUCTO;
 
-          case 15:
-            _context4.next = 17;
-            return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
+          case 14:
+            _context4.next = 16;
+            return _databaseSQL["default"].query("CALL MODIFICAR_PRODUCTO(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_PROVEEDOR, NOMBRE_PRODUCTO, MARCA, DESCRIPCION, img, ESTADO, ID_CATEGORIA]);
 
-          case 17:
-            _context4.next = 19;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 19:
-            mensaje = _context4.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context4.next = 29;
+          case 16:
+            objetos = _context4.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context4.next = 27;
             break;
 
-          case 23:
-            _context4.prev = 23;
+          case 21:
+            _context4.prev = 21;
             _context4.t0 = _context4["catch"](0);
-            _context4.next = 27;
+            _context4.next = 25;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 27:
+          case 25:
             _mensaje4 = _context4.sent;
             res.status(401).json({
               error: _context4.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje4))
             });
 
-          case 29:
+          case 27:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 23]]);
+    }, _callee4, null, [[0, 21]]);
   }));
 
   return function updateProduct(_x7, _x8) {
@@ -267,7 +269,7 @@ exports.updateProduct = updateProduct;
 
 var updateAvailable = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-    var ID_INVENTARIO, _req$body5, PRECIO_VENTA, ESTADO, mensaje, _mensaje5;
+    var ID_INVENTARIO, _req$body5, PRECIO_VENTA, ESTADO, objetos, mensaje, _mensaje5;
 
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
@@ -280,34 +282,36 @@ var updateAvailable = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL MODIFICAR_INVENTARIO(?,?,?,@MENSAJE, @CODIGO)", [ID_INVENTARIO, PRECIO_VENTA, ESTADO]);
 
           case 5:
-            _context5.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 7:
-            mensaje = _context5.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context5.next = 17;
+            objetos = _context5.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context5.next = 16;
             break;
 
-          case 11:
-            _context5.prev = 11;
+          case 10:
+            _context5.prev = 10;
             _context5.t0 = _context5["catch"](0);
-            _context5.next = 15;
+            _context5.next = 14;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 14:
             _mensaje5 = _context5.sent;
             res.status(401).json({
               error: _context5.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje5))
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 11]]);
+    }, _callee5, null, [[0, 10]]);
   }));
 
   return function updateAvailable(_x9, _x10) {
@@ -319,7 +323,7 @@ exports.updateAvailable = updateAvailable;
 
 var updateExpireDate = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var ID_KARDEX, FECHA_VENCIMIENTO, mensaje, _mensaje6;
+    var ID_KARDEX, FECHA_VENCIMIENTO, objetos, mensaje, _mensaje6;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
@@ -332,34 +336,36 @@ var updateExpireDate = /*#__PURE__*/function () {
             return _databaseSQL["default"].query("CALL ACTUALIZAR_KARDEX(?,?,@MENSAJE, @CODIGO)", [ID_KARDEX, FECHA_VENCIMIENTO]);
 
           case 5:
-            _context6.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 7:
-            mensaje = _context6.sent;
-            res.json(JSON.parse(JSON.stringify(mensaje)));
-            _context6.next = 17;
+            objetos = _context6.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            res.json({
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }]
+            });
+            _context6.next = 16;
             break;
 
-          case 11:
-            _context6.prev = 11;
+          case 10:
+            _context6.prev = 10;
             _context6.t0 = _context6["catch"](0);
-            _context6.next = 15;
+            _context6.next = 14;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 14:
             _mensaje6 = _context6.sent;
             res.status(401).json({
               error: _context6.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje6))
             });
 
-          case 17:
+          case 16:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 11]]);
+    }, _callee6, null, [[0, 10]]);
   }));
 
   return function updateExpireDate(_x11, _x12) {
@@ -383,37 +389,36 @@ var getInventory = /*#__PURE__*/function () {
 
           case 3:
             inventory = _context7.sent;
-            _context7.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context7.sent;
+            mensaje = JSON.parse(JSON.stringify(inventory[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               inventario: JSON.parse(JSON.stringify(inventory[0]))
             });
-            _context7.next = 16;
+            _context7.next = 14;
             break;
 
-          case 10:
-            _context7.prev = 10;
+          case 8:
+            _context7.prev = 8;
             _context7.t0 = _context7["catch"](0);
-            _context7.next = 14;
+            _context7.next = 12;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 12:
             _mensaje7 = _context7.sent;
             res.status(401).json({
               error: _context7.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje7))
             });
 
-          case 16:
+          case 14:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 10]]);
+    }, _callee7, null, [[0, 8]]);
   }));
 
   return function getInventory(_x13, _x14) {
@@ -437,37 +442,36 @@ var getInventoryByProduct = /*#__PURE__*/function () {
 
           case 3:
             inventory = _context8.sent;
-            _context8.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context8.sent;
+            mensaje = JSON.parse(JSON.stringify(inventory[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               inventario: JSON.parse(JSON.stringify(inventory[0]))
             });
-            _context8.next = 16;
+            _context8.next = 14;
             break;
 
-          case 10:
-            _context8.prev = 10;
+          case 8:
+            _context8.prev = 8;
             _context8.t0 = _context8["catch"](0);
-            _context8.next = 14;
+            _context8.next = 12;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 12:
             _mensaje8 = _context8.sent;
             res.status(401).json({
               error: _context8.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje8))
             });
 
-          case 16:
+          case 14:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[0, 10]]);
+    }, _callee8, null, [[0, 8]]);
   }));
 
   return function getInventoryByProduct(_x15, _x16) {
@@ -491,37 +495,36 @@ var getCategories = /*#__PURE__*/function () {
 
           case 3:
             categories = _context9.sent;
-            _context9.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context9.sent;
+            mensaje = JSON.parse(JSON.stringify(categories[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               inventario: JSON.parse(JSON.stringify(categories[0]))
             });
-            _context9.next = 16;
+            _context9.next = 14;
             break;
 
-          case 10:
-            _context9.prev = 10;
+          case 8:
+            _context9.prev = 8;
             _context9.t0 = _context9["catch"](0);
-            _context9.next = 14;
+            _context9.next = 12;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 12:
             _mensaje9 = _context9.sent;
             res.status(401).json({
               error: _context9.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje9))
             });
 
-          case 16:
+          case 14:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 10]]);
+    }, _callee9, null, [[0, 8]]);
   }));
 
   return function getCategories(_x17, _x18) {
@@ -546,37 +549,36 @@ var getCategoryByID = /*#__PURE__*/function () {
 
           case 4:
             categories = _context10.sent;
-            _context10.next = 7;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 7:
-            mensaje = _context10.sent;
+            mensaje = JSON.parse(JSON.stringify(categories[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               inventario: JSON.parse(JSON.stringify(categories[0]))
             });
-            _context10.next = 17;
+            _context10.next = 15;
             break;
 
-          case 11:
-            _context10.prev = 11;
+          case 9:
+            _context10.prev = 9;
             _context10.t0 = _context10["catch"](0);
-            _context10.next = 15;
+            _context10.next = 13;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 15:
+          case 13:
             _mensaje10 = _context10.sent;
             res.status(401).json({
               error: _context10.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje10))
             });
 
-          case 17:
+          case 15:
           case "end":
             return _context10.stop();
         }
       }
-    }, _callee10, null, [[0, 11]]);
+    }, _callee10, null, [[0, 9]]);
   }));
 
   return function getCategoryByID(_x19, _x20) {
@@ -600,37 +602,36 @@ var getKardex = /*#__PURE__*/function () {
 
           case 3:
             kardex = _context11.sent;
-            _context11.next = 6;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
-
-          case 6:
-            mensaje = _context11.sent;
+            mensaje = JSON.parse(JSON.stringify(kardex[0]));
             res.json({
-              mensaje: JSON.parse(JSON.stringify(mensaje)),
+              mensaje: [{
+                MENSAJE: mensaje[0]["MENSAJE"],
+                CODIGO: mensaje[0]["CODIGO"]
+              }],
               inventario: JSON.parse(JSON.stringify(kardex[0]))
             });
-            _context11.next = 16;
+            _context11.next = 14;
             break;
 
-          case 10:
-            _context11.prev = 10;
+          case 8:
+            _context11.prev = 8;
             _context11.t0 = _context11["catch"](0);
-            _context11.next = 14;
+            _context11.next = 12;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 14:
+          case 12:
             _mensaje11 = _context11.sent;
             res.status(401).json({
               error: _context11.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje11))
             });
 
-          case 16:
+          case 14:
           case "end":
             return _context11.stop();
         }
       }
-    }, _callee11, null, [[0, 10]]);
+    }, _callee11, null, [[0, 8]]);
   }));
 
   return function getKardex(_x21, _x22) {

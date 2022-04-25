@@ -14,7 +14,7 @@ var _default = {
   /* database: {
     host: "localhost",
     user: "root",
-    database: "db_maelcon_5",
+    database: "prueba6",
     password: "rodriguez1999",
   } */
 
