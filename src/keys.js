@@ -4,11 +4,11 @@ export default {
     user: "knj4r52ntpqud8d8",
     database: "t3zwy94sqiznorr2",
     password: "issklzqxfx6qadc2",
-  },
-  /* database: {
+  },/*
+   database: {
     host: "localhost",
     user: "root",
-    database: "prueba6",
+    database: "db_maelcon_5",
     password: "rodriguez1999",
-  } */
+  }*/
 };
