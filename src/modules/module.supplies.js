@@ -6,7 +6,7 @@ export const createSupplier = async (req, res) => {
       req.body;
     const objetos = await pool.query(
       "CALL CREAR_PROVEEDOR(?,?,?,?,@MENSAJE, @CODIGO)",
-      [RTN, NOMBRE, TELEFONO, CORREO]
+      [RTN, NOMBRE_PROVEEDOR , TELEFONO_PROVEEDOR, CORREO_PROVEEDOR]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
