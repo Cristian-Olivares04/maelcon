@@ -309,7 +309,8 @@ export const getCategoryByID = async (req, res) => {
 
 export const getKardex = async (req, res) => {
   try {
-    const kardex = await pool.query("CALL OBTENER_KARDEX(@MENSAJE, @CODIGO)");
+    const { ID_PRODUCTO } = req.params;
+    const kardex = await pool.query("CALL OBTENER_KARDEX(?,@MENSAJE, @CODIGO)",[ID_PRODUCTO]);
 
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"

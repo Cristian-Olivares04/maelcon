@@ -30,6 +30,6 @@ router.get("/", moduleInventoryCtrl.getInventory);
 
 router.get("/existence/", moduleInventoryCtrl.getInventoryByProduct);
 
-router.get("/kardex/", moduleInventoryCtrl.getKardex);
+router.get("/kardex/:ID_PRODUCTO", moduleInventoryCtrl.getKardex);
 
 export default router;
