@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Permission } from 'src/app/interfaces/objects.interface';
 import { usuario } from 'src/app/interfaces/user.interface';
+import { AyudaService } from 'src/app/services/ayuda.service';
+import { ComprasService } from 'src/app/services/compras.service';
+import { InventarioService } from 'src/app/services/inventario.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { VentasService } from 'src/app/services/ventas.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -48,7 +52,9 @@ export class SidebarComponent implements OnInit{
   administration = 0;
   security = 0;
 
-  constructor(private US:UsuariosService, private router:Router, private MS:MantenimientoService) {}
+  constructor(private US:UsuariosService, private router:Router, private MS:MantenimientoService, private IN:InventarioService, private CP:ComprasService, private HP:AyudaService, private VS:VentasService) {
+
+  }
 
   ngOnInit(): void {
     this.US._userToken = localStorage.getItem("auth-token");

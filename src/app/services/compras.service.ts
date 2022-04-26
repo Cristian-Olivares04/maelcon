@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product, Purchase, purchaseProduct } from '../interfaces/objects.interface';
+import { Product, Purchase, PurchaseDetail, purchaseProduct } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 import { Proveedor } from '../interfaces/characters.interface';
@@ -15,9 +15,11 @@ export class ComprasService {
   public _userToken=this.US._userToken;
   public _compraActual = '';
   public _products:Product[]=[]
+  public _detallesCompras:PurchaseDetail[]=[]
   public _proveedores:Proveedor[]=[]
   public _kardex=[]
   public _compras=[]
+  public datosCompAct:any;
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -53,18 +55,18 @@ export class ComprasService {
   }
 
   //funcion para crear producto
-  crearProducto( data:purchaseProduct): Observable<any>{
+  agregarProdCompra( data:purchaseProduct): Observable<any>{
     return this.http.post<purchaseProduct>(`${this.bUA}/module/supplies/addSupply`, data);
   }
 
   //funcion para actualizar producto
-  actualizarProducto( data:purchaseProduct, id:any): Observable<any>{
-    return this.http.put<purchaseProduct>(`${this.bUA}/module/supplies/updateSupply/${id}`, data);
+  actualizarProducto( data:purchaseProduct): Observable<any>{
+    return this.http.put<purchaseProduct>(`${this.bUA}/module/supplies/updateSupply`, data);
   }
 
   //funcion para eliminar producto de una compra
-  eliminarProducto( idComp:any, idProd:any): Observable<any>{
-    return this.http.delete<purchaseProduct>(`${this.bUA}/module/supplies/deleteSupply/${idComp}/${idProd}`);
+  eliminarProducto( data:any ): Observable<any>{
+    return this.http.delete<purchaseProduct>(`${this.bUA}/module/supplies/deleteSupply`, {body:data});
   }
 
   //funcion para ejecutar la compra
@@ -138,5 +140,18 @@ export class ComprasService {
   //funcion para obtener una compra en especifica
   obtenerCompra(id:any): Observable<any>{
     return this.http.get<Purchase>(`${this.bUA}/module/supplies/purchases/${id}`);
+  }
+
+  //funcion para obtener productos de una compra en especifica
+  obtenerDetallesCompra(id:any){
+    this.http.get<Purchase>(`${this.bUA}/module/supplies/detailsSupply/${id}`).subscribe((resp) => {
+      //console.log('detallesCompras',resp['detalles'][0]);
+      if(resp['detalles'][0][0]['CODIGO']==1){
+        this._detallesCompras=resp['detalles'][0];
+      }else{
+        this._detallesCompras=[]
+        //console.log('no',resp);
+      }
+    });
   }
 }

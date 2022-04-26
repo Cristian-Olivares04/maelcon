@@ -31,7 +31,18 @@
             <td><ngb-highlight [result]="us.SUELDO | number" [term]="filter.value"></ngb-highlight></td>
             <td><ngb-highlight [result]="us.ID_ROL | number" [term]="filter.value"></ngb-highlight></td>
             <td><ngb-highlight [result]="us.ID_PUESTO | number" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="us.ESTADO | number" [term]="filter.value"></ngb-highlight></td>
+            <td>
+              <div *ngIf = "us.ESTADO; else inactivo" class="form-check form-switch text-success">
+                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked (click)="activarUser(!us.ESTADO, us.ID_USUARIO)">
+                  <label class="form-check-label" for="flexSwitchCheckDefault">Activo</label>
+              </div>
+              <ng-template #inactivo>
+                  <div class="form-check form-switch text-danger">
+                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" (click)="activarUser(!us.ESTADO, us.ID_USUARIO)">
+                      <label class="form-check-label" for="flexSwitchCheckDefault">Inactivo</label>
+                  </div>
+              </ng-template>
+            </td>
             <td>
               <button type="button" class="btn btn-outline-primary" (mouseenter)="openModl(us.ID_USUARIO)" (mouseleave)="cerrarModal()" (click)="goUser(us.ID_USUARIO)" data-bs-toggle="modal" data-bs-target="#edit"><i class="fas fa-user-edit"></i></button>
             </td>

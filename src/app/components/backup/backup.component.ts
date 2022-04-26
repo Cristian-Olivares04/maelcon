@@ -18,10 +18,11 @@ export class BackupComponent implements OnInit {
     nombre:''
   }
 
-  constructor(private MS:MantenimientoService) { }
+  constructor(private MS:MantenimientoService) {
+    this.bitacora= this.MS._bitacora;
+  }
 
   ngOnInit(): void {
-    this.bitacora= this.MS._bitacora;
   }
 
   exportCsv() {

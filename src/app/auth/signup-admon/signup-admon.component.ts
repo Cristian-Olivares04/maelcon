@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../services/usuarios.service';
 import { usuario } from 'src/app/interfaces/user.interface';
 import Swal from 'sweetalert2';
+import { MantenimientoService } from 'src/app/services/mantenimiento.service';
+import { Puesto, Role } from 'src/app/interfaces/objects.interface';
 
 @Component({
   selector: 'app-signup-admon',
@@ -13,10 +15,10 @@ import Swal from 'sweetalert2';
 export class SignupAdmonComponent {
   @Output() onUsuarioRegistrado = new EventEmitter();
 
-  @Input() usuarioRegistro: usuario = {
+  @Input() usuarioRegistro:usuario={
     ID_USUARIO: '',
-    ID_PUESTO: 0,
-    ID_ROL: 0,
+    ID_PUESTO: 1,
+    ID_ROL: 1,
     USUARIO: '',
     CONTRASENA: '',
     CORREO_ELECTRONICO: '',
@@ -25,11 +27,11 @@ export class SignupAdmonComponent {
     IMG_USUARIO: '',
     PREGUNTA: '',
     RESPUESTA: '',
-    GENERO: '',
+    GENERO: 'MASCULINO',
     FECHA_VENCIMIENTO: '',
-    CREADO_POR: 0,
+    CREADO_POR: this.US._usuarioActual,
     ESTADO: 0,
-    SUELDO: 0,
+    SUELDO: 12000.85,
     NOMBRE_PERSONA: '',
     APELLIDO_PERSONA: ''
   }
@@ -39,10 +41,18 @@ export class SignupAdmonComponent {
   public segundaContrasena: string = '';
   public status:boolean = false;
   public activate = false;
-  msj = '';
   open = false;
+  _usAct=this.US._usuarioActual;
+  _roles:Role[]=[];
+  _puestos:Puesto[]=this.MS._puestos;
+  _generos = [{'VALOR':'MASCULINO'}, {'VALOR':'FEMENINO'}, {'VALOR':'OTRO'}, {'VALOR':'PREFIERO NO ESPECIFICAR'}];
 
-  constructor (private UsuariosService:UsuariosService, private _Router: Router, private modal: NgbModal){}
+  constructor (private US:UsuariosService, private MS:MantenimientoService, private _Router:Router, private modal: NgbModal){
+    this.MS.obtenerRoles();
+    this.MS.obtenerPuestos();
+    this._puestos=this.MS._puestos;
+    this._roles=this.MS._roles;
+  }
 
   guardarUsuario(){
     //console.log('usuario', this.usuarioRegistro);
@@ -51,7 +61,7 @@ export class SignupAdmonComponent {
     this.validadCampos();
     if(this.activate){
       //console.log("Usuario", this.usuarioRegistro)
-      this.UsuariosService.guardarNuevoUsuario(this.usuarioRegistro).subscribe((resp) => {
+      this.US.guardarNuevoUsuario(this.usuarioRegistro).subscribe((resp) => {
         if(resp[0]['CODIGO']==1){
           Swal.fire({
             title: `Bien hecho...`,
@@ -109,5 +119,13 @@ export class SignupAdmonComponent {
       this.validacionCorreo = true;
       this.activate=false;
     }
+  }
+
+  obtenerRoles(){
+    this.MS.obtenerRoles();
+    this.MS.obtenerPuestos();
+    this._puestos=this.MS._puestos;
+    this._roles=this.MS._roles;
+    //console.log('roles',this._roles)
   }
 }

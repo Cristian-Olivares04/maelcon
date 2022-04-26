@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, PipeTransform } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PurchaseDetail } from 'src/app/interfaces/objects.interface';
+import { ComprasService } from 'src/app/services/compras.service';
 
 interface Country {
   name: string;
@@ -48,6 +50,17 @@ function search(text: string, pipe: PipeTransform): Country[] {
   });
 }
 
+function searchDetProd(DETALLE, text: string, pipe: PipeTransform): PurchaseDetail[] {
+  return DETALLE.filter(det => {
+    const term = text.toLowerCase();
+    return det.NOMBRE_PRODUCTO.toLowerCase().includes(term)
+        || det.MARCA_PRODUCTO.toLowerCase().includes(term)
+        || pipe.transform(det.PRECIO_UNITARIO).includes(term)
+        || pipe.transform(det.CANTIDAD_PRODUCTO).includes(term)
+        || pipe.transform(det.SUB_TOTAL).includes(term);
+  });
+}
+
 @Component({
   selector: 'app-view-products',
   templateUrl: './view-products.component.html',
@@ -58,11 +71,21 @@ export class ViewProductsComponent implements OnInit {
   @Input() viewOption:any;
   countries: Observable<Country[]>;
   filter = new FormControl('');
+  @Input() listaDetalle:any;
+  listDetalleCompr:any;
+  detalleInter: Observable<PurchaseDetail[]>;
 
-  constructor(pipe: DecimalPipe, private modalService: NgbModal) {
+  constructor(private CP:ComprasService,private pipe: DecimalPipe, private modalService: NgbModal) {
+    this.listDetalleCompr=this.CP._detallesCompras;
+    this.listaDetalle=this.listDetalleCompr;
     this.countries = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => search(text, pipe))
+      map(text => search(text, this.pipe))
+    );
+
+    this.detalleInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => searchDetProd(this.listaDetalle ,text, this.pipe))
     );
   }
 

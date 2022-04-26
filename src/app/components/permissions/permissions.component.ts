@@ -54,13 +54,6 @@ export class PermissionsComponent implements OnInit {
   }
 
   constructor( private MS:MantenimientoService,private pipe: DecimalPipe, private modalService: NgbModal, private US:UsuariosService, private _Router:Router) {
-    this.permisosInter = this.filter.valueChanges.pipe(
-      startWith(''),
-      map(text => search(this.permisosRol, text, this.pipe))
-    );
-  }
-
-  ngOnInit(): void {
     this.MS.obtenerPermisos();
     this.permisosRol=this.MS._permisosRol;
     this.roles=this.MS._roles;
@@ -71,6 +64,13 @@ export class PermissionsComponent implements OnInit {
     );
     //console.log('Permisos', this.permisosRol)
     this.condition=true
+    this.permisosInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this.permisosRol, text, this.pipe))
+    );
+  }
+
+  ngOnInit(): void {
   }
 
   openModal(content:any) {

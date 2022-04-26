@@ -1,7 +1,7 @@
-<div>
+<div class="pb-3">
     <div class="row">
         <div class="col-1"></div>
-        <div class="col-10 contenedor p-4" style=" align-items: center; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+        <div class="col-10 contenedor p-4" style=" align-items: center; background-color: #fff; border-radius: 15px;">
             <h3 class="text-muted"><b>Proveedores de producto</b></h3>
             <p class="text-muted">Lista oficial de proveedores de productos para la empresa.</p>
 
@@ -18,22 +18,23 @@
                     <thead>
                     <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">Area</th>
-                    <th scope="col">Population</th>
-                    <th scope="col">Editar</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">RTN</th>
+                    <th scope="col">TELEFONO</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">CORREO</th>
+                    <th scope="col">EDITAR</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let country of countries | async; index as i">
+                    <tr *ngFor="let prov of provInter | async; index as i">
                     <th scope="row">{{ i + 1 }}</th>
-                    <td>
-                        <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                        <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                    </td>
-                    <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                    <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                    <td><button class="btn btn-sm btn-outline-primary ms-1 float" (click) = "openModal(editProvider)"><i class="fas fa-pen"></i></button></td>
+                    <td><ngb-highlight [result]="prov.NOMBRE_PROVEEDOR" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="prov.RTN" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="prov.TELEFONO_PROVEEDOR" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="prov.ID_PROVEEDOR | number" [term]="filter.value"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="prov.CORREO_PROVEEDOR" [term]="filter.value"></ngb-highlight></td>
+                    <td><button class="btn btn-sm btn-outline-primary ms-1 float" style="margin: 0%; height: 35px;" (click) = "openModal(editProvider, prov.ID_PROVEEDOR)"><i class="fas fa-pen"></i></button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -49,71 +50,71 @@
             <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
                 <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
             </div>
-            <div>
+            <div class="pb-3">
                 <div class="row">
                     <div class="col-1"></div>
-                    <div class="col-10 row contenedor p-3" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-                        <!--Cuadro contenedor de informacion-->
-                        <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar Proveedor</h2>
-                        <p class="text-muted">Actualización de información de un proveedor</p>
-                        <!--Columna 1 de informacion-->
-                        <div class="col-6 p-3">
-                            <div class="login-content">
-                                <form>
-                                    <div class="input-div one">
-                                        <div class="i">
-                                            <i class="fas fa-address-card"></i>
-                                        </div>
-                                        <div class="div">
-                                            <input class="" type="text" placeholder="RTN" name="rtn">
-                                        </div>
-                                    </div>
-              
-                                    <div class="input-div one">
-                                        <div class="i">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                        <div class="div">
-                                            <input class="" type="text" placeholder="Nombre" name="nombre">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-              
-                        <!--Columna 2 de informacion-->
-                        <div class="col-6 p-3" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
-                            <div class="login-content">
-                                <form>
-                                    <div class="input-div one">
-                                        <div class="i">
-                                          <i class="fas fa-phone"></i>
-                                        </div>
-                                        <div class="div">
-                                            <input type="text" placeholder="Telefono" name="telefono">
-                                        </div>
-                                    </div>
-              
-                                    <div class="input-div one">
-                                        <div class="i">
-                                            <i class="fas fa-at"></i>
-                                        </div>
-                                        <div class="div">
-                                            <input class="" type="email" placeholder="Correo electronico" name="email">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-12 row justify-content-between">
-                            <div class="col-6">
-                                <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click')">
-                            </div>
-                            <div class="col-6">
-                                <input type="button" class="btn" value="Actualizar">
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-10 row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+                      <!--Cuadro contenedor de informacion-->
+                      <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar Proveedor</h2>
+                      <p class="text-muted">Actualización de información de un proveedor</p>
+                      <!--Columna 1 de informacion-->
+                      <div class="col-6 p-3">
+                          <div class="login-content">
+                              <form>
+                                  <div class="input-div one">
+                                      <div class="i">
+                                          <i class="fas fa-address-card"></i>
+                                      </div>
+                                      <div class="div">
+                                        <input type="text" maxlength="16" minlength="16" placeholder="RTN" [(ngModel)]="datosProv.RTN" name="rtn">
+                                      </div>
+                                  </div>
+
+                                  <div class="input-div one">
+                                      <div class="i">
+                                          <i class="fas fa-user"></i>
+                                      </div>
+                                      <div class="div">
+                                          <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosProv.NOMBRE_PROVEEDOR" name="nombre">
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+
+                      <!--Columna 2 de informacion-->
+                      <div class="col-6 p-3" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+                          <div class="login-content">
+                              <form>
+                                  <div class="input-div one">
+                                      <div class="i">
+                                        <i class="fas fa-phone"></i>
+                                      </div>
+                                      <div class="div">
+                                          <input type="text" minlength="9" maxlength="9" placeholder="Telefono" [(ngModel)]="datosProv.TELEFONO_PROVEEDOR" name="telefono">
+                                      </div>
+                                  </div>
+
+                                  <div class="input-div one">
+                                      <div class="i">
+                                          <i class="fas fa-at"></i>
+                                      </div>
+                                      <div class="div">
+                                          <input class="" type="email" placeholder="Correo electronico" [(ngModel)]="datosProv.CORREO_PROVEEDOR" name="email">
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                      <div class="col-12 row justify-content-between">
+                          <div class="col-6">
+                              <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click')">
+                          </div>
+                          <div class="col-6">
+                              <input type="button" class="btn" value="Actualizar" (click)="actualizarProv(datosProv.ID_PROVEEDOR)">
+                          </div>
+                      </div>
+                  </div>
                 </div>
             </div>
             <div class="row">

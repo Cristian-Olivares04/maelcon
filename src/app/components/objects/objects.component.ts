@@ -34,20 +34,21 @@ export class ObjectsComponent implements OnInit {
   condition=false;
 
   constructor( private MS:MantenimientoService, private pipe: DecimalPipe, private modalService: NgbModal, private US:UsuariosService, private _Router:Router) {
+    this.MS.obtenerObjetos();
     this.objects=this.MS._objects;
     this.objectsInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this.objects, text, this.pipe))
     );
-  }
-
-  ngOnInit(): void {
     this.objects=this.MS._objects;
     this.objectsInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this.objects, text, this.pipe))
     );
     this.condition=true
+  }
+
+  ngOnInit(): void {
   }
 
   @Input() datoObjeto:Object={

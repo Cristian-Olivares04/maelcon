@@ -46,6 +46,8 @@ import { DetailsSalesComponent } from './components/details-sales/details-sales.
 import { CustomersComponent } from './components/customers/customers.component';
 import { CommissionsComponent } from './components/commissions/commissions.component';
 import { InformationComponent } from './pages/information/information.component';
+import { PaginatePipe } from './pipes/paginate.pipe';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -85,6 +87,7 @@ import { InformationComponent } from './pages/information/information.component'
     CustomersComponent,
     CommissionsComponent,
     InformationComponent,
+    PaginatePipe,
   ],
   imports: [
     BrowserModule,
@@ -95,7 +98,7 @@ import { InformationComponent } from './pages/information/information.component'
     NgbModule,
     SidebarModule.forRoot(),
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

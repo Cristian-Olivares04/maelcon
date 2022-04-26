@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Category, Product} from '../interfaces/objects.interface';
+import { Category, Product, purchaseProduct} from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 
@@ -15,6 +15,10 @@ export class InventarioService {
   public _inventarioGeneral=[]
   public _inventarioExixtencia=[]
   public _categorias=[]
+  public _products=[]
+  public _datosProd:any;
+  public _datosProdExist:any;
+  public _compAct:any;
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -22,8 +26,9 @@ export class InventarioService {
   });
 
   constructor(private US:UsuariosService, private http:HttpClient) {
-    this.obtenerInventario();
+    this.obtenerProductosCompletos();
     this.obtenerCategorias();
+    this.obtenerInventario();
     this.obtenerExistenciaInventario();
   }
 
@@ -62,6 +67,45 @@ export class InventarioService {
   //funcion para actualizar Producto
   actualizarProducto( data:Product, id:any): Observable<any>{
     return this.http.put<Product>(`${this.bUA}/module/inventory/product/${id}`, data);
+  }
+
+  //funcion para obtener productos
+  obtenerProductos(){
+    this.http.get<any>(`${this.bUA}/module/supplies/supplies`).subscribe((resp) => {
+      //console.log('resp',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._products=resp['inventario'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
+  }
+
+  //funcion para obtener productos
+  obtenerProductosCompletos(){
+    try {
+      this.http.get<any>(`${this.bUA}/module/supplies/productData`).subscribe((resp) => {
+        console.log('resp',resp);
+        if(resp['mensaje'][0]['CODIGO']==1){
+          this._products=resp['proveedores'];
+        }else{
+          //console.log('no',resp);
+        }
+      });
+    } catch (error) {
+      console.log('error sucitado', error)
+    }
+
+  }
+
+  //funcion para obtener un producto en especifico
+  obtenerProducto(id:any): Observable<any>{
+    return this.http.get<purchaseProduct>(`${this.bUA}/module/supplies/productData/${id}`);
+  }
+
+  //funcion para obtener un producto en especifico
+  obtenerProductoCompleto(id:any): Observable<any>{
+    return this.http.get<purchaseProduct>(`${this.bUA}/module/supplies/supplies/${id}`);
   }
 
   //funcion para actualizar en inventario un Producto

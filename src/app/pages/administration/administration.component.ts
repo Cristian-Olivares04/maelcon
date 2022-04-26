@@ -45,7 +45,8 @@ export class AdministrationComponent implements OnInit {
 
   @Input() datosMetodoPago:PayMethod = {
     FORMA_PAGO: '',
-    DESCRIPCION: ''
+    DESCRIPCION: '',
+    ID_PAGO: 0
   }
 
   @Input() datosParametro:Parameter = {
@@ -75,7 +76,8 @@ export class AdministrationComponent implements OnInit {
 
   metodoPago:PayMethod = {
     FORMA_PAGO: '',
-    DESCRIPCION: ''
+    DESCRIPCION: '',
+    ID_PAGO: 0
   }
 
   parametro:Parameter = {
@@ -231,18 +233,6 @@ export class AdministrationComponent implements OnInit {
       }else{
         //console.log('no',resp);
         this.msjCheck=`No se pudo actualizar el rol`
-      }
-    });
-  }
-
-  obtenerMetodosPago(){
-    this.MS.obtenerMetodosPagos().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._paysMethods=resp['Objetos'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de metodos de pagos`
       }
     });
   }
