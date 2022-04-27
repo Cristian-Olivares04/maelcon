@@ -64,10 +64,10 @@ export const updateSupplier = async (req, res) => {
 
 export const createSupplyHeader = async (req, res) => {
   try {
-    const { ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION } = req.body;
+    const { ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION_COMPRA } = req.body;
     const objetos = await pool.query(
       "CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO, @ID)",
-      [ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION]
+      [ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION_COMPRA]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
@@ -91,10 +91,10 @@ export const createSupplyHeader = async (req, res) => {
 export const updateSupplyHeader = async (req, res) => {
   try {
     const { ID_COMPRA } = req.params;
-    const { ID_PAGO, OBSERVACION } = req.body;
+    const { ID_PAGO, OBSERVACION_COMPRA } = req.body;
     const objetos = await pool.query(
       "CALL MODIFICAR_ENCABEZADO_COMPRA(?,?,?,@MENSAJE, @CODIGO)",
-      [ID_COMPRA, ID_PAGO, OBSERVACION]
+      [ID_COMPRA, ID_PAGO, OBSERVACION_COMPRA]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));

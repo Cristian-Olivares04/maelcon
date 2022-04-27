@@ -13,7 +13,7 @@ export const updateUserStatus = async (req, res) => {
     const { ID_USUARIO } = req.params;
     const { ESTADO, MODIFICADO_POR } = req.body;
     const objetos = await pool.query(
-      "CALL ESTADO_USUARIO(?,?,?, @MENSAJE, @CODIGO);",
+      "CALL ESTADO_USUARIO(?,?,?,@MENSAJE,@CODIGO);",
       [ID_USUARIO, ESTADO, MODIFICADO_POR]
     );
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
