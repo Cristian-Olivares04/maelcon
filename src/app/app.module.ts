@@ -48,6 +48,7 @@ import { CommissionsComponent } from './components/commissions/commissions.compo
 import { InformationComponent } from './pages/information/information.component';
 import { PaginatePipe } from './pipes/paginate.pipe';
 import { DatePipe } from '@angular/common';
+import { CategoriesComponent } from './components/categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { DatePipe } from '@angular/common';
     CommissionsComponent,
     InformationComponent,
     PaginatePipe,
+    CategoriesComponent,
   ],
   imports: [
     BrowserModule,

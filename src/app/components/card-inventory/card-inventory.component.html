@@ -13,11 +13,15 @@
       </form>
     </div>
     <div class="col-8 d-flex" style="text-align-last: right;">
-      <div class="col-6 mr-1 pt-3 pb-3" style="text-align-last: center;">
+      <div class="col-4 mr-1 pt-3 pb-3" style="text-align-last: center;">
         <button class="btn-success m-3" (click)="openModal(createProduct)"><i class="fas fa-plus"></i> Crear
           producto</button>
       </div>
-      <div class="col-6 ml-1 pt-3 pb-3" style="text-align-last: center;">
+      <div class="col-4 ml-1 pt-3 pb-3" style="text-align-last: center;">
+        <button class="btn m-3" (click)="openModal(adminCategories)"><i class="fa fa-gear"></i> Admministrar
+          Categorías</button>
+      </div>
+      <div class="col-4 ml-1 pt-3 pb-3" style="text-align-last: center;">
         <button class="btn m-3" (click)="openModal(adminProviders)"><i class="fa fa-gear"></i> Admministrar
           proveedores</button>
       </div>
@@ -358,6 +362,21 @@
         <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <app-providers></app-providers>
+      <div class="row pb-3">
+        <p class="text-muted text-center">Sistema de Inventario Maelcon S de R. L.</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!--Modal para administrar proveedores-->
+<ng-template #adminCategories let-modal>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <app-categories></app-categories>
       <div class="row pb-3">
         <p class="text-muted text-center">Sistema de Inventario Maelcon S de R. L.</p>
       </div>

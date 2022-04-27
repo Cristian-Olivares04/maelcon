@@ -15,7 +15,7 @@ export interface PurchaseDetail{
   ID_COMPRA: number,
   PRECIO_UNITARIO: number,
   CANTIDAD_PRODUCTO: number,
-  SUB_TOTAL: number
+  SUB_TOTAL: number,
 }
 
 export interface Purchase {
@@ -27,7 +27,10 @@ export interface Purchase {
   FECHA_COMPRA: string,
   TOTAL_COMPRA: number,
   ISV_COMPRA: number,
-  ESTADO: number
+  ESTADO: number,
+  USUARIO: string,
+  PAGO: string,
+  PROVEEDOR: string,
 }
 
 export interface Sale {

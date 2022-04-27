@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CompleteProduct, PurchaseDetail, purchaseProduct } from 'src/app/interfaces/objects.interface';
 import { ComprasService } from 'src/app/services/compras.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
+import Swal from 'sweetalert2';
 
 
 interface Country {
@@ -197,7 +198,6 @@ export class ListProductsComponent implements OnInit {
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
 
-
   agregarProd(){
     //console.log('lista-hijo',this.listaProds)
     for (let i = 0; i < this.listaProds.length; i++) {
@@ -234,6 +234,13 @@ export class ListProductsComponent implements OnInit {
           CANTIDAD: 1
         }
       }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops... No se pudo agregar el producto',
+          text: 'El manager de inventario debe activar el producto para su compra y venta'
+        })
+        let dc = document.getElementById("closeAddProd");
+        dc?.click()
         //console.log('no',resp);
       }
     });

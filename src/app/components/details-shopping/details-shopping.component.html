@@ -73,7 +73,7 @@
                         <i class="fas fa-info"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="text" placeholder="Observacion" [(ngModel)]="datosCompra.OBSERVACION_COMPRA" name="observacion">
+                        <input class="" type="text" placeholder="Observacion" (change)="cambioDatosCompra()" [(ngModel)]="datosCompra.OBSERVACION_COMPRA" name="observacion">
                     </div>
                     <span class="text-muted details">Observaciones</span>
                 </div>
@@ -99,7 +99,7 @@
                         <i class="fas fa-credit-card"></i>
                     </div>
                     <div class="div">
-                        <select class="form-control" placeholder="Usuario" [(ngModel)]="datosCompra.ID_PAGO" name="tipoPago">
+                        <select class="form-control" placeholder="Usuario" (change)="cambioDatosCompra()" [(ngModel)]="datosCompra.ID_PAGO" name="tipoPago">
                           <option disabled>Seleccione tipo de pago</option>
                           <option *ngFor="let pago of _metodosPagos" [value]="pago.ID_PAGO">{{pago.FORMA_PAGO}}</option>
                         </select>
@@ -131,10 +131,10 @@
     </div>
     <div class="col-12 row justify-content-between">
         <div class="col-6">
-            <input type="button" class="btn-cancel" value="Cancelar">
+            <input type="button" class="btn-cancel" value="Eliminar" (click)="eliminarComp()">
         </div>
         <div class="col-6">
-            <input type="button" class="btn" value="Finalizar compra">
+            <input type="button" class="btn" value="Finalizar compra" (click)="finalizarComp()">
         </div>
     </div>
 </div>

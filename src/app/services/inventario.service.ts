@@ -14,7 +14,7 @@ export class InventarioService {
   public _userToken=this.US._userToken;
   public _inventarioGeneral=[]
   public _inventarioExixtencia=[]
-  public _categorias=[]
+  public _categorias:Category[]=[]
   public _products=[]
   public _datosProd:any;
   public _datosProdExist:any;

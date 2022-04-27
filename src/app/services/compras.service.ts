@@ -18,7 +18,7 @@ export class ComprasService {
   public _detallesCompras:PurchaseDetail[]=[]
   public _proveedores:Proveedor[]=[]
   public _kardex=[]
-  public _compras=[]
+  public _compras:any;
   public datosCompAct:any;
 
   headers = new HttpHeaders({
@@ -41,7 +41,7 @@ export class ComprasService {
 
   //funcion para actualizar proveedor
   actualizarProveedor( data:Proveedor, id:any): Observable<any>{
-    return this.http.put<Proveedor>(`${this.bUA}/module/users/uptPWD/${id}`, data);
+    return this.http.put<Proveedor>(`${this.bUA}/module/supplies/supplier/${id}`, data);
   }
 
   //funcion para crear encabezado de compra
@@ -50,7 +50,7 @@ export class ComprasService {
   }
 
   //funcion para actualizar encabezado compra
-  actualizarCompraEncabezado( data:Purchase, id:any): Observable<any>{
+  actualizarCompraEncabezado( data:any, id:any): Observable<any>{
     return this.http.put<Purchase>(`${this.bUA}/module/supplies/supplyHeader/${id}`, data);
   }
 

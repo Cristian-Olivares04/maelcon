@@ -37,12 +37,13 @@
         </div>
       </div>
       <div class="col-6" *ngFor="let comp of _compras2 | paginate:page_size:page_number">
+        <div>
           <!--Cuadro contenedor de informacion-->
           <div class="car-inventary row contenedor p-1" style="position: relative;">
               <div class="p-2" style="text-align-last: center;">
                 <h4 style="color: #0846ffff; margin-top: 20px;">Compra#{{comp.ID_COMPRA}}</h4>
                 <p class="text-muted">Información tarjeta de almacen</p>
-                <div *ngIf="!comp.ESTADO">
+                <div *ngIf="!comp.ESTADO && comp.ID_USUARIO==_usAct">
                   <button class="btn-xs btn-edit" (mouseover)="openModl(comp.ID_COMPRA)" (click)="openModal(editCard)"><i class="fas fa-pen"></i></button>
                 </div>
               </div>
@@ -55,7 +56,7 @@
                                   <i class="fas fa-handshake"></i>
                               </div>
                               <div class="div">
-                                  <input class="" type="text" value="Proveedor" [(ngModel)]="comp.PROVEEDOR" name="proveedor" readonly>
+                                  <input class="" type="text" value="Proveedor" [value]="comp.PROVEEDOR" name="proveedor" readonly>
                               </div>
                               <span class="text-muted details">Proveedor del producto</span>
                           </div>
@@ -65,7 +66,7 @@
                                   <i class="fas fa-user"></i>
                               </div>
                               <div class="div">
-                                  <input class="" type="text" value="Usuario" [(ngModel)]="comp.USUARIO" name="proveedor" name="usuario" readonly>
+                                  <input class="" type="text" value="Usuario" [value]="comp.USUARIO" name="proveedor" name="usuario" readonly>
                               </div>
                               <span class="text-muted details">Usuario encargado</span>
                           </div>
@@ -75,7 +76,7 @@
                                   <i class="fas fa-calendar"></i>
                               </div>
                               <div class="div">
-                                  <input class="" type="text" value="2022-12-12" [(ngModel)]="comp.FECHA_COMPRA" name="fecha" readonly>
+                                  <input class="" type="text" value="2022-12-12" [value]="comp.FECHA_COMPRA" name="fecha" readonly>
                               </div>
                               <span class="text-muted details">Fecha de compra</span>
                           </div>
@@ -84,7 +85,7 @@
                                   <i class="fas fa-info"></i>
                               </div>
                               <div class="div">
-                                  <input class="" type="text" value="Observacion" [(ngModel)]="comp.OBSEVACION_COMPRA" name="observacion" readonly>
+                                  <input class="" type="text" value="Observacion" [value]="comp.OBSERVACION_COMPRA" name="observacion" readonly>
                               </div>
                               <span class="text-muted details">Observaciones</span>
                           </div>
@@ -100,7 +101,10 @@
                                   <i class="fas fa-credit-card"></i>
                               </div>
                               <div class="div">
-                                  <input class="" type="text" value="Tipo de pago" [(ngModel)]="comp.PAGO" name="pago" readonly>
+                                  <select class="form-control" value="Tipo de pago" [(ngModel)]="comp.ID_PAGO" name="pago" disabled>
+                                    <option disabled>Seleccione tipo de pago</option>
+                                    <option *ngFor="let pago of _metodosPagos" [value]="pago.ID_PAGO">{{pago.FORMA_PAGO}}</option>
+                                  </select>
                               </div>
                               <span class="text-muted details">Tipo de pago</span>
                           </div>
@@ -149,6 +153,8 @@
                   </div>
               </div>
           </div>
+        </div>
+
       </div>
       <div class="justify-content m-3 d-flex">
         <div class="d-flex">
@@ -169,98 +175,90 @@
 
 <!--Modal para actualizar-->
 <ng-template #editCard let-modal>
-    <div class="modal-content">
-        <div class="modal-body">
-            <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
-                <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-            </div>
-            <div>
-                <div class="row">
-                    <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
-                        <!--Cuadro contenedor de informacion-->
-                        <app-details-shopping (datsCompAct)="actDatosComp($event)" (listDetails)="obtLista($event)"></app-details-shopping>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-            </div>
-        </div>
-</div>
+  <div class="modal-content">
+      <div class="modal-body">
+          <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+              <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+          </div>
+          <div>
+              <div class="row m-3">
+                  <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+                      <!--Cuadro contenedor de informacion-->
+                      <app-details-shopping (datsCompAct)="actDatosComp($event)" (listDetails)="obtLista($event)" (listaCompras)="ProcesarListComp($event)"></app-details-shopping>
+                  </div>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
+          </div>
+      </div>
+  </div>
 </ng-template>
 
 <!--Crear nueva compra-->
 <ng-template #newShopping let-modal>
-    <div class="modal-content">
-        <div class=" d-flex justify-content-end m-2" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-        <hr>
-            <div class="modal-body">
-                <div class="p-3">
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-10 row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
-                            <!--Cuadro contenedor de informacion-->
-                            <h2 style="color: #0846ffff; margin-top: 20px;">Nuevo encabezado de compra</h2>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-handshake"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <select class="form-control" name="proveedorSelect">
-                                                        <option value="">Seleccione un proveedor</option>
-                                                        <option value="LUMEX">LUMEX</option>
-                                                        <option value="LINEAL">LINEAL</option>
-                                                        <option value="etc...">etc...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-credit-card"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <select class="form-control" name="proveedorSelect">
-                                                        <option value="">Seleccione método de pago</option>
-                                                        <option value="Efectivo">Efectivo</option>
-                                                        <option value="Credito">Credito</option>
-                                                        <option value="etc...">etc...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+  <div class="modal-content">
+    <div class=" d-flex justify-content-end m-2" style="text-align: center; display: block;">
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <div class="p-3">
+        <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+          <!--Cuadro contenedor de informacion-->
+          <h2 style="color: #0846ffff; margin-top: 20px;">Nuevo encabezado de compra</h2>
+          <div class="row">
+                <div class="col-6 p-3">
+                    <div class="login-content">
+                        <form>
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-handshake"></i>
                                 </div>
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-info"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input type="text" placeholder="Observacion" name="observacion">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <input type="button" class="btn" value="Crear compra" (click)="openModal(editCard)">
+                                <div class="div">
+                                    <select class="form-control" placeholder="Proveedor" [(ngModel)]="datosCompra.ID_PROVEEDOR" name="proveedorSelect">
+                                      <option disabled>Seleccione tipo de pago</option>
+                                      <option *ngFor="let prov of _proveedores" [value]="prov.ID_PROVEEDOR">{{prov.NOMBRE_PROVEEDOR}}</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-1">
-                        </div>
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="div">
+                                  <select class="form-control" placeholder="Usuario" [(ngModel)]="datosCompra.ID_PAGO" name="tipoPago">
+                                    <option disabled>Seleccione tipo de pago</option>
+                                    <option *ngFor="let pago of _metodosPagos" [value]="pago.ID_PAGO">{{pago.FORMA_PAGO}}</option>
+                                  </select>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-            </div>
-            <div class="row pb-3">
-                <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
-            </div>
+                </div>
+                <div class="col-6 p-3">
+                    <div class="login-content">
+                        <form>
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="div">
+                                    <input type="text" placeholder="Observacion" [(ngModel)]="datosCompra.OBSERVACION_COMPRA" name="observacion">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <input type="button" class="btn" value="Crear compra" (click)="crearCompra()">
+                </div>
+          </div>
         </div>
+      </div>
+      <div class="row pb-3">
+          <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <!--Modal para ver lista de productos-->
