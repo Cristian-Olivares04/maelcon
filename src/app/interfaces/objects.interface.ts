@@ -135,10 +135,12 @@ export interface PermisosRol {
 }
 
 export interface Help {
+  ID_INFO:number,
   TIPO:string,
   TITULO:string,
   ENLACE:string,
-  FECHA_CREACION:string
+  FECHA_CREACION:string,
+  ESTADO:Boolean
 }
 
 export interface ExistenceProduct {

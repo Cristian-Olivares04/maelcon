@@ -1,11 +1,12 @@
-<div class="mb-5">
+
+  <div class="mb-5">
     <div class="row">
         <div class="col-8">
-            <h4 class="text-muted"><b>Lista de información modulo de ayuda</b></h4>
-            <p class="text-muted">información general y tutoriales.</p>
+            <h4 class="text-muted"><b>Información de ayuda</b></h4>
+            <p class="text-muted">Lista general de enlaces para el modulo de ayuda.</p>
         </div>
         <div class="col-4">
-            <button class="btn btn-sm btn-outline-primary ms-2" (clic)="openModal(createInfo)"><i class="fas fa-plus"></i> Crear sección</button>
+            <button class="btn btn-sm btn-outline-primary ms-2" (click)="openModal(createInfo)"><i class="fas fa-plus"></i> Crear Sección</button>
         </div>
         <div class="col-12">
             <form>
@@ -24,18 +25,18 @@
                         <th scope="col">TIPO</th>
                         <th scope="col">TITULO</th>
                         <th scope="col">ENLACE</th>
-                        <th scope="col">FECHA</th>
+                        <th scope="col">FECHA CREACION</th>
                         <th scope="col">EDITAR</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let info of HelpInter | async; index as i">
+                      <tr *ngFor="let ob of HelpInter | async; index as i">
                         <th scope="row">{{ i + 1 }}</th>
-                        <td><ngb-highlight [result]="info.TIPO" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="info.TITULO" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="info.ENLACE" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="info.FECHA_CREACION" [term]="filter.value"></ngb-highlight></td>
-                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2"><i class="fas fa-pen"></i></button></td>
+                        <td><ngb-highlight [result]="ob.TIPO" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="ob.TITULO" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="ob.ENLACE" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="ob.FECHA_CREACION" [term]="filter.value"></ngb-highlight></td>
+                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "updateInfo(editInfo, ob.ID_INFO)"><i class="fas fa-pen"></i></button></td>
                       </tr>
                       </tbody>
                     </table>
@@ -44,66 +45,133 @@
     </div>
 </div>
 
-<ng-template #createInfo let-modal>
-    <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-            <div class="modal-body">
-                <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-                            <!--Cuadro contenedor de informacion-->
-                            <h2 style="color: #0846ffff; margin-top: 20px;">Creación de sección de ayuda</h2>
+<!--Modal para actualizar objetos-->
+<ng-template #editInfo let-modal>
+  <div class="modal-content">
+      <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+          <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+          <hr>
+      </div>
+          <div class="modal-body">
+            <div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                        <!--Cuadro contenedor de informacion-->
+                        <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar información de ayuda</h2>
 
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-text"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="text" placeholder="Titulo" name="titulo">
-                                                </div>
+                        <div class="row">
+                            <div class="col-6 p-2">
+                                <div class="login-content">
+                                    <form>
+                                        <div class="input-div">
+                                            <div class="i">
+                                                <i class="fas fa-comment"></i>
                                             </div>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-sitemap"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="text" placeholder="Tipo" name="tipo">
-                                                </div>
+                                            <div class="div">
+                                                <input class="" type="text" placeholder="Titulo" [(ngModel)]="datoHelp.TITULO" name="titulo">
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-file"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input type="text" placeholder="Enlace" name="enlace">
-                                                </div>
+                                        </div>
+                                        <div class="input-div">
+                                            <div class="i">
+                                                <i class="fas fa-sitemap"></i>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <input type="button" class="btn" value="Crear sección">
+                                            <div class="div">
+                                                <input class="" type="text" placeholder="Tipo de información" [(ngModel)]="datoHelp.TIPO" name="tipo">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-2">
+                            <div class="col-6 p-2">
+                                <div class="login-content">
+                                    <form>
+                                        <div class="input-div">
+                                            <div class="i">
+                                                <i class="fas fa-link"></i>
+                                            </div>
+                                            <div class="div">
+                                                <input type="text" placeholder="Enlace" [(ngModel)]="datoHelp.ENLACE" name="enlace">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <input type="button" class="btn" value="Actualizar" (click)="actInfo(datoHelp.ID_INFO)">
+                            </div>
                         </div>
                     </div>
-            </div>
-            <div class="row">
-                <p class="text-muted text-center">Sistema de objetos Maelcon S de R. L.</p>
-            </div>
+                    <div class="col-2">
+                    </div>
+                </div>
         </div>
-    </div>
+          <div class="row">
+              <p class="text-muted text-center">Sistema de actualización por Administración</p>
+          </div>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #createInfo let-modal>
+  <div class="modal-content">
+      <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+          <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+          <hr>
+      </div>
+          <div class="modal-body">
+              <div>
+                  <div class="row">
+                      <div class="col-2"></div>
+                      <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                          <!--Cuadro contenedor de informacion-->
+                          <h2 style="color: #0846ffff; margin-top: 20px;">Crear sección</h2>
+
+                          <div class="row">
+                              <div class="col-6 p-2">
+                                  <div class="login-content">
+                                      <form>
+                                          <div class="input-div">
+                                              <div class="i">
+                                                  <i class="fas fa-comment"></i>
+                                              </div>
+                                              <div class="div">
+                                                  <input class="" type="text" placeholder="Titulo" [(ngModel)]="datoHelp.TITULO" name="titulo">
+                                              </div>
+                                          </div>
+                                          <div class="input-div">
+                                              <div class="i">
+                                                  <i class="fas fa-sitemap"></i>
+                                              </div>
+                                              <div class="div">
+                                                  <input class="" type="text" placeholder="Tipo de información" [(ngModel)]="datoHelp.TIPO" name="tipo">
+                                              </div>
+                                          </div>
+                                      </form>
+                                  </div>
+                              </div>
+                              <div class="col-6 p-2">
+                                  <div class="login-content">
+                                      <form>
+                                          <div class="input-div">
+                                              <div class="i">
+                                                  <i class="fas fa-link"></i>
+                                              </div>
+                                              <div class="div">
+                                                  <input type="text" placeholder="Enlace" [(ngModel)]="datoHelp.ENLACE" name="enlace">
+                                              </div>
+                                          </div>
+                                      </form>
+                                  </div>
+                                  <input type="button" class="btn" value="Crear información" (click)="crearInfo()">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-2">
+                      </div>
+                  </div>
+          </div>
+          <div class="row">
+              <p class="text-muted text-center">Sistema de objetos Maelcon S de R. L.</p>
+          </div>
+      </div>
+  </div>
 </ng-template>

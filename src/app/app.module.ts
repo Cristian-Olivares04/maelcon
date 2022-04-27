@@ -52,6 +52,7 @@ import { DatePipe } from '@angular/common';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { InfoTableComponent } from './components/info-table/info-table.component';
+import { SafePipePipe } from './pipes/safe-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { InfoTableComponent } from './components/info-table/info-table.component
     CategoriesComponent,
     ReportsComponent,
     InfoTableComponent,
+    SafePipePipe,
   ],
   imports: [
     BrowserModule,

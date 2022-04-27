@@ -15,7 +15,7 @@ export class AyudaService {
   public _ayudaActiva:Help[]=[];
 
   constructor(private http:HttpClient) {
-    this.obtenerInfAyudaAct();
+    //this.obtenerInfAyudaAct();
     this.obtenerInfoAyuda();
   }
 
@@ -31,10 +31,10 @@ export class AyudaService {
 
   //funcion para obtener la informacion de ayuda
   obtenerInfoAyuda(){
-    this.http.get<any>(`${this.bUA}/module/helpers/helpInfo`).subscribe((resp) => {
+    this.http.get<any>(`${this.bUA}/module/helpers/helpInfo/`).subscribe((resp) => {
       //console.log('resp ayuda',resp['Objetos']);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._ayuda=resp['Objetos'];
+        this._ayuda=resp['data'];
       }else{
         //console.log('no',resp);
       }
@@ -42,7 +42,7 @@ export class AyudaService {
   }
 
   //funcion para obtener una informacion de ayuda activa
-  obtenerInfAyudaAct(){
+  /*obtenerInfAyudaAct(){
     this.http.get<any>(`${this.bUA}/module/helpers/data`).subscribe((resp) => {
       //console.log('resp ayuda',resp['Objetos']);
       if(resp['mensaje'][0]['CODIGO']==1){
@@ -51,6 +51,6 @@ export class AyudaService {
         //console.log('no',resp);
       }
     });
-  }
+  }*/
 
 }
