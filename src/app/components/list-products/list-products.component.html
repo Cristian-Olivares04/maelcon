@@ -6,7 +6,7 @@
         </div>
         <div class="col-3">
         </div>
-        
+
         <div class="col-1"></div>
         <div class="col-10">
             <form>
@@ -17,29 +17,30 @@
                   </div>
                 </div>
               </form>
-              <div class="" style="width: auto; height: 600px; overflow: scroll;">
+              <div class="" style="width: auto; height: 400px; overflow: scroll;">
                   <table class="table table-striped">
                       <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Area</th>
-                        <th scope="col">Population</th>
-                        <th scope="col">Actualizar</th>
-                        <th scope="col">Eliminar</th>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">MARCA</th>
+                        <th scope="col">PRECIO</th>
+                        <th scope="col">CANTIDAD</th>
+                        <th scope="col">SUB TOTAL</th>
+                        <th scope="col">ACTUALIZAR</th>
+                        <th scope="col">ELIMINAR</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let country of countries | async; index as i">
+                      <tr *ngFor="let prodDetail of detalleInter| async; index as i">
                         <th scope="row">{{ i + 1 }}</th>
-                        <td>
-                          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                          <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                        </td>
-                        <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModal(editProductShopping)"><i class="fas fa-pen"></i></button></td>
-                        <td><button class="btn-alert btn-sm btn-outline-alert ms-2"><b>X</b></button></td>
+                        <td><ngb-highlight [result]="prodDetail.NOMBRE_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="prodDetail.MARCA_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="prodDetail.PRECIO_UNITARIO| number" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="prodDetail.CANTIDAD_PRODUCTO| number" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="prodDetail.SUB_TOTAL| number" [term]="filter.value"></ngb-highlight></td>
+                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModalAct(editProductShopping, prodDetail.ID_PRODUCTO)"><i class="fas fa-pen"></i></button></td>
+                        <td><button class="btn-alert btn-sm btn-outline-alert ms-2" (click)="eliminarProd(prodDetail.ID_PRODUCTO)"><i class="fas fa-trash"></i></button></td>
                       </tr>
                       </tbody>
                     </table>
@@ -55,7 +56,7 @@
             </div>
             <div class="col-3">
             </div>
-            
+
             <div class="col-1"></div>
             <div class="col-10">
                 <form>
@@ -66,27 +67,27 @@
                       </div>
                     </div>
                   </form>
-                  <div class="" style="width: auto; height: 600px; overflow: scroll;">
+                  <div class="" style="width: auto; height: 400px; overflow: scroll;">
                       <table class="table table-striped">
                           <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Country</th>
-                            <th scope="col">Area</th>
-                            <th scope="col">Population</th>
-                            <th scope="col">Agregar</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr *ngFor="let country of countries | async; index as i">
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">NOMBRE</th>
+                              <th scope="col">MARCA</th>
+                              <th scope="col">DESCRIPCION</th>
+                              <th scope="col">EXISTENCIA</th>
+                              <th scope="col">CATEGORIA</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let prod of existInter | async; index as i">
                             <th scope="row">{{ i + 1 }}</th>
-                            <td>
-                              <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                              <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                            </td>
-                            <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                            <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                            <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModal(addProductShopping)"><i class="fas fa-plus"></i></button></td>
+                            <td><ngb-highlight [result]="prod.NOMBRE_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="prod.MARCA_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="prod.CATEGORIA" [term]="filter.value"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="prod.EXISTENCIA | number" [term]="filter.value"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="prod.DESCRIPCION_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                            <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModalAddProd(addProductShopping, prod.ID_PRODUCTO)" [disabled]="listaAddBool[i]"><i class="fas fa-plus"></i></button></td>
                           </tr>
                           </tbody>
                         </table>
@@ -104,7 +105,7 @@
         </div>
         <div class="col-3">
         </div>
-        
+
         <div class="col-1"></div>
         <div class="col-10">
             <form>
@@ -115,7 +116,7 @@
                   </div>
                 </div>
               </form>
-              <div class="" style="width: auto; height: 600px; overflow: scroll;">
+              <div class="" style="width: auto; height: 400px; overflow: scroll;">
                   <table class="table table-striped">
                       <thead>
                       <tr>
@@ -146,116 +147,112 @@
     </div>
 
     <ng-template #searchProduct>
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-8 text-start">
-                <h4 class="text-muted"><b>Lista de productos disponibles</b></h4>
-            </div>
-            <div class="col-3">
-            </div>
-            
-            <div class="col-1"></div>
-            <div class="col-10">
-                <form>
-                    <div class="mb-2 mt-2 row">
-                      <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar: </label>
-                      <div class="col-xs-3 col-sm-auto">
-                        <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
-                      </div>
+      <div class="row">
+          <div class="col-1"></div>
+          <div class="col-8 text-start">
+              <h4 class="text-muted"><b>Lista de productos disponibles</b></h4>
+          </div>
+          <div class="col-3">
+          </div>
+
+          <div class="col-1"></div>
+          <div class="col-10">
+              <form>
+                  <div class="mb-2 mt-2 row">
+                    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar: </label>
+                    <div class="col-xs-3 col-sm-auto">
+                      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
                     </div>
-                  </form>
-                  <div class="" style="width: auto; height: 600px; overflow: scroll;">
-                      <table class="table table-striped">
-                          <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Country</th>
-                            <th scope="col">Area</th>
-                            <th scope="col">Population</th>
-                            <th scope="col">Agregar</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr *ngFor="let country of countries | async; index as i">
-                            <th scope="row">{{ i + 1 }}</th>
-                            <td>
-                              <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                              <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                            </td>
-                            <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                            <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                            <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModal(addProductShopping)"><i class="fas fa-plus"></i></button></td>
-                          </tr>
-                          </tbody>
-                        </table>
                   </div>
-            </div>
-        </div>
+                </form>
+                <div class="" style="width: auto; height: 400px; overflow: scroll;">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Country</th>
+                          <th scope="col">Area</th>
+                          <th scope="col">Population</th>
+                          <th scope="col">Agregar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let country of countries | async; index as i">
+                          <th scope="row">{{ i + 1 }}</th>
+                          <td>
+                            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
+                            <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
+                          </td>
+                          <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
+                          <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
+                          <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModal(addProductShopping)"><i class="fas fa-plus"></i></button></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                </div>
+          </div>
+      </div>
     </ng-template>
 </ng-template>
 
 <!--Agregar producto a una compra-->
 <ng-template #addProductShopping let-modal>
     <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-            <div class="modal-body">
-                <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-                            <!--Cuadro contenedor de informacion-->
-                            <h2 style="color: #0846ffff; margin-top: 20px;">Agregar Producto a compra</h2>
+      <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
+        <button type="button" id="closeAddProd" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row contenedor m-0" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+            <!--Cuadro contenedor de informacion-->
+            <h2 style="color: #0846ffff; margin-top: 20px;">Agregar Producto a compra</h2>
 
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-coins"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Precio unitario" name="precio">
-                                                </div>
-                                            </div>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-hashtag"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Cantidad" name="cantidad">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="login-content">
+                        <form>
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-coins"></i>
                                 </div>
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-info"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input type="text" placeholder="Descripción" name="descripcion">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <input type="button" class="btn" value="Agregar producto">
+                                <div class="div">
+                                    <input class="" type="number" min="0.01" placeholder="Precio unitario" [(ngModel)]="datosProdComp.PRECIO_UNITARIO" name="precio" required>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-2">
-                        </div>
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-hashtag"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="number" min="1" placeholder="Cantidad" [(ngModel)]="datosProdComp.CANTIDAD" name="cantidad" required>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                </div>
+                <div class="col-6">
+                    <div class="login-content">
+                        <form>
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                                <div class="div">
+                                    <input type="text" placeholder="Descripción" [(ngModel)]="datosProdComp.DESCRIPCION" name="descripcion">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <input type="button" class="btn" value="Agregar producto" (click)="evaluarDatos('add');">
+                </div>
             </div>
-            <div class="row">
-                <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
+            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                {{msj}}
             </div>
         </div>
+      </div>
+      <div class="row">
+          <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
+      </div>
     </div>
 </ng-template>
 
@@ -263,63 +260,59 @@
 <ng-template #editProductShopping let-modal>
     <div class="modal-content">
         <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            <button type="button" id="closeActProd" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
         </div>
-            <div class="modal-body">
-                <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-                            <!--Cuadro contenedor de informacion-->
-                            <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar producto</h2>
+        <div class="modal-body">
+          <div class="row contenedor m-0" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+              <!--Cuadro contenedor de informacion-->
+              <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar producto</h2>
 
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-coins"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Precio unitario" name="precio">
-                                                </div>
-                                            </div>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-hashtag"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Cantidad" name="cantidad">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-info"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input type="text" placeholder="Descripción" name="descripcion">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <input type="button" class="btn" value="Actualizar producto">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                        </div>
-                    </div>
-            </div>
-            <div class="row">
-                <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
-            </div>
+              <div class="row">
+                  <div class="col-6">
+                      <div class="login-content">
+                          <form>
+                              <div class="input-div">
+                                  <div class="i">
+                                      <i class="fas fa-coins"></i>
+                                  </div>
+                                  <div class="div">
+                                      <input class="" type="number" placeholder="Precio unitario" [(ngModel)]="datosProdComp.PRECIO_UNITARIO" name="precio">
+                                  </div>
+                              </div>
+                              <div class="input-div">
+                                  <div class="i">
+                                      <i class="fas fa-hashtag"></i>
+                                  </div>
+                                  <div class="div">
+                                      <input class="" type="number" placeholder="Cantidad" [(ngModel)]="datosProdComp.CANTIDAD" name="cantidad">
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+                  <div class="col-6">
+                      <div class="login-content">
+                          <form>
+                              <div class="input-div">
+                                  <div class="i">
+                                      <i class="fas fa-info"></i>
+                                  </div>
+                                  <div class="div">
+                                      <input type="text" placeholder="Descripción" [(ngModel)]="datosProdComp.DESCRIPCION" name="descripcion">
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      <input type="button" class="btn" value="Actualizar producto" (click)="evaluarDatos('act');">
+                  </div>
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf="enam">
+                  {{msj}}
+              </div>
+          </div>
+        </div>
+        <div class="row">
+            <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
         </div>
     </div>
 </ng-template>

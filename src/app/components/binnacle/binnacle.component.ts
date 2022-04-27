@@ -55,6 +55,7 @@ export class BinnacleComponent implements OnInit {
   ];
 
   constructor(private MS:MantenimientoService, private pipe: DecimalPipe) {
+    this.MS.obtenerRegistrosBitacora();
     this.bitacora2 = this.MS._bitacora;
     this.bitacoraInter = this.filter.valueChanges.pipe(
       startWith(''),
@@ -63,12 +64,6 @@ export class BinnacleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.MS.obtenerRegistrosBitacora();
-    this.bitacora2 = this.MS._bitacora;
-    this.bitacoraInter = this.filter.valueChanges.pipe(
-      startWith(''),
-      map(text => search(this.bitacora2, text, this.pipe))
-    );
   }
 
   viewDownload(value:Boolean){

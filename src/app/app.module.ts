@@ -47,6 +47,9 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { CommissionsComponent } from './components/commissions/commissions.component';
 import { InformationComponent } from './pages/information/information.component';
 import { InformationV2Component } from './pages/information-v2/information-v2.component';
+import { PaginatePipe } from './pipes/paginate.pipe';
+import { DatePipe } from '@angular/common';
+import { CategoriesComponent } from './components/categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +90,8 @@ import { InformationV2Component } from './pages/information-v2/information-v2.co
     CommissionsComponent,
     InformationComponent,
     InformationV2Component,
+    PaginatePipe,
+    CategoriesComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,7 +102,7 @@ import { InformationV2Component } from './pages/information-v2/information-v2.co
     NgbModule,
     SidebarModule.forRoot(),
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

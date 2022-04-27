@@ -24,10 +24,11 @@ export class FormDatabaseComponent implements OnInit {
     contrasena:''
   }
 
-  constructor(private MS:MantenimientoService, private US:UsuariosService, private _Router:Router) { }
+  constructor(private MS:MantenimientoService, private US:UsuariosService, private _Router:Router) {
+    this.obtenerParametros();
+  }
 
   ngOnInit(): void {
-    this.obtenerParametros();
   }
 
   actionAct(value:any){

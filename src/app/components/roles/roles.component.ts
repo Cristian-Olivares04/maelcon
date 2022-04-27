@@ -35,20 +35,16 @@ export class RolesComponent implements OnInit {
 
 
   constructor(private MS:MantenimientoService,private pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router, private US:UsuariosService) {
-    this.rolesInter = this.filter.valueChanges.pipe(
-      startWith(''),
-      map(text => search(this.roles, text, this.pipe))
-    );
-  }
-
-  ngOnInit(): void {
-    this.roles=this.MS._roles;
+    this.MS.obtenerRoles();this.roles=this.MS._roles;
     this.rolesInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this.roles, text, this.pipe))
     );
     //console.log('ROLES', this.roles)
     this.condition=true
+  }
+
+  ngOnInit(): void {
   }
 
   @Input() datoRole:Role={

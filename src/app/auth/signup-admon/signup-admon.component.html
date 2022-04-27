@@ -34,7 +34,7 @@
                               <i class="fas fa-user"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Nombre de usuario" [(ngModel)]="usuarioRegistro.USUARIO" name="nombreUsuario">
+                              <input class="" type="text" maxlength="15" placeholder="Nombre de usuario" [(ngModel)]="usuarioRegistro.USUARIO" name="nombreUsuario">
                           </div>
                       </div>
                       <!--Input numero de telefono-->
@@ -43,7 +43,7 @@
                               <i class="fas fa-phone-alt"></i>
                           </div>
                           <div class="div">
-                              <input type="number" maxlength="8" min="10000000" max="99999999" placeholder="Telefono" [(ngModel)]="usuarioRegistro.TELEFONO" name="telefono">
+                              <input type="text" minlength="8" maxlength="8" placeholder="Telefono" [(ngModel)]="usuarioRegistro.TELEFONO" name="telefono">
                           </div>
                       </div>
                       <!--Input de contraseña-->
@@ -52,7 +52,7 @@
                               <i class="fas fa-envelope"></i>
                           </div>
                           <div class="div">
-                              <input type="text" placeholder="Correo" [(ngModel)]="usuarioRegistro.CORREO_ELECTRONICO" name="correo">
+                              <input type="email" placeholder="Correo Electronico" [(ngModel)]="usuarioRegistro.CORREO_ELECTRONICO" name="correo">
                           </div>
                       </div>
                       <!--Input de RTN-->
@@ -61,7 +61,19 @@
                             <i class="fas fa-id-card"></i>
                           </div>
                           <div class="div">
-                              <input type="text" placeholder="RTN" [(ngModel)]="usuarioRegistro.RTN" name="rtn" maxlength="13">
+                              <input type="text" maxlength="14" minlength="14" placeholder="RTN" [(ngModel)]="usuarioRegistro.RTN" name="rtn">
+                          </div>
+                      </div>
+                      <!--Input de Genero-->
+                      <div class="input-div one">
+                          <div class="i">
+                            <i class="fas fa-venus-mars"></i>
+                          </div>
+                          <div class="div">
+                            <select class="form-control" placeholder="Genero" [(ngModel)]="usuarioRegistro.GENERO" name="genero">
+                              <option disabled>Genero</option>
+                              <option *ngFor="let g of _generos" [value]="g.VALOR">{{g.VALOR}}</option>
+                            </select>
                           </div>
                       </div>
                   </form>
@@ -72,7 +84,7 @@
           <div class="col-6 p-2" style="align-items: center;">
               <div class="login-content">
                   <form>
-                      <!--Input Fecha Nacimiento-->
+                      <!--Input file img de usuario-->
                       <div class="input-div one">
                           <div class="i">
                             <i class="fas fa-image"></i>
@@ -91,7 +103,6 @@
                               <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="usuarioRegistro.PREGUNTA" name="pregunta">
                           </div>
                       </div>
-
                       <!--Input respuesta de seguridad-->
                       <div class="input-div one">
                           <div class="i">
@@ -101,40 +112,37 @@
                               <input class="" type="text" placeholder="Respuesta" [(ngModel)]="usuarioRegistro.RESPUESTA" name="respuesta">
                           </div>
                       </div>
-
-                      <!--Input de genero-->
+                      <!--Input de rol-->
                       <div class="input-div one">
                         <div class="i">
-                          <i class="fas fa-neuter"></i>
+                          <i class="fas fa-user-tag"></i>
                         </div>
                         <div class="div">
-                          <select class="form-control" [(ngModel)]="usuarioRegistro.GENERO" name="genero">
-                            <option value="">Genero</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                            <option value="Prefiero no especificar">Prefiero no especificar</option>
+                          <select class="form-control" placeholder="Rol" [(ngModel)]="usuarioRegistro.ID_ROL" name="rol">
+                            <option disabled>Seleccione un Rol</option>
+                            <option *ngFor="let r of _roles" [value]="r.ID_ROL">{{r.ROL}}</option>
                           </select>
                         </div>
                       </div>
-
-                      <!--Input numero de puesto-->
+                      <!--Input de puesto-->
                       <div class="input-div one">
                           <div class="i">
-                              <i class="fas fa-phone-alt"></i>
+                            <i class="fas fa-user-tie"></i>
                           </div>
                           <div class="div">
-                              <input type="number" placeholder="Puesto" [(ngModel)]="usuarioRegistro.ID_PUESTO" name="puesto">
+                            <select class="form-control" placeholder="Puesto" [(ngModel)]="usuarioRegistro.ID_PUESTO" name="puesto">
+                              <option disabled>Seleccione un puesto</option>
+                              <option *ngFor="let p of _puestos" [value]="p.ID_PUESTO">{{p.PUESTO}}</option>
+                            </select>
                           </div>
                       </div>
-
-                      <!--Input numero de rol-->
+                      <!--Salario-->
                       <div class="input-div one">
                           <div class="i">
-                              <i class="fas fa-phone-alt"></i>
+                            <i class="fas fa-money-bill-wave"></i>
                           </div>
                           <div class="div">
-                              <input type="number" placeholder="Rol" [(ngModel)]="usuarioRegistro.ID_ROL" name="rol">
+                              <input class="" type="number" step="0.01" placeholder="Sueldo" [(ngModel)]="usuarioRegistro.SUELDO" name="Sueldo">
                           </div>
                       </div>
                   </form>

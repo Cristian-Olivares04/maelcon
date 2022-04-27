@@ -32,7 +32,7 @@ export class UsersComponent implements OnInit {
   usuarios: usuario[] = this.US._usuarios;
   msjCheck='';
   modal=false;
-
+  activo:boolean = true;
   usuariosInter: Observable<usuario[]>;
   filter = new FormControl('');
 
@@ -51,6 +51,30 @@ export class UsersComponent implements OnInit {
       startWith(''),
       map(text => search(this.usuarios,text, this.pipe))
     );
+  }
+
+  activarUser(estado:any , id:any){
+    var num = 0;
+    if(estado){
+      num=1;
+    }
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if(this.usuarios[i].ID_USUARIO==id){
+        this.usuarios[i].ESTADO=num
+      }
+    }
+    var js = {
+      "ESTADO":num,
+      "MODIFICADO_POR":this.US._usuarioActual
+    }
+    /* this.MS.actualizarEstadoUsuario(js,id).subscribe((res) => {
+      //console.log('res',res);
+      if(res[0]['CODIGO']==1){
+        console.log('Estado Actualizado')
+      }else{
+        //console.log('no',res);
+      }
+    }); */
   }
 
   goUser(id:any){

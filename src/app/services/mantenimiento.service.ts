@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Bitacora, Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class MantenimientoService {
   public _permissions:Permission[]=[];
   public _permisosRol:PermisosRol[]=[];
   public _bitacora:Bitacora[]=[];
+  public _payMethods:PayMethod[]=[]
   public condition=false;
   public actionVal = 0;
 
@@ -34,6 +36,7 @@ export class MantenimientoService {
     this.obtenerParametros();
     this.obtenerPuestos();
     this.obtenerRegistrosBitacora();
+    this.obtenerMetodosPagos();
   }
 
   obtenerInfo(){
@@ -43,6 +46,7 @@ export class MantenimientoService {
     this.obtenerParametros();
     this.obtenerPuestos();
     this.obtenerRegistrosBitacora();
+    this.obtenerMetodosPagos();
   }
 
   //funcion para chequear si existe un usuario por el correo
@@ -157,8 +161,15 @@ export class MantenimientoService {
   }
 
   //funcion para obtener Metodos de Pagos
-  obtenerMetodosPagos(): Observable<any>{
-    return this.http.get<PayMethod>(`${this.bUA}/module/admin/getPaymentMethods`, {headers:this.headers});
+  obtenerMetodosPagos(){
+    this.http.get<any>(`${this.bUA}/module/admin/getPaymentMethods`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp metodos de pago',resp['Objetos']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._payMethods=resp['Objetos'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un Metodo dePago
@@ -248,8 +259,14 @@ export class MantenimientoService {
   }
 
   //funcion para crear backup
-  crearBackUp(): Observable<any>{
-    return this.http.post<any>(`${this.bUA}/module/admin/parameter`, {headers:this.headers});
+  crearBackUp(){
+    var js = {
+      "name": "MAELCON_DB_BACKUP"
+    }
+    this.http.post<any>(`${this.bUA}/module/admin/backupDB2/`, js, {headers:this.headers, responseType:'blob' as 'json' }).subscribe((resp) => {
+      //console.log('resp objetos',resp['Objetos']);
+      saveAs(resp, 'MAELCON_DB_BACKUP.sql')
+    });
   }
 
 }

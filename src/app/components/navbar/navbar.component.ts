@@ -11,11 +11,11 @@ export class NavbarComponent implements OnInit {
 
   constructor(private router: Router, private HP:AyudaService) {
     this.HP.pag = 0;
+    this.HP.obtenerInfAyudaAct();
+    this.router.navigate([`/login`])
   }
 
   ngOnInit(): void {
-    this.HP.obtenerInfAyudaAct();
-    this.router.navigate([`/login`])
   }
 
 }

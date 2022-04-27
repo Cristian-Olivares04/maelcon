@@ -17,7 +17,7 @@ export class UpdateUserComponent implements OnInit {
   _puestos:Puesto[]=this.MS._puestos;
   msjCheck='';
   public actionVal = this.MS.actionVal;
-  _generos = [{'VALOR':'MASCULINO'}, {'VALOR':'FEMENINO'}, {'VALOR':'OTRO'}, {'VALOR':'PREFIERO NO ESPECIFICAR'}];
+  _generos = [{'VALOR':'MASCULINO'}, {'VALOR':'FEMENINO'}];
 
   @Input() datosUsuario:usuario={
     ID_USUARIO: '',

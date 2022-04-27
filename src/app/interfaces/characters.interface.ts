@@ -1,13 +1,15 @@
 export interface Proveedor {
+  ID_PROVEEDOR:number,
   RTN:string,
-  NOMBRE:string,
-  TELEFONO:string,
-  CORREO:string
+  NOMBRE_PROVEEDOR:string,
+  TELEFONO_PROVEEDOR:string,
+  CORREO_PROVEEDOR:string
 }
 
 export interface Cliente {
-  NOMBRE:string,
+  ID_CLIENTE: number,
+  NOMBRE_CLIENTE: string,
   RTN: string,
-  DIRECCION:string,
-  TELEFONO:string
+  DIRECCION_CLIENTE: string,
+  TELEFONO_CLIENTE: string
 }

@@ -14,19 +14,23 @@ export class VentasService {
   public _usuarioActual = this.US._usuarioActual;
   public _userToken=this.US._userToken;
   public _ventaActual = '';
+  public _clientes=[];
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'auth-token': this._userToken
   });
 
-  constructor(private US:UsuariosService, private http:HttpClient) { }
+  constructor(private US:UsuariosService, private http:HttpClient) {
+    this.obtenerClientes();
+   }
 
   clientData:Cliente = {
-    NOMBRE: '',
+    ID_CLIENTE: 0,
+    NOMBRE_CLIENTE: '',
     RTN: '',
-    DIRECCION: '',
-    TELEFONO: ''
+    DIRECCION_CLIENTE: '',
+    TELEFONO_CLIENTE: ''
   }
 
   saleData:Sale = {
@@ -47,8 +51,15 @@ export class VentasService {
   }
 
   //funcion para obtener Clientes
-  obtenerClientes(): Observable<any>{
-    return this.http.get<Cliente>(`${this.bUA}/module/sales/client`);
+  obtenerClientes(){
+    this.http.get<Cliente>(`${this.bUA}/module/sales/client`).subscribe((resp) => {
+      //console.log('clientes',resp['usuario']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._clientes=resp['usuario'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener un Cliente en especifico

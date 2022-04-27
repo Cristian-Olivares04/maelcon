@@ -6,11 +6,31 @@ export interface purchaseProduct {
   CANTIDAD:number
 }
 
+export interface PurchaseDetail{
+  ID_DETALLE_COMPRA: number,
+  ID_PRODUCTO: number,
+  NOMBRE_PRODUCTO: string,
+  MARCA_PRODUCTO: string,
+  IMG_PRODUCTO: string,
+  ID_COMPRA: number,
+  PRECIO_UNITARIO: number,
+  CANTIDAD_PRODUCTO: number,
+  SUB_TOTAL: number,
+}
+
 export interface Purchase {
-  ID_USUARIO:number,
-  ID_PROVEEDOR:number,
-  ID_PAGO:number,
-  OBSERVACION:string
+  ID_COMPRA: number,
+  ID_USUARIO: number,
+  ID_PAGO: number,
+  ID_PROVEEDOR: number,
+  OBSERVACION_COMPRA: string,
+  FECHA_COMPRA: string,
+  TOTAL_COMPRA: number,
+  ISV_COMPRA: number,
+  ESTADO: number,
+  USUARIO: string,
+  PAGO: string,
+  PROVEEDOR: string,
 }
 
 export interface Sale {
@@ -21,6 +41,7 @@ export interface Sale {
 }
 
 export interface Category {
+  ID_CATEGORIA:number,
   CATEGORIA : string,
   DESCRIPCION: string
 }
@@ -65,6 +86,7 @@ export interface Role {
 }
 
 export interface PayMethod {
+  ID_PAGO:number,
   FORMA_PAGO:string,
   DESCRIPCION: string
 }
@@ -116,4 +138,28 @@ export interface Help {
   TITULO:string,
   ENLACE:string,
   ESTADO:boolean
+}
+
+export interface ExistenceProduct {
+  ID_INVENTARIO: number,
+  ID_PRODUCTO: number,
+  EXISTENCIA: number,
+  PRECIO_VENTA: number,
+  PRECIO_UNITARIO: number,
+  METODO: number,
+  ESTADO: number
+}
+
+export interface CompleteProduct {
+  ID_PRODUCTO: number,
+  NOMBRE_PRODUCTO: string,
+  MARCA_PRODUCTO: string,
+  DESCRIPCION_PRODUCTO: string,
+  EXISTENCIA: number,
+  PRECIO_VENTA: number,
+  PRECIO_UNITARIO: number,
+  CATEGORIA: string,
+  NOMBRE_PROVEEDOR: string,
+  ID_PROVEEDOR: number,
+  ESTADO: number
 }

@@ -23,15 +23,11 @@ export class CloudinaryComponent implements OnInit {
     apiSecret: '',
   };
 
-  constructor(
-    private MS: MantenimientoService,
-    private US: UsuariosService,
-    private _Router: Router
-  ) {}
-
-  ngOnInit(): void {
+  constructor(private MS: MantenimientoService,private US: UsuariosService,private _Router: Router) {
     this.obtenerParametros();
   }
+
+  ngOnInit(): void {}
 
   actionAct(value: any) {
     this.actionVal = value;
@@ -79,7 +75,7 @@ export class CloudinaryComponent implements OnInit {
         this._params[17]['ID_USUARIO'] = this.usAct;
         Swal.fire({
           title: `Bien hecho...`,
-          text:  `Los Parametros se actualizaron exitosamente`,
+          text: `Los Parametros se actualizaron exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
