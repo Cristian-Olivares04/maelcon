@@ -3,10 +3,10 @@ import pool from "../databaseSQL";
 export const updateHelpData = async (req, res) => {
   try {
     const { ID_INFO } = req.params;
-    const { TITULO, ENLACE, ESTADO } = req.body;
+    const { TITULO, TIPO, ENLACE, ESTADO } = req.body;
     const objetos = await pool.query(
-      "CALL ACTUALIZAR_INFORMACION_AYUDA(?,?,?,?,@MENSAJE, @CODIGO);",
-      [ID_INFO, TITULO, ENLACE, ESTADO]
+      "CALL ACTUALIZAR_INFORMACION_AYUDA(?,?,?,?,?,@MENSAJE, @CODIGO);",
+      [ID_INFO, TIPO, TITULO, ENLACE, ESTADO]
     );
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
 
