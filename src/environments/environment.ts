@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  /*baseUrl: 'http://localhost:3000'*/
+  /*git baseUrl: 'http://localhost:3000'*/
   baseUrl: 'https://maelcon.herokuapp.com',
   localUrl: 'http://localhost:3000'
 };

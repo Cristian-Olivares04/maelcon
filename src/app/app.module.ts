@@ -46,6 +46,7 @@ import { DetailsSalesComponent } from './components/details-sales/details-sales.
 import { CustomersComponent } from './components/customers/customers.component';
 import { CommissionsComponent } from './components/commissions/commissions.component';
 import { InformationComponent } from './pages/information/information.component';
+import { InformationV2Component } from './pages/information-v2/information-v2.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { InformationComponent } from './pages/information/information.component'
     CustomersComponent,
     CommissionsComponent,
     InformationComponent,
+    InformationV2Component,
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import { GeneralSettingsComponent } from './components/general-settings/general-
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdministrationComponent } from './pages/administration/administration.component';
+import { InformationV2Component } from './pages/information-v2/information-v2.component';
 import { InformationComponent } from './pages/information/information.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { SalesComponent } from './pages/sales/sales.component';
@@ -56,6 +57,10 @@ const routes: Routes = [
   {
     path: 'information',
     component: InformationComponent
+  },
+  {
+    path: 'information-v2',
+    component: InformationV2Component
   },
   {
       path: 'home-signed',

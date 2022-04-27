@@ -128,12 +128,8 @@ export class UsuariosService {
   //funcion para obtener un usuario en especifico como observable
   obtenerUsuario(): Observable<any>{
     this._userToken = localStorage.getItem("auth-token");
-<<<<<<< HEAD
     this._usuarioActual = localStorage.getItem("id");
     return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`, );
-=======
-    return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`);
->>>>>>> ffdf9f2a2a00afc782247f62bd6a0860f6be0556
   }
 
   //funcion para obtener un usuario en especifico como observable
