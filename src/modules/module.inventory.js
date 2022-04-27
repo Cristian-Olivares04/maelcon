@@ -4,15 +4,18 @@ var cloudinary_services = require("../utils/cloudinary_services");
 export const createCategory = async (req, res) => {
   try {
     const { CATEGORIA, DESCRIPCION } = req.body;
-    await pool.query("CALL CREAR_CATEGORIA(?,?,@MENSAJE, @CODIGO)", [
-      CATEGORIA,
-      DESCRIPCION,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL CREAR_CATEGORIA(?,?,@MENSAJE, @CODIGO)",
+      [CATEGORIA, DESCRIPCION]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -29,16 +32,16 @@ export const updateCategory = async (req, res) => {
   try {
     const { ID_CATEGORIA } = req.params;
     const { CATEGORIA, DESCRIPCION } = req.body;
-    await pool.query("CALL MODIFICAR_CATEGORIA(?,?,?,@MENSAJE, @CODIGO)", [
-      ID_CATEGORIA,
-      CATEGORIA,
-      DESCRIPCION,
-    ]);
-
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    const objetos = await pool.query(
+      "CALL MODIFICAR_CATEGORIA(?,?,?,@MENSAJE, @CODIGO)",
+      [ID_CATEGORIA, CATEGORIA, DESCRIPCION]
     );
-    res.json(JSON.parse(JSON.stringify(mensaje)));
+    const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -65,11 +68,15 @@ export const createProduct = async (req, res) => {
 
     let img;
     //Guarda foto
-    if(req.file){
-      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+    if (req.file) {
+      img = await cloudinary_services.uploadImage(
+        req.file.path,
+        "Maelcon/Productos"
+      );
       console.log(img);
-    }else{
-      img = 'https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png';
+    } else {
+      img =
+        "https://res.cloudinary.com/maelcon/image/upload/v1649628573/Maelcon/Productos/images_yucxd8.png";
     }
 
     await pool.query("CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)", [
@@ -110,13 +117,16 @@ export const updateProduct = async (req, res) => {
       ESTADO,
       ID_CATEGORIA,
     } = req.body;
-    
+
     let img;
     //Guarda foto
-    if(req.file){
-      img = await cloudinary_services.uploadImage(req.file.path, 'Maelcon/Productos');
+    if (req.file) {
+      img = await cloudinary_services.uploadImage(
+        req.file.path,
+        "Maelcon/Productos"
+      );
       console.log(img);
-    }else{
+    } else {
       const productoAct = await pool.query(
         "CALL OBTENER_PRODUCTO(?, @MENSAJE, @CODIGO)",
         [ID_PRODUCTO]
@@ -310,7 +320,10 @@ export const getCategoryByID = async (req, res) => {
 export const getKardex = async (req, res) => {
   try {
     const { ID_PRODUCTO } = req.params;
-    const kardex = await pool.query("CALL OBTENER_KARDEX(?,@MENSAJE, @CODIGO)",[ID_PRODUCTO]);
+    const kardex = await pool.query(
+      "CALL OBTENER_KARDEX(?,@MENSAJE, @CODIGO)",
+      [ID_PRODUCTO]
+    );
 
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
