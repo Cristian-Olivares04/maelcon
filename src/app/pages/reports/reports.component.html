@@ -1,0 +1,83 @@
+<div class="text-muted p-3">
+    <h2><b>Sección de reportes</b></h2>
+    <p>Asegura la integridad y disponibilidad de la información mediante la descarga de reportes editables en hojas de calculo excel.</p>
+    <hr>
+</div>
+
+<ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Descargar kardex</b></span>
+        <span>
+            <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#productReport"><i class="fas fa-download"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Script inicial de la base de datos</b></span>
+        <span>
+          <a href="assets/DB_MAELCON_COMPLETO.sql" class="btn btn-sm btn-outline-success ms-2" target="_blank" download="DB_MAELCON_INICIAL.sql"><i class="fas fa-download"></i></a>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Backup de base de datos</b></span>
+        <span>
+          <button class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download" (click)="descargarDB()"></i></button>
+        </span>
+      </div>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Backup de bitacora</b></span>
+        <span>
+          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <app-backup></app-backup>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+
+<!--Modal producto kardex-->
+<div class="modal lg fade" id="productReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-muted">Seleccione el producto a solicitar kardex</p>
+                <select class="form-control" name="producto">
+                    <option value="">Seleccione un producto</option>
+                    <option value="Foco 1">Foco 1</option>
+                    <option value="Laminas">Laminas</option>
+                    <option value="Otro">Otro</option>
+                    <option value="etc...">etc...</option>
+                  </select>
+                  <button class="btn btn-success pt-2 pb-2 justify-content-end">Crear reporte</button>
+            </div>
+            <div class="row">
+                <p class="text-muted text-center">Generar reporte de producto, Maelcon S de R. L.</p>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -147,7 +147,7 @@ export class ComprasService {
     this.http.get<Purchase>(`${this.bUA}/module/supplies/detailsSupply/${id}`).subscribe((resp) => {
       //console.log('detallesCompras',resp['detalles'][0]);
       if(resp['detalles'][0][0]['CODIGO']==1){
-        this._detallesCompras=resp['detalles'][0];
+        this._detallesCompras=resp['detalles'][1];
       }else{
         this._detallesCompras=[]
         //console.log('no',resp);

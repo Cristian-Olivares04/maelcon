@@ -50,6 +50,8 @@ import { InformationV2Component } from './pages/information-v2/information-v2.co
 import { PaginatePipe } from './pipes/paginate.pipe';
 import { DatePipe } from '@angular/common';
 import { CategoriesComponent } from './components/categories/categories.component';
+import { ReportsComponent } from './pages/reports/reports.component';
+import { InfoTableComponent } from './components/info-table/info-table.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +94,8 @@ import { CategoriesComponent } from './components/categories/categories.componen
     InformationV2Component,
     PaginatePipe,
     CategoriesComponent,
+    ReportsComponent,
+    InfoTableComponent,
   ],
   imports: [
     BrowserModule,

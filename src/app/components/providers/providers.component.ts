@@ -45,7 +45,7 @@ export class ProvidersComponent implements OnInit {
 
   constructor(private CP:ComprasService, private pipe: DecimalPipe, private _Router:Router, private modalService:NgbModal) {
     this.CP.obtenerProveedores();
-    this._proveedores=this.CP._proveedores;
+    this._proveedores = this.CP._proveedores;
     this.provInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this._proveedores,text, this.pipe))
@@ -53,7 +53,7 @@ export class ProvidersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._proveedores=this.CP._proveedores;
+    this._proveedores = this.CP._proveedores;
     this.provInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this._proveedores,text, this.pipe))

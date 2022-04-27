@@ -12,6 +12,7 @@ import { AdministrationComponent } from './pages/administration/administration.c
 import { InformationV2Component } from './pages/information-v2/information-v2.component';
 import { InformationComponent } from './pages/information/information.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { SecurityComponent } from './pages/security/security.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
@@ -61,6 +62,10 @@ const routes: Routes = [
   {
     path: 'information-v2',
     component: InformationV2Component
+  }, 
+  {
+    path: 'reports',
+    component: ReportsComponent
   },
   {
       path: 'home-signed',

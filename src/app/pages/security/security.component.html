@@ -65,27 +65,4 @@
       <app-cloudinary></app-cloudinary>
     </ng-template>
   </ngb-panel>
-  <ngb-panel>
-    <ng-template ngbPanelHeader let-opened="opened">
-      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Backup de Base de Datos</b></span>
-        <span>
-          <button class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download" (click)="descargarDB()"></i></button>
-        </span>
-      </div>
-    </ng-template>
-  </ngb-panel>
-  <ngb-panel>
-    <ng-template ngbPanelHeader let-opened="opened">
-      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Backup de bitacora</b></span>
-        <span>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
-        </span>
-      </div>
-    </ng-template>
-    <ng-template ngbPanelContent>
-      <app-backup></app-backup>
-    </ng-template>
-  </ngb-panel>
 </ngb-accordion>

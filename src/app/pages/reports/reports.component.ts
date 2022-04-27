@@ -2,17 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 
 @Component({
-  selector: 'app-security',
-  templateUrl: './security.component.html',
-  styleUrls: ['./security.component.css']
+  selector: 'app-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.css']
 })
-export class SecurityComponent implements OnInit {
-  disabled = false;
+export class ReportsComponent implements OnInit {
 
   constructor(private MS:MantenimientoService) { }
 
   ngOnInit(): void {
-    localStorage.setItem('ruta', 'security');
   }
 
   descargarDB(){
@@ -21,5 +19,3 @@ export class SecurityComponent implements OnInit {
   }
 
 }
-
-
