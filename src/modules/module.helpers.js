@@ -28,10 +28,10 @@ export const updateHelpData = async (req, res) => {
 
 export const createHelpData = async (req, res) => {
   try {
-    const { TITULO, ENLACE, ESTADO } = req.body;
+    const { TITULO, TIPO, ENLACE } = req.body;
     const objetos = await pool.query(
       "CALL CREAR_INFORMACION_AYUDA(?,?,?,@MENSAJE, @CODIGO);",
-      [TITULO, ENLACE, ESTADO]
+      [TITULO, TIPO, ENLACE]
     );
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
 
