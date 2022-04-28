@@ -41,7 +41,7 @@ var updateUserStatus = /*#__PURE__*/function () {
             ID_USUARIO = req.params.ID_USUARIO;
             _req$body = req.body, ESTADO = _req$body.ESTADO, MODIFICADO_POR = _req$body.MODIFICADO_POR;
             _context.next = 5;
-            return _databaseSQL["default"].query("CALL ESTADO_USUARIO(?,?,?, @MENSAJE, @CODIGO);", [ID_USUARIO, ESTADO, MODIFICADO_POR]);
+            return _databaseSQL["default"].query("CALL ESTADO_USUARIO(?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, ESTADO, MODIFICADO_POR]);
 
           case 5:
             objetos = _context.sent;

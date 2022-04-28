@@ -30,6 +30,6 @@ router.put("/productAvailable/:ID_INVENTARIO", moduleInventoryCtrl.updateAvailab
 router.put("/productExpireDate/:ID_KARDEX", moduleInventoryCtrl.updateExpireDate);
 router.get("/", moduleInventoryCtrl.getInventory);
 router.get("/existence/", moduleInventoryCtrl.getInventoryByProduct);
-router.get("/kardex/", moduleInventoryCtrl.getKardex);
+router.get("/kardex/:ID_PRODUCTO", moduleInventoryCtrl.getKardex);
 var _default = router;
 exports["default"] = _default;

@@ -25,5 +25,5 @@ var upload = (0, _multer["default"])({
   storage: storage,
   fileFilter: fileFilter
 });
-exports.uploadIMG = upload.single('IMG');
+exports.uploadIMG = upload.single('IMG_PRODUCTO');
 exports.uploadUserIMG = upload.single('IMG_USUARIO');

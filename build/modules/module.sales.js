@@ -237,7 +237,7 @@ exports.updateSaleHeader = updateSaleHeader;
 
 var addProduct2Sale = /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-    var ID_VENTA, _req$body5, ID_PRODUCTO, CANTIDAD, objetos, mensaje, _mensaje5;
+    var ID_VENTA, _req$body5, ID_PRODUCTO, CANTIDAD_PRODUCTO, objetos, mensaje, _mensaje5;
 
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
@@ -245,7 +245,7 @@ var addProduct2Sale = /*#__PURE__*/function () {
           case 0:
             _context5.prev = 0;
             ID_VENTA = req.params.ID_VENTA;
-            _req$body5 = req.body, ID_PRODUCTO = _req$body5.ID_PRODUCTO, CANTIDAD = _req$body5.CANTIDAD;
+            _req$body5 = req.body, ID_PRODUCTO = _req$body5.ID_PRODUCTO, CANTIDAD_PRODUCTO = _req$body5.CANTIDAD_PRODUCTO;
             _context5.next = 5;
             return _databaseSQL["default"].query("CALL AGREGAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_VENTA, CANTIDAD]);
 
@@ -291,7 +291,7 @@ exports.addProduct2Sale = addProduct2Sale;
 
 var updateProductOnSale = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var ID_VENTA, _req$body6, ID_PRODUCTO, CANTIDAD, objetos, mensaje, _mensaje6;
+    var ID_VENTA, _req$body6, ID_PRODUCTO, CANTIDAD_PRODUCTO, objetos, mensaje, _mensaje6;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
@@ -299,7 +299,7 @@ var updateProductOnSale = /*#__PURE__*/function () {
           case 0:
             _context6.prev = 0;
             ID_VENTA = req.params.ID_VENTA;
-            _req$body6 = req.body, ID_PRODUCTO = _req$body6.ID_PRODUCTO, CANTIDAD = _req$body6.CANTIDAD;
+            _req$body6 = req.body, ID_PRODUCTO = _req$body6.ID_PRODUCTO, CANTIDAD_PRODUCTO = _req$body6.CANTIDAD_PRODUCTO;
             _context6.next = 5;
             return _databaseSQL["default"].query("CALL ACTUALIZAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_VENTA, CANTIDAD]);
 

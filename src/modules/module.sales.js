@@ -111,7 +111,7 @@ export const updateSaleHeader = async (req, res) => {
 export const addProduct2Sale = async (req, res) => {
   try {
     const { ID_VENTA } = req.params;
-    const { ID_PRODUCTO, CANTIDAD } = req.body;
+    const { ID_PRODUCTO, CANTIDAD_PRODUCTO } = req.body;
     const objetos = await pool.query(
       "CALL AGREGAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)",
       [ID_PRODUCTO, ID_VENTA, CANTIDAD]
@@ -139,7 +139,7 @@ export const addProduct2Sale = async (req, res) => {
 export const updateProductOnSale = async (req, res) => {
   try {
     const { ID_VENTA } = req.params;
-    const { ID_PRODUCTO, CANTIDAD } = req.body;
+    const { ID_PRODUCTO, CANTIDAD_PRODUCTO } = req.body;
     const objetos = await pool.query(
       "CALL ACTUALIZAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)",
       [ID_PRODUCTO, ID_VENTA, CANTIDAD]
