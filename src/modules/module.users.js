@@ -152,8 +152,8 @@ export const updateUserByIdPA = async (req, res) => {
   try {
     const { ID_USUARIO } = req.params;
     const {
-      NOMBRE,
-      APELLIDO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
       ID_PUESTO,
       TELEFONO,
       SUELDO,
@@ -193,8 +193,8 @@ export const updateUserByIdPA = async (req, res) => {
       `CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
       [
         ID_USUARIO,
-        NOMBRE,
-        APELLIDO,
+        NOMBRE_PERSONA,
+        APELLIDO_PERSONA,
         ID_PUESTO,
         TELEFONO,
         SUELDO,
