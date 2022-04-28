@@ -1,0 +1,46 @@
+<div>
+  <div class="row p-3">
+      <div class="col-1"></div>
+      <div class="col-8 text-start">
+          <h4 class="text-muted"><b>Lista de productos</b></h4>
+      </div>
+      <div class="col-3">
+      </div>
+
+      <div class="col-1"></div>
+      <div class="col-10">
+          <form>
+              <div class="mb-2 mt-2 row">
+                <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar: </label>
+                <div class="col-xs-3 col-sm-auto">
+                  <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+                </div>
+              </div>
+            </form>
+            <div class="" style="width: auto; height: 400px; overflow: scroll;">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">NOMBRE</th>
+                  <th scope="col">MARCA</th>
+                  <th scope="col">PRECIO</th>
+                  <th scope="col">CANTIDAD</th>
+                  <th scope="col">SUB TOTAL</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let prodDetail of detalleInter | async; index as i">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td><ngb-highlight [result]="prodDetail.NOMBRE_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="prodDetail.MARCA_PRODUCTO" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="prodDetail.MONTO_UNITARIO| number" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="prodDetail.CANTIDAD_PRODUCTO| number" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="prodDetail.SUB_TOTAL| number" [term]="filter.value"></ngb-highlight></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+      </div>
+  </div>
+</div>

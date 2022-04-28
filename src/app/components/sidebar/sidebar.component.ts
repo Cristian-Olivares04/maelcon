@@ -51,12 +51,9 @@ export class SidebarComponent implements OnInit{
   inventory = 0;
   administration = 0;
   security = 0;
+  reports = 0;
 
   constructor(private US:UsuariosService, private router:Router, private MS:MantenimientoService, private IN:InventarioService, private CP:ComprasService, private HP:AyudaService, private VS:VentasService) {
-
-  }
-
-  ngOnInit(): void {
     this.US._userToken = localStorage.getItem("auth-token");
     this.US.obtenerInfoUsuario().subscribe((resp) => {
       //console.log('resp my info: ',resp)
@@ -86,6 +83,10 @@ export class SidebarComponent implements OnInit{
         }
       })
     });
+  }
+
+  ngOnInit(): void {
+
   }
 
   toggleSidebar() {
@@ -121,12 +122,15 @@ export class SidebarComponent implements OnInit{
       }else if(this._obs[i].ID_OBJETO == 5){
         this.security = 1;
         rutaTemp='security';
+      }else if(this._obs[i].ID_OBJETO == 6){
+        this.reports = 1;
+        rutaTemp='reports';
       }
     }
     if(localStorage.getItem("ruta")!=null){
       this.router.navigate([`/${localStorage.getItem("ruta")}`]);
     }else{
-      this.router.navigate([`/${rutaTemp}`]);
+      this.router.navigate([`/information-v2`]);
     }
     this.condition2=true;
   }

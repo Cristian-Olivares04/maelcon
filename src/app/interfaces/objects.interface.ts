@@ -40,6 +40,36 @@ export interface Sale {
   DESCRIPCION: string
 }
 
+export interface SaleDetail{
+  ID_DETALLE_VENTA: number,
+  ID_PRODUCTO: number,
+  NOMBRE_PRODUCTO: string,
+  MARCA_PRODUCTO: string,
+  IMG_PRODUCTO: string,
+  ID_VENTA: number,
+  MONTO_UNITARIO: number,
+  CANTIDAD_PRODUCTO: number,
+  SUB_TOTAL: number,
+  TOTAL: number
+}
+
+export interface SaleInit{
+  ID_VENTA: number,
+  ID_PAGO: number,
+  FORMA_PAGO: string,
+  ID_USUARIO: number,
+  USUARIO: string,
+  CANTIDAD_VENTA: number,
+  FECHA_VENTA: string,
+  ID_CLIENTE: 1,
+  NOMBRE_CLIENTE: string,
+  ISV: number,
+  TOTAL_VENTA: number,
+  DESCRIPCION_VENTA: string,
+  ESTADO: number,
+  COMISION_EMPLEADO: number
+}
+
 export interface Category {
   ID_CATEGORIA:number,
   CATEGORIA : string,
@@ -68,10 +98,10 @@ export interface Object {
 export interface Permission {
   ID_OBJETO:number,
   ID_ROL:number,
-  INSERTAR:number,
-  ELIMINAR:number,
-  ACTUALIZAR:number,
-  CONSULTAR:number,
+  PERMISO_INSERCION:number,
+  PERMISO_ELIMINACION:number,
+  PERMISO_ACTUALIZACION:number,
+  PERMISO_CONSULTAR:number,
   CREADO_POR:number
 }
 
@@ -106,7 +136,9 @@ export interface Bitacora {
   DESCRIPCION: string,
   INFORMACION_ANTERIOR: string,
   INFORMACION_ACTUAL: string,
-  FECHA_BITACORA: string
+  FECHA_BITACORA: string,
+  USUARIO: string,
+  OBJETOS: string,
 }
 
 export interface Comission {

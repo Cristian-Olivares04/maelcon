@@ -53,6 +53,8 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { ReportsComponent } from './pages/reports/reports.component';
 import { InfoTableComponent } from './components/info-table/info-table.component';
 import { SafePipePipe } from './pipes/safe-pipe.pipe';
+import { ListProductsSaleComponent } from './components/list-products-sale/list-products-sale.component';
+import { ViewProductsSaleComponent } from './components/view-products-sale/view-products-sale.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +100,8 @@ import { SafePipePipe } from './pipes/safe-pipe.pipe';
     ReportsComponent,
     InfoTableComponent,
     SafePipePipe,
+    ListProductsSaleComponent,
+    ViewProductsSaleComponent,
   ],
   imports: [
     BrowserModule,

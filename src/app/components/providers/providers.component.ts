@@ -89,26 +89,27 @@ export class ProvidersComponent implements OnInit {
     console.log('datosProveedor', this.datosProv)
     this.CP.crearProveedor(this.datosProv).subscribe((resp) => {
       //console.log('resp',resp);
+      this.CP.obtenerProveedores();
       if(resp['mensaje'][0]['CODIGO']==1){
-        for (let i = 0; i < this._proveedores.length; i++) {
-          const element = this._proveedores[i];
-          if(element.ID_PROVEEDOR==this.datosProv.ID_PROVEEDOR){
-            this._proveedores[i].CORREO_PROVEEDOR=this.datosProv.CORREO_PROVEEDOR
-            this._proveedores[i].NOMBRE_PROVEEDOR=this.datosProv.NOMBRE_PROVEEDOR
-            this._proveedores[i].RTN=this.datosProv.RTN
-            this._proveedores[i].TELEFONO_PROVEEDOR=this.datosProv.TELEFONO_PROVEEDOR
-          }
-        }
-        this.CP._proveedores=this._proveedores;
         Swal.fire({
           title: `Bien hecho...`,
           text:  `Proveedor creado exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            let dc = document.getElementById("closeActProv");
+            this._proveedores=this.CP._proveedores;
+            this.provInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this._proveedores,text, this.pipe))
+            );
+            let dc = document.getElementById("closeAddProv");
             dc?.click()
           } else {
+            this._proveedores=this.CP._proveedores;
+            this.provInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this._proveedores,text, this.pipe))
+            );
             //console.log(`modal was dismissed by ${result.dismiss}`);
           }
         })

@@ -81,7 +81,7 @@ export class ComprasService {
   //funcion para obtener productos
   obtenerProductos(){
     this.http.get<any>(`${this.bUA}/module/supplies/supplies`).subscribe((resp) => {
-      //console.log('resp',resp['Objetos']);
+      //console.log('productos',resp['inventario']);
       if(resp['mensaje'][0]['CODIGO']==1){
         this._products=resp['inventario'];
       }else{
@@ -111,7 +111,7 @@ export class ComprasService {
   //funcion para obtener proveedores
   obtenerProveedores(){
     this.http.get<any>(`${this.bUA}/module/supplies/providers`).subscribe((resp) => {
-      //console.log('resp',resp['Objetos']);
+      //console.log('proveedores',resp['proveedores']);
       if(resp['mensaje'][0]['CODIGO']==1){
         this._proveedores=resp['proveedores'];
       }else{
@@ -128,13 +128,18 @@ export class ComprasService {
   //funcion para obtener compras
   obtenerCompras(){
     this.http.get<any>(`${this.bUA}/module/supplies/purchases`).subscribe((resp) => {
-      //console.log('resp',resp['Objetos']);
+      //console.log('compras',resp['proveedores']);
       if(resp['mensaje'][0]['CODIGO']==1){
         this._compras=resp['proveedores'];
       }else{
         //console.log('no',resp);
       }
     });
+  }
+
+  //funcion para obtener compras
+  obtenerListaCompras(): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/supplies/purchases`);
   }
 
   //funcion para obtener una compra en especifica
@@ -145,7 +150,7 @@ export class ComprasService {
   //funcion para obtener productos de una compra en especifica
   obtenerDetallesCompra(id:any){
     this.http.get<Purchase>(`${this.bUA}/module/supplies/detailsSupply/${id}`).subscribe((resp) => {
-      //console.log('detallesCompras',resp['detalles'][0]);
+      //console.log('detallesCompras',resp['detalles']);
       if(resp['detalles'][0][0]['CODIGO']==1){
         this._detallesCompras=resp['detalles'][1];
       }else{

@@ -4,10 +4,10 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PurchaseDetail } from 'src/app/interfaces/objects.interface';
+import { SaleDetail } from 'src/app/interfaces/objects.interface';
 import { ComprasService } from 'src/app/services/compras.service';
 
-function searchDetProd(DETALLE, text: string, pipe: PipeTransform): PurchaseDetail[] {
+function searchDetProd(DETALLE, text: string, pipe: PipeTransform): SaleDetail[] {
   return DETALLE.filter(det => {
     const term = text.toLowerCase();
     return det.NOMBRE_PRODUCTO.toLowerCase().includes(term)
@@ -19,21 +19,22 @@ function searchDetProd(DETALLE, text: string, pipe: PipeTransform): PurchaseDeta
 }
 
 @Component({
-  selector: 'app-view-products',
-  templateUrl: './view-products.component.html',
-  styleUrls: ['./view-products.component.css'],
+  selector: 'app-view-products-sale',
+  templateUrl: './view-products-sale.component.html',
+  styleUrls: ['./view-products-sale.component.css'],
   providers: [DecimalPipe]
 })
-export class ViewProductsComponent implements OnInit {
+export class ViewProductsSaleComponent implements OnInit {
   @Input() viewOption:any;
   filter = new FormControl('');
   @Input() listaDetalle:any;
   listDetalleCompr:any;
-  detalleInter: Observable<PurchaseDetail[]>;
+  detalleInter: Observable<SaleDetail[]>;
 
   constructor(private CP:ComprasService,private pipe: DecimalPipe, private modalService: NgbModal) {
     this.listDetalleCompr=this.CP._detallesCompras;
     this.listaDetalle=this.listDetalleCompr;
+
     this.detalleInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => searchDetProd(this.listaDetalle ,text, this.pipe))

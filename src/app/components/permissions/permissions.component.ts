@@ -46,10 +46,10 @@ export class PermissionsComponent implements OnInit {
   datosPermiso:Permission={
     ID_OBJETO: 0,
     ID_ROL: 0,
-    INSERTAR: 0,
-    ELIMINAR: 0,
-    ACTUALIZAR: 0,
-    CONSULTAR: 0,
+    PERMISO_INSERCION: 0,
+    PERMISO_ELIMINACION: 0,
+    PERMISO_ACTUALIZACION: 0,
+    PERMISO_CONSULTAR: 0,
     CREADO_POR: 0
   }
 
@@ -77,10 +77,10 @@ export class PermissionsComponent implements OnInit {
     this.datosPermiso={
       ID_OBJETO: 1,
       ID_ROL: 1,
-      INSERTAR: 0,
-      ELIMINAR: 0,
-      ACTUALIZAR: 0,
-      CONSULTAR: 0,
+      PERMISO_INSERCION: 0,
+      PERMISO_ELIMINACION: 0,
+      PERMISO_ACTUALIZACION: 0,
+      PERMISO_CONSULTAR: 0,
       CREADO_POR: this.US._usuarioActual
     }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg' });
@@ -135,24 +135,24 @@ export class PermissionsComponent implements OnInit {
 
   crearPermiso(){
     if(this.act==true){
-      this.datosPermiso.ACTUALIZAR=1;
+      this.datosPermiso.PERMISO_ACTUALIZACION=1;
     }else{
-      this.datosPermiso.ACTUALIZAR=0;
+      this.datosPermiso.PERMISO_ACTUALIZACION=0;
     }
     if(this.elim==true){
-      this.datosPermiso.ELIMINAR=1;
+      this.datosPermiso.PERMISO_ELIMINACION=1;
     }else{
-      this.datosPermiso.ELIMINAR=0;
+      this.datosPermiso.PERMISO_ELIMINACION=0;
     }
     if(this.ins==true){
-      this.datosPermiso.INSERTAR=1;
+      this.datosPermiso.PERMISO_INSERCION=1;
     }else{
-      this.datosPermiso.INSERTAR=0;
+      this.datosPermiso.PERMISO_INSERCION=0;
     }
     if(this.con==true){
-      this.datosPermiso.CONSULTAR=1;
+      this.datosPermiso.PERMISO_CONSULTAR=1;
     }else{
-      this.datosPermiso.CONSULTAR=0;
+      this.datosPermiso.PERMISO_CONSULTAR=0;
     }
     //console.log(this.datosPermiso)
     this.MS.crearPermiso(this.datosPermiso).subscribe((resp) => {

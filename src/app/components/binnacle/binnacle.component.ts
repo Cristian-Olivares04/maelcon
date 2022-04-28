@@ -12,15 +12,15 @@ function search(BITACORA: any, text: string, pipe: PipeTransform): Bitacora[] {
   return BITACORA.filter(bita => {
     const term = text.toLowerCase();
     if( bita.INFORMACION_ANTERIOR == null){
-      return pipe.transform(bita.ID_USUARIO).includes(term)
-        || pipe.transform(bita.ID_OBJETO).toLowerCase().includes(term)
+      return bita.USUARIO.toLowerCase().includes(term)
+        || bita.OBJETOS.toLowerCase().includes(term)
         || bita.ACCION.toLowerCase().includes(term)
         || bita.DESCRIPCION.toLowerCase().includes(term)
         || bita.INFORMACION_ACTUAL.toLowerCase().includes(term)
         || bita.FECHA_BITACORA.toLowerCase().includes(term);
     }else{
-      return pipe.transform(bita.ID_USUARIO).includes(term)
-        || pipe.transform(bita.ID_OBJETO).toLowerCase().includes(term)
+      return bita.USUARIO.toLowerCase().includes(term)
+        || bita.OBJETOS.toLowerCase().includes(term)
         || bita.ACCION.toLowerCase().includes(term)
         || bita.DESCRIPCION.toLowerCase().includes(term)
         || bita.INFORMACION_ANTERIOR.toLowerCase().includes(term)
