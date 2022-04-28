@@ -56,10 +56,10 @@ export const updateClient = async (req, res) => {
 
 export const createSaleHeader = async (req, res) => {
   try {
-    const { ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION } = req.body;
+    const { ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA } = req.body;
     const objetos = await pool.query(
       "CALL CREAR_ENCABEZADO_VENTA(?,?,?,?,@MENSAJE, @CODIGO)",
-      [ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION]
+      [ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
@@ -83,10 +83,10 @@ export const createSaleHeader = async (req, res) => {
 export const updateSaleHeader = async (req, res) => {
   try {
     const { ID_VENTA } = req.params;
-    const { ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION } = req.body;
+    const { ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA } = req.body;
     const objetos = await pool.query(
       "CALL ACTUALIZAR_ENCABEZADO_VENTA(?,?,?,?,?,@MENSAJE, @CODIGO)",
-      [ID_VENTA, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION]
+      [ID_VENTA, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
