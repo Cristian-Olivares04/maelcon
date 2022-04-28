@@ -114,7 +114,7 @@ export const addProduct2Sale = async (req, res) => {
     const { ID_PRODUCTO, CANTIDAD_PRODUCTO } = req.body;
     const objetos = await pool.query(
       "CALL AGREGAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)",
-      [ID_PRODUCTO, ID_VENTA, CANTIDAD]
+      [ID_PRODUCTO, ID_VENTA, CANTIDAD_PRODUCTO]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
@@ -142,7 +142,7 @@ export const updateProductOnSale = async (req, res) => {
     const { ID_PRODUCTO, CANTIDAD_PRODUCTO } = req.body;
     const objetos = await pool.query(
       "CALL ACTUALIZAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)",
-      [ID_PRODUCTO, ID_VENTA, CANTIDAD]
+      [ID_PRODUCTO, ID_VENTA, CANTIDAD_PRODUCTO]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
