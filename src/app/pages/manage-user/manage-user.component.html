@@ -1,0 +1,270 @@
+<div class="row align-items-center justify-content-center p-4">
+    <div class="row justify-content-end">
+        <div class="col-2">
+            <div *ngIf= "action; else edit">
+                <button class="btn btn-sm btn-outline-primary ms-2" (click) = "optionAct(false)"><i class="fas fa-pen"></i> Editar información</button>
+            </div>
+            <ng-template #edit>
+                <button class="btn btn-sm btn-outline-primary ms-2" (click) = "optionAct(true)"><i class="fas fa-eye"></i> Vizualizar información</button>
+            </ng-template>
+        </div>
+    </div>
+    <div class="col-8 row mt-2 justify-content-center align-items-center contenedor p-3">
+        <div class="col-3 perfil-img rounded-circle">
+            <img class="img-fluid rounded-circle" src="https://static.wixstatic.com/media/e7b59c_5ec00be7b5ea4a59b6b41e48dec9173f~mv2.jpg" alt="img-user">
+        </div>
+        <div class="col-4 p-3">
+            <h2 style="color: #0846ffff;">{{datosUsuario.NOMBRE_PERSONA}} <b>{{datosUsuario.APELLIDO_PERSONA}}</b></h2>
+            <h4 style="color: rgba(8, 70, 255, 0.863);">@{{datosUsuario.USUARIO}}</h4>
+            <h6 class="pt-2">Último acceso: {{fechaAct}}</h6>
+        </div>
+    </div>
+    <div>
+        <div class="row" *ngIf = "action; else editView">
+            <div class="col-2"></div>
+            <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 50px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                <!--Cuadro contenedor de informacion-->
+                <h2 style="color: #0846ffff; margin-top: 20px;">Información General</h2>
+                <!--Columna 1 de informacion-->
+                <div class="col-6">
+                    <div class="login-content">
+                        <!--Formulario Registro-->
+                        <form>
+                            <!--Input Nombre-->
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" readonly type="text" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" placeholder="Nombre" name="nombre">
+                                </div>
+                            </div>
+      
+                            <!--Input Apellido-->
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" readonly type="text" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" placeholder="Apellido" name="apellido">
+                                </div>
+                            </div>
+      
+                            <!--Nombre de usuario-->
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" readonly type="text" [(ngModel)]="datosUsuario.USUARIO" placeholder="Nombre de usuario" name="nombreUsuario">
+                                </div>
+                            </div>
+                            <!--Input numero de telefono-->
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div class="div">
+                                    <input type="text" [(ngModel)]="datosUsuario.TELEFONO" placeholder="Telefono" name="telefono" readonly>
+                                </div>
+                            </div>
+                            <!--Input de contraseña-->
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="div">
+                                    <input type="text" placeholder="Correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO" name="correo">
+                                </div>
+                            </div>
+                            <!--Input de RTN-->
+                            <div class="input-div one">
+                                <div class="i">
+                                  <i class="fas fa-id-card"></i>
+                                </div>
+                                <div class="div">
+                                    <input type="text" placeholder="RTN" name="rtn" [(ngModel)]="datosUsuario.RTN" maxlength="14">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+      
+                <!--Columna 2 de informacion-->
+                <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+                    <div class="login-content">
+                        <form>
+                            <div class="img-sign-up">
+                                <img style="width: 165px; height: 165px;" src="../../../assets/registro.png" alt="">
+                            </div>
+      
+                            <!--Input Pregunta de seguridad-->
+                            <div class="input-div one">
+                                <div class="i">
+                                    <i class="fas fa-question"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" readonly type="text" placeholder="Pregunta de seguridad" [(ngModel)]="datosUsuario.PREGUNTA" name="pregunta">
+                                </div>
+                            </div>
+                            <!--Input de genero-->
+                            <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-neuter"></i>
+                              </div>
+                              <div class="div">
+                                <input class="" readonly type="text" placeholder="Genero" [(ngModel)]="datosUsuario.GENERO" name="genero">
+                              </div>
+                          </div>
+                            <!--Input de contraseña-->
+                          <div class="input-div pass">
+                            <div class="i">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="div">
+                                <input class="" readonly type="password" placeholder="Contraseña" [(ngModel)]="datosUsuario.CONTRASENA" name="contrasena">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+            </div>
+        </div>
+
+        <ng-template #editView>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 50px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                    <!--Cuadro contenedor de informacion-->
+                    <h2 style="color: #0846ffff; margin-top: 20px;">Editar información</h2>
+                    <!--Columna 1 de informacion-->
+                    <div class="col-6">
+                        <div class="login-content">
+                            <!--Formulario Registro-->
+                            <form>
+                                <!--Input Nombre-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
+                                    </div>
+                                </div>
+          
+                                <!--Input Apellido-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
+                                    </div>
+                                </div>
+          
+                                <!--Nombre de usuario-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input class="" type="text" placeholder="Nombre de usuario" name="nombreUsuario" [(ngModel)]="datosUsuario.USUARIO" readonly>
+                                    </div>
+                                </div>
+                                <!--Input numero de telefono-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input type="number" maxlength="8" min="10000000" max="99999999" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
+                                    </div>
+                                </div>
+                                <!--Input de contraseña-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input type="text" placeholder="Correo" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO" readonly>
+                                    </div>
+                                </div>
+                                <!--Input de RTN-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                      <i class="fas fa-id-card"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input type="text" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn" maxlength="14" readonly>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+          
+                    <!--Columna 2 de informacion-->
+                    <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+                        <div class="login-content">
+                            <form>
+                                
+                                <!--Input Fecha Nacimiento-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                    <i class="fas fa-image"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input type="file" placeholder="Imagen de perfil"  name="imagenPerfil">
+                                    </div>
+                                </div>
+
+                                <!--Input Pregunta de seguridad-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="datosUsuario.PREGUNTA" name="pregunta">
+                                    </div>
+                                </div>
+          
+                                <!--Input respuesta de seguridad-->
+                                <div class="input-div one">
+                                    <div class="i">
+                                        <i class="fas fa-equals"></i>
+                                    </div>
+                                    <div class="div">
+                                        <input class="" type="password" placeholder="Respuesta"  name="respuesta">
+                                    </div>
+                                </div>
+                                <!--Input de genero-->
+                                <div class="input-div one">
+                                  <div class="i">
+                                    <i class="fas fa-neuter"></i>
+                                  </div>
+                                  <div class="div">
+                                    <input class="" type="text" placeholder="Genero" name="genero" [(ngModel)]="datosUsuario.GENERO" readonly>
+                                  </div>
+                              </div>
+                                <!--Input de contraseña-->
+                              <div class="input-div pass">
+                                <div class="i">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div class="div">
+                                    <input class="" type="password" placeholder="Contraseña" name="contrasena" [(ngModel)]="datosUsuario.CONTRASENA" readonly>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <input type="button" class="btn" value="Actualizar" (click) = "actualizarUsuario()">
+                    </div>
+                </div>
+                <div class="col-2">
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+</div>

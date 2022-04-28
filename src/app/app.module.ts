@@ -53,6 +53,7 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { ReportsComponent } from './pages/reports/reports.component';
 import { InfoTableComponent } from './components/info-table/info-table.component';
 import { SafePipePipe } from './pipes/safe-pipe.pipe';
+import { ManageUserComponent } from './pages/manage-user/manage-user.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { SafePipePipe } from './pipes/safe-pipe.pipe';
     ReportsComponent,
     InfoTableComponent,
     SafePipePipe,
+    ManageUserComponent,
   ],
   imports: [
     BrowserModule,

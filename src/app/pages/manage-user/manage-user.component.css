@@ -1,0 +1,9 @@
+.perfil-img{
+    margin-left: 50px;
+    width: 200px;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: #0846ffab;
+}

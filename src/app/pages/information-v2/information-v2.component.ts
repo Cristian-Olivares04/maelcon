@@ -8,21 +8,13 @@ import { AyudaService } from 'src/app/services/ayuda.service';
   styleUrls: ['./information-v2.component.css']
 })
 export class InformationV2Component implements OnInit {
-  Help:Help[]=this.MA._ayuda;
-  admin:string = "";
-  ventas:string = "";
-  compras:string = "";
-  inventario:string = "";
-  ubicacion:string = "";
-  manual:string = "";
+  Help:Help[] = this.MA._ayuda;
 
   constructor(private MA:AyudaService) {
     this.MA.obtenerInfoAyuda();
    }
 
   ngOnInit(): void {
-    this.admin = this.Help[0].ENLACE;
-    console.log(this.admin);
   }
 
 }
