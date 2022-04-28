@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { usuario } from 'src/app/interfaces/user.interface';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
@@ -13,8 +14,28 @@ export class ManageUserComponent implements OnInit {
   action=true;
   fechaAct = this.datepipe.transform((new Date), 'yyyy-MM-dd');
   _usAct = this.US._usuarioActual2;
-  datosUsuario:any;
   msjCheck:any;
+
+  @Input() datosUsuario:usuario = {
+    ID_USUARIO: '',
+    ID_PUESTO: 0,
+    ID_ROL: 0,
+    USUARIO: '',
+    CONTRASENA: '',
+    NOMBRE_PERSONA: '',
+    APELLIDO_PERSONA: '',
+    CORREO_ELECTRONICO: '',
+    TELEFONO: '',
+    RTN: '',
+    SUELDO: 0,
+    IMG_USUARIO: '',
+    PREGUNTA: '',
+    RESPUESTA: '',
+    GENERO: '',
+    FECHA_VENCIMIENTO: '',
+    CREADO_POR: 0,
+    ESTADO: 0
+  };
 
   constructor(private US:UsuariosService, private datepipe:DatePipe, private _Router:Router) { 
     this.US._usuarioActual2;
