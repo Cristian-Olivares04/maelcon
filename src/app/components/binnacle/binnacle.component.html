@@ -20,20 +20,20 @@
           <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">ID_USUARIO</th>
-            <th scope="col">ID_OBJETO</th>
+            <th scope="col">USUARIO</th>
+            <th scope="col">OBJETO</th>
             <th scope="col">ACCION</th>
             <th scope="col">DESCRIPCION</th>
-            <th scope="col">INFORMACION_ANTERIOR</th>
-            <th scope="col">INFORMACION_ACTUAL</th>
-            <th scope="col">FECHA_BITACORA</th>
+            <th scope="col">INFORMACION ANTERIOR</th>
+            <th scope="col">INFORMACIONA CTUAL</th>
+            <th scope="col">FECHA BITACORA</th>
           </tr>
           </thead>
           <tbody>
             <tr *ngFor="let bit of bitacoraInter | async; index as i">
               <th scope="row">{{ i + 1 }}</th>
-              <td><ngb-highlight [result]="bit.ID_USUARIO | number" [term]="filter.value"></ngb-highlight></td>
-              <td><ngb-highlight [result]="bit.ID_OBJETO | number" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.USUARIO" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.OBJETOS" [term]="filter.value"></ngb-highlight></td>
               <td><ngb-highlight [result]="bit.ACCION" [term]="filter.value"></ngb-highlight></td>
               <td><ngb-highlight [result]="bit.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
               <td><ngb-highlight [result]="bit.INFORMACION_ANTERIOR" [term]="filter.value"></ngb-highlight></td>

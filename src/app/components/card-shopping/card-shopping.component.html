@@ -154,7 +154,6 @@
               </div>
           </div>
         </div>
-
       </div>
       <div class="justify-content m-3 d-flex">
         <div class="d-flex">
@@ -217,8 +216,8 @@
                                 </div>
                                 <div class="div">
                                     <select class="form-control" placeholder="Proveedor" [(ngModel)]="datosCompra.ID_PROVEEDOR" name="proveedorSelect">
-                                      <option disabled>Seleccione tipo de pago</option>
-                                      <option *ngFor="let prov of _proveedores" [value]="prov.ID_PROVEEDOR">{{prov.NOMBRE_PROVEEDOR}}</option>
+                                      <option disabled>Seleccione proveedor</option>
+                                      <option *ngFor="let prov of _proveedores" [ngValue]="prov.ID_PROVEEDOR">{{prov.NOMBRE_PROVEEDOR}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -227,9 +226,9 @@
                                     <i class="fas fa-credit-card"></i>
                                 </div>
                                 <div class="div">
-                                  <select class="form-control" placeholder="Usuario" [(ngModel)]="datosCompra.ID_PAGO" name="tipoPago">
+                                  <select class="form-control" placeholder="Tipo Pago" [(ngModel)]="datosCompra.ID_PAGO" name="tipoPago">
                                     <option disabled>Seleccione tipo de pago</option>
-                                    <option *ngFor="let pago of _metodosPagos" [value]="pago.ID_PAGO">{{pago.FORMA_PAGO}}</option>
+                                    <option *ngFor="let pago of _metodosPagos" [ngValue]="pago.ID_PAGO">{{pago.FORMA_PAGO}}</option>
                                   </select>
                                 </div>
                             </div>

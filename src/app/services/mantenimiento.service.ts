@@ -55,7 +55,7 @@ export class MantenimientoService {
   }
 
   //funcion para actualizar el estado de un usuario
-  actualizarEstadoUsuario( data:any, id:any): Observable<any>{
+  actualizarEstadoUsuario( data:any, id:number): Observable<any>{
     return this.http.put<any>(`${this.bUA}/module/admin/status/${id}`, data, {headers:this.headers});
   }
 

@@ -40,15 +40,15 @@ export class ObjectsComponent implements OnInit {
       startWith(''),
       map(text => search(this.objects, text, this.pipe))
     );
+    this.condition=true
+  }
+
+  ngOnInit(): void {
     this.objects=this.MS._objects;
     this.objectsInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this.objects, text, this.pipe))
     );
-    this.condition=true
-  }
-
-  ngOnInit(): void {
   }
 
   @Input() datoObjeto:Object={

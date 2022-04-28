@@ -66,7 +66,7 @@ export class DetailsShoppingComponent implements OnInit {
   constructor(private CP:ComprasService, private MS:MantenimientoService, private IN:InventarioService, private modalService: NgbModal, private US:UsuariosService, private datepipe:DatePipe, private _Router:Router) {
     let currentDateTime =this.datepipe.transform((new Date), 'yyyy-MM-dd');
     this.fechaAct=currentDateTime;
-    console.log(currentDateTime);
+    //console.log(currentDateTime);
     this.datosCom=this.CP.datosCompAct;
     this.datosCompra.ID_COMPRA=this.datosCom.ID_COMPRA;
     this.datosCompra.ID_USUARIO=this.datosCom.ID_USUARIO;
@@ -96,7 +96,7 @@ export class DetailsShoppingComponent implements OnInit {
         this.listadoProds.push(element);
       }
     }
-    //console.log('listaDetalle-details:', this.listDetalleCompr)
+    //console.log('listaprductosTemp: ', this.listadoProds)
   }
 
   ngOnInit(): void {

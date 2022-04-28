@@ -95,7 +95,9 @@ export class AdministrationComponent implements OnInit {
     DESCRIPCION: '',
     INFORMACION_ANTERIOR: '',
     INFORMACION_ACTUAL: '',
-    FECHA_BITACORA: ''
+    FECHA_BITACORA: '',
+    USUARIO: '',
+    OBJETOS: ''
   }
 
   comission:Comission[]=[];

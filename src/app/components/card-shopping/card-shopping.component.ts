@@ -11,6 +11,7 @@ import { ComprasService } from 'src/app/services/compras.service';
 import { InventarioService } from 'src/app/services/inventario.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import Swal from 'sweetalert2';
 
 function search(OBJECT: any, text: string, pipe: PipeTransform): Purchase[] {
   //console.log('ob',OBJECT);
@@ -55,15 +56,14 @@ export class CardShoppingComponent implements OnInit {
   page_size = 4;
   collectionSize = 0;
   modal=false;
-  condition=false;
 
   ob:Permission = {
     ID_OBJETO: 0,
     ID_ROL: 0,
-    INSERTAR: 0,
-    ELIMINAR: 0,
-    ACTUALIZAR: 0,
-    CONSULTAR: 0,
+    PERMISO_INSERCION: 0,
+    PERMISO_ELIMINACION: 0,
+    PERMISO_ACTUALIZACION: 0,
+    PERMISO_CONSULTAR: 0,
     CREADO_POR: 0
   }
 
@@ -97,7 +97,7 @@ export class CardShoppingComponent implements OnInit {
     ESTADO: 0
   }
 
-  constructor(private MS:MantenimientoService, private IN:InventarioService, private CP:ComprasService, private modalService: NgbModal, private US:UsuariosService,  private datepipe:DatePipe) {
+  constructor(private MS:MantenimientoService, private IN:InventarioService, private CP:ComprasService, private modalService: NgbModal, private US:UsuariosService,  private datepipe:DatePipe, private _Router:Router) {
     /* this.listFiltered = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this._compras2, text, this.pipe))
@@ -119,7 +119,6 @@ export class CardShoppingComponent implements OnInit {
     for (let i = 0; i < this._obs.length; i++) {
       if(this._obs[i].ID_OBJETO ==3){
         this.ob = this._obs[i];
-        this.condition=true;
         //console.log(this.ob)
       }
     }
@@ -159,24 +158,43 @@ export class CardShoppingComponent implements OnInit {
     ); */
   }
 
-  getInventario(){
-    this.CP.obtenerCompras();
-    this.CP.obtenerProveedores();
-    this.IN.obtenerExistenciaInventario();
-    this.MS.obtenerMetodosPagos();
-    this.US.obtenerUsuarios();
-    this._COMPRAS = this.CP._compras;
-    this.collectionSize = this.CP._compras.length;
-    this._proveedores = this.CP._proveedores;
-    this._productosExis = this.IN._inventarioExixtencia;
-    this._metodosPagos = this.MS._payMethods;
-    this._usuarios = this.US._usuarios;
+  actListadoCompras(){
+    //console.log('entro a ac lista compras', this._COMPRAS)
+    this.CP._compras=this._COMPRAS;
+    this.collectionSize = this._COMPRAS.length;
+    this._compras=[]
+    for (let i = 0; i < this._COMPRAS.length; i++) {
+      this.datosCom = this._COMPRAS[i];
+      for (let j = 0; j < this._usuarios.length; j++) {
+        if(this._COMPRAS[i].ID_USUARIO==this._usuarios[j].ID_USUARIO){
+          this.datosCom.USUARIO=this._usuarios[j].USUARIO;
+        }
+      }
+
+      for (let j = 0; j < this._metodosPagos.length; j++) {
+        if(this._COMPRAS[i].ID_PAGO==this._metodosPagos[j].ID_PAGO){
+          this.datosCom.PAGO=this._metodosPagos[j].FORMA_PAGO;
+        }
+      }
+
+      for (let j = 0; j < this._proveedores.length; j++) {
+        if(this._COMPRAS[i].ID_PROVEEDOR==this._proveedores[j].ID_PROVEEDOR){
+          this.datosCom.PROVEEDOR=this._proveedores[j].NOMBRE_PROVEEDOR;
+        }
+      }
+      this.datosCom.FECHA_COMPRA=this.fechaAct
+      this._compras.push(this.datosCom);
+    }
+    this._compras2=this._compras;
+    //console.log('compras antes de refresh', this._compras2)
+    this.refreshCompras();
   }
 
   refreshCompras() {
     this._compras = this._compras2
       .map((prod, i) => ({id: i + 1, ...prod}))
       .slice((this.page_number - 1) * this.page_size, (this.page_number - 1) * this.page_size + this.page_size);
+    this.modalService.dismissAll();
   }
 
   openModl(id:any){
@@ -187,7 +205,7 @@ export class CardShoppingComponent implements OnInit {
         this._listDetails=this.CP._detallesCompras;
       }
     }
-    console.log('escogio la card con id: ',id);
+    //console.log('escogio la card con id: ',id);
   }
 
   actionAct(value:any){
@@ -213,12 +231,38 @@ export class CardShoppingComponent implements OnInit {
 
   crearCompra(){
     this.datosCompra.ID_USUARIO=this._usAct
-    console.log('datosCrear',this.datosCompra)
+    //console.log('datosCrear',this.datosCompra);
+    this.CP.crearCompraEncabezado(this.datosCompra).subscribe((resp) => {
+      //console.log('resp',resp['mensaje']);
+      this.CP.obtenerListaCompras().subscribe((respu) => {
+        //console.log('compras lista',respu['proveedores']);
+        if(respu['mensaje'][0]['CODIGO']==1){
+          this._COMPRAS=respu['proveedores'];
+          this.actListadoCompras()
+        }else{
+          //console.log('no',resp);
+        }
+      });
+      if(resp['mensaje'][0]['CODIGO']==1){
+        Swal.fire({
+          icon: 'success',
+          title: 'Crear compra',
+          text: 'La compra se creo exitosamente',
+        })
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops... No se pudo crear la compra',
+          text: 'Algo salio mal!'
+        })
+        //console.log('no',resp);
+      }
+    });
 
   }
 
   actDatosComp(datos:any){
-    console.log('desde padre', datos)
+    //console.log('desde padre', datos)
     this.datosCompra=datos;
     this.CP.datosCompAct=datos;
     for (let i = 0; i < this._compras2.length; i++) {

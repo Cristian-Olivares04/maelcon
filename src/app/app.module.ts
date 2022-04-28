@@ -54,6 +54,8 @@ import { ReportsComponent } from './pages/reports/reports.component';
 import { InfoTableComponent } from './components/info-table/info-table.component';
 import { SafePipePipe } from './pipes/safe-pipe.pipe';
 import { ManageUserComponent } from './pages/manage-user/manage-user.component';
+import { ListProductsSaleComponent } from './components/list-products-sale/list-products-sale.component';
+import { ViewProductsSaleComponent } from './components/view-products-sale/view-products-sale.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +102,8 @@ import { ManageUserComponent } from './pages/manage-user/manage-user.component';
     InfoTableComponent,
     SafePipePipe,
     ManageUserComponent,
+    ListProductsSaleComponent,
+    ViewProductsSaleComponent,
   ],
   imports: [
     BrowserModule,

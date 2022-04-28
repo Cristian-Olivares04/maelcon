@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Sale } from '../interfaces/objects.interface';
+import { Sale, SaleDetail } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 import { Cliente } from '../interfaces/characters.interface';
@@ -15,6 +15,9 @@ export class VentasService {
   public _userToken=this.US._userToken;
   public _ventaActual = '';
   public _clientes=[];
+  public _ventas=[]
+  public _detallesVenta:SaleDetail[]=[]
+  public datosVentAct:any;
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -22,6 +25,7 @@ export class VentasService {
   });
 
   constructor(private US:UsuariosService, private http:HttpClient) {
+    this.obtenerVentas();
     this.obtenerClientes();
    }
 
@@ -68,13 +72,13 @@ export class VentasService {
   }
 
   //funcion para crear encabezado de Venta
-  crearVentaEncabezado( data:Sale): Observable<any>{
-    return this.http.post<Sale>(`${this.bUA}/module/sales/saleHeader`, data);
+  crearVentaEncabezado( data:any): Observable<any>{
+    return this.http.post<any>(`${this.bUA}/module/sales/saleHeader`, data);
   }
 
   //funcion para actualizar encabezado Venta
-  actualizarVentaEncabezado( data:Sale, id:any): Observable<any>{
-    return this.http.put<Sale>(`${this.bUA}/module/sales/saleHeader/${id}`, data);
+  actualizarVentaEncabezado( data:any, id:any): Observable<any>{
+    return this.http.put<any>(`${this.bUA}/module/sales/saleHeader/${id}`, data);
   }
 
   //funcion para obtener detalles de ventas
@@ -83,8 +87,16 @@ export class VentasService {
   }
 
   //funcion para obtener un detalle de Venta en especifico
-  obtenerDetalleVenta(id:any): Observable<any>{
-    return this.http.get<Sale>(`${this.bUA}/module/sales/saleDetail/${id}`);
+  obtenerDetalleVenta(id:any){
+    this.http.get<any>(`${this.bUA}/module/sales/saleDetail/${id}`).subscribe((resp) => {
+      console.log('detallesVenta',resp['usuario']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._detallesVenta=resp['usuario'];
+      }else{
+        this._detallesVenta=[]
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para añadir un producto a un detalle de venta
@@ -108,8 +120,20 @@ export class VentasService {
   }
 
   //funcion para obtener ventas
-  obtenerVentas(): Observable<any>{
-    return this.http.get<Sale>(`${this.bUA}/module/sales/sale`);
+  obtenerVentas(){
+    return this.http.get<any>(`${this.bUA}/module/sales/sale`).subscribe((resp) => {
+      //console.log('ventas',resp['usuario']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._ventas=resp['usuario'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
+  }
+
+  //funcion para obtener ventas
+  obtenerListaVentas(): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/sales/sale`);
   }
 
   //funcion para obtener una Venta completa

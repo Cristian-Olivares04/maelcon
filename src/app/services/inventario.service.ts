@@ -70,22 +70,10 @@ export class InventarioService {
   }
 
   //funcion para obtener productos
-  obtenerProductos(){
-    this.http.get<any>(`${this.bUA}/module/supplies/supplies`).subscribe((resp) => {
-      //console.log('resp',resp['Objetos']);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._products=resp['inventario'];
-      }else{
-        //console.log('no',resp);
-      }
-    });
-  }
-
-  //funcion para obtener productos
   obtenerProductosCompletos(){
     try {
       this.http.get<any>(`${this.bUA}/module/supplies/productData`).subscribe((resp) => {
-        console.log('resp',resp);
+        //console.log('productos completos',resp['proveedores']);
         if(resp['mensaje'][0]['CODIGO']==1){
           this._products=resp['proveedores'];
         }else{
@@ -95,7 +83,11 @@ export class InventarioService {
     } catch (error) {
       console.log('error sucitado', error)
     }
+  }
 
+  //funcion para obtener productos
+  obtenerProdListaCompletos(): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/supplies/productData`)
   }
 
   //funcion para obtener un producto en especifico
@@ -109,8 +101,8 @@ export class InventarioService {
   }
 
   //funcion para actualizar en inventario un Producto
-  actualizarInventarioProducto( data:Product, id:any): Observable<any>{
-    return this.http.put<Product>(`${this.bUA}/module/inventory/productAvailable/${id}`, data);
+  actualizarInventarioProducto( data:any, id:any): Observable<any>{
+    return this.http.put<any>(`${this.bUA}/module/inventory/productAvailable/${id}`, data);
   }
 
   //funcion para actualizar fecha vencimiento en inventario de un Producto

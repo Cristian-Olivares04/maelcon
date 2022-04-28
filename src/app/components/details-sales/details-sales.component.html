@@ -1,11 +1,11 @@
 <div class="car-inventary row" style="position: relative;">
     <div class="row">
         <div class="col-9">
-            <h4 style="color: #0846ffff; margin-top: 20px;">Venta #25</h4>
+            <h4 style="color: #0846ffff; margin-top: 20px;">Venta #{{datosVenta.ID_VENTA}}</h4>
             <p class="text-muted">Información tarjeta de venta</p>
         </div>
         <div class="col-3">
-            <div *ngIf = "actionOption; else viewActual">
+            <div *ngIf="actionOption; else viewActual">
                 <button class="btn btn-sm btn-outline-primary ms-2" (click)="changeOption(false)"><i class="fas fa-plus"></i> Agregar producto</button>
             </div>
             <ng-template #viewActual>
@@ -13,17 +13,17 @@
             </ng-template>
         </div>
     </div>
-    
+
     <!--Columna 1 de informacion-->
     <div class="col-4 p-3">
         <div class="login-content">
-            <form>   
+            <form>
                 <div class="input-div one">
                     <div class="i">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="text" value="Cliente" name="cliente" readonly>
+                        <input class="" type="text" [(ngModel)]="datosVenta.NOMBRE_CLIENTE" name="cliente" readonly>
                     </div>
                     <span class="text-muted details">Cliente</span>
                 </div>
@@ -33,7 +33,7 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="text" value="Usuario" name="usuario" readonly>
+                        <input class="" type="text" [(ngModel)]="datosVenta.USUARIO" name="usuario" readonly>
                     </div>
                     <span class="text-muted details">Usuario encargado</span>
                 </div>
@@ -42,23 +42,23 @@
                         <i class="fas fa-coins"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="number" value="500.25" name="total" readonly>
+                        <input class="" type="number" [(ngModel)]="datosVenta.TOTAL_VENTA" name="total" readonly>
                     </div>
                     <span class="text-muted details">Total venta</span>
-                </div>   
+                </div>
             </form>
         </div>
     </div>
     <!--Columna 2-->
     <div class="col-4 p-3">
         <div class="login-content">
-            <form> 
+            <form>
                 <div class="input-div one">
                     <div class="i">
                         <i class="fas fa-info"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="text" placeholder="Descripción" name="descripción" >
+                        <input class="" type="text" placeholder="Descripción" (change)="cambioDatosVenta()" [(ngModel)]="datosVenta.DESCRIPCION_VENTA" name="descripcion" >
                     </div>
                     <span class="text-muted details">Descripción</span>
                 </div>
@@ -67,12 +67,10 @@
                         <i class="fas fa-credit-card"></i>
                     </div>
                     <div class="div">
-                        <select class="form-control" name="proveedorSelect">
-                            <option value="">Seleccione método de pago</option>
-                            <option value="Efectivo">Efectivo</option>
-                            <option value="Credito">Credito</option>
-                            <option value="etc...">etc...</option>
-                        </select>
+                      <select class="form-control" placeholder="Usuario" (change)="cambioDatosVenta()" [(ngModel)]="datosVenta.ID_PAGO" name="tipoPago">
+                        <option disabled>Seleccione tipo de pago</option>
+                        <option *ngFor="let pago of _metodosPagos" [value]="pago.ID_PAGO">{{pago.FORMA_PAGO}}</option>
+                      </select>
                     </div>
                     <span class="text-muted details">Tipo de pago</span>
                 </div>
@@ -81,10 +79,10 @@
                         <i class="fas fa-coins"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="number" value="25.30" name="isv" readonly>
+                        <input class="" type="number" [(ngModel)]="datosVenta.ISV" name="isv" readonly>
                     </div>
                     <span class="text-muted details">ISV de esta venta</span>
-                </div>             
+                </div>
             </form>
         </div>
     </div>
@@ -97,7 +95,7 @@
                         <i class="fas fa-calendar"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="text" value="2022-12-12" name="fecha" readonly>
+                        <input class="" type="text" [(ngModel)]="datosVenta.FECHA_VENTA" name="fecha" readonly>
                     </div>
                     <span class="text-muted details">Fecha de venta</span>
                 </div>
@@ -106,40 +104,37 @@
                         <i class="fas fa-flag"></i>
                     </div>
                     <div class="div">
-                        <input class="" type="number" value="0.00" name="comision" readonly>
+                        <input class="" type="number" [(ngModel)]="datosVenta.COMISION_EMPLEADO" name="comision" readonly>
                     </div>
                     <span class="text-muted details">Comision por venta</span>
                 </div>
                 <div class="justify-content-center">
                     <span style="position: absolute;">
-                        <div *ngIf = "activo; else inactivo" class="form-check form-switch text-success">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked disabled>
+                        <div *ngIf="!datosVenta.ESTADO; else inactivo" class="form-check form-switch text-success">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" disabled>
                             <label class="form-check-label" for="flexSwitchCheckDefault">En proceso</label>
                         </div>
                         <ng-template #inactivo>
                             <div class="form-check form-switch text-danger">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" disabled>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked disabled>
                                 <label class="form-check-label" for="flexSwitchCheckDefault">Finalizada</label>
                             </div>
                         </ng-template>
                     </span>
-                    
                 </div>
             </form>
         </div>
     </div>
-
-    <!--Llamado a la lista-->
-    <app-list-products [viewOption]= shopping [typeTable] = actionOption></app-list-products>
-    
     <div >
+      <!--Llamado a la lista-->
+      <app-list-products-sale [viewOption]=shopping [typeTable]=actionOption [listaProds]=listadoProds [listaDetalle]=listDetalleVenta (listaDetalleAct)="procesDatos($event)" (detProdElim)="elimProdDetalle($event)" (detProdAct)="actProdDetalle($event)" (datsVentaActual)="actVentaAct($event)"></app-list-products-sale>
     </div>
     <div class="col-12 row justify-content-between">
         <div class="col-6">
-            <input type="button" class="btn-cancel" value="Cancelar">
+            <input type="button" class="btn-cancel" value="Eliminar" (click)="eliminarVenta()">
         </div>
         <div class="col-6">
-            <input type="button" class="btn" value="Finalizar compra">
+            <input type="button" class="btn" value="Finalizar compra" (click)="finalizarVenta()">
         </div>
     </div>
 </div>

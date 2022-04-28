@@ -69,7 +69,10 @@
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <input class="" type="text" value="Rol" name="rol" readonly>
+                                                  <select class="form-control" [(ngModel)]="datosPermiso.ID_ROL" name="rol" disabled>
+                                                      <option selected disabled>Seleccionar rol</option>
+                                                      <option *ngFor="let r of roles" [ngValue]="r.ID_ROL">{{r.ROL}}</option>
+                                                  </select>
                                                 </div>
                                             </div>
                                         </form>
@@ -83,7 +86,10 @@
                                                     <i class="fas fa-sitemap"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <input class="" type="text" value="Objeto" name="objeto" readonly>
+                                                  <select class="form-control" [(ngModel)]="datosPermiso.ID_OBJETO" name="objeto" disabled>
+                                                    <option selected disabled>Seleccionar Objeto</option>
+                                                    <option *ngFor="let ob of objetos" [ngValue]="ob.ID_OBJETO">{{ob.OBJETOS}}</option>
+                                                  </select>
                                                 </div>
                                             </div>
                                         </form>

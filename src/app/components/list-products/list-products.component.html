@@ -1,4 +1,4 @@
-<div *ngIf = "viewOption; else sales">
+<div *ngIf = "viewOption">
     <div class="row" *ngIf = "typeTable; else searchProduct">
         <div class="col-1"></div>
         <div class="col-8 text-start">
@@ -43,7 +43,7 @@
                         <td><button class="btn-alert btn-sm btn-outline-alert ms-2" (click)="eliminarProd(prodDetail.ID_PRODUCTO)"><i class="fas fa-trash"></i></button></td>
                       </tr>
                       </tbody>
-                    </table>
+                  </table>
               </div>
         </div>
     </div>
@@ -96,104 +96,6 @@
         </div>
     </ng-template>
 </div>
-
-<ng-template #sales>
-    <div class="row" *ngIf = "typeTable; else searchProduct">
-        <div class="col-1"></div>
-        <div class="col-8 text-start">
-            <h4 class="text-muted"><b>Productos de esta venta</b></h4>
-        </div>
-        <div class="col-3">
-        </div>
-
-        <div class="col-1"></div>
-        <div class="col-10">
-            <form>
-                <div class="mb-2 mt-2 row">
-                  <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar: </label>
-                  <div class="col-xs-3 col-sm-auto">
-                    <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
-                  </div>
-                </div>
-              </form>
-              <div class="" style="width: auto; height: 400px; overflow: scroll;">
-                  <table class="table table-striped">
-                      <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Area</th>
-                        <th scope="col">Population</th>
-                        <th scope="col">Actualizar</th>
-                        <th scope="col">Eliminar</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let country of countries | async; index as i">
-                        <th scope="row">{{ i + 1 }}</th>
-                        <td>
-                          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                          <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                        </td>
-                        <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModal(editProductSales)"><i class="fas fa-pen"></i></button></td>
-                        <td><button class="btn-alert btn-sm btn-outline-alert ms-2"><b>X</b></button></td>
-                      </tr>
-                      </tbody>
-                    </table>
-              </div>
-        </div>
-    </div>
-
-    <ng-template #searchProduct>
-      <div class="row">
-          <div class="col-1"></div>
-          <div class="col-8 text-start">
-              <h4 class="text-muted"><b>Lista de productos disponibles</b></h4>
-          </div>
-          <div class="col-3">
-          </div>
-
-          <div class="col-1"></div>
-          <div class="col-10">
-              <form>
-                  <div class="mb-2 mt-2 row">
-                    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar: </label>
-                    <div class="col-xs-3 col-sm-auto">
-                      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
-                    </div>
-                  </div>
-                </form>
-                <div class="" style="width: auto; height: 400px; overflow: scroll;">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Country</th>
-                          <th scope="col">Area</th>
-                          <th scope="col">Population</th>
-                          <th scope="col">Agregar</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let country of countries | async; index as i">
-                          <th scope="row">{{ i + 1 }}</th>
-                          <td>
-                            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                            <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                          </td>
-                          <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                          <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                          <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModal(addProductShopping)"><i class="fas fa-plus"></i></button></td>
-                        </tr>
-                        </tbody>
-                      </table>
-                </div>
-          </div>
-      </div>
-    </ng-template>
-</ng-template>
 
 <!--Agregar producto a una compra-->
 <ng-template #addProductShopping let-modal>
@@ -313,124 +215,6 @@
         </div>
         <div class="row">
             <p class="text-muted text-center">Sistema de compras Maelcon S de R. L.</p>
-        </div>
-    </div>
-</ng-template>
-
-<!--Agregar producto a venta-->
-<ng-template #addProductSales let-modal>
-    <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-            <div class="modal-body">
-                <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-                            <!--Cuadro contenedor de informacion-->
-                            <h2 style="color: #0846ffff; margin-top: 20px;">Agregar Producto a venta</h2>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-coins"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Precio" name="precio" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-hashtag"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Cantidad" name="cantidad">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <input type="button" class="btn" value="Agregar producto">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                        </div>
-                    </div>
-            </div>
-            <div class="row">
-                <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-<!--Actualizar un producto dentro de una venta-->
-<ng-template #editProductSales let-modal>
-    <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-            <div class="modal-body">
-                <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-                            <!--Cuadro contenedor de informacion-->
-                            <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar producto</h2>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-coins"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Precio unitario" name="precio">
-                                                </div>
-                                            </div>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-hashtag"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input class="" type="number" placeholder="Cantidad" name="cantidad">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="login-content">
-                                        <form>
-                                            <div class="input-div">
-                                                <div class="i">
-                                                    <i class="fas fa-info"></i>
-                                                </div>
-                                                <div class="div">
-                                                    <input type="text" placeholder="Descripción" name="descripcion">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <input type="button" class="btn" value="Actualizar producto">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                        </div>
-                    </div>
-            </div>
-            <div class="row">
-                <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
-            </div>
         </div>
     </div>
 </ng-template>
