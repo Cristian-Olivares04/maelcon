@@ -15,7 +15,7 @@ var _databaseSQL = _interopRequireDefault(require("../databaseSQL"));
 
 var updateHelpData = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var ID_INFO, _req$body, TITULO, ENLACE, ESTADO, objetos, mensaje, _mensaje;
+    var ID_INFO, _req$body, TITULO, TIPO, ENLACE, ESTADO, objetos, mensaje, _mensaje;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -23,9 +23,9 @@ var updateHelpData = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             ID_INFO = req.params.ID_INFO;
-            _req$body = req.body, TITULO = _req$body.TITULO, ENLACE = _req$body.ENLACE, ESTADO = _req$body.ESTADO;
+            _req$body = req.body, TITULO = _req$body.TITULO, TIPO = _req$body.TIPO, ENLACE = _req$body.ENLACE, ESTADO = _req$body.ESTADO;
             _context.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_INFORMACION_AYUDA(?,?,?,?,@MENSAJE, @CODIGO);", [ID_INFO, TITULO, ENLACE, ESTADO]);
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_INFORMACION_AYUDA(?,?,?,?,?,@MENSAJE, @CODIGO);", [ID_INFO, TIPO, TITULO, ENLACE, ESTADO]);
 
           case 5:
             objetos = _context.sent;
@@ -69,16 +69,16 @@ exports.updateHelpData = updateHelpData;
 
 var createHelpData = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var _req$body2, TITULO, ENLACE, ESTADO, objetos, mensaje, _mensaje2;
+    var _req$body2, TITULO, TIPO, ENLACE, objetos, mensaje, _mensaje2;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
-            _req$body2 = req.body, TITULO = _req$body2.TITULO, ENLACE = _req$body2.ENLACE, ESTADO = _req$body2.ESTADO;
+            _req$body2 = req.body, TITULO = _req$body2.TITULO, TIPO = _req$body2.TIPO, ENLACE = _req$body2.ENLACE;
             _context2.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_INFORMACION_AYUDA(?,?,?,@MENSAJE, @CODIGO);", [TITULO, ENLACE, ESTADO]);
+            return _databaseSQL["default"].query("CALL CREAR_INFORMACION_AYUDA(?,?,?,@MENSAJE, @CODIGO);", [TITULO, TIPO, ENLACE]);
 
           case 4:
             objetos = _context2.sent;

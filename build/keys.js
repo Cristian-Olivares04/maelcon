@@ -11,12 +11,13 @@ var _default = {
     database: "t3zwy94sqiznorr2",
     password: "issklzqxfx6qadc2"
   }
-  /* database: {
-    host: "localhost",
-    user: "root",
-    database: "prueba6",
-    password: "rodriguez1999",
-  } */
+  /*
+  database: {
+  host: "localhost",
+  user: "root",
+  database: "db_maelcon_5",
+  password: "rodriguez1999",
+  }*/
 
 };
 exports["default"] = _default;

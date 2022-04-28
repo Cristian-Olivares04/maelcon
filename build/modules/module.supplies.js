@@ -24,7 +24,7 @@ var createSupplier = /*#__PURE__*/function () {
             _context.prev = 0;
             _req$body = req.body, RTN = _req$body.RTN, NOMBRE_PROVEEDOR = _req$body.NOMBRE_PROVEEDOR, TELEFONO_PROVEEDOR = _req$body.TELEFONO_PROVEEDOR, CORREO_PROVEEDOR = _req$body.CORREO_PROVEEDOR;
             _context.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_PROVEEDOR(?,?,?,?,@MENSAJE, @CODIGO)", [RTN, NOMBRE, TELEFONO, CORREO]);
+            return _databaseSQL["default"].query("CALL CREAR_PROVEEDOR(?,?,?,?,@MENSAJE, @CODIGO)", [RTN, NOMBRE_PROVEEDOR, TELEFONO_PROVEEDOR, CORREO_PROVEEDOR]);
 
           case 4:
             objetos = _context.sent;
@@ -122,16 +122,16 @@ exports.updateSupplier = updateSupplier;
 
 var createSupplyHeader = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-    var _req$body3, ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION, objetos, mensaje, _mensaje3;
+    var _req$body3, ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION_COMPRA, objetos, mensaje, _mensaje3;
 
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            _req$body3 = req.body, ID_USUARIO = _req$body3.ID_USUARIO, ID_PROVEEDOR = _req$body3.ID_PROVEEDOR, ID_PAGO = _req$body3.ID_PAGO, OBSERVACION = _req$body3.OBSERVACION;
+            _req$body3 = req.body, ID_USUARIO = _req$body3.ID_USUARIO, ID_PROVEEDOR = _req$body3.ID_PROVEEDOR, ID_PAGO = _req$body3.ID_PAGO, OBSERVACION_COMPRA = _req$body3.OBSERVACION_COMPRA;
             _context3.next = 4;
-            return _databaseSQL["default"].query("CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO, @ID)", [ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION]);
+            return _databaseSQL["default"].query("CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO, @ID)", [ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION_COMPRA]);
 
           case 4:
             objetos = _context3.sent;
@@ -175,7 +175,7 @@ exports.createSupplyHeader = createSupplyHeader;
 
 var updateSupplyHeader = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var ID_COMPRA, _req$body4, ID_PAGO, OBSERVACION, objetos, mensaje, _mensaje4;
+    var ID_COMPRA, _req$body4, ID_PAGO, OBSERVACION_COMPRA, objetos, mensaje, _mensaje4;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -183,9 +183,9 @@ var updateSupplyHeader = /*#__PURE__*/function () {
           case 0:
             _context4.prev = 0;
             ID_COMPRA = req.params.ID_COMPRA;
-            _req$body4 = req.body, ID_PAGO = _req$body4.ID_PAGO, OBSERVACION = _req$body4.OBSERVACION;
+            _req$body4 = req.body, ID_PAGO = _req$body4.ID_PAGO, OBSERVACION_COMPRA = _req$body4.OBSERVACION_COMPRA;
             _context4.next = 5;
-            return _databaseSQL["default"].query("CALL MODIFICAR_ENCABEZADO_COMPRA(?,?,?,@MENSAJE, @CODIGO)", [ID_COMPRA, ID_PAGO, OBSERVACION]);
+            return _databaseSQL["default"].query("CALL MODIFICAR_ENCABEZADO_COMPRA(?,?,?,@MENSAJE, @CODIGO)", [ID_COMPRA, ID_PAGO, OBSERVACION_COMPRA]);
 
           case 5:
             objetos = _context4.sent;
