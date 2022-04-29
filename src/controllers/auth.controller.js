@@ -110,7 +110,7 @@ export const singUpSQL = async (req, res) => {
       <tr>
         <td style="background-color: #ecf0f1">
           <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
-            <h2 style="color: #e67e22; margin: 0 0 7px">Hola ${NOMBRE} ${APELLIDO}!</h2>
+            <h2 style="color: #e67e22; margin: 0 0 7px">Hola ${NOMBRE_PERSONA} ${APELLIDO_PERSONA}!</h2>
             <p style="margin: 2px; font-size: 15px">
               Bienvenido al sistema de Maelcon, se ha recibido su solicitud de creación de usuario debe esperar
               hasta que un administradar active su cuenta, los modulos de trabajo son variados y el 
