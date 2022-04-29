@@ -258,7 +258,6 @@ export class CardShoppingComponent implements OnInit {
         //console.log('no',resp);
       }
     });
-
   }
 
   actDatosComp(datos:any){

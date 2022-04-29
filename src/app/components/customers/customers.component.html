@@ -5,7 +5,7 @@
             <p class="text-muted">Lista general de clientes regisytados en el sistema para ventas.</p>
         </div>
         <div class="col-4">
-            <button class="btn btn-sm btn-primary ms-2"><i class="fa fa-refresh"></i> Crear</button>
+            <button class="btn btn-sm btn-primary ms-2" (click)="openModal(createCustomer)"><i class="fa fa-user-plus"></i> Crear</button>
         </div>
         <div class="col-12">
             <form>
@@ -21,22 +21,21 @@
                       <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Area</th>
-                        <th scope="col">Population</th>
-                        <th scope="col">Editar</th>
+                        <th scope="col">NOMBRE CLIENTE</th>
+                        <th scope="col">RTN</th>
+                        <th scope="col">DIRECCION CLIENTE</th>
+                        <th scope="col">TELEFONO CLIENTE</th>
+                        <th scope="col">EDITAR</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let country of countries | async; index as i">
+                      <tr *ngFor="let cli of clientesInter | async; index as i">
                         <th scope="row">{{ i + 1 }}</th>
-                        <td>
-                          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
-                          <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-                        </td>
-                        <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="openModal(editRol)"><i class="fas fa-pen"></i></button></td>
+                        <td><ngb-highlight [result]="cli.NOMBRE_CLIENTE" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="cli.RTN" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="cli.DIRECCION_CLIENTE" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="cli.TELEFONO_CLIENTE" [term]="filter.value"></ngb-highlight></td>
+                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="openModalAct(editCustomer, cli.ID_CLIENTE)"><i class="fas fa-pen"></i></button></td>
                       </tr>
                       </tbody>
                     </table>
@@ -46,17 +45,16 @@
 </div>
 
 <!--Modal para actualizar roles-->
-<ng-template #editRol let-modal>
+<ng-template #editCustomer let-modal>
     <div class="modal-content">
-        <div class="m-2 d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+          <button type="button" id="closeActCus" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
         </div>
         <hr>
         <div class="modal-body">
             <div>
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col-10 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                <div class="row p-3">
+                    <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                         <!--Cuadro contenedor de informacion-->
                         <h2 style="color: #0846ffff; margin-top: 20px;">Actualización de clientes</h2>
 
@@ -69,7 +67,7 @@
                                                 <i class="fas fa-user"></i>
                                             </div>
                                             <div class="div">
-                                                <input class="" type="text" placeholder="Nombre" name="nombre">
+                                                <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosCustomer.NOMBRE_CLIENTE" name="nombre">
                                             </div>
                                         </div>
                                         <div class="input-div">
@@ -77,7 +75,7 @@
                                                 <i class="fas fa-address-card"></i>
                                             </div>
                                             <div class="div">
-                                                <input type="text" placeholder="RTN" name="rtn">
+                                                <input type="text" minlength="14" maxlength="14" placeholder="RTN" [(ngModel)]="datosCustomer.RTN" name="rtn">
                                             </div>
                                         </div>
                                     </form>
@@ -88,10 +86,10 @@
                                     <form>
                                         <div class="input-div">
                                             <div class="i">
-                                                <i class="fas fa-at"></i>
+                                                <i class="fas fa-adress"></i>
                                             </div>
                                             <div class="div">
-                                                <input type="text" placeholder="Correo electronico" name="email">
+                                                <input type="text" placeholder="Direccion" [(ngModel)]="datosCustomer.DIRECCION_CLIENTE" name="direccion">
                                             </div>
                                         </div>
                                         <div class="input-div">
@@ -99,21 +97,22 @@
                                                 <i class="fas fa-phone"></i>
                                             </div>
                                             <div class="div">
-                                                <input type="text" placeholder="Teléfono" name="telefono">
+                                                <input type="text" minlength="8" maxlength="8" placeholder="Teléfono" [(ngModel)]="datosCustomer.TELEFONO_CLIENTE" name="telefono">
                                             </div>
                                         </div>
 
                                     </form>
                                 </div>
-                                <input type="button" class="btn" value="Actualizar">
+                                <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act')">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-2">
+                        <div class="alert alert-danger" role="alert" *ngIf="enam">
+                          {{msj}}
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Sistema de gestión de clientes</p>
             </div>
         </div>
@@ -121,57 +120,73 @@
 </ng-template>
 
 <!--Modal para crear roles-->
-<ng-template #createRol let-modal>
+<ng-template #createCustomer let-modal>
     <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+            <button type="button" id="closeAddCus" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
         </div>
+        <hr>
         <div class="modal-body">
             <div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                <div class="row p-3">
+                    <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                         <!--Cuadro contenedor de informacion-->
-                        <h2 style="color: #0846ffff; margin-top: 20px;">Creación de Roles</h2>
-
+                        <h2 style="color: #0846ffff; margin-top: 20px;">Creación de clientes</h2>
                         <div class="row">
-                            <div class="col-6">
-                                <div class="login-content">
-                                    <form>
-                                        <div class="input-div">
-                                            <div class="i">
-                                                <i class="fas fa-user"></i>
-                                            </div>
-                                            <div class="div">
-                                                <input class="" type="text" placeholder="Nombre del rol" name="rol">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="login-content">
-                                    <form>
-                                        <div class="input-div">
-                                            <div class="i">
-                                                <i class="fas fa-file"></i>
-                                            </div>
-                                            <div class="div">
-                                                <input type="text" placeholder="Descripción" name="descripcion">
-                                            </div>
-                                        </div>
+                          <div class="col-6 p-3">
+                              <div class="login-content">
+                                  <form>
+                                      <div class="input-div">
+                                          <div class="i">
+                                              <i class="fas fa-user"></i>
+                                          </div>
+                                          <div class="div">
+                                              <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosCustomer.NOMBRE_CLIENTE" name="nombre">
+                                          </div>
+                                      </div>
+                                      <div class="input-div">
+                                          <div class="i">
+                                              <i class="fas fa-address-card"></i>
+                                          </div>
+                                          <div class="div">
+                                              <input type="text" minlength="14" maxlength="14" placeholder="RTN" [(ngModel)]="datosCustomer.RTN" name="rtn">
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                          <div class="col-6 p-3">
+                              <div class="login-content">
+                                  <form>
+                                      <div class="input-div">
+                                          <div class="i">
+                                              <i class="fas fa-adress"></i>
+                                          </div>
+                                          <div class="div">
+                                              <input type="text" placeholder="Direccion" [(ngModel)]="datosCustomer.DIRECCION_CLIENTE" name="direccion">
+                                          </div>
+                                      </div>
+                                      <div class="input-div">
+                                          <div class="i">
+                                              <i class="fas fa-phone"></i>
+                                          </div>
+                                          <div class="div">
+                                              <input type="text" minlength="8" maxlength="8" placeholder="Teléfono" [(ngModel)]="datosCustomer.TELEFONO_CLIENTE" name="telefono">
+                                          </div>
+                                      </div>
 
-                                    </form>
-                                </div>
-                                <input type="button" class="btn" value="Crear rol">
-                            </div>
+                                  </form>
+                              </div>
+                              <input type="button" class="btn" value="Crear" (click)="evaluarDatos('add')">
+                          </div>
                         </div>
-                    </div>
-                    <div class="col-2">
+                        <div class="alert alert-danger" role="alert" *ngIf="enam">
+                          {{msj}}
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Sistema de gestión de clientes</p>
             </div>
         </div>

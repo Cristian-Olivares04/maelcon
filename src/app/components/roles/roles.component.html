@@ -52,9 +52,8 @@
         </div>
         <div class="modal-body">
             <div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                <div class="row p-3">
+                    <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                         <!--Cuadro contenedor de informacion-->
                         <h2 style="color: #0846ffff; margin-top: 20px;">Actualización de Roles</h2>
 
@@ -67,7 +66,7 @@
                                                 <i class="fas fa-user"></i>
                                             </div>
                                             <div class="div">
-                                                <input class="" type="text" placeholder="Nombre del rol" [(ngModel)]="datoRole.ROL" name="rol">
+                                                <input class="" type="text" minlength="3" placeholder="Nombre del rol" [(ngModel)]="datoRole.ROL" name="rol">
                                             </div>
                                         </div>
                                     </form>
@@ -78,7 +77,7 @@
                                     <form>
                                         <div class="input-div">
                                             <div class="i">
-                                                <i class="fas fa-file"></i>
+                                              <i class="fas fa-info"></i>
                                             </div>
                                             <div class="div">
                                                 <input type="text" placeholder="Descripción" [(ngModel)]="datoRole.DESCRIPCION" name="descripcion">
@@ -87,11 +86,12 @@
 
                                     </form>
                                 </div>
-                                <input type="button" class="btn" value="Actualizar" (click)="actRol(datoRole.ID_ROL)">
+                                <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act')">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-2">
+                        <div class="alert alert-danger" role="alert" *ngIf="enam">
+                            {{msj}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,9 +110,8 @@
         </div>
         <div class="modal-body">
             <div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                <div class="row p-3">
+                    <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                         <!--Cuadro contenedor de informacion-->
                         <h2 style="color: #0846ffff; margin-top: 20px;">Creación de Roles</h2>
 
@@ -125,7 +124,7 @@
                                                 <i class="fas fa-user"></i>
                                             </div>
                                             <div class="div">
-                                                <input class="" type="text" placeholder="Nombre del rol" [(ngModel)]="datoRole.ROL" name="rol">
+                                                <input class="" type="text" minlength="3" placeholder="Nombre del rol" [(ngModel)]="datoRole.ROL" name="rol">
                                             </div>
                                         </div>
                                     </form>
@@ -136,7 +135,7 @@
                                     <form>
                                         <div class="input-div">
                                             <div class="i">
-                                                <i class="fas fa-file"></i>
+                                              <i class="fas fa-info"></i>
                                             </div>
                                             <div class="div">
                                                 <input type="text" placeholder="Descripción" [(ngModel)]="datoRole.DESCRIPCION" name="descripcion">
@@ -145,11 +144,12 @@
 
                                     </form>
                                 </div>
-                                <input type="button" class="btn" value="Crear rol" (click)="crearRol()">
+                                <input type="button" class="btn" value="Crear rol" (click)="evaluarDatos('add')">
+                            </div>
+                            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                                {{msj}}
                             </div>
                         </div>
-                    </div>
-                    <div class="col-2">
                     </div>
                 </div>
             </div>

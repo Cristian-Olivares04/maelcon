@@ -64,18 +64,17 @@
             <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body m-3">
+              <form>
                 <p class="text-muted">Seleccione el producto a solicitar kardex</p>
-                <select class="form-control" name="producto">
-                    <option value="">Seleccione un producto</option>
-                    <option value="Foco 1">Foco 1</option>
-                    <option value="Laminas">Laminas</option>
-                    <option value="Otro">Otro</option>
-                    <option value="etc...">etc...</option>
-                  </select>
-                  <button class="btn btn-success pt-2 pb-2 justify-content-end">Crear reporte</button>
+                <select class="form-control" [(ngModel)]="datosProd.ID_PRODUCTO" name="producto">
+                  <option disabled>Seleccione un producto</option>
+                  <option *ngFor="let prod of productos" [ngValue]="prod.ID_PRODUCTO">{{prod.NOMBRE_PRODUCTO}}</option>
+                </select>
+                <button class="btn btn-success pt-2 pb-2 justify-content-end" (click)="crearReporte()">Crear reporte</button>
+              </form>
             </div>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Generar reporte de producto, Maelcon S de R. L.</p>
             </div>
         </div>

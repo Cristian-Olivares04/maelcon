@@ -297,9 +297,11 @@ export class ListProductsComponent implements OnInit {
     let cD=false;
     if (this.datosProdComp.PRECIO_UNITARIO<0.01) {
       pU=true;
+      this.msj='Precio unitario no puede ser menor que 0.01'
     }
     if (this.datosProdComp.CANTIDAD<1) {
       cD=true;
+      this.msj='La cantidad no puede ser menor que 1'
     }
     if (this.datosProdComp.DESCRIPCION='') {
       this.datosProdComp.DESCRIPCION='SIN DESCRIPCION'
@@ -313,7 +315,6 @@ export class ListProductsComponent implements OnInit {
       this.enam=false
     }else{
       this.enam=true;
-      this.msj="Datos Incorrectos"
     }
   }
 }

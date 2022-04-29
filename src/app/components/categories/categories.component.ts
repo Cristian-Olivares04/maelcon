@@ -77,11 +77,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   agregarCat(){
-    console.log('datosCategory', this.datosCategory)
+    //console.log('datosCategory', this.datosCategory)
     this.IN.crearCategoria(this.datosCategory).subscribe((resp) => {
-      console.log('resp',resp);
+      //console.log('resp',resp);
       this.IN.obtenerCategorias();
-      if(resp[0]['CODIGO']==1){
+      if(resp['mensaje'][0]['CODIGO']==1){
         Swal.fire({
           title: `Bien hecho...`,
           text:  `Categoría creada exitosamente`,
@@ -116,10 +116,10 @@ export class CategoriesComponent implements OnInit {
   }
 
   actualizarCat(){
-    console.log('datosCategory', this.datosCategory)
+    //console.log('datosCategory', this.datosCategory)
     this.IN.actualizarCategoria(this.datosCategory, this.datosCategory.ID_CATEGORIA).subscribe((resp) => {
-      console.log('resp',resp);
-      if(resp[0]['CODIGO']==1){
+      //console.log('resp',resp);
+      if(resp['mensaje'][0]['CODIGO']==1){
         for (let i = 0; i < this._categorias.length; i++) {
           const element = this._categorias[i];
           if(element.ID_CATEGORIA==this.datosCategory.ID_CATEGORIA){

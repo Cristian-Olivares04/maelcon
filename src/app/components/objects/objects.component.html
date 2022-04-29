@@ -46,17 +46,6 @@
   </div>
 
 <!--Modal para actualizar objetos-->
-<ng-template #edit let-modal>
-    <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-        <div class="modal-body">
-
-        </div>
-    </div>
-</ng-template>
-
 <ng-template #editObject let-modal>
     <div class="modal-content">
         <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
@@ -106,8 +95,11 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Actualizar" (click)="actObjeto(datoObjeto.ID_OBJETO)">
+                                    <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act')">
                                 </div>
+                            </div>
+                            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                                {{msj}}
                             </div>
                         </div>
                         <div class="col-2">
@@ -170,7 +162,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Crear objeto" (click)="crearObj()">
+                                    <input type="button" class="btn" value="Crear objeto" (click)="evaluarDatos('add')">
                                 </div>
                             </div>
                         </div>

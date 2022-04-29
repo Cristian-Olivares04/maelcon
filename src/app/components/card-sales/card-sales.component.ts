@@ -9,6 +9,7 @@ import { InventarioService } from 'src/app/services/inventario.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { VentasService } from 'src/app/services/ventas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-card-sales',
@@ -109,7 +110,7 @@ export class CardSalesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  actListadoCompras(){
+  actListadoVentas(){
     //console.log('entro a ac lista ventas', this._COMPRAS)
     this._ventas=this.VS._ventas;
     this.collectionSize = this.VS._ventas.length;
@@ -136,7 +137,7 @@ export class CardSalesComponent implements OnInit {
         this.VS.obtenerDetalleVenta(id);
         this.VS.datosVentAct=vent;
         this._listDetails=this.VS._detallesVenta;
-        console.log('detalles venta: ', this._listDetails)
+        //console.log('detalles venta: ', this._listDetails)
       }
     }
   }
@@ -153,21 +154,21 @@ export class CardSalesComponent implements OnInit {
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'xl' });
   }
 
-  actCompra(){
+  actVenta(){
     console.log('datosProducto a actualizar',this.datosVenta)
     this.modalService.dismissAll();
   }
 
-  crearCompra(){
+  crearVenta(){
     this.datosVenta.ID_USUARIO=this._usAct
     console.log('datosCrear',this.datosVenta);
-    /* this.VS.crearVentaEncabezado(this.datosVenta).subscribe((resp) => {
+    this.VS.crearVentaEncabezado(this.datosVenta).subscribe((resp) => {
       //console.log('resp',resp['mensaje']);
-      this.CP.obtenerListaCompras().subscribe((respu) => {
-        //console.log('compras lista',respu['proveedores']);
+      this.VS.obtenerListaVentas().subscribe((respu) => {
+        console.log('ventas lista',respu['usuario']);
         if(respu['mensaje'][0]['CODIGO']==1){
-          this._COMPRAS=respu['proveedores'];
-          this.actListadoCompras()
+          this.VS._ventas=respu['usuario'];
+          this.actListadoVentas()
         }else{
           //console.log('no',resp);
         }
@@ -175,18 +176,20 @@ export class CardSalesComponent implements OnInit {
       if(resp['mensaje'][0]['CODIGO']==1){
         Swal.fire({
           icon: 'success',
-          title: 'Crear compra',
-          text: 'La compra se creo exitosamente',
+          title: 'Crear venta',
+          text: 'La venta se creo exitosamente',
         })
+        this.modalService.dismissAll()
       }else{
         Swal.fire({
           icon: 'error',
-          title: 'Oops... No se pudo crear la compra',
+          title: 'Oops... No se pudo crear la venta',
           text: 'Algo salio mal!'
         })
+        this.modalService.dismissAll()
         //console.log('no',resp);
       }
-    }); */
+    });
   }
 
   actDatosVenta(datos:any){

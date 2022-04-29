@@ -20,6 +20,8 @@ export class UpdatePasswordComponent implements OnInit {
   public validacionId:Boolean = false;
   public actionVal = this.MS.actionVal;
   _usActual=this.US._usuarioActual
+  msj=''
+  reg=false
 
   constructor(private US:UsuariosService, private MS:MantenimientoService, private _Router:Router) { }
 
@@ -27,14 +29,24 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   validarContrasena(){
-    if(this.primeraContrasena != this.segundaContrasena){
-      this.validacionContrasena = true;
+    this.reg=false
+    const regexi = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if(regexi.test(this.primeraContrasena)){
+      this.reg = true;
+      if(this.primeraContrasena != this.segundaContrasena){
+        this.msj='Las contraseñas no coinciden'
+        this.validacionContrasena = true;
+        this.primeraContrasena=''
+        this.segundaContrasena=''
+      }
+    }else{
+      this.msj='Contraseña Invalida la contraseña mínimo debe tener ocho caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial'
     }
   }
 
   actualizarContrasena(){
     this.validarContrasena();
-    if(!this.validacionContrasena){
+    if(!this.validacionContrasena && this.reg){
       var js ={
         "contrasenaActual": this.password,
         "contrasenaNueva": this.primeraContrasena,
@@ -53,7 +65,7 @@ export class UpdatePasswordComponent implements OnInit {
 
   actualizarContUser(){
     this.validarContrasena();
-    if(!this.validacionContrasena && this.idUsuario!=0){
+    if(!this.validacionContrasena && this.idUsuario!=0 && this.reg){
       var js ={
         "MODIFICADO_POR": this._usActual,
         "CONTRASENA": this.primeraContrasena

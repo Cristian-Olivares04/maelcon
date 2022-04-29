@@ -1,4 +1,4 @@
-<div class="contenedor row justify-content-between" style="position: relative;">
+<div class="contenedor row justify-content-between m-3" style="position: relative;">
     <div class="col-12 p-3 row">
         <div class="col-3 login-content">
             <form>
@@ -12,15 +12,15 @@
                 </div>
             </form>
         </div>
-        <div class="col-9 d-flex ml-2 justify-content-left wrapper" >
-            <div class="col pt-3 pb-3 align-items-center justify-content-left">
-                <button class="btn-success m-2" (click) = "openModal(newSales)"><i class="fas fa-plus"></i> venta</button>
+        <div class="col-9 d-flex" style="text-align-last: right;">
+            <div class="col-4 mr-1 pt-3 pb-3" style="text-align-last: center;">
+                <button class="btn-success m-3" style="width: fit-content;padding-left: 10px;padding-right: 10px;" (click)="openModal(newSales)"><i class="fas fa-plus"></i> Venta</button>
             </div>
-            <div class="col pt-3 pb-3 align-items-center justify-content-center">
-                <button class="btn-success m-2" (click) = "openModal(commissions)"><i class="fas fa-eye"></i> comisiones</button>
+            <div class="col-4 ml-1 pt-3 pb-3" style="text-align-last: center;">
+                <button class="btn-success m-3" style="width: fit-content;padding-left: 10px;padding-right: 10px;" (click)="openModal(commissions)"><i class="fas fa-eye"></i> Comisiones</button>
             </div>
-            <div class="col pt-3 pb-3 align-items-center justify-content-right">
-                <button class="btn m-2" (click) = "openModal(customers)"><i class="fa fa-gear"></i> Clientes</button>
+            <div class="col-4 ml-1 pt-3 pb-3" style="text-align-last: center;">
+                <button class="btn m-3" style="width: fit-content;padding-left: 10px;padding-right: 10px;" (click)="openModal(customers)"><i class="fa fa-gear"></i> Clientes</button>
             </div>
         </div>
     </div>
@@ -162,7 +162,7 @@
 
                   </div>
                   <div class="col-6">
-                      <input type="button" class="btn" value="Ver detalles" (mouseover)="openModl(vent.ID_COMPRA)" (click)="openModal(listProducts)">
+                      <input type="button" class="btn" value="Ver detalles" (mouseover)="openModl(vent.ID_VENTA)" (click)="openModal(listProducts)">
                   </div>
               </div>
           </div>
@@ -194,10 +194,11 @@
               <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
           </div>
           <div>
-              <div class="row m-3">
-                  <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
-                      <!--Cuadro contenedor de informacion-->
-                      <app-details-sales (datsVentaAct)="actDatosVenta($event)" (listDetails)="obtLista($event)" (listaVentas)="ProcesarListComp($event)"></app-details-sales>
+              <div class="row p-3">
+                  <div class="col-12 contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+
+                    <!--Cuadro contenedor de informacion-->
+                      <app-details-sales (datsVentAct)="actDatosVenta($event)" (listDetails)="obtLista($event)" (listaVentas)="ProcesarListComp($event)"></app-details-sales>
                   </div>
               </div>
           </div>
@@ -217,7 +218,7 @@
         <hr>
             <div class="modal-body">
                 <div>
-                    <div class="row">
+                    <div class="row p-3">
                         <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                             <!--Cuadro contenedor de informacion-->
                             <h2 style="color: #0846ffff; margin-top: 20px;">Nuevo proceso de venta</h2>
@@ -230,11 +231,9 @@
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <select class="form-control" name="client">
-                                                        <option value="">Seleccione un cliente</option>
-                                                        <option value="Juan Perez">Juan Perez</option>
-                                                        <option value="Lola Flores">Lola Flores</option>
-                                                        <option value="etc...">etc...</option>
+                                                    <select class="form-control" [(ngModel)]="datosVenta.ID_CLIENTE" name="client">
+                                                        <option disabled>Seleccione un cliente</option>
+                                                        <option *ngFor="let cli of _clientes" [ngValue]="cli.ID_CLIENTE">{{cli.NOMBRE_CLIENTE}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -243,11 +242,9 @@
                                                     <i class="fas fa-credit-card"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <select class="form-control" name="proveedorSelect">
+                                                    <select class="form-control" [(ngModel)]="datosVenta.ID_PAGO" name="tipoPago">
                                                         <option value="">Seleccione método de pago</option>
-                                                        <option value="Efectivo">Efectivo</option>
-                                                        <option value="Credito">Credito</option>
-                                                        <option value="etc...">etc...</option>
+                                                        <option *ngFor="let item of _metodosPagos" [ngValue]="item.ID_PAGO">{{item.FORMA_PAGO}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -262,12 +259,12 @@
                                                     <i class="fas fa-info"></i>
                                                 </div>
                                                 <div class="div">
-                                                    <input type="text" placeholder="Observacion" name="observacion">
+                                                    <input type="text" placeholder="Observacion" [(ngModel)]="datosVenta.DESCRIPCION_VENTA" name="observacion">
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Crear venta" (click)="openModal(editCard)">
+                                    <input type="button" class="btn" value="Crear venta" (click)="crearVenta()">
                                 </div>
                             </div>
                         </div>
@@ -287,7 +284,7 @@
             <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
                 <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
             </div>
-                <app-view-products-sale [viewOption]="shopping"></app-view-products-sale>
+                <app-view-products-sale [listaDetalle]="_listDetails"></app-view-products-sale>
             <div class="row pb-3">
                 <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
             </div>
@@ -318,7 +315,7 @@
                 <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
             </div>
                 <app-commissions></app-commissions>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Sistema de ventas Maelcon S de R. L.</p>
             </div>
         </div>

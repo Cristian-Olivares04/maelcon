@@ -35,6 +35,7 @@ export class UsersComponent implements OnInit {
   activo:boolean = true;
   usuariosInter: Observable<usuario[]>;
   filter = new FormControl('');
+  usAdmon=0
 
   constructor(private pipe: DecimalPipe, private US:UsuariosService, private MS:MantenimientoService, private router:Router) {
     //this.US.obtenerUsuarios();

@@ -99,7 +99,9 @@ export class DetailsSalesComponent implements OnInit {
   cambioDatosVenta(){
     let js = {
       "ID_PAGO":parseInt(this.datosVenta.ID_PAGO.toString()),
-      "DESCRIPCION_VENTA":this.datosVenta.DESCRIPCION_VENTA
+      "DESCRIPCION_VENTA":this.datosVenta.DESCRIPCION_VENTA,
+      "ID_USUARIO":this.US._usuarioActual,
+      "ID_CLIENTE":this.datosVenta.ID_CLIENTE,
     }
     console.log('cambios: ',js)
     for (let i = 0; i < this._metodosPagos.length; i++) {
@@ -138,7 +140,6 @@ export class DetailsSalesComponent implements OnInit {
         this.listDetalleVenta.splice(i,1);
         this.actionOption = !this.actionOption;
       }
-
     }
   }
 

@@ -32,6 +32,8 @@ export class RolesComponent implements OnInit {
   filter = new FormControl('');
   roles:Role[]=this.MS._roles;
   condition=false;
+  enam=false
+  msj=''
 
 
   constructor(private MS:MantenimientoService,private pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router, private US:UsuariosService) {
@@ -80,7 +82,7 @@ export class RolesComponent implements OnInit {
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg' });
   }
 
-  actRol(id:any){
+  actRol(){
     //console.log('id',id)
     var js={
       ROL:this.datoRole.ROL,
@@ -88,7 +90,7 @@ export class RolesComponent implements OnInit {
       MODIFICADO_POR: parseInt(this.US._usuarioActual)
     }
     //console.log('datoRol', js)
-    this.MS.actualizarRol(js, id).subscribe((resp) => {
+    this.MS.actualizarRol(js, this.datoRole.ID_ROL).subscribe((resp) => {
       //console.log('resp rol',resp)
       if(resp[0]['CODIGO']==1){
         Swal.fire({
@@ -98,25 +100,21 @@ export class RolesComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             for (let i = 0; i < this.roles.length; i++) {
-              if(this.roles[i].ID_ROL==id){
+              if(this.roles[i].ID_ROL==this.datoRole.ID_ROL){
                 this.roles[i].ROL=this.datoRole.ROL;
                 this.roles[i].DESCRIPCION=this.datoRole.DESCRIPCION;
               }
             }
             this.modalService.dismissAll();
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
             for (let i = 0; i < this.roles.length; i++) {
-              if(this.roles[i].ID_ROL==id){
+              if(this.roles[i].ID_ROL==this.datoRole.ID_ROL){
                 this.roles[i].ROL=this.datoRole.ROL;
                 this.roles[i].DESCRIPCION=this.datoRole.DESCRIPCION;
               }
             }
             this.modalService.dismissAll();
             console.log(`modal was dismissed by ${result.dismiss}`);
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
@@ -143,13 +141,14 @@ export class RolesComponent implements OnInit {
               map(text => search(this.roles, text, this.pipe))
             );
             this.modalService.dismissAll();
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
+            this.roles=this.MS._roles;
+            this.rolesInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this.roles, text, this.pipe))
+            );
             this.modalService.dismissAll();
             console.log(`modal was dismissed by ${result.dismiss}`);
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
@@ -162,5 +161,44 @@ export class RolesComponent implements OnInit {
     this.MS.obtenerRoles();
     this.roles=this.MS._roles;
     //console.log('objs', this.roles)
+  }
+
+  evaluarDatos(opcion:any) {
+    let rtn=false;
+    let PR = false
+    if (this.datoRole.ROL.length<3) {
+      rtn=true;
+      this.msj='El nombre del rol necesita 3 caracteres como minimo'
+    }
+    if (this.datoRole.DESCRIPCION.length<=0) {
+      this.datoRole.DESCRIPCION='SIN DESCRIPCIÓN'
+    }
+    if(!rtn){
+      let cR=false
+      for (let i = 0; i < this.roles.length; i++) {
+        const element = this.roles[i];
+        if(element.ID_ROL != this.datoRole.ID_ROL){
+          if(element.ROL.toLocaleLowerCase() == this.datoRole.ROL.toLocaleLowerCase()){
+            cR=true;
+          }
+        }
+      }
+      if(cR){
+        PR=true
+      }
+      if(!PR){
+        if(opcion=='add'){
+          this.crearRol();
+        }else{
+          this.actRol();
+        }
+        this.enam=false
+      }else{
+        this.enam=true
+        this.msj='Ya existe un rol con el mismo nombre'
+      }
+    }else{
+      this.enam=true;
+    }
   }
 }

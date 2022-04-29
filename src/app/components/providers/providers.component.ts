@@ -167,6 +167,7 @@ export class ProvidersComponent implements OnInit {
     let nP=false;
     let tF=false;
     let cP=false;
+    let PR = false
     if (this.datosProv.RTN.length!=14) {
       rtn=true;
       this.msj='RTN necesita 14 digitos sin guiones'
@@ -184,12 +185,41 @@ export class ProvidersComponent implements OnInit {
       this.msj='Correo invalido'
     }
     if(!rtn && !nP && !tF && !cP){
-      if(opcion=='add'){
-        this.agregarProv();
-      }else{
-        this.actualizarProv();
+      let cR=false
+      let pR=false
+      let nR=false
+      let mR=false
+      for (let i = 0; i < this._proveedores.length; i++) {
+        const element = this._proveedores[i];
+        if(element.ID_PROVEEDOR != this.datosProv.ID_PROVEEDOR){
+          if(element.RTN == this.datosProv.RTN){
+            cR=true;
+          }
+          if(element.TELEFONO_PROVEEDOR == this.datosProv.TELEFONO_PROVEEDOR){
+            pR=true
+          }
+          if(element.NOMBRE_PROVEEDOR.toLocaleLowerCase() == this.datosProv.NOMBRE_PROVEEDOR.toLocaleLowerCase()){
+            nR=true
+          }
+          if(element.CORREO_PROVEEDOR == this.datosProv.CORREO_PROVEEDOR){
+            mR=true
+          }
+        }
       }
-      this.enam=false
+      if(cR && pR && nR && mR){
+        PR=true
+      }
+      if(!PR){
+        if(opcion=='add'){
+          this.agregarProv();
+        }else{
+          this.actualizarProv();
+        }
+        this.enam=false
+      }else{
+        this.enam=true
+        this.msj='Ya existe un proveedor con los mismos datos'
+      }
     }else{
       this.enam=true;
     }
