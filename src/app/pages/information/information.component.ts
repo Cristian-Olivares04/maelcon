@@ -10,6 +10,7 @@ export class InformationComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'information-v2');
   }
 
 }

@@ -43,7 +43,7 @@ export class PermissionsComponent implements OnInit {
   act=false;
   ins=false;
   elim=false;
-  con=false;
+  con=true;
 
   datosPermiso:Permission={
     ID_OBJETO: 0,
@@ -51,7 +51,7 @@ export class PermissionsComponent implements OnInit {
     PERMISO_INSERCION: 0,
     PERMISO_ELIMINACION: 0,
     PERMISO_ACTUALIZACION: 0,
-    PERMISO_CONSULTAR: 0,
+    PERMISO_CONSULTAR: 1,
     CREADO_POR: 0
   }
 
@@ -158,9 +158,10 @@ export class PermissionsComponent implements OnInit {
     }else{
       this.datosPermiso.PERMISO_CONSULTAR=0;
     }
-    //console.log(this.datosPermiso)
+    console.log(this.datosPermiso)
     this.MS.crearPermiso(this.datosPermiso).subscribe((resp) => {
-      if(resp[0]['CODIGO']==1){
+      console.log('resp permiso', resp)
+      if(resp['mensaje'][0]['CODIGO']==1){
         this.MS.obtenerPermisos();
         Swal.fire({
           title: `Bien hecho...`,
@@ -174,13 +175,9 @@ export class PermissionsComponent implements OnInit {
               map(text => search(this.permisosRol, text, this.pipe))
             );
             this.modalService.dismissAll();
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
             this.modalService.dismissAll();
             console.log(`modal was dismissed by ${result.dismiss}`);
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{

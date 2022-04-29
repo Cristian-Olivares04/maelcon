@@ -15,6 +15,7 @@ export class InformationV2Component implements OnInit {
    }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'information-v2');
   }
 
 }

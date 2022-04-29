@@ -31,6 +31,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.setItem('ruta', 'reports');
   }
 
   descargarDB(){

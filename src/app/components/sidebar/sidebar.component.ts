@@ -107,22 +107,22 @@ export class SidebarComponent implements OnInit{
     var rutaTemp:any='';
     //console.log('obs for',this._obs);
     for(let i = 0; i < this._obs.length; i++){
-      if(this._obs[i].ID_OBJETO == 1){
+      if(this._obs[i].ID_OBJETO == 2){
         this.sales = 1;
         rutaTemp='sales';
-      }else if(this._obs[i].ID_OBJETO == 2){
+      }else if(this._obs[i].ID_OBJETO == 3){
         this.shopping = 1;
         rutaTemp='shopping';
-      }else if(this._obs[i].ID_OBJETO == 3){
+      }else if(this._obs[i].ID_OBJETO == 4){
         this.inventory = 1;
         rutaTemp='inventory';
-      }else if(this._obs[i].ID_OBJETO == 4){
+      }else if(this._obs[i].ID_OBJETO == 5){
         this.administration = 1;
         rutaTemp='administration';
-      }else if(this._obs[i].ID_OBJETO == 5){
+      }else if(this._obs[i].ID_OBJETO == 6){
         this.security = 1;
         rutaTemp='security';
-      }else if(this._obs[i].ID_OBJETO == 6){
+      }else if(this._obs[i].ID_OBJETO == 7){
         this.reports = 1;
         rutaTemp='reports';
       }
