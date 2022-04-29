@@ -77,14 +77,16 @@ export interface Category {
 }
 
 export interface Product {
-  ID_PRODUCTO:number,
+  ID_PRODUCTO: number,
   ID_PROVEEDOR: number,
+  NOMBRE_PROVEEDOR: string,
   NOMBRE_PRODUCTO: string,
   MARCA_PRODUCTO: string,
   DESCRIPCION_PRODUCTO: string,
-  IMG_PRODUCTO: string,
+  ID_CATEGORIA: number,
+  CATEGORIA: string,
   ESTADO: number,
-  ID_CATEGORIA: number
+  IMG_PRODUCTO: string
 }
 
 export interface Object {
@@ -163,7 +165,8 @@ export interface PermisosRol {
   PERMISO_ACTUALIZACION: number,
   PERMISO_CONSULTAR: number,
   ROL: string,
-  ID_ROL: number
+  ID_ROL: number,
+  ID_OBJETO: number
 }
 
 export interface Help {
@@ -197,4 +200,18 @@ export interface CompleteProduct {
   NOMBRE_PROVEEDOR: string,
   ID_PROVEEDOR: number,
   ESTADO: number
+}
+
+export interface Kardex{
+  ID_KARDEX: number,
+  ID_INVENTARIO: number,
+  EXISTENCIA: number,
+  PRECIO_UNITARIO: number,
+  NOMBRE_PRODUCTO: string,
+  MARCA_PRODUCTO: string,
+  FECHA_VENCI_PRODUCTO: string,
+  CANTIDAD: number,
+  TOTAL: number,
+  TIPO_MOVIMIENTO: number,
+  FECHA_MOVIMIENTO: string
 }

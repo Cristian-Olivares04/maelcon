@@ -3,47 +3,17 @@ import { DecimalPipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Comission } from 'src/app/interfaces/objects.interface';
+import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  }
-];
-
-function search(text: string, pipe: PipeTransform): Country[] {
-  return COUNTRIES.filter(country => {
+function search(COMISIONES, text: string, pipe: PipeTransform): Comission[] {
+  return COMISIONES.filter(COM => {
     const term = text.toLowerCase();
-    return country.name.toLowerCase().includes(term)
-        || pipe.transform(country.area).includes(term)
-        || pipe.transform(country.population).includes(term);
+    return COM.USUARIO.toLowerCase().includes(term)
+        || COM.CORREO_ELECTRONICO.toLowerCase().includes(term)
+        || pipe.transform(COM.COMISION_EMPLEADO).includes(term)
+        || pipe.transform(COM.ID_VENTA).includes(term)
+        || pipe.transform(COM.TOTAL_VENTA).includes(term);
   });
 }
 @Component({
@@ -53,16 +23,24 @@ function search(text: string, pipe: PipeTransform): Country[] {
   providers: [DecimalPipe]
 })
 export class CommissionsComponent implements OnInit {
-  countries: Observable<Country[]>;
+  comisionesInter: Observable<Comission[]>;
   filter = new FormControl('');
+  comisiones:Comission[] = [];
 
-  constructor(pipe: DecimalPipe) {
-    this.countries = this.filter.valueChanges.pipe(
+  constructor(private MS:MantenimientoService, private pipe: DecimalPipe) {
+    this.comisiones=this.MS._comisiones;
+    this.comisionesInter = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => search(text, pipe))
+      map(text => search(this.comisiones,text, this.pipe))
     );
   }
 
   ngOnInit(): void {
+    this.comisiones=this.MS._comisiones;
+    console.log('comisiones ', this.comisiones)
+    this.comisionesInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this.comisiones,text, this.pipe))
+    );
   }
 }

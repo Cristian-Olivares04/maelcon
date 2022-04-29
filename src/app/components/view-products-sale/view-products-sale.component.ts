@@ -6,6 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SaleDetail } from 'src/app/interfaces/objects.interface';
 import { ComprasService } from 'src/app/services/compras.service';
+import { VentasService } from 'src/app/services/ventas.service';
 
 function searchDetProd(DETALLE, text: string, pipe: PipeTransform): SaleDetail[] {
   return DETALLE.filter(det => {
@@ -28,20 +29,21 @@ export class ViewProductsSaleComponent implements OnInit {
   @Input() viewOption:any;
   filter = new FormControl('');
   @Input() listaDetalle:any;
-  listDetalleCompr:any;
+  listDetalleVenta:any;
   detalleInter: Observable<SaleDetail[]>;
 
-  constructor(private CP:ComprasService,private pipe: DecimalPipe, private modalService: NgbModal) {
-    this.listDetalleCompr=this.CP._detallesCompras;
-    this.listaDetalle=this.listDetalleCompr;
+  constructor(private VS:VentasService,private pipe: DecimalPipe, private modalService: NgbModal) {
+    this.listDetalleVenta=this.VS._detallesVenta;
+    this.listaDetalle=this.listDetalleVenta;
 
     this.detalleInter = this.filter.valueChanges.pipe(
       startWith(''),
-      map(text => searchDetProd(this.listaDetalle ,text, this.pipe))
+      map(text => searchDetProd(this.listDetalleVenta ,text, this.pipe))
     );
   }
 
   ngOnInit(): void {
+    //console.log('listaDetalles: ', this.listDetalleVenta)
   }
 
   openModal(content:Object) {

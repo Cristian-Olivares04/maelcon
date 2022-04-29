@@ -287,18 +287,6 @@ export class AdministrationComponent implements OnInit {
     });
   }
 
-  obtenerComisiones(){
-    this.MS.obtenerComisiones().subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._comissions=resp['COMISION'];
-      }else{
-        //console.log('no',resp);
-        this.msjCheck=`No se pudo obtener la lista de comisiones`
-      }
-    });
-  }
-
   obtenerComision(id:any){
     this.MS.obtenerComision(id).subscribe((resp) => {
       //console.log('resp',resp);
@@ -309,15 +297,6 @@ export class AdministrationComponent implements OnInit {
         this.msjCheck=`No se encontro la lista de comisiones para el usuario con id ${id}`
       }
     });
-  }
-
-  refrescarBitacora(){
-
-  }
-
-  refrescarUsuarios(){
-    this.refrescarUsers = false;
-    this.refrescarUsers = true;
   }
 
   cambiarActVal(num:any){

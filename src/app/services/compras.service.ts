@@ -98,14 +98,6 @@ export class ComprasService {
   //funcion para obtener la tabla kardex
   obtenerKardex(id:number): Observable<any>{
     return this.http.get<any>(`${this.bUA}/module/inventory/kardex/${id}`);
-    /* .subscribe((resp) => {
-      //console.log('resp',resp['Objetos']);
-      if(resp['mensaje'][0]['CODIGO']==1){
-        this._kardex=resp['inventario'];
-      }else{
-        //console.log('no',resp);
-      }
-    }); */
   }
 
   //funcion para obtener proveedores

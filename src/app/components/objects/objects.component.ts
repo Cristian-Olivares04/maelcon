@@ -32,6 +32,8 @@ export class ObjectsComponent implements OnInit {
   filter = new FormControl('');
   objects:Object[]=this.MS._objects;
   condition=false;
+  enam=false;
+  msj=''
 
   constructor( private MS:MantenimientoService, private pipe: DecimalPipe, private modalService: NgbModal, private US:UsuariosService, private _Router:Router) {
     this.MS.obtenerObjetos();
@@ -79,9 +81,9 @@ export class ObjectsComponent implements OnInit {
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg' });
   }
 
-  actObjeto(id:any){
+  actObjeto(){
     //console.log(this.datoObjeto)
-    this.MS.actualizarObjeto(this.datoObjeto, id).subscribe((resp) => {
+    this.MS.actualizarObjeto(this.datoObjeto, this.datoObjeto.ID_OBJETO).subscribe((resp) => {
       if(resp[0]['CODIGO']==1){
         Swal.fire({
           title: `Bien hecho...`,
@@ -143,4 +145,51 @@ export class ObjectsComponent implements OnInit {
     //console.log('objs', this.objects)
   }
 
+  evaluarDatos(opcion:any) {
+    let rtn=false;
+    let nP=false;
+    let PR = false
+    if (this.datoObjeto.OBJETOS.length<3) {
+      rtn=true;
+      this.msj='RTN necesita 14 digitos sin guiones'
+    }
+    if (this.datoObjeto.TIPO_OBJETO.length<3) {
+      nP=true;
+      this.msj='Nombre prveedor muy corto'
+    }
+    if (this.datoObjeto.DESCRIPCION.length<=0) {
+      this.datoObjeto.DESCRIPCION='SIN DESCRIPCIÓN'
+    }
+    if(!rtn && !nP){
+      let cR=false
+      let pR=false
+      for (let i = 0; i < this.objects.length; i++) {
+        const element = this.objects[i];
+        if(element.ID_OBJETO != this.datoObjeto.ID_OBJETO){
+          if(element.OBJETOS.toLocaleLowerCase() == this.datoObjeto.OBJETOS.toLocaleLowerCase()){
+            cR=true;
+          }
+          if(element.TIPO_OBJETO.toLocaleLowerCase() == this.datoObjeto.TIPO_OBJETO.toLocaleLowerCase()){
+            pR=true
+          }
+        }
+      }
+      if(cR && pR){
+        PR=true
+      }
+      if(!PR){
+        if(opcion=='add'){
+          this.crearObj();
+        }else{
+          this.actObjeto();
+        }
+        this.enam=false
+      }else{
+        this.enam=true
+        this.msj='Ya existe un proveedor con los mismos datos'
+      }
+    }else{
+      this.enam=true;
+    }
+  }
 }
