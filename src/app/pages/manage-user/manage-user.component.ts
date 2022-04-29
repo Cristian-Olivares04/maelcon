@@ -58,36 +58,64 @@ export class ManageUserComponent implements OnInit {
   }
 
   actualizarUsuario(){
+    var actUser = {
+      NOMBRE_PERSONA: this.datosUsuario.NOMBRE_PERSONA,
+      APELLIDO_PERSONA: this.datosUsuario.APELLIDO_PERSONA,
+      ID_PUESTO: this.datosUsuario.ID_PUESTO,
+      TELEFONO: this.datosUsuario.TELEFONO.toString(),
+      SUELDO: this.datosUsuario.SUELDO,
+      ID_ROL: this.datosUsuario.ID_ROL,
+      IMG_USUARIO: this.datosUsuario.IMG_USUARIO,
+      MODIFICADO_POR: this._usAct
+    };
+
     var js = {
       "PREGUNTA": this.datosUsuario.PREGUNTA,
       "RESPUESTA": this.datosUsuario.RESPUESTA,
       "MODIFICADO_POR": this.US._usuarioActual
     }
-    this.US.editarUsuario(this.datosUsuario, this.US._usuarioActual).subscribe((resp) => {
-      //console.log('resp',resp);
+    this.US.editarUsuarioLogin(actUser, this.US._usuarioActual).subscribe((resp) => {
+      console.log('resp',resp);
       if(resp["mensaje"][0]["CODIGO"] == 1){
-        this.US.actualizarPreguntaUsuario(js, this.US._usuarioActual).subscribe((res) => {
-          //console.log('res',res);
-          if(resp["mensaje"][0]["CODIGO"] == 1){
-            Swal.fire({
-              title: `Bien hecho...`,
-              text:  `Usuario actualizado exitosamente.`,
-              confirmButtonText: 'OK',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                localStorage.setItem('ruta', 'manage-user');
-                this._Router.navigate(['/manage-usuer']);
-              } else {
-                console.log(`modal was dismissed by ${result.dismiss}`);
-                localStorage.setItem('ruta', 'manage-user');
-                this._Router.navigate(['/manage-usuer']);
-              }
-            })
-          }else{
-            //console.log('no',res);
-            this.msjCheck=`No se pudo actualizar el la pregunta usuario y respuesta`
-          }
-        });
+        if(this.datosUsuario.RESPUESTA == "" || this.datosUsuario.PREGUNTA==""){
+          Swal.fire({
+            title: `Bien hecho...`,
+            text:  `Usuario actualizado exitosamente.`,
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              localStorage.setItem('ruta', 'manage-user');
+              this._Router.navigate(['/manage-usuer']);
+            } else {
+              console.log(`modal was dismissed by ${result.dismiss}`);
+              //localStorage.setItem('ruta', 'manage-user');
+              //this._Router.navigate(['/manage-usuer']);
+            }
+          })
+        }else{
+          this.US.actualizarPreguntaUsuario(js, this.US._usuarioActual).subscribe((res) => {
+            //console.log('res',res);
+            if(resp["mensaje"][0]["CODIGO"] == 1){
+              Swal.fire({
+                title: `Bien hecho...`,
+                text:  `Usuario actualizado exitosamente.`,
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  localStorage.setItem('ruta', 'manage-user');
+                  this._Router.navigate(['/manage-usuer']);
+                } else {
+                  console.log(`modal was dismissed by ${result.dismiss}`);
+                  //localStorage.setItem('ruta', 'manage-user');
+                  //this._Router.navigate(['/manage-usuer']);
+                }
+              })
+            }else{
+              //console.log('no',res);
+              this.msjCheck=`No se pudo actualizar el la pregunta usuario y respuesta`
+            }
+          });
+        }
       }else{
         //console.log('no',resp);
         this.msjCheck=`No se pudo actualizar el usuario`

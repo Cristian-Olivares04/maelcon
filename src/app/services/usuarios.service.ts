@@ -126,6 +126,11 @@ export class UsuariosService {
     return this.http.put<usuario>(`${this.bUA}/module/users/${id}`, usuario, {headers:this.headers})
   }
 
+  editarUsuarioLogin( usuario:any, id:any): Observable<any>{
+    //console.log(this.datosUsuario);
+    return this.http.put<usuario>(`${this.bUA}/module/users/${id}`, usuario, {headers:this.headers})
+  }
+
   //funcion para crear la pregunta de usuario
   crearPreguntaUsuario( data:any, id:any): Observable<any>{
     return this.http.post<any>(`${this.bUA}/module/users/SQA/${id}`, data)
