@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Bitacora, Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
+import { Bitacora, Comission, Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 import { saveAs } from 'file-saver';
@@ -23,6 +23,7 @@ export class MantenimientoService {
   public _payMethods:PayMethod[]=[]
   public condition=false;
   public actionVal = 0;
+  public _comisiones:Comission[] = []
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -37,6 +38,7 @@ export class MantenimientoService {
     this.obtenerPuestos();
     this.obtenerRegistrosBitacora();
     this.obtenerMetodosPagos();
+    this.obtenerComisiones();
   }
 
   obtenerInfo(){
@@ -249,8 +251,15 @@ export class MantenimientoService {
   }
 
   //funcion para obtener las comisiones
-  obtenerComisiones(): Observable<any>{
-    return this.http.get<any>(`${this.bUA}/module/admin/comission`, {headers:this.headers});
+  obtenerComisiones(){
+    this.http.get<any>(`${this.bUA}/module/admin/comission`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp comisiones',resp['COMISION']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._comisiones=resp['COMISION'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener comisiones de un usuario en especifico

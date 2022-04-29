@@ -38,6 +38,8 @@ export class PermissionsComponent implements OnInit {
   roles:Role[]=this.MS._roles;
   objetos:Object[]=this.MS._objects;
   condition=false;
+  enam=false;
+  msj=''
   act=false;
   ins=false;
   elim=false;
@@ -80,11 +82,13 @@ export class PermissionsComponent implements OnInit {
       PERMISO_INSERCION: 0,
       PERMISO_ELIMINACION: 0,
       PERMISO_ACTUALIZACION: 0,
-      PERMISO_CONSULTAR: 0,
+      PERMISO_CONSULTAR: 1,
       CREADO_POR: this.US._usuarioActual
     }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg' });
   }
+
+  actPermiso(){}
 
   /* editPermiso(content:any,id:any) {
     for (let i = 0; i < this.permisosRol.length; i++) {
@@ -189,6 +193,37 @@ export class PermissionsComponent implements OnInit {
     this.MS.obtenerPermisos();
     this.permisosRol=this.MS._permisosRol;
     //console.log('objs', this.objects)
+  }
+
+  evaluarDatos(opcion:any) {
+    let PR = false
+    let cR=false
+    let pR=false
+    for (let i = 0; i < this.permisosRol.length; i++) {
+      const element = this.permisosRol[i];
+      if(element.ID_ROL != this.datosPermiso.ID_ROL && element.ID_OBJETO != this.datosPermiso.ID_OBJETO ){
+        if(element.ID_ROL == this.datosPermiso.ID_ROL){
+          cR=true;
+        }
+        if(element.ID_OBJETO == this.datosPermiso.ID_OBJETO){
+          pR=true
+        }
+      }
+    }
+    if(cR && pR){
+      PR=true
+    }
+    if(!PR){
+      if(opcion=='add'){
+        this.crearPermiso();
+      }else{
+        this.actPermiso();
+      }
+      this.enam=false
+    }else{
+      this.enam=true
+      this.msj='Ya existe un permiso con los mismos datos'
+    }
   }
 
 

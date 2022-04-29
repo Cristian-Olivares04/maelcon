@@ -24,12 +24,14 @@ export class ProductComponent implements OnInit {
   @Input() datosProd:Product={
     ID_PRODUCTO: 0,
     ID_PROVEEDOR: 1,
+    NOMBRE_PROVEEDOR: '',
     NOMBRE_PRODUCTO: '',
     MARCA_PRODUCTO: '',
     DESCRIPCION_PRODUCTO: '',
-    IMG_PRODUCTO: '',
+    ID_CATEGORIA: 1,
+    CATEGORIA: '',
     ESTADO: 0,
-    ID_CATEGORIA: 1
+    IMG_PRODUCTO: ''
   }
 
   constructor(private IN:InventarioService, private CP:ComprasService, private modal:NgbModal) {
@@ -49,7 +51,7 @@ export class ProductComponent implements OnInit {
     this.IN.crearProducto(this.datosProd).subscribe((resp) => {
       console.log('resp',resp);
       this.IN.obtenerProdListaCompletos().subscribe((resp) => {
-        //console.log('productos completos',resp['proveedores']);
+        console.log('productos completos',resp['proveedores']);
         if(resp['mensaje'][0]['CODIGO']==1){
           this._productos2=resp['proveedores'];
           this.listaProductos.emit(this._productos2)
@@ -64,12 +66,37 @@ export class ProductComponent implements OnInit {
           text: 'El producto se creo exitosamente',
         })
         this.modal.dismissAll()
+        this.datosProd={
+          ID_PRODUCTO: 0,
+          ID_PROVEEDOR: 1,
+          NOMBRE_PROVEEDOR: '',
+          NOMBRE_PRODUCTO: '',
+          MARCA_PRODUCTO: '',
+          DESCRIPCION_PRODUCTO: '',
+          ID_CATEGORIA: 1,
+          CATEGORIA: '',
+          ESTADO: 0,
+          IMG_PRODUCTO: ''
+        }
       }else{
         Swal.fire({
           icon: 'error',
           title: 'Oops... No se pudo crear el producto',
           text: 'Algo salio mal!'
         })
+        this.modal.dismissAll()
+        this.datosProd={
+          ID_PRODUCTO: 0,
+          ID_PROVEEDOR: 1,
+          NOMBRE_PROVEEDOR: '',
+          NOMBRE_PRODUCTO: '',
+          MARCA_PRODUCTO: '',
+          DESCRIPCION_PRODUCTO: '',
+          ID_CATEGORIA: 1,
+          CATEGORIA: '',
+          ESTADO: 0,
+          IMG_PRODUCTO: ''
+        }
         //console.log('no',resp);
       }
     });
@@ -97,17 +124,19 @@ export class ProductComponent implements OnInit {
       let mR=false
       for (let i = 0; i < this._productos2.length; i++) {
         const element = this._productos2[i];
-        if(element.ID_CATEGORIA == this.datosProd.ID_CATEGORIA){
-          cR=true;
-        }
-        if(element.ID_PROVEEDOR == this.datosProd.ID_PROVEEDOR){
-          pR=true
-        }
-        if(element.NOMBRE_PRODUCTO == this.datosProd.NOMBRE_PRODUCTO){
-          nR=true
-        }
-        if(element.MARCA_PRODUCTO == this.datosProd.MARCA_PRODUCTO){
-          mR=true
+        if(element.ID_PRODUCTO!=this.datosProd.ID_PRODUCTO){
+          if(element.ID_CATEGORIA == this.datosProd.ID_CATEGORIA){
+            cR=true;
+          }
+          if(element.ID_PROVEEDOR == this.datosProd.ID_PROVEEDOR){
+            pR=true
+          }
+          if(element.NOMBRE_PRODUCTO.toLocaleLowerCase() == this.datosProd.NOMBRE_PRODUCTO.toLocaleLowerCase()){
+            nR=true
+          }
+          if(element.MARCA_PRODUCTO.toLocaleLowerCase() == this.datosProd.MARCA_PRODUCTO.toLocaleLowerCase()){
+            mR=true
+          }
         }
       }
       if(cR && pR && nR && mR){

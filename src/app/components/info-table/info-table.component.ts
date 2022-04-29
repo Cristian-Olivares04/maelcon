@@ -40,7 +40,7 @@ export class InfoTableComponent implements OnInit {
     this.MA.obtenerInfoAyuda();
     this.Help=this.MA._ayuda;
     for(let i = 0; i < this.Help.length; i++){
-      //this.Help[i].FECHA_CREACION = this.datepipe.transform((this.Help[i].FECHA_CREACION).toString(), 'yyyy-MM-dd');
+      //(this.Help[i].FECHA_CREACION) = this.datepipe.transform((this.Help[i].FECHA_CREACION), 'yyyy-MM-dd');
     }
     console.log(this.Help);
     this.HelpInter = this.filter.valueChanges.pipe(

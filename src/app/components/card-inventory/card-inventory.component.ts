@@ -49,12 +49,14 @@ export class CardInventoryComponent implements OnInit {
   @Input() datosProd:Product={
     ID_PRODUCTO: 0,
     ID_PROVEEDOR: 0,
+    NOMBRE_PROVEEDOR: '',
     NOMBRE_PRODUCTO: '',
     MARCA_PRODUCTO: '',
     DESCRIPCION_PRODUCTO: '',
-    IMG_PRODUCTO: '',
+    ID_CATEGORIA: 0,
+    CATEGORIA: '',
     ESTADO: 0,
-    ID_CATEGORIA: 0
+    IMG_PRODUCTO: ''
   }
 
   @Input() datosProdExist:CompleteProduct={
@@ -92,6 +94,12 @@ export class CardInventoryComponent implements OnInit {
         //console.log(this.ob)
       }
     }
+    for (let i = 0; i < this._productos2.length; i++) {
+      const element = this._productos2[i];
+      if(element.PRECIO_VENTA==0){
+        element.PRECIO_VENTA=0.01;
+      }
+    }
     //console.log('products', this._productos2)
   }
 
@@ -119,6 +127,7 @@ export class CardInventoryComponent implements OnInit {
   }
 
   openModl(id:any){
+    console.log('idProd:', id)
     for(let prod of this._productos2){
       if(prod.ID_PRODUCTO==id){
         this.datosProdExist=prod;
@@ -216,6 +225,12 @@ export class CardInventoryComponent implements OnInit {
 
   crearProd(datos:any){
     this._productos2=datos;
+    for (let i = 0; i < this._productos2.length; i++) {
+      const element = this._productos2[i];
+      if(element.PRECIO_VENTA==0){
+        element.PRECIO_VENTA=0.01;
+      }
+    }
     this._productos = this._productos2
       .map((prod, i) => ({id: i + 1, ...prod}))
       .slice((this.page_number - 1) * this.page_size, (this.page_number - 1) * this.page_size + this.page_size);
