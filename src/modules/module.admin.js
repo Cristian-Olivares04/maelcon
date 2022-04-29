@@ -778,8 +778,8 @@ export const updateUserByAdmin = async (req, res) => {
   try {
     const { ID_USUARIO } = req.params;
     const {
-      NOMBRE,
-      APELLIDO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
       GENERO,
       RTN,
       ID_PUESTO,
@@ -815,8 +815,8 @@ export const updateUserByAdmin = async (req, res) => {
       `CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
       [
         ID_USUARIO,
-        NOMBRE,
-        APELLIDO,
+        NOMBRE_PERSONA,
+        APELLIDO_PERSONA,
         GENERO,
         RTN,
         ID_PUESTO,

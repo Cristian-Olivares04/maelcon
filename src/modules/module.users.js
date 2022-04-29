@@ -9,8 +9,8 @@ import jwt from "jsonwebtoken";
 export const createUser = async (req, res) => {
   const {
     ID_PUESTO,
-    NOMBRE,
-    APELLIDO,
+    NOMBRE_PERSONA,
+    APELLIDO_PERSONA,
     GENERO,
     RTN,
     TELEFONO,
@@ -41,8 +41,8 @@ export const createUser = async (req, res) => {
     `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
     [
       ID_PUESTO,
-      NOMBRE,
-      APELLIDO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
       GENERO,
       RTN,
       TELEFONO,
