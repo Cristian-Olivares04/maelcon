@@ -106,16 +106,24 @@ export const createPermission = async (req, res) => {
     const {
       ID_OBJETO,
       ID_ROL,
-      INSERTAR,
-      ELIMINAR,
-      ACTUALIZAR,
-      CONSULTAR,
+      PERMISO_INSERCION,
+      PERMISO_ELIMINACION,
+      PERMISO_ACTUALIZACION,
+      PERMISO_CONSULTAR,
       CREADO_POR,
     } = req.body;
 
     const objetos = await pool.query(
       "CALL CREAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
-      [ID_OBJETO, ID_ROL, INSERTAR, ELIMINAR, ACTUALIZAR, CONSULTAR, CREADO_POR]
+      [
+        ID_OBJETO,
+        ID_ROL,
+        PERMISO_INSERCION,
+        PERMISO_ELIMINACION,
+        PERMISO_ACTUALIZACION,
+        PERMISO_CONSULTAR,
+        CREADO_POR,
+      ]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
@@ -134,10 +142,10 @@ export const updatePermission = async (req, res) => {
     const { ID_OBJETO } = req.params;
     const {
       ID_ROL,
-      INSERTAR,
-      ELIMINAR,
-      ACTUALIZAR,
-      CONSULTAR,
+      PERMISO_INSERCION,
+      PERMISO_ELIMINACION,
+      PERMISO_ACTUALIZACION,
+      PERMISO_CONSULTAR,
       MODIFICADO_POR,
     } = req.body;
 
@@ -146,10 +154,10 @@ export const updatePermission = async (req, res) => {
       [
         ID_OBJETO,
         ID_ROL,
-        INSERTAR,
-        ELIMINAR,
-        ACTUALIZAR,
-        CONSULTAR,
+        PERMISO_INSERCION,
+        PERMISO_ELIMINACION,
+        PERMISO_ACTUALIZACION,
+        PERMISO_CONSULTAR,
         MODIFICADO_POR,
       ]
     );
