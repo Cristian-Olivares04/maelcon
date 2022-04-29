@@ -35,6 +35,8 @@ var _moduleAdmin = _interopRequireDefault(require("./routes/module.admin.routes"
 
 var _moduleHelpers = _interopRequireDefault(require("./routes/module.helpers.routes"));
 
+var _moduleReports = _interopRequireDefault(require("./routes/module.reports.routes"));
+
 //importacion de los modulos
 var app = (0, _express["default"])();
 app.use(_express["default"].json());
@@ -60,5 +62,6 @@ app.use("/module/inventory", _moduleInventory["default"]);
 app.use("/module/supplies", _moduleSupplies["default"]);
 app.use("/module/admin", _moduleAdmin["default"]);
 app.use("/module/helpers", _moduleHelpers["default"]);
+app.use("/module/reports", _moduleReports["default"]);
 var _default = app;
 exports["default"] = _default;

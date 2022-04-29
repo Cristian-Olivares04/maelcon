@@ -113,14 +113,14 @@ exports.singInSQL = singInSQL;
 
 var singUpSQL = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var _req$body, NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, PREGUNTA, RESPUESTA, password, answer, img, mensaje, info, contentHTML, _mensaje;
+    var _req$body, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, TELEFONO, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, PREGUNTA, RESPUESTA, password, answer, img, mensaje, info, contentHTML, _mensaje;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
-            _req$body = req.body, NOMBRE = _req$body.NOMBRE, APELLIDO = _req$body.APELLIDO, GENERO = _req$body.GENERO, RTN = _req$body.RTN, TELEFONO = _req$body.TELEFONO, USUARIO = _req$body.USUARIO, CONTRASENA = _req$body.CONTRASENA, IMG_USUARIO = _req$body.IMG_USUARIO, CORREO_ELECTRONICO = _req$body.CORREO_ELECTRONICO, PREGUNTA = _req$body.PREGUNTA, RESPUESTA = _req$body.RESPUESTA;
+            _req$body = req.body, NOMBRE_PERSONA = _req$body.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body.APELLIDO_PERSONA, GENERO = _req$body.GENERO, RTN = _req$body.RTN, TELEFONO = _req$body.TELEFONO, USUARIO = _req$body.USUARIO, CONTRASENA = _req$body.CONTRASENA, IMG_USUARIO = _req$body.IMG_USUARIO, CORREO_ELECTRONICO = _req$body.CORREO_ELECTRONICO, PREGUNTA = _req$body.PREGUNTA, RESPUESTA = _req$body.RESPUESTA;
             _context2.next = 4;
             return encrypt.encryptPassword(CONTRASENA);
 
@@ -151,7 +151,7 @@ var singUpSQL = /*#__PURE__*/function () {
 
           case 16:
             _context2.next = 18;
-            return _databaseSQL["default"].query("CALL REGISTRAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO);", [NOMBRE, APELLIDO, GENERO, RTN, TELEFONO, USUARIO, password, img, CORREO_ELECTRONICO, PREGUNTA, answer]);
+            return _databaseSQL["default"].query("CALL REGISTRAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO);", [NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, TELEFONO, USUARIO, password, img, CORREO_ELECTRONICO, PREGUNTA, answer]);
 
           case 18:
             _context2.next = 20;
@@ -166,7 +166,7 @@ var singUpSQL = /*#__PURE__*/function () {
               break;
             }
 
-            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n    \n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649635374/Maelcon/BLG2011-YM-AMS-VirtualWelcome-Card_ufn1k5.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Hola ".concat(NOMBRE, " ").concat(APELLIDO, "!</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Bienvenido al sistema de Maelcon, se ha recibido su solicitud de creaci\xF3n de usuario debe esperar\n              hasta que un administradar active su cuenta, los modulos de trabajo son variados y el \n              administrador ser\xE1 el encargado de asignar tus areas.\n              <b>Posibles areas de trabajo:</b></p>\n            <ul style=\"font-size: 15px;  margin: 10px 0\">\n              <li>Modulo de compras.</li>\n              <li>Modulo de ventas.</li>\n              <li>Administrador de usuarios.</li>\n              <li>Administrador de sistema.</li>\n              <li>Control de inventarios y productos.</li>\n            </ul>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n    \n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649635374/Maelcon/BLG2011-YM-AMS-VirtualWelcome-Card_ufn1k5.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Hola ".concat(NOMBRE_PERSONA, " ").concat(APELLIDO_PERSONA, "!</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Bienvenido al sistema de Maelcon, se ha recibido su solicitud de creaci\xF3n de usuario debe esperar\n              hasta que un administradar active su cuenta, los modulos de trabajo son variados y el \n              administrador ser\xE1 el encargado de asignar tus areas.\n              <b>Posibles areas de trabajo:</b></p>\n            <ul style=\"font-size: 15px;  margin: 10px 0\">\n              <li>Modulo de compras.</li>\n              <li>Modulo de ventas.</li>\n              <li>Administrador de usuarios.</li>\n              <li>Administrador de sistema.</li>\n              <li>Control de inventarios y productos.</li>\n            </ul>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
             _context2.next = 26;
             return email.sendEmail(CORREO_ELECTRONICO, "Solicitud de registro enviada ✔", contentHTML);
 

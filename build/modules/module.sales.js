@@ -23,16 +23,16 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 var createClient = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var _req$body, NOMBRE, RTN, DIRECCION, TELEFONO, objetos, mensaje, _mensaje;
+    var _req$body, NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE, objetos, mensaje, _mensaje;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            _req$body = req.body, NOMBRE = _req$body.NOMBRE, RTN = _req$body.RTN, DIRECCION = _req$body.DIRECCION, TELEFONO = _req$body.TELEFONO;
+            _req$body = req.body, NOMBRE_CLIENTE = _req$body.NOMBRE_CLIENTE, RTN = _req$body.RTN, DIRECCION_CLIENTE = _req$body.DIRECCION_CLIENTE, TELEFONO_CLIENTE = _req$body.TELEFONO_CLIENTE;
             _context.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_CLIENTE(?,?,?,?,@MENSAJE, @CODIGO)", [NOMBRE, RTN, DIRECCION, TELEFONO]);
+            return _databaseSQL["default"].query("CALL CREAR_CLIENTE(?,?,?,?,@MENSAJE, @CODIGO)", [NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE]);
 
           case 4:
             objetos = _context.sent;
@@ -76,7 +76,7 @@ exports.createClient = createClient;
 
 var updateClient = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var ID_CLIENTE, _req$body2, NOMBRE, RTN, DIRECCION, TELEFONO, objetos, mensaje, _mensaje2;
+    var ID_CLIENTE, _req$body2, NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE, objetos, mensaje, _mensaje2;
 
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
@@ -84,9 +84,9 @@ var updateClient = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             ID_CLIENTE = req.params.ID_CLIENTE;
-            _req$body2 = req.body, NOMBRE = _req$body2.NOMBRE, RTN = _req$body2.RTN, DIRECCION = _req$body2.DIRECCION, TELEFONO = _req$body2.TELEFONO;
+            _req$body2 = req.body, NOMBRE_CLIENTE = _req$body2.NOMBRE_CLIENTE, RTN = _req$body2.RTN, DIRECCION_CLIENTE = _req$body2.DIRECCION_CLIENTE, TELEFONO_CLIENTE = _req$body2.TELEFONO_CLIENTE;
             _context2.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_CLIENTE(?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_CLIENTE, NOMBRE, RTN, DIRECCION, TELEFONO]);
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_CLIENTE(?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_CLIENTE, NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE]);
 
           case 5:
             objetos = _context2.sent;
@@ -130,16 +130,16 @@ exports.updateClient = updateClient;
 
 var createSaleHeader = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-    var _req$body3, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION, objetos, mensaje, _mensaje3;
+    var _req$body3, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA, objetos, mensaje, _mensaje3;
 
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            _req$body3 = req.body, ID_PAGO = _req$body3.ID_PAGO, ID_USUARIO = _req$body3.ID_USUARIO, ID_CLIENTE = _req$body3.ID_CLIENTE, DESCRIPCION = _req$body3.DESCRIPCION;
+            _req$body3 = req.body, ID_PAGO = _req$body3.ID_PAGO, ID_USUARIO = _req$body3.ID_USUARIO, ID_CLIENTE = _req$body3.ID_CLIENTE, DESCRIPCION_VENTA = _req$body3.DESCRIPCION_VENTA;
             _context3.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_ENCABEZADO_VENTA(?,?,?,?,@MENSAJE, @CODIGO)", [ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION]);
+            return _databaseSQL["default"].query("CALL CREAR_ENCABEZADO_VENTA(?,?,?,?,@MENSAJE, @CODIGO)", [ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA]);
 
           case 4:
             objetos = _context3.sent;
@@ -183,7 +183,7 @@ exports.createSaleHeader = createSaleHeader;
 
 var updateSaleHeader = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var ID_VENTA, _req$body4, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION, objetos, mensaje, _mensaje4;
+    var ID_VENTA, _req$body4, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA, objetos, mensaje, _mensaje4;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -191,9 +191,9 @@ var updateSaleHeader = /*#__PURE__*/function () {
           case 0:
             _context4.prev = 0;
             ID_VENTA = req.params.ID_VENTA;
-            _req$body4 = req.body, ID_PAGO = _req$body4.ID_PAGO, ID_USUARIO = _req$body4.ID_USUARIO, ID_CLIENTE = _req$body4.ID_CLIENTE, DESCRIPCION = _req$body4.DESCRIPCION;
+            _req$body4 = req.body, ID_PAGO = _req$body4.ID_PAGO, ID_USUARIO = _req$body4.ID_USUARIO, ID_CLIENTE = _req$body4.ID_CLIENTE, DESCRIPCION_VENTA = _req$body4.DESCRIPCION_VENTA;
             _context4.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_ENCABEZADO_VENTA(?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_VENTA, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION]);
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_ENCABEZADO_VENTA(?,?,?,?,?,@MENSAJE, @CODIGO)", [ID_VENTA, ID_PAGO, ID_USUARIO, ID_CLIENTE, DESCRIPCION_VENTA]);
 
           case 5:
             objetos = _context4.sent;
@@ -247,7 +247,7 @@ var addProduct2Sale = /*#__PURE__*/function () {
             ID_VENTA = req.params.ID_VENTA;
             _req$body5 = req.body, ID_PRODUCTO = _req$body5.ID_PRODUCTO, CANTIDAD_PRODUCTO = _req$body5.CANTIDAD_PRODUCTO;
             _context5.next = 5;
-            return _databaseSQL["default"].query("CALL AGREGAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_VENTA, CANTIDAD]);
+            return _databaseSQL["default"].query("CALL AGREGAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_VENTA, CANTIDAD_PRODUCTO]);
 
           case 5:
             objetos = _context5.sent;
@@ -301,7 +301,7 @@ var updateProductOnSale = /*#__PURE__*/function () {
             ID_VENTA = req.params.ID_VENTA;
             _req$body6 = req.body, ID_PRODUCTO = _req$body6.ID_PRODUCTO, CANTIDAD_PRODUCTO = _req$body6.CANTIDAD_PRODUCTO;
             _context6.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_VENTA, CANTIDAD]);
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_PRODUCTO_VENTA(?,?,?,@MENSAJE, @CODIGO)", [ID_PRODUCTO, ID_VENTA, CANTIDAD_PRODUCTO]);
 
           case 5:
             objetos = _context6.sent;

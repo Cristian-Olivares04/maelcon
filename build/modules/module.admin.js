@@ -259,16 +259,16 @@ exports.updateObject = updateObject;
 
 var createPermission = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var _req$body6, ID_OBJETO, ID_ROL, INSERTAR, ELIMINAR, ACTUALIZAR, CONSULTAR, CREADO_POR, objetos, mensaje;
+    var _req$body6, ID_OBJETO, ID_ROL, PERMISO_INSERCION, PERMISO_ELIMINACION, PERMISO_ACTUALIZACION, PERMISO_CONSULTAR, CREADO_POR, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.prev = 0;
-            _req$body6 = req.body, ID_OBJETO = _req$body6.ID_OBJETO, ID_ROL = _req$body6.ID_ROL, INSERTAR = _req$body6.INSERTAR, ELIMINAR = _req$body6.ELIMINAR, ACTUALIZAR = _req$body6.ACTUALIZAR, CONSULTAR = _req$body6.CONSULTAR, CREADO_POR = _req$body6.CREADO_POR;
+            _req$body6 = req.body, ID_OBJETO = _req$body6.ID_OBJETO, ID_ROL = _req$body6.ID_ROL, PERMISO_INSERCION = _req$body6.PERMISO_INSERCION, PERMISO_ELIMINACION = _req$body6.PERMISO_ELIMINACION, PERMISO_ACTUALIZACION = _req$body6.PERMISO_ACTUALIZACION, PERMISO_CONSULTAR = _req$body6.PERMISO_CONSULTAR, CREADO_POR = _req$body6.CREADO_POR;
             _context6.next = 4;
-            return _databaseSQL["default"].query("CALL CREAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_OBJETO, ID_ROL, INSERTAR, ELIMINAR, ACTUALIZAR, CONSULTAR, CREADO_POR]);
+            return _databaseSQL["default"].query("CALL CREAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_OBJETO, ID_ROL, PERMISO_INSERCION, PERMISO_ELIMINACION, PERMISO_ACTUALIZACION, PERMISO_CONSULTAR, CREADO_POR]);
 
           case 4:
             objetos = _context6.sent;
@@ -304,7 +304,7 @@ exports.createPermission = createPermission;
 
 var updatePermission = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
-    var ID_OBJETO, _req$body7, ID_ROL, INSERTAR, ELIMINAR, ACTUALIZAR, CONSULTAR, MODIFICADO_POR, objetos, mensaje;
+    var ID_OBJETO, _req$body7, ID_ROL, PERMISO_INSERCION, PERMISO_ELIMINACION, PERMISO_ACTUALIZACION, PERMISO_CONSULTAR, MODIFICADO_POR, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
@@ -312,9 +312,9 @@ var updatePermission = /*#__PURE__*/function () {
           case 0:
             _context7.prev = 0;
             ID_OBJETO = req.params.ID_OBJETO;
-            _req$body7 = req.body, ID_ROL = _req$body7.ID_ROL, INSERTAR = _req$body7.INSERTAR, ELIMINAR = _req$body7.ELIMINAR, ACTUALIZAR = _req$body7.ACTUALIZAR, CONSULTAR = _req$body7.CONSULTAR, MODIFICADO_POR = _req$body7.MODIFICADO_POR;
+            _req$body7 = req.body, ID_ROL = _req$body7.ID_ROL, PERMISO_INSERCION = _req$body7.PERMISO_INSERCION, PERMISO_ELIMINACION = _req$body7.PERMISO_ELIMINACION, PERMISO_ACTUALIZACION = _req$body7.PERMISO_ACTUALIZACION, PERMISO_CONSULTAR = _req$body7.PERMISO_CONSULTAR, MODIFICADO_POR = _req$body7.MODIFICADO_POR;
             _context7.next = 5;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_OBJETO, ID_ROL, INSERTAR, ELIMINAR, ACTUALIZAR, CONSULTAR, MODIFICADO_POR]);
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_PERMISOS(?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_OBJETO, ID_ROL, PERMISO_INSERCION, PERMISO_ELIMINACION, PERMISO_ACTUALIZACION, PERMISO_CONSULTAR, MODIFICADO_POR]);
 
           case 5:
             objetos = _context7.sent;
@@ -1626,7 +1626,7 @@ exports.getJobs = getJobs;
 
 var updateUserByAdmin = /*#__PURE__*/function () {
   var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res) {
-    var ID_USUARIO, _req$body13, NOMBRE, APELLIDO, GENERO, RTN, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, USUARIO, CORREO_ELECTRONICO, IMG_USUARIO, FECHA_VENCIMIENTO, MODIFICADO_POR, PREGUNTA, RESPUESTA, img, usuarioAct, mensaje;
+    var ID_USUARIO, _req$body13, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, USUARIO, CORREO_ELECTRONICO, IMG_USUARIO, FECHA_VENCIMIENTO, MODIFICADO_POR, PREGUNTA, RESPUESTA, img, usuarioAct, mensaje;
 
     return _regenerator["default"].wrap(function _callee32$(_context32) {
       while (1) {
@@ -1634,7 +1634,7 @@ var updateUserByAdmin = /*#__PURE__*/function () {
           case 0:
             _context32.prev = 0;
             ID_USUARIO = req.params.ID_USUARIO;
-            _req$body13 = req.body, NOMBRE = _req$body13.NOMBRE, APELLIDO = _req$body13.APELLIDO, GENERO = _req$body13.GENERO, RTN = _req$body13.RTN, ID_PUESTO = _req$body13.ID_PUESTO, TELEFONO = _req$body13.TELEFONO, SUELDO = _req$body13.SUELDO, ID_ROL = _req$body13.ID_ROL, USUARIO = _req$body13.USUARIO, CORREO_ELECTRONICO = _req$body13.CORREO_ELECTRONICO, IMG_USUARIO = _req$body13.IMG_USUARIO, FECHA_VENCIMIENTO = _req$body13.FECHA_VENCIMIENTO, MODIFICADO_POR = _req$body13.MODIFICADO_POR, PREGUNTA = _req$body13.PREGUNTA, RESPUESTA = _req$body13.RESPUESTA;
+            _req$body13 = req.body, NOMBRE_PERSONA = _req$body13.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body13.APELLIDO_PERSONA, GENERO = _req$body13.GENERO, RTN = _req$body13.RTN, ID_PUESTO = _req$body13.ID_PUESTO, TELEFONO = _req$body13.TELEFONO, SUELDO = _req$body13.SUELDO, ID_ROL = _req$body13.ID_ROL, USUARIO = _req$body13.USUARIO, CORREO_ELECTRONICO = _req$body13.CORREO_ELECTRONICO, IMG_USUARIO = _req$body13.IMG_USUARIO, FECHA_VENCIMIENTO = _req$body13.FECHA_VENCIMIENTO, MODIFICADO_POR = _req$body13.MODIFICADO_POR, PREGUNTA = _req$body13.PREGUNTA, RESPUESTA = _req$body13.RESPUESTA;
 
             if (!req.file) {
               _context32.next = 10;
@@ -1661,7 +1661,7 @@ var updateUserByAdmin = /*#__PURE__*/function () {
 
           case 15:
             _context32.next = 17;
-            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE, APELLIDO, GENERO, RTN, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, USUARIO, CORREO_ELECTRONICO, img, MODIFICADO_POR, FECHA_VENCIMIENTO, PREGUNTA, RESPUESTA]);
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO_ADMIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, USUARIO, CORREO_ELECTRONICO, img, MODIFICADO_POR, FECHA_VENCIMIENTO, PREGUNTA, RESPUESTA]);
 
           case 17:
             mensaje = _context32.sent;

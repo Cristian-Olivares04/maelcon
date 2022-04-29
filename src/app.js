@@ -14,6 +14,7 @@ import ModuleInventoryRoutes from "./routes/module.inventory.routes";
 import ModuleSuppliesRoutes from "./routes/module.supplies.routes";
 import ModuleAdminRoutes from "./routes/module.admin.routes";
 import ModuleHelpersRoutes from "./routes/module.helpers.routes";
+import ModuleReportsRoutes from "./routes/module.reports.routes";
 
 const app = express();
 app.use(express.json());
@@ -41,5 +42,6 @@ app.use("/module/inventory", ModuleInventoryRoutes);
 app.use("/module/supplies", ModuleSuppliesRoutes);
 app.use("/module/admin", ModuleAdminRoutes);
 app.use("/module/helpers", ModuleHelpersRoutes);
+app.use("/module/reports", ModuleReportsRoutes);
 
 export default app;

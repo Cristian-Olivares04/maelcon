@@ -3,8 +3,7 @@ import * as encrypt from "../middlewares/encrypt";
 
 export const createClient = async (req, res) => {
   try {
-    const { NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE } =
-      req.body;
+    const { NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE } = req.body;
     const objetos = await pool.query(
       "CALL CREAR_CLIENTE(?,?,?,?,@MENSAJE, @CODIGO)",
       [NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE]
@@ -31,8 +30,7 @@ export const createClient = async (req, res) => {
 export const updateClient = async (req, res) => {
   try {
     const { ID_CLIENTE } = req.params;
-    const { NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE } =
-      req.body;
+    const { NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE } = req.body;
     const objetos = await pool.query(
       "CALL ACTUALIZAR_CLIENTE(?,?,?,?,?,@MENSAJE, @CODIGO)",
       [ID_CLIENTE, NOMBRE_CLIENTE, RTN, DIRECCION_CLIENTE, TELEFONO_CLIENTE]
