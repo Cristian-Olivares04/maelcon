@@ -45,8 +45,8 @@ export const singInSQL = async (req, res) => {
 export const singUpSQL = async (req, res) => {
   try {
     const {
-      NOMBRE,
-      APELLIDO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
       GENERO,
       RTN,
       TELEFONO,
@@ -76,8 +76,8 @@ export const singUpSQL = async (req, res) => {
     await pool.query(
       "CALL REGISTRAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO);",
       [
-        NOMBRE,
-        APELLIDO,
+        NOMBRE_PERSONA,
+        APELLIDO_PERSONA,
         GENERO,
         RTN,
         TELEFONO,
