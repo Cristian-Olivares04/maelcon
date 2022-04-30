@@ -23,6 +23,7 @@ router.delete(
   //[authJwt.verifyToken, authJwt.isAdmin],
   moduleUserCtrl.deleteUserById
 );
+
 router.put(
   "/:ID_USUARIO",
   //[authJwt.verifyToken, authJwt.isAdmin],

@@ -161,17 +161,6 @@ export const updateUserByIdPA = async (req, res) => {
       IMG_USUARIO,
       MODIFICADO_POR,
     } = req.body;
-    console.log(
-      ID_USUARIO,
-      NOMBRE,
-      APELLIDO,
-      ID_PUESTO,
-      TELEFONO,
-      SUELDO,
-      ID_ROL,
-      IMG_USUARIO,
-      MODIFICADO_POR
-    );
 
     let img;
     if (req.file) {
@@ -439,7 +428,7 @@ export const getAnswerByEmail = async (req, res) => {
               Se ha registrado un reestablecimiento de contraseña para tu usuario, la duracion de este enlace es de 7 dias,
                si no has sido tu reporte de forma inmediata esta actividad
               irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>
-            <a href="http://localhost:3000/module/users/passwordRecoveryToken/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
+            <a href="https://maelcon.herokuapp.com/module/users/passwordRecoveryToken/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
             <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
