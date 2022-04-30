@@ -444,9 +444,7 @@ export const getAnswerByEmail = async (req, res) => {
     );
 
     if (!validatePassword) {
-      return res
-        .status(401)
-        .json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
+      return res.json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
     }
     const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
 
