@@ -131,12 +131,47 @@ export const getUserById = async (req, res) => {
 
 export const updateUserById = async (req, res) => {
   const { ID_USUARIO } = req.params;
-  const id = parseInt(ID_USUARIO, 10);
-  await pool.query("UPDATE tbl_ms_usuario set ? WHERE ID_USUARIO = ?", [
-    req.body,
-    id,
-  ]);
-  res.json({ message: "El usuario ha sido actualizado" });
+  const {
+    ID_PUESTO,
+    NOMBRE_PERSONA,
+    APELLIDO_PERSONA,
+    TELEFONO,
+    SUELDO,
+    ID_ROL,
+    IMG_USUARIO,
+    MODIFICADO_POR,
+  } = req.body;
+
+  let img = "";
+  //Guarda foto
+  if (req.file) {
+    img = await cloudinary_services.uploadImage(
+      req.file.path,
+      "Maelcon/Perfiles"
+    );
+  } else {
+    img =
+      "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
+  }
+
+  const objetos = await pool.query(
+    "CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
+    [
+      ID_USUARIO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
+      ID_PUESTO,
+      TELEFONO,
+      SUELDO,
+      ID_ROL,
+      img,
+      MODIFICADO_POR,
+    ]
+  );
+  const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+  let info = JSON.parse(JSON.stringify(mensaje));
+
+  res.json(objetos);
 };
 
 export const deleteUserById = async (req, res) => {
@@ -161,6 +196,19 @@ export const updateUserByIdPA = async (req, res) => {
       IMG_USUARIO,
       MODIFICADO_POR,
     } = req.body;
+<<<<<<< HEAD
+=======
+
+    console.log(
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
+      ID_PUESTO,
+      TELEFONO,
+      SUELDO,
+      ID_ROL,
+      MODIFICADO_POR
+    );
+>>>>>>> e854a53b6a863a08cedfb70d03f05078ea1bbebe
 
     let img;
     if (req.file) {
@@ -179,7 +227,7 @@ export const updateUserByIdPA = async (req, res) => {
     }
 
     const objetos = await pool.query(
-      `CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+      "CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
       [
         ID_USUARIO,
         NOMBRE_PERSONA,
@@ -345,9 +393,12 @@ export const getSecurityQuestionByEmail = async (req, res) => {
       "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
       [CORREO]
     );
-    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+    const userData = JSON.parse(JSON.stringify(user[0][0]));
+    if (userData["CODIGO"] == 0) {
+      return res.json({ mensaje: userData });
+    }
     const pregunta = await pool.query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [
-      userData[0],
+      userData["ID_USUARIO"],
     ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -355,6 +406,17 @@ export const getSecurityQuestionByEmail = async (req, res) => {
     const processedQuestion = Object.values(
       JSON.parse(JSON.stringify(pregunta[0][0]))
     );
+    if (processedQuestion == "")
+      return res.json({
+        mensaje: [
+          {
+            MENSAJE:
+              "El usuario seleccionado no cuenta con una pregunta de seguridad",
+            CODIGO: 0,
+          },
+        ],
+      });
+
     res.json({
       mensaje: JSON.parse(JSON.stringify(mensaje)),
       pregunta: processedQuestion,
