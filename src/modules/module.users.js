@@ -382,7 +382,7 @@ export const getSecurityQuestionByEmail = async (req, res) => {
     );
     const userData = JSON.parse(JSON.stringify(user[0][0]));
     if (userData["CODIGO"] == 0) {
-      return res.json({ mensaje: userData });
+      return res.json({ mensaje: [userData] });
     }
     const pregunta = await pool.query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [
       userData["ID_USUARIO"],
