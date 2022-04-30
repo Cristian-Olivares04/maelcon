@@ -50,6 +50,9 @@ router.get(
   moduleUserCtrl.generatePasswordRecoveryTokenByEmail
 );
 
-router.get("/passwordRecoveryToken/:token", moduleUserCtrl.verifyRecoveryToken);
+router.post(
+  "/passwordRecoveryToken/:token",
+  moduleUserCtrl.verifyRecoveryToken
+);
 
 export default router;

@@ -589,23 +589,39 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
 export const verifyRecoveryToken = async (req, res) => {
   try {
     const { token } = req.params;
+    const { CONTRASENA } = req.body;
+
+    const password = await encrypt.encryptPassword(CONTRASENA);
+
     if (!token) {
       return res.status(403).json({ mensaje: "No se ha enviado ningun token" });
     }
 
     const decoded = jwt.verify(token, config.SECRET);
-
     const user = await pool.query(
       "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
-      [CORREO]
+      [decoded["correo"]]
     );
-    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
-
-    res.json(decoded);
+    const userData = JSON.parse(JSON.stringify(user[0][0]));
+    console.log(userData["ID_USUARIO"]);
+    const updatedPassword = await pool.query(
+      "CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);",
+      [userData["ID_USUARIO"], userData["ID_USUARIO"], password]
+    );
+    res.json(updatedPassword[0]);
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
+    if (error.message == "jwt expired")
+      return res.json({
+        mensaje: [
+          {
+            MENSAJE: "El token ha expirado, restablecer contraseña de nuevo",
+            CODIGO: 0,
+          },
+        ],
+      });
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
