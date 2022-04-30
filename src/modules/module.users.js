@@ -390,9 +390,12 @@ export const getSecurityQuestionByEmail = async (req, res) => {
       "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
       [CORREO]
     );
-    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+    const userData = JSON.parse(JSON.stringify(user[0][0]));
+    if (userData["CODIGO"] == 0) {
+      return res.json({ mensaje: userData });
+    }
     const pregunta = await pool.query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [
-      userData[0],
+      userData["ID_USUARIO"],
     ]);
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -400,6 +403,17 @@ export const getSecurityQuestionByEmail = async (req, res) => {
     const processedQuestion = Object.values(
       JSON.parse(JSON.stringify(pregunta[0][0]))
     );
+    if (processedQuestion == "")
+      return res.json({
+        mensaje: [
+          {
+            MENSAJE:
+              "El usuario seleccionado no cuenta con una pregunta de seguridad",
+            CODIGO: 0,
+          },
+        ],
+      });
+
     res.json({
       mensaje: JSON.parse(JSON.stringify(mensaje)),
       pregunta: processedQuestion,
