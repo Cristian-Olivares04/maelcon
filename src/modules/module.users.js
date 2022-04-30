@@ -196,19 +196,6 @@ export const updateUserByIdPA = async (req, res) => {
       IMG_USUARIO,
       MODIFICADO_POR,
     } = req.body;
-<<<<<<< HEAD
-=======
-
-    console.log(
-      NOMBRE_PERSONA,
-      APELLIDO_PERSONA,
-      ID_PUESTO,
-      TELEFONO,
-      SUELDO,
-      ID_ROL,
-      MODIFICADO_POR
-    );
->>>>>>> e854a53b6a863a08cedfb70d03f05078ea1bbebe
 
     let img;
     if (req.file) {
