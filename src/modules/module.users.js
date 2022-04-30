@@ -131,12 +131,47 @@ export const getUserById = async (req, res) => {
 
 export const updateUserById = async (req, res) => {
   const { ID_USUARIO } = req.params;
-  const id = parseInt(ID_USUARIO, 10);
-  await pool.query("UPDATE tbl_ms_usuario set ? WHERE ID_USUARIO = ?", [
-    req.body,
-    id,
-  ]);
-  res.json({ message: "El usuario ha sido actualizado" });
+  const {
+    ID_PUESTO,
+    NOMBRE_PERSONA,
+    APELLIDO_PERSONA,
+    TELEFONO,
+    SUELDO,
+    ID_ROL,
+    IMG_USUARIO,
+    MODIFICADO_POR,
+  } = req.body;
+
+  let img = "";
+  //Guarda foto
+  if (req.file) {
+    img = await cloudinary_services.uploadImage(
+      req.file.path,
+      "Maelcon/Perfiles"
+    );
+  } else {
+    img =
+      "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
+  }
+
+  const objetos = await pool.query(
+    "CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
+    [
+      ID_USUARIO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
+      ID_PUESTO,
+      TELEFONO,
+      SUELDO,
+      ID_ROL,
+      img,
+      MODIFICADO_POR,
+    ]
+  );
+  const mensaje = JSON.parse(JSON.stringify(objetos[0]));
+  let info = JSON.parse(JSON.stringify(mensaje));
+
+  res.json(objetos);
 };
 
 export const deleteUserById = async (req, res) => {
@@ -161,15 +196,14 @@ export const updateUserByIdPA = async (req, res) => {
       IMG_USUARIO,
       MODIFICADO_POR,
     } = req.body;
+
     console.log(
-      ID_USUARIO,
-      NOMBRE,
-      APELLIDO,
+      NOMBRE_PERSONA,
+      APELLIDO_PERSONA,
       ID_PUESTO,
       TELEFONO,
       SUELDO,
       ID_ROL,
-      IMG_USUARIO,
       MODIFICADO_POR
     );
 
@@ -190,7 +224,7 @@ export const updateUserByIdPA = async (req, res) => {
     }
 
     const objetos = await pool.query(
-      `CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+      "CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);",
       [
         ID_USUARIO,
         NOMBRE_PERSONA,
