@@ -43,7 +43,7 @@ router.get("/getSA/:ID_USUARIO", moduleUserCtrl.getSecurityAnswer);
 
 router.get("/lostPassword/:CORREO", moduleUserCtrl.getSecurityQuestionByEmail);
 
-router.get("/lostPasswordA/:CORREO", moduleUserCtrl.getAnswerByEmail);
+router.post("/lostPasswordA/:CORREO", moduleUserCtrl.getAnswerByEmail);
 
 router.get(
   "/passwordRecovery/:CORREO",
