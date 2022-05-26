@@ -389,7 +389,7 @@ export const getSecurityQuestionByEmail = async (req, res) => {
     );
     const userData = JSON.parse(JSON.stringify(user[0][0]));
     if (userData["CODIGO"] == 0) {
-      return res.json({ mensaje: userData });
+      return res.json({ mensaje: [userData] });
     }
     const pregunta = await pool.query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [
       userData["ID_USUARIO"],
@@ -451,9 +451,7 @@ export const getAnswerByEmail = async (req, res) => {
     );
 
     if (!validatePassword) {
-      return res
-        .status(401)
-        .json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
+      return res.json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
     }
     const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
 
@@ -561,7 +559,7 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
               Se ha registrado un reestablecimiento de contraseña para tu usuario, la duracion de este enlace es de 7 dias,
                si no has sido tu reporte de forma inmediata esta actividad
               irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>
-            <a href="http://localhost:3000/module/users/passwordRecoveryToken/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
+            <a href="https://maelcon.live/recovery-password/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
             <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
@@ -598,23 +596,39 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
 export const verifyRecoveryToken = async (req, res) => {
   try {
     const { token } = req.params;
+    const { CONTRASENA } = req.body;
+
+    const password = await encrypt.encryptPassword(CONTRASENA);
+
     if (!token) {
       return res.status(403).json({ mensaje: "No se ha enviado ningun token" });
     }
 
     const decoded = jwt.verify(token, config.SECRET);
-
     const user = await pool.query(
       "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
-      [CORREO]
+      [decoded["correo"]]
     );
-    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
-
-    res.json(decoded);
+    const userData = JSON.parse(JSON.stringify(user[0][0]));
+    console.log(userData["ID_USUARIO"]);
+    const updatedPassword = await pool.query(
+      "CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);",
+      [userData["ID_USUARIO"], userData["ID_USUARIO"], password]
+    );
+    res.json(updatedPassword[0]);
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
     );
+    if (error.message == "jwt expired")
+      return res.json({
+        mensaje: [
+          {
+            MENSAJE: "El token ha expirado, restablecer contraseña de nuevo",
+            CODIGO: 0,
+          },
+        ],
+      });
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),

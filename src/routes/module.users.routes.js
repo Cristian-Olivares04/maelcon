@@ -43,13 +43,16 @@ router.get("/getSA/:ID_USUARIO", moduleUserCtrl.getSecurityAnswer);
 
 router.get("/lostPassword/:CORREO", moduleUserCtrl.getSecurityQuestionByEmail);
 
-router.get("/lostPasswordA/:CORREO", moduleUserCtrl.getAnswerByEmail);
+router.post("/lostPasswordA/:CORREO", moduleUserCtrl.getAnswerByEmail);
 
 router.get(
   "/passwordRecovery/:CORREO",
   moduleUserCtrl.generatePasswordRecoveryTokenByEmail
 );
 
-router.get("/passwordRecoveryToken/:token", moduleUserCtrl.verifyRecoveryToken);
+router.post(
+  "/passwordRecoveryToken/:token",
+  moduleUserCtrl.verifyRecoveryToken
+);
 
 export default router;
