@@ -22,8 +22,12 @@ export const createUser = async (req, res) => {
     CORREO_ELECTRONICO,
     CREADO_POR,
     FECHA_VENCIMIENTO,
+    PREGUNTA,
+    RESPUESTA,
+    ESTADO
   } = req.body;
   const pass2 = await encrypt.encryptPassword(CONTRASENA);
+  const answer = await encrypt.encryptPassword(RESPUESTA);
 
   let img = "";
   //Guarda foto
@@ -38,7 +42,7 @@ export const createUser = async (req, res) => {
   }
 
   const objetos = await pool.query(
-    `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+    `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
     [
       ID_PUESTO,
       NOMBRE_PERSONA,
@@ -54,6 +58,9 @@ export const createUser = async (req, res) => {
       CORREO_ELECTRONICO,
       CREADO_POR,
       FECHA_VENCIMIENTO,
+      PREGUNTA,
+      answer,
+      ESTADO
     ]
   );
   const mensaje = JSON.parse(JSON.stringify(objetos[0]));
@@ -196,19 +203,6 @@ export const updateUserByIdPA = async (req, res) => {
       IMG_USUARIO,
       MODIFICADO_POR,
     } = req.body;
-<<<<<<< HEAD
-=======
-
-    console.log(
-      NOMBRE_PERSONA,
-      APELLIDO_PERSONA,
-      ID_PUESTO,
-      TELEFONO,
-      SUELDO,
-      ID_ROL,
-      MODIFICADO_POR
-    );
->>>>>>> e854a53b6a863a08cedfb70d03f05078ea1bbebe
 
     let img;
     if (req.file) {
@@ -490,7 +484,7 @@ export const getAnswerByEmail = async (req, res) => {
               Se ha registrado un reestablecimiento de contraseña para tu usuario, la duracion de este enlace es de 7 dias,
                si no has sido tu reporte de forma inmediata esta actividad
               irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>
-            <a href="https://maelcon.herokuapp.com/module/users/passwordRecoveryToken/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
+            <a href="https://maelcon.live/recovery-password/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
             <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
