@@ -185,7 +185,7 @@ router.post(
 
 router.put(
   "/jobs/:ID_PUESTO",
-  [authJwt.verifyTokenSQL, , authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
   moduleAdminCtrl.updateJob
 );
 
