@@ -24,7 +24,7 @@ export const createUser = async (req, res) => {
     FECHA_VENCIMIENTO,
     PREGUNTA,
     RESPUESTA,
-    ESTADO
+    ESTADO,
   } = req.body;
   const pass2 = await encrypt.encryptPassword(CONTRASENA);
   const answer = await encrypt.encryptPassword(RESPUESTA);
@@ -42,7 +42,7 @@ export const createUser = async (req, res) => {
   }
 
   const objetos = await pool.query(
-    `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
+    `CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);`,
     [
       ID_PUESTO,
       NOMBRE_PERSONA,
@@ -60,7 +60,6 @@ export const createUser = async (req, res) => {
       FECHA_VENCIMIENTO,
       PREGUNTA,
       answer,
-      ESTADO
     ]
   );
   const mensaje = JSON.parse(JSON.stringify(objetos[0]));
