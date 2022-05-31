@@ -251,7 +251,7 @@ export const securityQA = async (req, res) => {
     const pass = await encrypt.encryptPassword(RESPUESTA);
     const objetos = await pool.query(
       "CALL CREAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);",
-      [ID_USUARIO, PREGUNTA, RESPUESTA, CREADO_POR]
+      [ID_USUARIO, PREGUNTA, pass, CREADO_POR]
     );
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
     res.json({
