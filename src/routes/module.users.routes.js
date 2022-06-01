@@ -15,7 +15,7 @@ router.get(
 );
 router.get(
   "/myinfo/userInfo",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleUserCtrl.getMyUser
 );
 router.delete(
