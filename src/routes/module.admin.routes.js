@@ -7,93 +7,77 @@ const router = Router();
 
 router.put(
   "/status/:ID_USUARIO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updateUserStatus
 );
 
-router.post(
-  "/role/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
-  moduleAdminCtrl.createRoles
-);
+router.post("/role/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createRoles);
 
 router.put(
   "/role/:ID_ROL",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updateRole
 );
 
-router.post(
-  "/object/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
-  moduleAdminCtrl.createObject
-);
+router.post("/object/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createObject);
 
 router.put(
   "/object/:ID_OBJETO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updateObject
 );
 
 router.post(
   "/permission/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.createPermission
 );
 
 router.put(
   "/permission/:ID_OBJETO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updatePermission
 );
 
 router.post(
   "/paymentMethod/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.createPaymentMethod
 );
 
 router.put(
   "/paymentMethod/:ID_PAGO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updatePaymentMethod
 );
 
 router.post(
   "/parameter/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.createParameter
 );
 
 router.put(
   "/parameter/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updateParameter
 );
 
 router.get(
   "/userPermissions/:ID_USUARIO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getPermissions
 );
 
 router.get(
   "/rolePermissions/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getPermissionsByRole
 );
 
-router.get(
-  "/checkUser/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
-  moduleAdminCtrl.checkUser
-);
+router.get("/checkUser/", [authJwt.verifyTokenSQL], moduleAdminCtrl.checkUser);
 
-router.get(
-  "/getRoles/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
-  moduleAdminCtrl.getRoles
-);
+router.get("/getRoles/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getRoles);
 
 router.get(
   "/getRoles/:ID_ROL",
@@ -109,90 +93,78 @@ router.get(
 
 router.get(
   "/getObjects/:ID_OBJETO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getObjectByID
 );
 
 router.get(
   "/getPaymentMethods/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getPaymentMethods
 );
 
 router.get(
   "/getPaymentMethods/:ID_PAGO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getPaymentMethodByID
 );
 
 router.get(
   "/getParameters/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getParameters
 );
 
 router.get(
   "/getParameters/:ID_PARAMETRO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getParameterById
 );
 
-router.get(
-  "/getLogs/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
-  moduleAdminCtrl.getLogs
-);
+router.get("/getLogs/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getLogs);
 
 router.get(
   "/getLogs/:ID_BITACORA",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getLogById
 );
 
 router.get(
   "/comission/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getComissions
 );
 
 router.get(
   "/comission/:ID_USUARIO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getComissionById
 );
 
 router.post(
   "/backupDB/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.postBackupDB
 );
 router.post(
   "/backupDB2/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.postBackupDB2
 );
-router.get(
-  "/jobs/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
-  moduleAdminCtrl.getJobs
-);
+router.get("/jobs/", [authJwt.verifyTokenSQL], moduleAdminCtrl.getJobs);
 
-router.post(
-  "/jobs/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 1)],
-  moduleAdminCtrl.createJob
-);
+router.post("/jobs/", [authJwt.verifyTokenSQL], moduleAdminCtrl.createJob);
 
 router.put(
   "/jobs/:ID_PUESTO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.updateJob
 );
 
 //Para actualizar usuario
 router.put(
   "/updateUser/:ID_USUARIO",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 3), upload.uploadUserIMG],
+  [authJwt.verifyTokenSQL, upload.uploadUserIMG],
   moduleAdminCtrl.updateUserByAdmin
 );
 
