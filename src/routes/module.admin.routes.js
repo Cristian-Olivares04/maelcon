@@ -97,13 +97,13 @@ router.get(
 
 router.get(
   "/getRoles/:ID_ROL",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getRoleByID
 );
 
 router.get(
   "/getObjects/",
-  [authJwt.verifyTokenSQL, authJwt.verifyAuth(5, 4)],
+  [authJwt.verifyTokenSQL],
   moduleAdminCtrl.getObjects
 );
 
