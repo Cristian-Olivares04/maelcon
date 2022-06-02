@@ -95,7 +95,7 @@ export const createUser = async (req, res) => {
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
             <div style="width: 100%; text-align: center">
-              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://www.google.com">Ir a la página</a>	
+              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://maelcon.live/">Ir a la página</a>	
             </div>
             <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
           </div>
@@ -328,7 +328,7 @@ export const updatePassword = async (req, res) => {
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
             <div style="width: 100%; text-align: center">
-              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://www.google.com">Ir a la página</a>	
+              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://maelcon.live/">Ir a la página</a>	
             </div>
             <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
           </div>
@@ -486,7 +486,7 @@ export const getAnswerByEmail = async (req, res) => {
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
             <div style="width: 100%; text-align: center">
-              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://www.google.com">Ir a la página</a>	
+              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://maelcon.live/">Ir a la página</a>	
             </div>
             <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
           </div>
@@ -563,7 +563,7 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
             <div style="width: 100%; text-align: center">
-              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://www.google.com">Ir a la página</a>	
+              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://maelcon.live/">Ir a la página</a>	
             </div>
             <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
           </div>
