@@ -1,71 +1,420 @@
-<h3 class="text-muted"><b>Lista de usuarios</b></h3>
-<p class="text-muted">Lista General de usuarios en la base de datos de la organización.</p>
-
-<form>
-  <div class="mb-3 row">
-    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
-    <div class="col-xs-3 col-sm-auto">
-      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
-    </div>
-  </div>
-</form>
-<div class="" style="width: auto; height: 400px; overflow: scroll;">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">USUARIO</th>
-          <th scope="col">CORREO_ELECTRONICO</th>
-          <th scope="col">SUELDO</th>
-          <th scope="col">ID_ROL</th>
-          <th scope="col">ID_PUESTO</th>
-          <th scope="col">ESTADO</th>
-          <th scope="col">Editar</th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let us of usuariosInter | async; index as i">
-            <th scope="row">{{ i + 1 }}</th>
-            <td><ngb-highlight [result]="us.USUARIO" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="us.CORREO_ELECTRONICO" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="us.SUELDO | number" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="us.ID_ROL | number" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="us.ID_PUESTO | number" [term]="filter.value"></ngb-highlight></td>
-            <td>
-              <div *ngIf = "us.ESTADO; else inactivo" class="form-check form-switch text-success">
-                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked (click)="activarUser(!us.ESTADO, us.ID_USUARIO)">
-                  <label class="form-check-label" for="flexSwitchCheckDefault">Activo</label>
-              </div>
-              <ng-template #inactivo>
-                  <div class="form-check form-switch text-danger">
-                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" (click)="activarUser(!us.ESTADO, us.ID_USUARIO)">
-                      <label class="form-check-label" for="flexSwitchCheckDefault">Inactivo</label>
-                  </div>
-              </ng-template>
-            </td>
-            <td>
-              <button type="button" class="btn btn-outline-primary" (mouseenter)="openModl(us.ID_USUARIO)" (mouseleave)="cerrarModal()" (click)="goUser(us.ID_USUARIO)" data-bs-toggle="modal" data-bs-target="#edit"><i class="fas fa-user-edit"></i></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-</div>
-
-<!--Modal para actualizar usuario-->
-<ng-template  [ngIf]="modal">
-  <div class="modal lg fade" id="edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false" style="border-radius: 15%;">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-          <div class="modal-content">
-              <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="cerrarModal()" aria-label="Close"></button>
-              </div>
-              <div class="modal-body p-0 m-0">
-                  <app-update-user></app-update-user>
-              <div class="row">
-                  <p class="text-muted text-center">Sistema de actualización por Administración</p>
-              </div>
+<div class="m-3">
+  <div class="row">
+    <div class="col-12 contenedor p-4" style=" align-items: center; background-color: #fff; border-radius: 15px;">
+      <div class="row">
+        <div class="col-6">
+          <h3 class="text-muted"><b>Lista de usuarios</b></h3>
+          <p class="text-muted">Lista General de usuarios en la base de datos de la organización.</p>
+        </div>
+        <div class="col-6">
+          <button class="btn-header m-3" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModalAdd(addUser)"><i class="fa fa-plus"></i> Crear Usuario</button>
+        </div>
+      </div>
+      <div class="row">
+        <form>
+          <div class="mb-3 row">
+            <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
+            <div class="col-xs-3 col-sm-auto">
+              <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+            </div>
           </div>
+        </form>
+      </div>
+      <div class="" style="width: auto; height: 400px; overflow: scroll;">
+          <table class="table table-striped">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">USUARIO</th>
+                <th scope="col">CORREO_ELECTRONICO</th>
+                <th scope="col">SUELDO</th>
+                <th scope="col">ID_ROL</th>
+                <th scope="col">ID_PUESTO</th>
+                <th scope="col">ESTADO</th>
+                <th scope="col">Editar</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let us of usuariosInter | async; index as i">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td><ngb-highlight [result]="us.USUARIO" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="us.CORREO_ELECTRONICO" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="us.SUELDO | number" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="us.ID_ROL | number" [term]="filter.value"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="us.ID_PUESTO | number" [term]="filter.value"></ngb-highlight></td>
+                  <td>
+                    <div *ngIf = "us.ESTADO; else inactivo" class="form-check form-switch text-success">
+                        <input class="form-check-input" *ngIf="us.ID_USUARIO!='1' && _permisos.PERMISO_ACTUALIZACION==1" type="checkbox" id="flexSwitchCheckDefault" checked (click)="activarUser(!us.ESTADO, us.ID_USUARIO)">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Activo</label>
+                    </div>
+                    <ng-template #inactivo>
+                        <div class="form-check form-switch text-danger">
+                            <input class="form-check-input" *ngIf="us.ID_USUARIO!='1' && _permisos.PERMISO_ACTUALIZACION==1" type="checkbox" id="flexSwitchCheckDefault" (click)="activarUser(!us.ESTADO, us.ID_USUARIO)">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Inactivo</label>
+                        </div>
+                    </ng-template>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-outline-primary" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click)="openModl(actUser ,us.ID_USUARIO)"><i class="fas fa-user-edit"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
       </div>
     </div>
   </div>
+</div>
+
+<!--Modal para crear usuario-->
+<ng-template  #addUser let-modal>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+        <button type="button" id="closeAddUser" class="btn-close" (click)="modal.dismiss('Cross click'); cerrar()"></button>
+      </div>
+      <div class="m-3">
+        <div class="row">
+          <div class="row contenedor p-3" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+              <!--Cuadro contenedor de informacion-->
+              <h2 style="color: #0846ffff; margin-top: 20px;">Crear Usuario</h2>
+              <i class="text-muted">Proceso de creacion de nuevo usuario</i>
+              <!--Columna 1 de informacion-->
+              <div class="col-6">
+                  <div class="login-content">
+                      <!--Formulario Registro-->
+                      <form>
+                          <!--Input Nombre-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-user"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
+                              </div>
+                          </div>
+
+                          <!--Input Apellido-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-user"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
+                              </div>
+                          </div>
+
+                          <!--Nombre de usuario-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-user"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario">
+                              </div>
+                          </div>
+
+                          <!--Nombre de usuario-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-id-card"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="d-block" type="text" minlength="14" maxlength="14" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn">
+                              </div>
+                          </div>
+                          <!--Input numero de telefono-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-phone-alt"></i>
+                              </div>
+                              <div class="div">
+                                  <input type="text" minlength="8" maxlength="8" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
+                              </div>
+                          </div>
+                          <!--Input de contraseña-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-envelope"></i>
+                              </div>
+                              <div class="div">
+                                  <input type="email" placeholder="Correo Electronico" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO">
+                              </div>
+                          </div>
+                          <!--Input de Genero-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-venus-mars"></i>
+                              </div>
+                              <div class="div">
+                                <select class="form-control" placeholder="Genero" [(ngModel)]="datosUsuario.GENERO" name="genero">
+                                  <option disabled>Genero</option>
+                                  <option *ngFor="let g of _generos" [value]="g.VALOR">{{g.VALOR}}</option>
+                                </select>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+
+              <!--Columna 2 de informacion-->
+              <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+                  <div class="login-content">
+                      <form>
+                          <!--Input imagen perfil-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-image"></i>
+                              </div>
+                              <div class="div">
+                                  <input type="file" placeholder="Imagen de perfil" (ngModel)="datosUsuario.IMG_USUARIO" name="imagenPerfil">
+                              </div>
+                          </div>
+
+                          <!--Input Pregunta de seguridad-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-question"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" autocomplete="off" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="datosUsuario.PREGUNTA" name="pregunta">
+                              </div>
+                          </div>
+
+                          <!--Input respuesta de seguridad-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-equals"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" autocomplete="off" type="password" placeholder="Respuesta" [(ngModel)]="datosUsuario.RESPUESTA" name="respuesta">
+                              </div>
+                          </div>
+                          <!--Input de rol-->
+                          <div class="input-div one">
+                            <div class="i">
+                              <i class="fas fa-user-tag"></i>
+                            </div>
+                            <div class="div">
+                              <select class="form-control" placeholder="Rol" [(ngModel)]="datosUsuario.ID_ROL" name="rol">
+                                <option disabled>Seleccione un Rol</option>
+                                <option *ngFor="let r of _roles" [value]="r.ID_ROL">{{r.ROL}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <!--Input de puesto-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-user-tie"></i>
+                              </div>
+                              <div class="div">
+                                <select class="form-control" placeholder="Puesto" [(ngModel)]="datosUsuario.ID_PUESTO" name="puesto">
+                                  <option disabled>Seleccione un puesto</option>
+                                  <option *ngFor="let p of _puestos" [value]="p.ID_PUESTO">{{p.PUESTO}}</option>
+                                </select>
+                              </div>
+                          </div>
+                            <!--Salario-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-money-bill-wave"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" type="number" step="0.01" placeholder="Sueldo" [(ngModel)]="datosUsuario.SUELDO" name="Sueldo">
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              <div class="col-12 d-flex justify-content-between">
+                  <input type="button" class="btn-cancel m-4" value="Cancelar" (click)="modal.dismiss('Cross click');cerrar()" data-bs-dismiss="modal">
+                  <input type="button" class="btn-header m-4" value="Crear" (click)="evaluarDatos('add')">
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf="enam">
+                  {{msj}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row pb-3">
+        <p class="text-muted text-center">Sistema de gestion de personas Maelcon S de R. L.</p>
+      </div>
+    </div>
 </ng-template>
+
+<ng-template #actUser let-modal>
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+        <button type="button" id="closeActUser" class="btn-close" (click)="modal.dismiss('Cross click');cancel()"></button>
+      </div>
+      <div class="m-3">
+        <div class="row">
+          <div class="row contenedor p-3" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+              <!--Cuadro contenedor de informacion-->
+              <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar Usuario</h2>
+              <i class="text-muted">Proceso de actualizacion de usuario</i>
+              <!--Columna 1 de informacion-->
+              <div class="col-6">
+                  <div class="login-content">
+                      <!--Formulario Registro-->
+                      <form>
+                          <!--Input Nombre-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-user"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
+                              </div>
+                          </div>
+
+                          <!--Input Apellido-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-user"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
+                              </div>
+                          </div>
+
+                          <!--Nombre de usuario-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-user"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario">
+                              </div>
+                          </div>
+
+                          <!--Nombre de usuario-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-id-card"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="d-block" type="text" maxlength="14" minlength="14" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn">
+                              </div>
+                          </div>
+                          <!--Input numero de telefono-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-phone-alt"></i>
+                              </div>
+                              <div class="div">
+                                  <input type="text" minlength="8" maxlength="8" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
+                              </div>
+                          </div>
+                          <!--Input de contraseña-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-envelope"></i>
+                              </div>
+                              <div class="div">
+                                  <input type="email" placeholder="Correo Electronico" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO">
+                              </div>
+                          </div>
+                          <!--Input de Genero-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-venus-mars"></i>
+                              </div>
+                              <div class="div">
+                                <select class="form-control" placeholder="Genero" [(ngModel)]="datosUsuario.GENERO" name="genero">
+                                  <option disabled>Genero</option>
+                                  <option *ngFor="let g of _generos" [value]="g.VALOR">{{g.VALOR}}</option>
+                                </select>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+
+              <!--Columna 2 de informacion-->
+              <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
+                  <div class="login-content">
+                      <form>
+                          <!--Input imagen perfil-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-image"></i>
+                              </div>
+                              <div class="div">
+                                  <input type="file" placeholder="Imagen de perfil" name="imagenPerfil">
+                              </div>
+                          </div>
+
+                          <!--Input Pregunta de seguridad-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-question"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" autocomplete="off" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="json.PREGUNTA" name="pregunta">
+                              </div>
+                          </div>
+
+                          <!--Input respuesta de seguridad-->
+                          <div class="input-div one">
+                              <div class="i">
+                                  <i class="fas fa-equals"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" autocomplete="off" type="password" placeholder="Respuesta" [(ngModel)]="json.RESPUESTA" name="respuesta">
+                              </div>
+                          </div>
+                          <!--Input de rol-->
+                          <div class="input-div one">
+                            <div class="i">
+                              <i class="fas fa-user-tag"></i>
+                            </div>
+                            <div class="div">
+                              <select class="form-control" placeholder="Rol" [(ngModel)]="datosUsuario.ID_ROL" name="rol">
+                                <option disabled>Seleccione un Rol</option>
+                                <option *ngFor="let r of _roles" [value]="r.ID_ROL">{{r.ROL}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <!--Input de puesto-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-user-tie"></i>
+                              </div>
+                              <div class="div">
+                                <select class="form-control" placeholder="Puesto" [(ngModel)]="datosUsuario.ID_PUESTO" name="puesto">
+                                  <option disabled>Seleccione un puesto</option>
+                                  <option *ngFor="let p of _puestos" [value]="p.ID_PUESTO">{{p.PUESTO}}</option>
+                                </select>
+                              </div>
+                          </div>
+                            <!--Salario-->
+                          <div class="input-div one">
+                              <div class="i">
+                                <i class="fas fa-money-bill-wave"></i>
+                              </div>
+                              <div class="div">
+                                  <input class="" type="number" step="0.01" placeholder="Sueldo" [(ngModel)]="datosUsuario.SUELDO" name="sueldo">
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              <div class="col-12 d-flex justify-content-between">
+                  <input type="button" class="btn-cancel m-4" value="Cancelar" (click)="modal.dismiss('Cross click');cancel()" data-bs-dismiss="modal">
+                  <input type="button" class="btn-header m-4" value="Actualizar" (click)="evaluarDatos('act')">
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf="enam">
+                {{msj}}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row pb-3">
+      <p class="text-muted text-center">Sistema de gestion de personas Maelcon S de R. L.</p>
+    </div>
+  </div>
+</ng-template>
+

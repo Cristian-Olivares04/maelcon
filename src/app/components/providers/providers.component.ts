@@ -8,6 +8,7 @@ import { Proveedor } from 'src/app/interfaces/characters.interface';
 import { ComprasService } from 'src/app/services/compras.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 function search(PROVEEDOR:any, text: string, pipe: PipeTransform): Proveedor[] {
   return PROVEEDOR.filter(prov => {
@@ -34,6 +35,7 @@ export class ProvidersComponent implements OnInit {
   modal=false;
   enam=false;
   msj='';
+  _permisos:any;
 
   @Input() datosProv:Proveedor={
     ID_PROVEEDOR: 0,
@@ -43,8 +45,23 @@ export class ProvidersComponent implements OnInit {
     CORREO_PROVEEDOR: ''
   }
 
-  constructor(private CP:ComprasService, private pipe: DecimalPipe, private _Router:Router, private modalService:NgbModal) {
+  datosTemp:Proveedor={
+    ID_PROVEEDOR: 0,
+    RTN: '',
+    NOMBRE_PROVEEDOR: '',
+    TELEFONO_PROVEEDOR: '',
+    CORREO_PROVEEDOR: ''
+  }
+
+  constructor(private CP:ComprasService, private US:UsuariosService, private pipe: DecimalPipe, private _Router:Router, private modalService:NgbModal) {
     this.CP.obtenerProveedores();
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==4){
+        this._permisos=this.US._permisos[i];
+      }else if(this.US._permisos[i].ID_OBJETO==6){
+        this._permisos=this.US._permisos[i];
+      }
+    }
     this._proveedores = this.CP._proveedores;
     this.provInter = this.filter.valueChanges.pipe(
       startWith(''),
@@ -70,6 +87,13 @@ export class ProvidersComponent implements OnInit {
       if(prov.ID_PROVEEDOR==id){
         this.datosProv=prov;
       }
+    }
+    this.datosTemp={
+      ID_PROVEEDOR: this.datosProv.ID_PROVEEDOR,
+      RTN: this.datosProv.RTN,
+      NOMBRE_PROVEEDOR: this.datosProv.NOMBRE_PROVEEDOR,
+      TELEFONO_PROVEEDOR: this.datosProv.TELEFONO_PROVEEDOR,
+      CORREO_PROVEEDOR: this.datosProv.CORREO_PROVEEDOR
     }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
@@ -167,41 +191,89 @@ export class ProvidersComponent implements OnInit {
     let nP=false;
     let tF=false;
     let cP=false;
-    if (this.datosProv.RTN.length!=14) {
+    let PR = false
+    if (this.verificacionDatos('rtn')) {
       rtn=true;
-      this.msj='RTN necesita 14 digitos sin guiones'
+      this.msj='RTN necesita 14 DIGITOS sin guiones'
     }
-    if (this.datosProv.NOMBRE_PROVEEDOR.length<3) {
+    if (this.verificacionDatos('nombre')) {
       nP=true;
-      this.msj='Nombre prveedor muy corto'
+      this.msj='Nombre proveedor muy corto, necesita al menos la inical mayuscula y 2 letras '
     }
-    if (this.verificacionTelefono()) {
+    if (this.verificacionDatos('telefono')) {
       tF=true
-      this.msj='Telefono necesita 8 digitos sin guiones'
+      this.msj='Telefono necesita 8 DIGITOS sin guiones'
     }
     if (this.verificacionCorreo()) {
       cP=true
       this.msj='Correo invalido'
     }
     if(!rtn && !nP && !tF && !cP){
-      if(opcion=='add'){
-        this.agregarProv();
-      }else{
-        this.actualizarProv();
+      let cR=false
+      let pR=false
+      let nR=false
+      let mR=false
+      for (let i = 0; i < this._proveedores.length; i++) {
+        const element = this._proveedores[i];
+        if(element.ID_PROVEEDOR != this.datosProv.ID_PROVEEDOR){
+          if(element.RTN == this.datosProv.RTN){
+            cR=true;
+          }
+          if(element.TELEFONO_PROVEEDOR == this.datosProv.TELEFONO_PROVEEDOR){
+            pR=true
+          }
+          if(element.NOMBRE_PROVEEDOR.toLocaleLowerCase() == this.datosProv.NOMBRE_PROVEEDOR.toLocaleLowerCase()){
+            nR=true
+          }
+          if(element.CORREO_PROVEEDOR == this.datosProv.CORREO_PROVEEDOR){
+            mR=true
+          }
+        }
       }
-      this.enam=false
+      if((cR && pR && nR && mR) || (cR && nR) || (cR && mR) || (cR && pR)){
+        PR=true
+      }
+      if(!PR){
+        if(opcion=='add'){
+          this.agregarProv();
+        }else{
+          this.actualizarProv();
+        }
+        this.enam=false
+      }else{
+        this.enam=true
+        this.msj='Ya existe un proveedor con datos similares, puede actualizar sus datos desde otra interfaz'
+      }
     }else{
       this.enam=true;
     }
   }
 
-  verificacionTelefono(){
-    const regexi = /^([0-9]){8}$/;
-    if(regexi.test(this.datosProv.TELEFONO_PROVEEDOR)){
-      return false;
-    }else{
-      return true;
+  verificacionDatos(opcion:any){
+    let validation=false;
+    if(opcion=='telefono'){
+      const regexi = /^([0-9]){8}$/;
+      if(regexi.test(this.datosProv.TELEFONO_PROVEEDOR)){
+        validation=false;
+      }else{
+        validation=true;
+      }
+    }else if(opcion=='rtn'){
+      const regexi = /^([0-9]){14}$/;
+      if(regexi.test(this.datosProv.RTN)){
+        validation=false;
+      }else{
+        validation=true;
+      }
+    }else if(opcion=='nombre'){
+      const regex = /^([A-ZÁÉÍÓÚ]{1}[a-zA-ZñÑáéíóúÁÉÍÓÚ]{2,}[\s]{0,1})+$/;
+      if(regex.test(this.datosProv.NOMBRE_PROVEEDOR)){
+        validation=false;
+      }else{
+        validation=true;
+      }
     }
+    return validation
   }
 
   verificacionCorreo(){
@@ -213,4 +285,24 @@ export class ProvidersComponent implements OnInit {
     }
   }
 
+  cerrar(){
+    this.enam=false
+    this.msj=''
+    this.datosProv={
+      ID_PROVEEDOR: 0,
+      RTN: '',
+      NOMBRE_PROVEEDOR: '',
+      TELEFONO_PROVEEDOR: '',
+      CORREO_PROVEEDOR: ''
+    }
+  }
+
+  cancel(){
+    this.datosProv.RTN=this.datosTemp.RTN;
+    this.datosProv.NOMBRE_PROVEEDOR=this.datosTemp.NOMBRE_PROVEEDOR;
+    this.datosProv.TELEFONO_PROVEEDOR=this.datosTemp.TELEFONO_PROVEEDOR;
+    this.datosProv.CORREO_PROVEEDOR=this.datosTemp.CORREO_PROVEEDOR;
+    this.enam=false
+    this.msj=''
+  }
 }

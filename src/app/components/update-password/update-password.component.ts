@@ -20,73 +20,69 @@ export class UpdatePasswordComponent implements OnInit {
   public validacionId:Boolean = false;
   public actionVal = this.MS.actionVal;
   _usActual=this.US._usuarioActual
+  msj=''
+  reg=false
+  _permisos:any;
 
-  constructor(private US:UsuariosService, private MS:MantenimientoService, private _Router:Router) { }
+  constructor(private US:UsuariosService, private MS:MantenimientoService, private _Router:Router) {
+     this._permisos=this.US._permisos[4];
+  }
 
   ngOnInit(): void {
   }
 
   validarContrasena(){
-    if(this.primeraContrasena != this.segundaContrasena){
-      this.validacionContrasena = true;
-    }
-  }
-
-  actualizarContrasena(){
-    this.validarContrasena();
-    if(!this.validacionContrasena){
-      var js ={
-        "contrasenaActual": this.password,
-        "contrasenaNueva": this.primeraContrasena,
-        "ID_USUARIO": this._usActual
+    this.validacionContrasena = false;
+    this.reg=false
+    const regexi = /^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/;
+    if(regexi.test(this.primeraContrasena)){
+      console.log(regexi.test(this.primeraContrasena))
+      this.reg = true;
+      if(this.primeraContrasena != this.segundaContrasena){
+        this.msj='Las contraseñas no coinciden'
+        this.validacionContrasena = true;
+        this.primeraContrasena=''
+        this.segundaContrasena=''
       }
-      console.log('datos',js)
     }else{
-      var jso ={
-        "contrasenaActual": this.password,
-        "contrasenaNueva": this.primeraContrasena,
-        "contrasenaRepetir": this.segundaContrasena
-      }
-      console.log('datos erroneos', jso)
+      console.log('regEvalu: ',regexi.test(this.primeraContrasena))
+      this.msj=`Contraseña Invalida la contraseña mínimo debe tener ocho caracteres,
+      al menos una letra mayúscula, una letra minúscula, un número y un carácter especial
+      por ejemplo c0ntr@seNa`
+      this.validacionContrasena = true;
+      this.primeraContrasena=''
+      this.segundaContrasena=''
     }
   }
 
   actualizarContUser(){
     this.validarContrasena();
-    if(!this.validacionContrasena && this.idUsuario!=0){
+    if(!this.validacionContrasena && this.idUsuario!=0 && this.reg){
       var js ={
         "MODIFICADO_POR": this._usActual,
         "CONTRASENA": this.primeraContrasena
       }
       console.log('datos',js);
       this.US.actualizarContrasenaUsuario(js, this.idUsuario).subscribe((resp) => {
-        //console.log('resp objetos',resp['Objetos']);
-        if(resp[0]['CODIGO']==1){
+        console.log('resp act',resp);
+        if(resp['mensaje'][0]['CODIGO']==1){
           Swal.fire({
             title: `Bien hecho...`,
             text:  `Contraseña actualizada exitosamente`,
             confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this._Router.navigate(['/administration']);
-            } else {
-              this._Router.navigate(['/administration']);
-              console.log(`modal was dismissed by ${result.dismiss}`);
-            }
           })
+          this.idUsuario=1;
+          this.primeraContrasena=''
+          this.segundaContrasena=''
         }else{
           Swal.fire({
             title: `Algo salio mal...`,
             text:  `La contraseña no pudo actualizarse`,
             confirmButtonText: 'OK',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this._Router.navigate(['/administration']);
-            } else {
-              this._Router.navigate(['/administration']);
-              console.log(`modal was dismissed by ${result.dismiss}`);
-            }
           })
+          this.idUsuario=1;
+          this.primeraContrasena=''
+          this.segundaContrasena=''
           console.log('no',resp);
         }
       });
@@ -97,6 +93,9 @@ export class UpdatePasswordComponent implements OnInit {
         "contrasenaRepetir": this.segundaContrasena
       }
       this.validacionId=true;
+      this.idUsuario=1
+      this.primeraContrasena=''
+      this.segundaContrasena=''
       console.log('datos erroneos', jso)
     }
   }

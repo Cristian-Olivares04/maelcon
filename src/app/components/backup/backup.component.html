@@ -1,57 +1,45 @@
-<div *ngIf = "actionVal == 1; else admon">
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-            <!--Cuadro contenedor de informacion-->
-            <h2 style="color: #0846ffff; margin-top: 20px;">Crear respaldo</h2>
 
-            <div class="col-6 p-3">
-                <div class="login-content">
-                    <form>
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-file"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="text" placeholder="Nombre del archivo" [(ngModel)]="datosBackUp.nombre" name="nombre">
-                            </div>
-                        </div>
-                    </form>
+<div class="modal lg fade" id="ventasReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+          <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body m-3">
+            <form>
+              <div class="row">
+                <div class="col-6">
+                  <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="div">
+                        <input class="form-control" type="date" [max]="fechaAct" [(ngModel)]="datosFechas.fechaIni" name="fechaIniVentas">
+                    </div>
+                    <span class="text-muted details">Fecha inicial</span>
+                  </div>
                 </div>
-            </div>
-            <div class="col-6 p-3">
-                <a href="assets/maelcon-main-backend.zip" class="btn" target="_blank" [download]="datosBackUp.nombre">Crear</a>
-            </div>
-        </div>
-    </div>
-  </div>
-
-  <ng-template #admon>
-    <div>
-      <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
-            <!--Cuadro contenedor de informacion-->
-            <h2 style="color: #0846ffff; margin-top: 20px;">Crear respaldo</h2>
-
-            <div class="col-6 p-3">
-                <div class="login-content">
-                    <form>
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-file"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="text" placeholder="Nombre del archivo" [(ngModel)]="datosBackUp.nombre" name="nombre">
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-6">
+                  <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="div">
+                        <input class="form-control" type="date" [min]="datosFechas.fechaIni" [max]="fechaAct" [(ngModel)]="datosFechas.fechaFin" name="fechaFinVentas">
+                    </div>
+                    <span class="text-muted details">Fecha final</span>
+                  </div>
                 </div>
-            </div>
-            <div class="col-6 p-3">
-                <input type="button" class="btn" (click)="exportCsv()" value="Crear">
+              </div>
+              <button class="btn btn-success pt-2 pb-2 m-3 justify-content-end" (click)="evaluarDatos()">Crear reporte</button>
+            </form>
+            <div class="alert alert-danger m-2" role="alert" *ngIf="enam">
+              {{msj}}
             </div>
           </div>
+          <div class="row p-3">
+              <p class="text-muted text-center">Generar reporte de bitacora, Maelcon S de R. L.</p>
+          </div>
       </div>
-    </div>
-  </ng-template>
+  </div>
+</div>

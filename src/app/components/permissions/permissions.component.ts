@@ -15,12 +15,7 @@ function search(PERMISOS: any, text: string, pipe: PipeTransform): PermisosRol[]
   return PERMISOS.filter(ob => {
     const term = text.toLowerCase();
     return ob.OBJETOS.toLowerCase().includes(term)
-        || pipe.transform(ob.PERMISO_INSERCION).includes(term)
-        || pipe.transform(ob.PERMISO_ELIMINACION).includes(term)
-        || pipe.transform(ob.PERMISO_ACTUALIZACION).includes(term)
-        || pipe.transform(ob.PERMISO_CONSULTAR).includes(term)
         || ob.ROL.toLowerCase().includes(term)
-        || pipe.transform(ob.ID_ROL).includes(term)
   });
 }
 
@@ -38,10 +33,13 @@ export class PermissionsComponent implements OnInit {
   roles:Role[]=this.MS._roles;
   objetos:Object[]=this.MS._objects;
   condition=false;
+  enam=false;
+  msj=''
   act=false;
   ins=false;
   elim=false;
-  con=false;
+  con=true;
+  _permisos:any;
 
   datosPermiso:Permission={
     ID_OBJETO: 0,
@@ -49,8 +47,22 @@ export class PermissionsComponent implements OnInit {
     PERMISO_INSERCION: 0,
     PERMISO_ELIMINACION: 0,
     PERMISO_ACTUALIZACION: 0,
+    PERMISO_CONSULTAR: 1,
+    CREADO_POR: 0,
+    MODIFICADO_POR: 0
+  }
+
+  @Input() datos:PermisosRol={
+    OBJETOS: '',
+    PERMISO_INSERCION: 0,
+    PERMISO_ELIMINACION: 0,
+    PERMISO_ACTUALIZACION: 0,
     PERMISO_CONSULTAR: 0,
-    CREADO_POR: 0
+    ROL: '',
+    ID_ROL: 0,
+    ID_OBJETO: 0,
+    CREADO_POR: 0,
+    MODIFICADO_POR: 0
   }
 
   constructor( private MS:MantenimientoService,private pipe: DecimalPipe, private modalService: NgbModal, private US:UsuariosService, private _Router:Router) {
@@ -58,6 +70,11 @@ export class PermissionsComponent implements OnInit {
     this.permisosRol=this.MS._permisosRol;
     this.roles=this.MS._roles;
     this.objetos=this.MS._objects;
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==5){
+        this._permisos=this.US._permisos[i];
+      }
+    }
     this.permisosInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => search(this.permisosRol, text, this.pipe))
@@ -80,58 +97,109 @@ export class PermissionsComponent implements OnInit {
       PERMISO_INSERCION: 0,
       PERMISO_ELIMINACION: 0,
       PERMISO_ACTUALIZACION: 0,
-      PERMISO_CONSULTAR: 0,
-      CREADO_POR: this.US._usuarioActual
+      PERMISO_CONSULTAR: 1,
+      CREADO_POR: this.US._usuarioActual,
+      MODIFICADO_POR: 0
     }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg' });
   }
 
-  /* editPermiso(content:any,id:any) {
+  editPermiso(content:any,idRol:any, idOb:any) {
+    console.log('escogio ', idRol, idOb)
     for (let i = 0; i < this.permisosRol.length; i++) {
-      if(this.permisosRol[i].OBJETOS==id){
-        this.datoObjeto=this.permisosRol[i];
+      if(this.permisosRol[i].ID_ROL==idRol && this.permisosRol[i].ID_OBJETO==idOb){
+        this.datos=this.permisosRol[i];
+        if(this.datos.PERMISO_ACTUALIZACION==1){
+          this.act=true;
+        }else{
+          this.act=false;
+        }
+        if(this.datos.PERMISO_ELIMINACION==1){
+          this.elim=true;
+        }else{
+          this.elim=false;
+        }
+        if(this.datos.PERMISO_INSERCION==1){
+          this.ins=true;
+        }else{
+          this.ins=false;
+        }
+        if(this.datos.PERMISO_CONSULTAR==1){
+          this.con=true;
+        }else{
+          this.con=false;
+        }
       }
     }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg' });
   }
 
-  actPermiso(id:any){
-    //console.log(this.datoObjeto)
-    this.MS.actualizarObjeto(this.datoObjeto, id).subscribe((resp) => {
-      if(resp[0]['CODIGO']==1){
+  actPermiso(){
+    if(this.act==true){
+      this.datos.PERMISO_ACTUALIZACION=1;
+    }else{
+      this.datos.PERMISO_ACTUALIZACION=0;
+    }
+    if(this.elim==true){
+      this.datos.PERMISO_ELIMINACION=1;
+    }else{
+      this.datos.PERMISO_ELIMINACION=0;
+    }
+    if(this.ins==true){
+      this.datos.PERMISO_INSERCION=1;
+    }else{
+      this.datos.PERMISO_INSERCION=0;
+    }
+    if(this.con==true){
+      this.datos.PERMISO_CONSULTAR=1;
+    }else{
+      this.datos.PERMISO_CONSULTAR=0;
+    }
+    console.log(this.datos)
+    this.datos.MODIFICADO_POR=this.US._usuarioActual
+    this.MS.actualizarPermiso(this.datos, this.datos.ID_OBJETO).subscribe((resp) => {
+      console.log('resp permiso', resp)
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this.MS.obtenerPermisos();
         Swal.fire({
           title: `Bien hecho...`,
-          text:  `Objeto actualizado exitosamente`,
+          text:  `Permiso creado exitosamente`,
           confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
-            for (let i = 0; i < this.objects.length; i++) {
-              if(this.objects[i].ID_OBJETO==id){
-                this.objects[i].OBJETOS=this.datoObjeto.OBJETOS;
-                this.objects[i].TIPO_OBJETO=this.datoObjeto.TIPO_OBJETO;
-                this.objects[i].DESCRIPCION=this.datoObjeto.DESCRIPCION;
+            this.US.obtenerInfoUsuario().subscribe((resp) => {
+              if(resp['mensaje'][0]['CODIGO']==1){
+                this.US._permisos = resp['permisos'];
+                for (let i = 0; i < this.US._permisos.length; i++) {
+                  if(this.US._permisos[i].ID_OBJETO==5){
+                    this._permisos=this.US._permisos[i];
+                  }
+                }
+              }else{
+                console.log("falso no retorno");
               }
-            }
+            });
+            this.permisosRol=this.MS._permisosRol;
+            this.permisosInter = this.filter.valueChanges.pipe(
+              startWith(''),
+              map(text => search(this.permisosRol, text, this.pipe))
+            );
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
           } else {
-            for (let i = 0; i < this.objects.length; i++) {
-              if(this.objects[i].ID_OBJETO==id){
-                this.objects[i].OBJETOS=this.datoObjeto.OBJETOS;
-                this.objects[i].TIPO_OBJETO=this.datoObjeto.TIPO_OBJETO;
-                this.objects[i].DESCRIPCION=this.datoObjeto.DESCRIPCION;
-              }
-            }
             this.modalService.dismissAll();
-            this._Router.navigate(['/security']);
             console.log(`modal was dismissed by ${result.dismiss}`);
           }
         })
       }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops... No se pudo actualizar el permiso',
+          text: `${resp}`
+        })
         //console.log('no',resp);
       }
     });
-  } */
+  }
 
   crearPermiso(){
     if(this.act==true){
@@ -154,9 +222,10 @@ export class PermissionsComponent implements OnInit {
     }else{
       this.datosPermiso.PERMISO_CONSULTAR=0;
     }
-    //console.log(this.datosPermiso)
+    console.log(this.datosPermiso)
     this.MS.crearPermiso(this.datosPermiso).subscribe((resp) => {
-      if(resp[0]['CODIGO']==1){
+      console.log('resp permiso', resp)
+      if(resp['mensaje'][0]['CODIGO']==1){
         this.MS.obtenerPermisos();
         Swal.fire({
           title: `Bien hecho...`,
@@ -170,16 +239,17 @@ export class PermissionsComponent implements OnInit {
               map(text => search(this.permisosRol, text, this.pipe))
             );
             this.modalService.dismissAll();
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           } else {
             this.modalService.dismissAll();
             console.log(`modal was dismissed by ${result.dismiss}`);
-            localStorage.setItem('ruta', 'administration');
-            this._Router.navigate(['/administration/path?refresh=1']);
           }
         })
       }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops... No se pudo crear el permiso',
+          text: `${resp}`
+        })
         //console.log('no',resp);
       }
     });
@@ -189,6 +259,45 @@ export class PermissionsComponent implements OnInit {
     this.MS.obtenerPermisos();
     this.permisosRol=this.MS._permisosRol;
     //console.log('objs', this.objects)
+  }
+
+  evaluarDatos(opcion:any, op:any) {
+    let PR = false
+    let cR=false
+    let pR=0
+    if(op=='add'){
+      for (let i = 0; i < this.permisosRol.length; i++) {
+        const element = this.permisosRol[i];
+        if(element.ID_ROL == this.datosPermiso.ID_ROL && element.ID_OBJETO == this.datosPermiso.ID_OBJETO ){
+          cR=true
+        }
+      }
+    }else{
+      for (let i = 0; i < this.permisosRol.length; i++) {
+        const element = this.permisosRol[i];
+        if(element.ID_ROL == this.datos.ID_ROL && element.ID_OBJETO == this.datos.ID_OBJETO ){
+          pR++
+          console.log(pR)
+        }
+      }
+      if(pR!=1){
+        cR=true
+      }
+    }
+    if(cR){
+      PR=true
+    }
+    if(!PR){
+      if(opcion=='add'){
+        this.crearPermiso();
+      }else{
+        this.actPermiso();
+      }
+      this.enam=false
+    }else{
+      this.enam=true
+      this.msj='Ya existe un permiso con los mismos datos'
+    }
   }
 
 

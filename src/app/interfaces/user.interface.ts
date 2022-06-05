@@ -16,6 +16,7 @@ export interface usuario {
     GENERO: string;
     FECHA_VENCIMIENTO: string;
     CREADO_POR: number;
+    MODIFICADO_POR: number;
     ESTADO: number;
 }
 

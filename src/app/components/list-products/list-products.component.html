@@ -39,8 +39,8 @@
                         <td><ngb-highlight [result]="prodDetail.PRECIO_UNITARIO| number" [term]="filter.value"></ngb-highlight></td>
                         <td><ngb-highlight [result]="prodDetail.CANTIDAD_PRODUCTO| number" [term]="filter.value"></ngb-highlight></td>
                         <td><ngb-highlight [result]="prodDetail.SUB_TOTAL| number" [term]="filter.value"></ngb-highlight></td>
-                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click) = "openModalAct(editProductShopping, prodDetail.ID_PRODUCTO)"><i class="fas fa-pen"></i></button></td>
-                        <td><button class="btn-alert btn-sm btn-outline-alert ms-2" (click)="eliminarProd(prodDetail.ID_PRODUCTO)"><i class="fas fa-trash"></i></button></td>
+                        <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click) = "openModalAct(editProductShopping, prodDetail.ID_PRODUCTO)"><i class="fas fa-pen"></i></button></td>
+                        <td><button class="btn-alert btn-sm btn-outline-alert ms-2" *ngIf="_permisos.PERMISO_ELIMINACION==1" (click)="eliminarProd(prodDetail.ID_PRODUCTO)"><i class="fas fa-trash"></i></button></td>
                       </tr>
                       </tbody>
                   </table>
@@ -101,7 +101,7 @@
 <ng-template #addProductShopping let-modal>
     <div class="modal-content">
       <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-        <button type="button" id="closeAddProd" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        <button type="button" id="closeAddProd" class="btn-close" (click)="modal.dismiss('Cross click'); cerrar()"></button>
       </div>
       <div class="modal-body">
         <div class="row contenedor m-0" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
@@ -117,7 +117,7 @@
                                     <i class="fas fa-coins"></i>
                                 </div>
                                 <div class="div">
-                                    <input class="" type="number" min="0.01" placeholder="Precio unitario" [(ngModel)]="datosProdComp.PRECIO_UNITARIO" name="precio" required>
+                                    <input class="" type="number" step="0.01" min="0.01" placeholder="Precio unitario" [(ngModel)]="datosProdComp.PRECIO_UNITARIO" name="precio" required>
                                 </div>
                             </div>
                             <div class="input-div">
@@ -125,7 +125,7 @@
                                     <i class="fas fa-hashtag"></i>
                                 </div>
                                 <div class="div">
-                                    <input class="" type="number" min="1" placeholder="Cantidad" [(ngModel)]="datosProdComp.CANTIDAD" name="cantidad" required>
+                                    <input class="" type="number" step="1" min="1" placeholder="Cantidad" [(ngModel)]="datosProdComp.CANTIDAD" name="cantidad" required>
                                 </div>
                             </div>
                         </form>
@@ -162,7 +162,7 @@
 <ng-template #editProductShopping let-modal>
     <div class="modal-content">
         <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" id="closeActProd" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            <button type="button" id="closeActProd" class="btn-close" (click)="modal.dismiss('Cross click');cerrar()"></button>
         </div>
         <div class="modal-body">
           <div class="row contenedor m-0" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
@@ -178,7 +178,7 @@
                                       <i class="fas fa-coins"></i>
                                   </div>
                                   <div class="div">
-                                      <input class="" type="number" placeholder="Precio unitario" [(ngModel)]="datosProdComp.PRECIO_UNITARIO" name="precio">
+                                      <input class="" type="number" min="0.01" step="0.01" placeholder="Precio unitario" [(ngModel)]="datosProdComp.PRECIO_UNITARIO" name="precio">
                                   </div>
                               </div>
                               <div class="input-div">
@@ -186,7 +186,7 @@
                                       <i class="fas fa-hashtag"></i>
                                   </div>
                                   <div class="div">
-                                      <input class="" type="number" placeholder="Cantidad" [(ngModel)]="datosProdComp.CANTIDAD" name="cantidad">
+                                      <input class="" type="number" min="1" step="1" placeholder="Cantidad" [(ngModel)]="datosProdComp.CANTIDAD" name="cantidad">
                                   </div>
                               </div>
                           </form>

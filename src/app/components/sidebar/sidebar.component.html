@@ -6,7 +6,6 @@
                 <img *ngIf="opened==false" style="border-radius: 50%;" src="../../../assets/logo_peq.png" (click)="toggleSidebar()" style="width: 50px; height: 50px">
                 <img *ngIf="opened==true" style="border-radius: 50%;" src="../../../assets/logo.png" (click)="toggleSidebar()" style="width: 200px; height: auto">
             </div>
-
             <ul class="navbar-nav pt-0">
                 <div class="nav-item" [ngClass]="{'posicionar-perfil':opened==false ,'no-posicionar-perfil':opened==true}">
                     <hr [ngClass]="{'pad-line':opened==false ,'no-pad-line':opened==true}">
@@ -45,18 +44,22 @@
                       <i class="fa fa-shopping-cart" aria-hidden="true"></i><span *ngIf="opened==true">Compras</span></a>
                 </li>
                 <li class="nav-item sidebar-item" *ngIf = "inventory">
-                    <a class="nav-link icons" disabled routerLink="/inventory" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
+                    <a class="nav-link icons" disabled routerLink="/inventory-v2" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-boxes" aria-hidden="true"></i><span *ngIf="opened==true">Inventario</span></a>
                 </li>
                 <li class="nav-item sidebar-item" *ngIf = "administration">
                     <a class="nav-link icons" routerLink="/administration" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fa fa-tools" aria-hidden="true"></i><span *ngIf="opened==true">Administración</span></a>
                 </li>
+                <li class="nav-item sidebar-item" *ngIf = "peopleManager">
+                    <a class="nav-link icons" routerLink="/people-manager" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
+                      <i class="fa fa-users" aria-hidden="true"></i><span *ngIf="opened==true">Personas</span></a>
+                </li>
                 <li class="nav-item sidebar-item" *ngIf = "security">
                     <a class="nav-link icons" routerLink="/security" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fas fa-lock" aria-hidden="true"></i><span *ngIf="opened==true">Seguridad</span></a>
                 </li>
-                <li class="nav-item sidebar-item">
+                <li class="nav-item sidebar-item" *ngIf = "reports">
                     <a class="nav-link icons" routerLink="/reports" [ngClass]="{'posicionar':opened==false ,'no-posicionar':opened==true}">
                       <i class="fas fa-clipboard-list" aria-hidden="true"></i><span *ngIf="opened==true">Reportes</span></a>
                 </li>

@@ -65,7 +65,7 @@ export class InventarioService {
   }
 
   //funcion para actualizar Producto
-  actualizarProducto( data:Product, id:any): Observable<any>{
+  actualizarProducto( data:any, id:any): Observable<any>{
     return this.http.put<Product>(`${this.bUA}/module/inventory/product/${id}`, data);
   }
 

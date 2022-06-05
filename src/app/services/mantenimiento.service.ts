@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Bitacora, Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
+import { Bitacora, Comission, Object, Parameter, PayMethod, PermisosRol, Permission, Puesto, Role } from '../interfaces/objects.interface';
 import { environment } from '../../environments/environment'
 import { UsuariosService } from './usuarios.service';
 import { saveAs } from 'file-saver';
+import { usuario } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class MantenimientoService {
   public _payMethods:PayMethod[]=[]
   public condition=false;
   public actionVal = 0;
+  public _comisiones:Comission[] = []
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -30,6 +32,12 @@ export class MantenimientoService {
   });
 
   constructor(private US:UsuariosService, private http:HttpClient) {
+    this._usuarioActual = this.US._usuarioActual;
+    this._userToken=this.US._userToken;
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'auth-token': this._userToken
+    });
     this.obtenerPermisos();
     this.obtenerObjetos();
     this.obtenerRoles();
@@ -37,6 +45,7 @@ export class MantenimientoService {
     this.obtenerPuestos();
     this.obtenerRegistrosBitacora();
     this.obtenerMetodosPagos();
+    this.obtenerComisiones();
   }
 
   obtenerInfo(){
@@ -47,6 +56,12 @@ export class MantenimientoService {
     this.obtenerPuestos();
     this.obtenerRegistrosBitacora();
     this.obtenerMetodosPagos();
+  }
+
+  //actualizar usuario desde administracion
+  editarUsuario( usuario:usuario, id:any): Observable<any>{
+    console.log("en el servicio: " , usuario);
+    return this.http.put<usuario>(`${this.bUA}/module/admin/updateUser/${id}`, usuario, {headers:this.headers})
   }
 
   //funcion para chequear si existe un usuario por el correo
@@ -249,8 +264,15 @@ export class MantenimientoService {
   }
 
   //funcion para obtener las comisiones
-  obtenerComisiones(): Observable<any>{
-    return this.http.get<any>(`${this.bUA}/module/admin/comission`, {headers:this.headers});
+  obtenerComisiones(){
+    this.http.get<any>(`${this.bUA}/module/admin/comission`, {headers:this.headers}).subscribe((resp) => {
+      //console.log('resp comisiones',resp['COMISION']);
+      if(resp['mensaje'][0]['CODIGO']==1){
+        this._comisiones=resp['COMISION'];
+      }else{
+        //console.log('no',resp);
+      }
+    });
   }
 
   //funcion para obtener comisiones de un usuario en especifico
@@ -269,4 +291,8 @@ export class MantenimientoService {
     });
   }
 
+  //funcion recovery password
+  recoveryPassword(token, data:any):Observable<any>{
+    return this.http.post<any>(`${this.bUA}/module/users/passwordRecoveryToken/${token}`, data);
+  }
 }

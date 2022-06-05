@@ -32,6 +32,7 @@ export class DetailsSalesComponent implements OnInit {
   _productosExisTemp:CompleteProduct[] = [];
   _listadoVentas:any;
   fechaAct:any;
+  _permisos:any;
 
   @Input() datosVenta:SaleInit={
     ID_VENTA: 0,
@@ -66,6 +67,12 @@ export class DetailsSalesComponent implements OnInit {
     this._metodosPagos = this.MS._payMethods;
     this._usuarios = this.US._usuarios;
     this._clientes = this.VS._clientes;
+
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==2){
+        this._permisos=this.US._permisos[i];
+      }
+    }
     for (let i = 0; i < this._productosExisTemp.length; i++) {
       const element = this._productosExisTemp[i];
       if(element.ESTADO==1 && element.EXISTENCIA>0){
@@ -99,7 +106,9 @@ export class DetailsSalesComponent implements OnInit {
   cambioDatosVenta(){
     let js = {
       "ID_PAGO":parseInt(this.datosVenta.ID_PAGO.toString()),
-      "DESCRIPCION_VENTA":this.datosVenta.DESCRIPCION_VENTA
+      "DESCRIPCION_VENTA":this.datosVenta.DESCRIPCION_VENTA,
+      "ID_USUARIO":this.US._usuarioActual,
+      "ID_CLIENTE":this.datosVenta.ID_CLIENTE,
     }
     console.log('cambios: ',js)
     for (let i = 0; i < this._metodosPagos.length; i++) {
@@ -116,7 +125,7 @@ export class DetailsSalesComponent implements OnInit {
   }
 
   actVentaAct(datos:any){
-    console.log('nuevos datos compras ', datos)
+    console.log('nuevos datos venta ', datos)
     this.datosVenta=datos;
     this.datsVentAct.emit(this.datosVenta)
   }
@@ -138,7 +147,6 @@ export class DetailsSalesComponent implements OnInit {
         this.listDetalleVenta.splice(i,1);
         this.actionOption = !this.actionOption;
       }
-
     }
   }
 
@@ -156,8 +164,8 @@ export class DetailsSalesComponent implements OnInit {
   }
 
   eliminarVenta(){
-    /* Swal.fire({
-      title: `¿Deseas eliminar la compra?`,
+    Swal.fire({
+      title: `¿Deseas eliminar la venta?`,
       showDenyButton: true,
       showCancelButton: true,
       icon: 'question',
@@ -165,75 +173,71 @@ export class DetailsSalesComponent implements OnInit {
       denyButtonText: `Eliminar`,
     }).then((result) => {
       if (result.isDenied) {
-        this.CP.eliminarCompra({"ID_USUARIO":this.US._usuarioActual}, this.datosVenta.ID_COMPRA).subscribe((resp) => {
+        this.VS.eliminarVenta({"ID_USUARIO":this.US._usuarioActual}, this.datosVenta.ID_VENTA).subscribe((resp) => {
           console.log('resp',resp['mensaje']);
           if(resp['mensaje'][0]['CODIGO']==1){
-            for (let i = 0; i < this._listadoCompras.length; i++) {
-              const element = this._listadoCompras[i];
-              if(element.ID_COMPRA==this.datosVenta.ID_COMPRA){
-                this._listadoCompras.splice(i,1)
-                this.listaVentas.emit(this._listadoCompras)
+            for (let i = 0; i < this._listadoVentas.length; i++) {
+              const element = this._listadoVentas[i];
+              if(element.ID_VENTA==this.datosVenta.ID_VENTA){
+                this._listadoVentas.splice(i,1)
+                this.listaVentas.emit(this._listadoVentas)
               }
             }
             Swal.fire({
               icon: 'success',
-              title: 'Eliminar compra',
-              text: 'La compra se elimino exitosamente',
+              title: 'Eliminar venta',
+              text: 'La venta se elimino exitosamente',
             })
             this.modalService.dismissAll();
-            localStorage.setItem('ruta', 'shopping');
-            this._Router.navigate(['/shopping/path?refresh=1']);
           }else{
             Swal.fire({
               icon: 'error',
               title: 'Oops... No se pudo eliminar la compra',
               text: 'Algo salio mal!'
             })
-            //console.log('no',resp);
+            console.log('no',resp);
           }
         });
       }
-    }) */
+    })
   }
 
   finalizarVenta(){
-    /* Swal.fire({
-      title: `¿Deseas efectuar la compra?`,
+    Swal.fire({
+      title: `¿Deseas finalizar la venta?`,
       showDenyButton: false,
       showCancelButton: true,
       icon: 'question',
       showConfirmButton: true,
-      confirmButtonText: 'Pagar'
+      confirmButtonText: 'Cobrar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.CP.ejecutarCompra({"ID_USUARIO":this.US._usuarioActual}, this.datosVenta.ID_COMPRA).subscribe((resp) => {
+        this.VS.procesarVenta({"ID_USUARIO":this.US._usuarioActual}, this.datosVenta.ID_VENTA).subscribe((resp) => {
           console.log('resp',resp['mensaje']);
           if(resp['mensaje'][0]['CODIGO']==1){
-            for (let i = 0; i < this._listadoCompras.length; i++) {
-              const element = this._listadoCompras[i];
-              if(element.ID_COMPRA==this.datosVenta.ID_COMPRA){
-                this._listadoCompras[i].ESTADO=1
-                this.listaVentas.emit(this._listadoCompras)
+            for (let i = 0; i < this._listadoVentas.length; i++) {
+              const element = this._listadoVentas[i];
+              if(element.ID_VENTA==this.datosVenta.ID_VENTA){
+                this._listadoVentas[i].ESTADO=1
+                this.listaVentas.emit(this._listadoVentas)
               }
             }
             Swal.fire({
               icon: 'success',
-              title: 'Finalizar compra',
-              text: 'La compra se realizo exitosamente',
+              title: 'Finalizar venta',
+              text: 'La venta se realizo exitosamente',
             })
             this.modalService.dismissAll();
-            localStorage.setItem('ruta', 'shopping');
-            this._Router.navigate(['/shopping/path?refresh=1']);
           }else{
             Swal.fire({
               icon: 'error',
-              title: 'Oops... No se pudo realizar la compra',
+              title: 'Oops... No se pudo realizar la venta',
               text: 'Algo salio mal!'
             })
-            //console.log('no',resp);
+            console.log('no',resp);
           }
         });
       }
-    }) */
+    })
   }
 }

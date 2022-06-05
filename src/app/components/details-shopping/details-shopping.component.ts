@@ -32,6 +32,7 @@ export class DetailsShoppingComponent implements OnInit {
   _productosExisTemp:CompleteProduct[] = [];
   _listadoCompras:any;
   fechaAct:any;
+  _permisos:any;
 
   @Input() datosCom = {
     ID_COMPRA: 0,
@@ -90,6 +91,12 @@ export class DetailsShoppingComponent implements OnInit {
     this._metodosPagos = this.MS._payMethods;
     this._usuarios = this.US._usuarios;
     this.IN._compAct = this.datosCom;
+
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==2){
+        this._permisos=this.US._permisos[i];
+      }
+    }
     for (let i = 0; i < this._productosExisTemp.length; i++) {
       const element = this._productosExisTemp[i];
       if(element.ID_PROVEEDOR == this.datosCompra.ID_PROVEEDOR){

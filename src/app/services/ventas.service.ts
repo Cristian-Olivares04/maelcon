@@ -14,8 +14,8 @@ export class VentasService {
   public _usuarioActual = this.US._usuarioActual;
   public _userToken=this.US._userToken;
   public _ventaActual = '';
-  public _clientes=[];
-  public _ventas=[]
+  public _clientes:any;
+  public _ventas:any;
   public _detallesVenta:SaleDetail[]=[]
   public datosVentAct:any;
 
@@ -89,7 +89,7 @@ export class VentasService {
   //funcion para obtener un detalle de Venta en especifico
   obtenerDetalleVenta(id:any){
     this.http.get<any>(`${this.bUA}/module/sales/saleDetail/${id}`).subscribe((resp) => {
-      console.log('detallesVenta',resp['usuario']);
+      //console.log('detallesVenta',resp['usuario']);
       if(resp['mensaje'][0]['CODIGO']==1){
         this._detallesVenta=resp['usuario'];
       }else{
@@ -97,6 +97,11 @@ export class VentasService {
         //console.log('no',resp);
       }
     });
+  }
+
+  //funcion para obtener un detalle de Venta en especifico
+  obtenerListaDetalleVenta(id:any): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/sales/saleDetail/${id}`);
   }
 
   //funcion para añadir un producto a un detalle de venta

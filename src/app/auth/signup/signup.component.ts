@@ -31,7 +31,8 @@ export class SignupComponent {
     ESTADO: 0,
     SUELDO: 0,
     NOMBRE_PERSONA: '',
-    APELLIDO_PERSONA: ''
+    APELLIDO_PERSONA: '',
+    MODIFICADO_POR: 0
   }
 
   public validacionCorreo: boolean = false;
@@ -50,8 +51,8 @@ export class SignupComponent {
     this.validarContrasena();
     this.validadCampos();
     if(this.activate){
-      //console.log("Usuario", this.usuarioRegistro)
       this.UsuariosService.guardarNuevoUsuario(this.usuarioRegistro).subscribe((resp) => {
+        console.log("Usuario ", resp)
         if(resp[0]['CODIGO']==1){
           Swal.fire({
             title: `Bien hecho...`,

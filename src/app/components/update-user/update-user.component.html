@@ -1,4 +1,4 @@
-<div *ngIf = "actionVal == 1; else admon">
+<div>
     <div class="row m-0">
         <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-bottom: 10px; background-color: #fff; border-radius: 15px;">
             <!--Cuadro contenedor de informacion-->
@@ -35,159 +35,17 @@
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="div">
-                                <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario" value="Alex07" readonly>
-                            </div>
-                        </div>
-                        <!--Input numero de telefono-->
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="div">
-                                <input type="text" minlength="9" maxlength="9" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
-                            </div>
-                        </div>
-                        <!--Input de contraseña-->
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="div">
-                                <input type="text" placeholder="Correo" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO" readonly>
-                            </div>
-                        </div>
-                        <!--Input de RTN-->
-                        <div class="input-div one">
-                            <div class="i">
-                              <i class="fas fa-venus-mars"></i>
-                            </div>
-                            <div class="div">
-                              <select class="form-control" placeholder="Genero" [(ngModel)]="datosUsuario.GENERO" name="genero">
-                                <option disabled>Genero</option>
-                                <option *ngFor="let g of _generos" [value]="g.VALOR">{{g.VALOR}}</option>
-                              </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!--Columna 2 de informacion-->
-            <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
-                <div class="login-content">
-                    <form>
-                        <!--Input imagen perfil-->
-                        <div class="input-div one">
-                            <div class="i">
-                              <i class="fas fa-image"></i>
-                            </div>
-                            <div class="div">
-                                <input type="file" placeholder="Imagen de perfil" (ngModel)="datosUsuario.IMG_USUARIO" name="imagenPerfil">
-                            </div>
-                        </div>
-
-                        <!--Input Pregunta de seguridad-->
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-question"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="datosUsuario.PREGUNTA" name="pregunta">
-                            </div>
-                        </div>
-
-                        <!--Input respuesta de seguridad-->
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-equals"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="password" placeholder="Respuesta" [(ngModel)]="datosUsuario.RESPUESTA" name="respuesta">
-                            </div>
-                        </div>
-                        <!--Input de rol-->
-                        <div class="input-div one">
-                          <div class="i">
-                            <i class="fas fa-user-tag"></i>
-                          </div>
-                          <div class="div">
-                            <select class="form-control" placeholder="Rol" [(ngModel)]="datosUsuario.ID_ROL" name="rol">
-                              <option disabled>Seleccione un Rol</option>
-                              <option *ngFor="let r of _roles" [value]="r.ID_ROL">{{r.ROL}}</option>
-                            </select>
-                          </div>
-                        </div>
-                        <!--Input de puesto-->
-                        <div class="input-div one">
-                            <div class="i">
-                              <i class="fas fa-user-tie"></i>
-                            </div>
-                            <div class="div">
-                              <select class="form-control" placeholder="Puesto" [(ngModel)]="datosUsuario.ID_PUESTO" name="puesto">
-                                <option disabled>Seleccione un puesto</option>
-                                <option *ngFor="let p of _puestos" [value]="p.ID_PUESTO">{{p.PUESTO}}</option>
-                              </select>
-                            </div>
-                        </div>
-                          <!--Salario-->
-                        <div class="input-div one">
-                            <div class="i">
-                              <i class="fas fa-money-bill-wave"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="number" step="0.01" placeholder="Sueldo" [(ngModel)]="datosUsuario.SUELDO" name="Sueldo">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-12 d-flex justify-content-between">
-                <input type="button" class="btn-cancel m-4" value="Cancelar" data-bs-dismiss="modal">
-                <input type="button" class="btn m-4" value="Actualizar" data-bs-dismiss="modal">
-            </div>
-        </div>
-    </div>
-</div>
-
-<ng-template #admon>
-  <div>
-    <div class="row m-0">
-        <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-bottom: 10px; background-color: #fff; border-radius: 15px;">
-            <!--Cuadro contenedor de informacion-->
-            <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar Usuario</h2>
-            <i class="text-muted">Proceso de actualización</i>
-            <!--Columna 1 de informacion-->
-            <div class="col-6">
-                <div class="login-content">
-                    <!--Formulario Registro-->
-                    <form>
-                        <!--Input Nombre-->
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
-                            </div>
-                        </div>
-
-                        <!--Input Apellido-->
-                        <div class="input-div one">
-                            <div class="i">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="div">
-                                <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
+                                <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario">
                             </div>
                         </div>
 
                         <!--Nombre de usuario-->
                         <div class="input-div one">
                             <div class="i">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-id-card"></i>
                             </div>
                             <div class="div">
-                                <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario" readonly>
+                                <input class="d-block" type="number" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn">
                             </div>
                         </div>
                         <!--Input numero de telefono-->
@@ -205,7 +63,7 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div class="div">
-                                <input type="email" placeholder="Correo Electronico" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO" readonly>
+                                <input type="email" placeholder="Correo Electronico" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO">
                             </div>
                         </div>
                         <!--Input de Genero-->
@@ -294,10 +152,9 @@
                 </div>
             </div>
             <div class="col-12 d-flex justify-content-between">
-                <input type="button" class="btn-cancel m-4" value="Cancelar" data-bs-dismiss="modal">
-                <input type="button" class="btn m-4" value="Actualizar" data-bs-dismiss="modal">
+                <input type="button" class="btn-cancel m-4" value="Cancelar" data-bs-dismiss="modal" (click)="imp()">
+                <input type="button" class="btn m-4" value="Actualizar" (click)="actualizarUsuario()">
             </div>
         </div>
     </div>
-  </div>
-</ng-template>
+</div>

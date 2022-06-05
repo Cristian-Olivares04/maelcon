@@ -192,7 +192,7 @@ a:hover{
 	color: #0846ffff;
 }
 
-.btn{
+.btn-general{
 	display: flexbox;
 	width: 70%;
 	height: 50px;
@@ -322,3 +322,15 @@ a:hover{
 	}
 
 }
+
+.card.disabled {
+    opacity: 0.5;
+  }
+
+.custom-header{
+    background-color: rgba(238, 238, 238, 0.445);
+}
+
+.custom-header::after {
+    content: none;
+  }

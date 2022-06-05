@@ -6,7 +6,7 @@
               <p class="text-muted">Objetos registrados y en funcionamiento.</p>
           </div>
           <div class="col-4">
-              <button class="btn btn-sm btn-outline-primary ms-2" (click)="openModal(createObject)"><i class="fas fa-plus"></i> Crear objeto</button>
+              <button class="btn btn-sm btn-outline-primary ms-2" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModal(createObject)"><i class="fas fa-plus"></i> Crear objeto</button>
           </div>
           <div class="col-12">
               <form>
@@ -36,7 +36,7 @@
                           <td><ngb-highlight [result]="ob.OBJETOS" [term]="filter.value"></ngb-highlight></td>
                           <td><ngb-highlight [result]="ob.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
                           <td><ngb-highlight [result]="ob.CREADO_POR | number" [term]="filter.value"></ngb-highlight></td>
-                          <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="editObj(editObject, ob.ID_OBJETO)"><i class="fas fa-pen"></i></button></td>
+                          <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click)="editObj(editObject, ob.ID_OBJETO)"><i class="fas fa-pen"></i></button></td>
                         </tr>
                         </tbody>
                       </table>
@@ -46,27 +46,15 @@
   </div>
 
 <!--Modal para actualizar objetos-->
-<ng-template #edit let-modal>
-    <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-        </div>
-        <div class="modal-body">
-
-        </div>
-    </div>
-</ng-template>
-
 <ng-template #editObject let-modal>
     <div class="modal-content">
         <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+            <button type="button" class="btn-close" (click)="cerrar()"></button>
         </div>
             <div class="modal-body">
                 <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                    <div class="row m-3">
+                        <div class="col-12 row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                             <!--Cuadro contenedor de informacion-->
                             <h2 style="color: #0846ffff; margin-top: 20px;">Actualización de objetos</h2>
 
@@ -106,15 +94,16 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Actualizar" (click)="actObjeto(datoObjeto.ID_OBJETO)">
+                                    <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act')">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-2">
+                            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                                {{msj}}
+                            </div>
                         </div>
                     </div>
             </div>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Sistema de actualización por Administración</p>
             </div>
         </div>
@@ -128,12 +117,10 @@
         </div>
             <div class="modal-body">
                 <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                    <div class="row m-3">
+                        <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                             <!--Cuadro contenedor de informacion-->
                             <h2 style="color: #0846ffff; margin-top: 20px;">Creación de objetos</h2>
-
                             <div class="row">
                                 <div class="col-6">
                                     <div class="login-content">
@@ -170,15 +157,16 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Crear objeto" (click)="crearObj()">
+                                    <input type="button" class="btn" value="Crear objeto" (click)="evaluarDatos('add')">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-2">
+                            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                                {{msj}}
+                            </div>
                         </div>
                     </div>
             </div>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Sistema de objetos Maelcon S de R. L.</p>
             </div>
         </div>

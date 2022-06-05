@@ -12,12 +12,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./update-user.component.css', "../../../forms_styles.css"]
 })
 export class UpdateUserComponent implements OnInit {
-  _usAct=this.US._usuarioActual2;
+  _usAct = this.US._usuarioActual2;
   _roles:Role[]=[];
   _puestos:Puesto[]=this.MS._puestos;
   msjCheck='';
   public actionVal = this.MS.actionVal;
-  _generos = [{'VALOR':'MASCULINO'}, {'VALOR':'FEMENINO'}];
+  _generos = [{'VALOR':'Masculino'}, {'VALOR':'Femenino'}];
 
   @Input() datosUsuario:usuario={
     ID_USUARIO: '',
@@ -50,40 +50,60 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerRoles();
-    console.log('usuario a editar', this.datosUsuario)
+    //console.log('usuario a editar', this.datosUsuario)
+    this.datosUsuario.RESPUESTA = "";
   }
 
-  actualizarUsuario(id:any){
+  actualizarUsuario(){
+    console.log("En actualizar");
     var js = {
       "PREGUNTA": this.datosUsuario.PREGUNTA,
       "RESPUESTA": this.datosUsuario.RESPUESTA,
       "MODIFICADO_POR": this.US._usuarioActual
-    }
-    this.US.editarUsuario(this.datosUsuario, id).subscribe((resp) => {
-      //console.log('resp',resp);
-      if(resp[0]['CODIGO']==1){
-        this.US.actualizarPreguntaUsuario(js, id).subscribe((res) => {
-          //console.log('res',res);
-          if(res[0]['CODIGO']==1){
-            Swal.fire({
-              title: `Bien hecho...`,
-              text:  `Usuario actualizado exitosamente`,
-              confirmButtonText: 'OK',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                localStorage.setItem('ruta', 'administration');
-                this._Router.navigate(['/administration/path?refresh=1']);
-              } else {
-                console.log(`modal was dismissed by ${result.dismiss}`);
-                localStorage.setItem('ruta', 'administration');
-                this._Router.navigate(['/administration/path?refresh=1']);
-              }
-            })
-          }else{
-            //console.log('no',res);
-            this.msjCheck=`No se pudo actualizar el la pregunta usuario y respuesta`
-          }
-        });
+    };
+
+    this.MS.editarUsuario(this.datosUsuario, this.datosUsuario.ID_USUARIO).subscribe((resp) => {
+      console.log('resp',resp);
+      if(resp["mensaje"][0]["CODIGO"] == 1){
+        if(this.datosUsuario.RESPUESTA == "" || this.datosUsuario.PREGUNTA==""){
+          Swal.fire({
+            title: `Bien hecho...`,
+            text:  `Usuario actualizado exitosamente.`,
+            confirmButtonText: 'OK',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              localStorage.setItem('ruta', 'manage-user');
+              this._Router.navigate(['/manage-usuer']);
+            } else {
+              console.log(`modal was dismissed by ${result.dismiss}`);
+              localStorage.setItem('ruta', 'manage-user');
+              this._Router.navigate(['/manage-user']);
+            }
+          })
+        }else{
+          this.US.actualizarPreguntaUsuario(js, this.datosUsuario.ID_USUARIO).subscribe((res) => {
+            //console.log('res',res);
+            if(res["mensaje"][0]["CODIGO"] == 1){
+              Swal.fire({
+                title: `Bien hecho...`,
+                text:  `Usuario actualizado exitosamente.`,
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  localStorage.setItem('ruta', 'manage-user');
+                  this._Router.navigate(['/manage-usuer']);
+                } else {
+                  console.log(`modal was dismissed by ${result.dismiss}`);
+                  localStorage.setItem('ruta', 'manage-user');
+                  this._Router.navigate(['/manage-user']);
+                }
+              })
+            }else{
+              //console.log('no',res);
+              this.msjCheck=`No se pudo actualizar el la pregunta usuario y respuesta`
+            }
+          });
+        }
       }else{
         //console.log('no',resp);
         this.msjCheck=`No se pudo actualizar el usuario`
@@ -98,5 +118,9 @@ export class UpdateUserComponent implements OnInit {
     this._roles=this.MS._roles;
     this.datosUsuario = this.US.datosUsuario2;
     //console.log('roles',this._roles)
+  }
+
+  imp(){
+    console.log('Hola')
   }
 }

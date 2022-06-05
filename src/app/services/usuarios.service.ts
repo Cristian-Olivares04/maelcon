@@ -43,7 +43,8 @@ export class UsuariosService {
     ESTADO: 0,
     SUELDO: 0,
     NOMBRE_PERSONA: '',
-    APELLIDO_PERSONA: ''
+    APELLIDO_PERSONA: '',
+    MODIFICADO_POR: 0
   };
 
   public datosUsuario2: usuario ={
@@ -64,7 +65,8 @@ export class UsuariosService {
     ESTADO: 0,
     SUELDO: 0,
     NOMBRE_PERSONA: '',
-    APELLIDO_PERSONA: ''
+    APELLIDO_PERSONA: '',
+    MODIFICADO_POR: 0
   };
 
   constructor( private http:HttpClient ){
@@ -108,7 +110,7 @@ export class UsuariosService {
     return this.http.get<usuario>(`${this.bUA}/module/users/${this._usuarioActual}`, );
   }
 
-  //funcion para obtener un usuario en especifico como observable
+  //funcion para obtener usuarios
   obtenerUsuarios(){
     this.http.get<any>(`${this.bUA}/module/users`).subscribe((resp) => {
       //console.log('resp objetos',resp['Objetos']);
@@ -120,10 +122,15 @@ export class UsuariosService {
     });
   }
 
+  //funcion para obtener usuarios en especifico como observable
+  obtenerUsers(): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/users`);
+  }
+
   //funcion para actualizar un usuario
-  editarUsuario( usuario:usuario, id:any): Observable<any>{
-    //console.log(this.datosUsuario);
-    return this.http.put<usuario>(`${this.bUA}/module/users/${id}`, usuario, {headers:this.headers})
+  editarUsuario( usuario:any, id:any): Observable<any>{
+    console.log("en el servicio: " , usuario);
+    return this.http.put<any>(`${this.bUA}/module/users/${id}`, usuario, {headers:this.headers})
   }
 
   //funcion para crear la pregunta de usuario
@@ -146,6 +153,16 @@ export class UsuariosService {
     return this.http.get<any>(`${this.bUA}/module/users/getSQ/${id}`)
   }
 
+  //funcion para obtener la pregunta de usuario
+  validarRespuestaSeguridad(correo:any, respuesta:any): Observable<any>{
+    return this.http.post<any>(`${this.bUA}/module/users/lostPasswordA/${correo}`, respuesta)
+  }
+
+  //funcion para obtener la pregunta de usuario por correo
+   obtenerPreguntaCorreo(correo:any): Observable<any>{
+    return this.http.get<any>(`${this.bUA}/module/users/lostPassword/${correo}`)
+  }
+
   //funcion para obtener la respuesta de usuario
   obtenerRespuestaUsuario(id:any): Observable<any>{
     return this.http.get<any>(`${this.bUA}/module/users/getSA/${id}`)
@@ -158,7 +175,7 @@ export class UsuariosService {
 
   //opcion para registrar un usuario desde el admon
   crearNuevoUsuario(usuario:usuario): Observable<any> {
-    return this.http.post<usuario>(`${this.bUA}/module/users`, usuario);
+    return this.http.post<usuario>(`${this.bUA}/module/users`, usuario, {headers:this.headers});
   }
 
   //consulta para inicio de sesion

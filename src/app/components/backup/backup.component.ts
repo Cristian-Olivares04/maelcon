@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Bitacora } from 'src/app/interfaces/objects.interface';
@@ -13,12 +14,19 @@ export class BackupComponent implements OnInit {
   bitacora:Bitacora[]=this.MS._bitacora;
   public actionVal = this.MS.actionVal;
   contenido = '';
+  fechaAct:any;
+  enam=false;
+  msj='';
 
-  @Input() datosBackUp = {
-    nombre:''
+  @Input() datosFechas={
+    fechaIni: '',
+    fechaFin: ''
   }
 
-  constructor(private MS:MantenimientoService) {
+  constructor(private MS:MantenimientoService, private datepipe:DatePipe) {
+    let currentDateTime =this.datepipe.transform((new Date), 'yyyy-MM-dd');
+    this.fechaAct=currentDateTime;
+    this.datosFechas.fechaFin=this.fechaAct
     this.bitacora= this.MS._bitacora;
   }
 
@@ -41,12 +49,15 @@ export class BackupComponent implements OnInit {
       dwldLink.setAttribute("target", "_blank");
     }
     dwldLink.setAttribute("href", url);
-    dwldLink.setAttribute("download", `${this.datosBackUp.nombre}.csv`);
+    dwldLink.setAttribute("download", `Bitacora_Maelcon.csv`);
     dwldLink.style.visibility = "hidden";
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
-    this.datosBackUp.nombre='';
+    this.datosFechas={
+      fechaIni: '',
+      fechaFin: this.fechaAct
+    }
   }
 
   ConvertToCSV(objArray, headerList) {
@@ -88,6 +99,33 @@ export class BackupComponent implements OnInit {
     }
     else {
       return data;
+    }
+  }
+
+  evaluarDatos(){
+    console.log('fechas: ',this.datosFechas)
+    let fIni=false;
+    let fFin=false;
+    let fI=false;
+    if(this.datosFechas.fechaIni==''){
+      fIni=true;
+      this.msj='Fecha inicial incorrecta ingrese una fecha valida'
+    }
+    if(this.datosFechas.fechaFin==''){
+      fIni=true;
+      this.msj='Fecha final incorrecta ingrese una fecha valida'
+    }
+    if(this.datosFechas.fechaIni==this.fechaAct){
+      if(this.datosFechas.fechaFin!=this.datosFechas.fechaIni){
+        fI=true;
+        this.msj='La fecha final no puede ser menor que la fecha inicial'
+      }
+    }
+    if (!fIni && !fFin && !fI) {
+      this.exportCsv();
+      this.enam=false;
+    } else {
+      this.enam=true;
     }
   }
 }

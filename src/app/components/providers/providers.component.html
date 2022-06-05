@@ -7,7 +7,7 @@
           <p class="text-muted">Lista oficial de proveedores de productos para la empresa.</p>
         </div>
         <div class="col-6">
-          <button class="btn m-3" (click)="openModalAdd(addProvider)"><i class="fa fa-gear"></i> Crear proveedor</button>
+          <button class="btn m-3" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModalAdd(addProvider)"><i class="fa fa-plus"></i> Crear proveedor</button>
         </div>
       </div>
       <div class="row">
@@ -52,8 +52,7 @@
                 <td>
                   <ngb-highlight [result]="prov.CORREO_PROVEEDOR" [term]="filter.value"></ngb-highlight>
                 </td>
-                <td><button class="btn btn-sm btn-outline-primary ms-1 float" style="margin: 0%; height: 35px;"
-                    (click)="openModalEdit(editProvider, prov.ID_PROVEEDOR)"><i class="fas fa-pen"></i></button></td>
+                <td><button class="btn btn-sm btn-outline-primary ms-1 float" style="margin: 0%; height: 35px;" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click)="openModalEdit(editProvider, prov.ID_PROVEEDOR)"><i class="fas fa-pen"></i></button></td>
               </tr>
             </tbody>
           </table>
@@ -67,7 +66,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
-          <button type="button" id="closeActProv" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+          <button type="button" id="closeActProv" class="btn-close" (click)="modal.dismiss('Cross click');cancel()"></button>
         </div>
         <div class="m-3">
           <div class="row">
@@ -128,7 +127,7 @@
               </div>
               <div class="col-12 row justify-content-between">
                 <div class="col-6">
-                  <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click')">
+                  <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click');cancel()">
                 </div>
                 <div class="col-6">
                   <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act')">
@@ -141,7 +140,7 @@
           </div>
         </div>
         <div class="row pb-3">
-          <p class="text-muted text-center">Sistema de Inventario Maelcon S de R. L.</p>
+          <p class="text-muted text-center">Sistema de gestion de personas Maelcon S de R. L.</p>
         </div>
       </div>
     </div>
@@ -151,7 +150,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
-          <button type="button" id="closeAddProv" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+          <button type="button" id="closeAddProv" class="btn-close" (click)="modal.dismiss('Cross click');cerrar()"></button>
         </div>
         <div class="m-3">
           <div class="row m-3">
@@ -215,7 +214,7 @@
               </div>
               <div class="col-12 row justify-content-between">
                 <div class="col-6">
-                  <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click')">
+                  <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click');cerrar()">
                 </div>
                 <div class="col-6">
                   <input type="button" class="btn" value="Crear" (click)="evaluarDatos('add')">

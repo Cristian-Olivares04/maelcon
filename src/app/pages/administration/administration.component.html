@@ -4,29 +4,12 @@
     <hr>
 </div>
 
-<ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
-  <ngb-panel  id="custom-panel-1">
-    <ng-template ngbPanelHeader let-opened="opened">
-      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
-        <span><b>Gestión de usuarios</b></span>
-        <span>
-          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
-          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
-          <!-- <button class="btn btn-sm btn-outline-primary ms-2" (click)="refrescarUsuarios()"><i class="fa fa-refresh"></i></button> -->
-          <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#newUser"><i class="fas fa-user-plus"></i></button>
-        </span>
-      </div>
-    </ng-template>
-    <ng-template *ngIf="refrescarUsers" ngbPanelContent>
-      <app-users></app-users>
-    </ng-template>
-  </ngb-panel>
-
-  <ngb-panel>
+<ngb-accordion #a="ngbAccordion">
+  <ngb-panel id="custom-panel-1">
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
         <span><b>Cambio de contraseña</b></span>
-        <span>
+        <span *ngIf="_permisos.PERMISO_ACTUALIZACION==1">
           <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2" (click)="cambiarActVal(0)"><i class="fas fa-eye"></i></button>
           <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2" (click)="cambiarActVal(0)"><i class="fas fa-eye-slash"></i></button>
         </span>
@@ -93,21 +76,4 @@
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
-
-<!--Modal nuevo usuario-->
-<div class="modal lg fade" id="newUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-          <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body p-0">
-            <app-signup-admon></app-signup-admon>
-          </div>
-          <div class="row">
-              <p class="text-muted text-center">Guardar nuevo usuario, Maelcon S de R. L.</p>
-          </div>
-      </div>
-  </div>
-</div>
 

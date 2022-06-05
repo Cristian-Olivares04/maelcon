@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit{
   regionVisible: string = 'Registro';
   condition2 = false;
   _obs:Permission[]=[];
+  actUser=false
 
   user:usuario={
     ID_USUARIO: '',
@@ -43,7 +44,8 @@ export class SidebarComponent implements OnInit{
     GENERO: '',
     FECHA_VENCIMIENTO: '',
     CREADO_POR: 0,
-    ESTADO: 0
+    ESTADO: 0,
+    MODIFICADO_POR: 0
   };
 
   sales = 0;
@@ -52,6 +54,7 @@ export class SidebarComponent implements OnInit{
   administration = 0;
   security = 0;
   reports = 0;
+  peopleManager=0;
 
   constructor(private US:UsuariosService, private router:Router, private MS:MantenimientoService, private IN:InventarioService, private CP:ComprasService, private HP:AyudaService, private VS:VentasService) {
     this.US._userToken = localStorage.getItem("auth-token");
@@ -86,7 +89,6 @@ export class SidebarComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
   }
 
   toggleSidebar() {
@@ -107,22 +109,25 @@ export class SidebarComponent implements OnInit{
     var rutaTemp:any='';
     //console.log('obs for',this._obs);
     for(let i = 0; i < this._obs.length; i++){
-      if(this._obs[i].ID_OBJETO == 1){
+      if(this._obs[i].ID_OBJETO == 2){
         this.sales = 1;
         rutaTemp='sales';
-      }else if(this._obs[i].ID_OBJETO == 2){
+      }else if(this._obs[i].ID_OBJETO == 3){
         this.shopping = 1;
         rutaTemp='shopping';
-      }else if(this._obs[i].ID_OBJETO == 3){
+      }else if(this._obs[i].ID_OBJETO == 4){
         this.inventory = 1;
         rutaTemp='inventory';
-      }else if(this._obs[i].ID_OBJETO == 4){
+      }else if(this._obs[i].ID_OBJETO == 5){
         this.administration = 1;
         rutaTemp='administration';
-      }else if(this._obs[i].ID_OBJETO == 5){
+      }else if(this._obs[i].ID_OBJETO == 6){
+        this.peopleManager = 1;
+        rutaTemp='people-manager';
+      }else if(this._obs[i].ID_OBJETO == 7){
         this.security = 1;
         rutaTemp='security';
-      }else if(this._obs[i].ID_OBJETO == 6){
+      }else if(this._obs[i].ID_OBJETO == 8){
         this.reports = 1;
         rutaTemp='reports';
       }

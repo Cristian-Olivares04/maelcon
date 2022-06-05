@@ -5,7 +5,7 @@
             <p class="text-muted">Lista de permisos asiganados a los roles por objeto dentro del sistema.</p>
         </div>
         <div class="col-4">
-            <button class="btn btn-sm btn-outline-success ms-2" (click)="openModal(createPermissions)"><i class="fas fa-plus"></i> Crear permisos</button>
+            <button class="btn btn-sm btn-outline-success ms-2" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModal(createPermissions)"><i class="fas fa-plus"></i> Crear permisos</button>
         </div>
     </div>
     <div class="col-12">
@@ -39,7 +39,7 @@
                     <td><ngb-highlight [result]="per.PERMISO_ELIMINACION | number" [term]="filter.value"></ngb-highlight></td>
                     <td><ngb-highlight [result]="per.PERMISO_ACTUALIZACION | number" [term]="filter.value"></ngb-highlight></td>
                     <td><ngb-highlight [result]="per.PERMISO_CONSULTAR | number" [term]="filter.value"></ngb-highlight></td>
-                    <!-- <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" (click)="openModal(editPermissions)"><i class="fas fa-pen"></i></button></td> -->
+                    <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click)="editPermiso(editPermissions, per.ID_ROL, per.ID_OBJETO)"><i class="fas fa-pen"></i></button></td>
                   </tr>
                   </tbody>
                 </table>
@@ -55,9 +55,8 @@
         </div>
             <div class="modal-body">
                 <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                    <div class="row m-3">
+                        <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
                             <!--Cuadro contenedor de informacion-->
                             <h2 style="color: #0846ffff; margin-top: 20px;">Actualización de Permisos</h2>
                             <div class="row">
@@ -69,7 +68,7 @@
                                                     <i class="fas fa-user"></i>
                                                 </div>
                                                 <div class="div">
-                                                  <select class="form-control" [(ngModel)]="datosPermiso.ID_ROL" name="rol" disabled>
+                                                  <select class="form-control" [(ngModel)]="datos.ID_ROL" name="rol" disabled>
                                                       <option selected disabled>Seleccionar rol</option>
                                                       <option *ngFor="let r of roles" [ngValue]="r.ID_ROL">{{r.ROL}}</option>
                                                   </select>
@@ -86,7 +85,7 @@
                                                     <i class="fas fa-sitemap"></i>
                                                 </div>
                                                 <div class="div">
-                                                  <select class="form-control" [(ngModel)]="datosPermiso.ID_OBJETO" name="objeto" disabled>
+                                                  <select class="form-control" [(ngModel)]="datos.ID_OBJETO" name="objeto" disabled>
                                                     <option selected disabled>Seleccionar Objeto</option>
                                                     <option *ngFor="let ob of objetos" [ngValue]="ob.ID_OBJETO">{{ob.OBJETOS}}</option>
                                                   </select>
@@ -113,24 +112,25 @@
                                                 </thead>
                                                 <tbody>
                                                   <tr>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                                                    <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="con" id="flexCheckCONSULTAR" name="flexCheckCONSULTAR" disabled></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="ins" id="flexCheckINSERTAR" name="flexCheckINSERTAR"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="act" id="flexCheckACTUALIZAR" name="flexCheckACTUALIZAR"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="elim" id="flexCheckELIMINAR" name="flexCheckELIMINAR"></td>
                                                   </tr>
                                                 </tbody>
                                             </table>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Actualizar">
+                                    <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act', 'act')">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-2">
+                            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                                {{msj}}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row pb-3">
                     <p class="text-muted text-center">Sistema de permisos Maelcon S de R. L.</p>
                 </div>
             </div>
@@ -145,9 +145,8 @@
         </div>
         <div class="modal-body">
                 <div>
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+                    <div class="row m-3">
+                        <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
                             <!--Cuadro contenedor de informacion-->
                             <h2 style="color: #0846ffff; margin-top: 20px;">Creación de Permisos</h2>
                             <div class="row">
@@ -203,7 +202,7 @@
                                                 </thead>
                                                 <tbody>
                                                   <tr>
-                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="con" id="flexCheckCONSULTAR" name="flexCheckCONSULTAR"></td>
+                                                    <td><input class="form-check-input" type="checkbox" [(ngModel)]="con" id="flexCheckCONSULTAR" name="flexCheckCONSULTAR" disabled></td>
                                                     <td><input class="form-check-input" type="checkbox" [(ngModel)]="ins" id="flexCheckINSERTAR" name="flexCheckINSERTAR"></td>
                                                     <td><input class="form-check-input" type="checkbox" [(ngModel)]="act" id="flexCheckACTUALIZAR" name="flexCheckACTUALIZAR"></td>
                                                     <td><input class="form-check-input" type="checkbox" [(ngModel)]="elim" id="flexCheckELIMINAR" name="flexCheckELIMINAR"></td>
@@ -212,15 +211,16 @@
                                               </table>
                                         </form>
                                     </div>
-                                    <input type="button" class="btn" value="Crear Permisos" (click)="crearPermiso()">
+                                    <input type="button" class="btn" value="Crear Permisos" (click)="evaluarDatos('add', 'add')">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-2">
+                            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                                {{msj}}
+                            </div>
                         </div>
                     </div>
                 </div>
-            <div class="row">
+            <div class="row pb-3">
                 <p class="text-muted text-center">Sistema de permisos Maelcon S de R. L.</p>
             </div>
         </div>

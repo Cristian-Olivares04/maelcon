@@ -5,7 +5,7 @@
                 <button class="btn btn-sm btn-outline-primary ms-2" (click) = "optionAct(false)"><i class="fas fa-pen"></i> Editar información</button>
             </div>
             <ng-template #edit>
-                <button class="btn btn-sm btn-outline-primary ms-2" (click) = "optionAct(true)"><i class="fas fa-eye"></i> Vizualizar información</button>
+                <button class="btn btn-sm btn-outline-primary ms-2" (click) = "optionAct(true);cancel()"><i class="fas fa-eye"></i> Vizualizar información</button>
             </ng-template>
         </div>
     </div>
@@ -20,9 +20,8 @@
         </div>
     </div>
     <div>
-        <div class="row" *ngIf = "action; else editView">
-            <div class="col-2"></div>
-            <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 50px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+        <div class="row m-3" *ngIf = "action; else editView">
+            <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 50px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
                 <!--Cuadro contenedor de informacion-->
                 <h2 style="color: #0846ffff; margin-top: 20px;">Información General</h2>
                 <!--Columna 1 de informacion-->
@@ -39,7 +38,7 @@
                                     <input class="" readonly type="text" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" placeholder="Nombre" name="nombre">
                                 </div>
                             </div>
-      
+
                             <!--Input Apellido-->
                             <div class="input-div one">
                                 <div class="i">
@@ -49,7 +48,7 @@
                                     <input class="" readonly type="text" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" placeholder="Apellido" name="apellido">
                                 </div>
                             </div>
-      
+
                             <!--Nombre de usuario-->
                             <div class="input-div one">
                                 <div class="i">
@@ -89,7 +88,7 @@
                         </form>
                     </div>
                 </div>
-      
+
                 <!--Columna 2 de informacion-->
                 <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
                     <div class="login-content">
@@ -97,7 +96,7 @@
                             <div class="img-sign-up">
                                 <img style="width: 165px; height: 165px;" src="../../../assets/registro.png" alt="">
                             </div>
-      
+
                             <!--Input Pregunta de seguridad-->
                             <div class="input-div one">
                                 <div class="i">
@@ -129,14 +128,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2">
-            </div>
         </div>
 
         <ng-template #editView>
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-8 row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 50px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
+            <div class="row m-3">
+                <div class="row contenedor" style="text-align: center;  align-items: center; display: flex; margin-top: 50px; margin-bottom: 100px; background-color: #fff; border-radius: 15px;">
                     <!--Cuadro contenedor de informacion-->
                     <h2 style="color: #0846ffff; margin-top: 20px;">Editar información</h2>
                     <!--Columna 1 de informacion-->
@@ -153,7 +149,7 @@
                                         <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
                                     </div>
                                 </div>
-          
+
                                 <!--Input Apellido-->
                                 <div class="input-div one">
                                     <div class="i">
@@ -163,7 +159,7 @@
                                         <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
                                     </div>
                                 </div>
-          
+
                                 <!--Nombre de usuario-->
                                 <div class="input-div one">
                                     <div class="i">
@@ -203,12 +199,12 @@
                             </form>
                         </div>
                     </div>
-          
+
                     <!--Columna 2 de informacion-->
                     <div class="col-6" style="margin-top: 40px; margin-bottom: 40px; align-items: center;">
                         <div class="login-content">
                             <form>
-                                
+
                                 <!--Input Fecha Nacimiento-->
                                 <div class="input-div one">
                                     <div class="i">
@@ -225,17 +221,17 @@
                                         <i class="fas fa-question"></i>
                                     </div>
                                     <div class="div">
-                                        <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="datosUsuario.PREGUNTA" name="pregunta">
+                                        <input class="" type="text" placeholder="Pregunta de seguridad" [(ngModel)]="json.PREGUNTA" name="pregunta">
                                     </div>
                                 </div>
-          
+
                                 <!--Input respuesta de seguridad-->
                                 <div class="input-div one">
                                     <div class="i">
                                         <i class="fas fa-equals"></i>
                                     </div>
                                     <div class="div">
-                                        <input class="" type="password" placeholder="Respuesta"  name="respuesta">
+                                        <input class="" type="password" placeholder="Respuesta"  [(ngModel)]="json.RESPUESTA" name="respuesta">
                                     </div>
                                 </div>
                                 <!--Input de genero-->
@@ -258,13 +254,17 @@
                             </div>
                             </form>
                         </div>
-                        <input type="button" class="btn" value="Actualizar" (click) = "actualizarUsuario()">
                     </div>
-                </div>
-                <div class="col-2">
+
+                    <div class="col-12 d-flex justify-content-between">
+                        <input type="button" class="btn-cancel m-4" value="Cancelar" (click)="optionAct(true);cancel()" data-bs-dismiss="modal">
+                        <input type="button" class="btn m-4" value="Actualizar" (click)="evaluarDatos()">
+                    </div>
+                    <div class="alert alert-danger" role="alert" *ngIf="enam">
+                      {{msj}}
+                    </div>
                 </div>
             </div>
         </ng-template>
     </div>
-
 </div>

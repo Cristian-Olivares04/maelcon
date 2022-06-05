@@ -6,7 +6,7 @@
         </div>
         <div class="col-3">
             <div *ngIf="actionOption; else viewActual">
-                <button class="btn btn-sm btn-outline-primary ms-2" (click)="changeOption(false)"><i class="fas fa-plus"></i> Agregar producto</button>
+                <button class="btn btn-sm btn-outline-primary ms-2" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="changeOption(false)"><i class="fas fa-plus"></i> Agregar producto</button>
             </div>
             <ng-template #viewActual>
                 <button class="btn btn-sm btn-outline-primary ms-2" (click)="changeOption(true)"><i class="fas fa-eye"></i> Ver productos</button>
@@ -127,14 +127,14 @@
     </div>
     <div >
       <!--Llamado a la lista-->
-      <app-list-products-sale [viewOption]=shopping [typeTable]=actionOption [listaProds]=listadoProds [listaDetalle]=listDetalleVenta (listaDetalleAct)="procesDatos($event)" (detProdElim)="elimProdDetalle($event)" (detProdAct)="actProdDetalle($event)" (datsVentaActual)="actVentaAct($event)"></app-list-products-sale>
+      <app-list-products-sale [viewOption]=shopping [typeTable]=actionOption [listaProds]=listadoProds [listaDetalle]=listDetalleVenta (listaDetalleAct)="procesDatos($event)" (detProdElim)="elimProdDetalle($event)" (detProdAct)="actProdDetalle($event)" (datVentaAct)="actVentaAct($event)"></app-list-products-sale>
     </div>
     <div class="col-12 row justify-content-between">
         <div class="col-6">
-            <input type="button" class="btn-cancel" value="Eliminar" (click)="eliminarVenta()">
+            <input type="button" class="btn-cancel" *ngIf="_permisos.PERMISO_ELIMINACION==1" value="Eliminar" (click)="eliminarVenta()">
         </div>
         <div class="col-6">
-            <input type="button" class="btn" value="Finalizar compra" (click)="finalizarVenta()">
+            <input type="button" class="btn" value="Finalizar venta" (click)="finalizarVenta()">
         </div>
     </div>
 </div>

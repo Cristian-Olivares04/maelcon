@@ -25,4 +25,8 @@ export class AppComponent {
       this.user = false;
     }
   }
+
+  cambiarEstado(opcion){
+    this.user=opcion;
+  }
 }

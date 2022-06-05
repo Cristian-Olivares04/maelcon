@@ -29,9 +29,9 @@
                           Correo incorrecto, ingrese un correo valido
                       </div>
                       <div class="alert alert-danger" role="alert" *ngIf="status">
-                          Usuario no encontrado, verifique los campos
+                          Usuario no encontrado o inactivo, verifique los campos o comuniquese con el administrador
                       </div>
-                      <a [routerLink]="['/login', { outlets: { 'modal': ['recuperacion'] }}]" data-bs-toggle="modal" data-bs-target="#recup">¿Olvidaste tu contraseña?</a>
+                      <a data-bs-toggle="modal" data-bs-target="#recup">¿Olvidaste tu contraseña?</a>
                       <a [routerLink]="['/sign-up']" style="margin-top: 10px;">¿No tienes una cuenta? Registrate ahora.</a>
                       <input type="button" class="btn" value="Login" (click)="iniciarSesion()">
                   </form>
@@ -49,28 +49,47 @@
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
           <div class="modal-header" style="text-align: center; display: block;">
-              <h3 style="color: #0846ffff;">Pregunta de recuperacion</h3>
+              <h3 *ngIf = "!opcion" style="color: #0846ffff;">Ingrese su correo</h3>
+              <h3 *ngIf = "opcion" style="color: #0846ffff;">Recuperar Contraseña</h3>
           </div>
           <div class="modal-body">
               <div class="login-content">
                   <form>
                       <!--Input de correo-->
-                      <div class="input-div one">
+                      <div *ngIf = "opcion" class="input-div one">
                           <div class="i">
                               <i class="fas fa-envelope"></i>
                           </div>
                           <div class="div">
-                              <input type="text" placeholder="Correo" name="correo">
+                              <input type="text" placeholder="Correo" [(ngModel)] = "correoRecuperacion"  name="correo" readonly>
                           </div>
                       </div>
 
+                      <div *ngIf = "!opcion" class="input-div one">
+                        <div class="i">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="div">
+                            <input type="text" placeholder="Correo" [(ngModel)] = "correoRecuperacion"  name="correo">
+                        </div>
+                    </div>
+
                       <!--Input de respuesta-->
-                      <div class="input-div one">
+                      <div *ngIf = "opcion" class="input-div one">
+                        <div class="i">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        <div class="div">
+                            <input class="" type="text" placeholder="Pregunta" [(ngModel)] = "preguntaSeg" name="pregunta" readonly>
+                        </div>
+                      </div>
+
+                      <div *ngIf = "opcion" class="input-div one">
                           <div class="i">
                               <i class="fas fa-equals"></i>
                           </div>
                           <div class="div">
-                              <input class="" type="text" placeholder="Respuesta" name="respuesta">
+                              <input class="" type="text" placeholder="Respuesta" [(ngModel)] = "respuestaSeguridad" name="respuesta">
                           </div>
                       </div>
                   </form>
@@ -78,14 +97,15 @@
           </div>
           <div class="row">
               <div class="col-6">
-                  <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn-cancel" data-bs-dismiss="modal" (click) = "cancelar()">Cerrar</button>
               </div>
-              <div class="col-6">
-                  <button type="button" class="btn btn-primary">Enviar</button>
+              <div *ngIf = "!opcion" class="col-6">
+                  <button type="button" class="btn btn-primary" (click) = "obtenerPregunta()">Verificar</button>
               </div>
+              <div *ngIf = "opcion" class="col-6">
+                <button type="button" class="btn btn-primary" (click) = "validarRespuesta()">Enviar</button>
+            </div>
           </div>
       </div>
   </div>
 </div>
-
-<router-outlet></router-outlet>

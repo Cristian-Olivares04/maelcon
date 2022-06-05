@@ -8,6 +8,7 @@ import { Help } from 'src/app/interfaces/objects.interface';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AyudaService } from 'src/app/services/ayuda.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 function search(HELP: any, text: string, pipe: PipeTransform): Help[] {
   //console.log('ob',HELP);
@@ -33,14 +34,21 @@ export class InfoTableComponent implements OnInit {
   Help:Help[]=this.MA._ayuda;
   condition=false;
   fechaAct:any;
+  _permisos:any;
 
-  constructor( private MA:AyudaService, private datepipe:DatePipe, private pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router) {
+  constructor( private MA:AyudaService, private US: UsuariosService, private datepipe:DatePipe, private pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router) {
     let currentDateTime = this.datepipe.transform((new Date), 'yyyy-MM-dd');
     this.fechaAct = currentDateTime;
     this.MA.obtenerInfoAyuda();
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==5){
+        this._permisos=this.US._permisos[i];
+      }
+    }
+
     this.Help=this.MA._ayuda;
     for(let i = 0; i < this.Help.length; i++){
-      //this.Help[i].FECHA_CREACION = this.datepipe.transform((this.Help[i].FECHA_CREACION).toString(), 'yyyy-MM-dd');
+      //(this.Help[i].FECHA_CREACION) = this.datepipe.transform((this.Help[i].FECHA_CREACION), 'yyyy-MM-dd');
     }
     console.log(this.Help);
     this.HelpInter = this.filter.valueChanges.pipe(

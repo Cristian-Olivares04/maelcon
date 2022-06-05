@@ -33,7 +33,8 @@ export class SignupAdmonComponent {
     ESTADO: 0,
     SUELDO: 12000.85,
     NOMBRE_PERSONA: '',
-    APELLIDO_PERSONA: ''
+    APELLIDO_PERSONA: '',
+    MODIFICADO_POR: 0
   }
 
   public validacionCorreo: boolean = false;
@@ -45,7 +46,7 @@ export class SignupAdmonComponent {
   _usAct=this.US._usuarioActual;
   _roles:Role[]=[];
   _puestos:Puesto[]=this.MS._puestos;
-  _generos = [{'VALOR':'MASCULINO'}, {'VALOR':'FEMENINO'}, {'VALOR':'OTRO'}, {'VALOR':'PREFIERO NO ESPECIFICAR'}];
+  _generos = [{'VALOR':'Masculino'}, {'VALOR':'Femenino'}];
 
   constructor (private US:UsuariosService, private MS:MantenimientoService, private _Router:Router, private modal: NgbModal){
     this.MS.obtenerRoles();

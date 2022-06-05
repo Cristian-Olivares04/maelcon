@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, startWith, map } from 'rxjs';
 import { Category } from 'src/app/interfaces/objects.interface';
 import { InventarioService } from 'src/app/services/inventario.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
 function search(CATEGORIA:any, text: string): Category[] {
@@ -28,7 +29,10 @@ export class CategoriesComponent implements OnInit {
   filter = new FormControl('');
   modal=false;
   enam=false;
+  descAnt=''
+  catAnt=''
   msj='';
+  _permisos:any;
 
   @Input() datosCategory:Category={
     ID_CATEGORIA: 0,
@@ -36,8 +40,13 @@ export class CategoriesComponent implements OnInit {
     DESCRIPCION: ''
   }
 
-  constructor(private IN:InventarioService, private _Router:Router, private modalService:NgbModal) {
+  constructor(private IN:InventarioService, private US:UsuariosService, private _Router:Router, private modalService:NgbModal) {
     this.IN.obtenerCategorias()
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==4){
+        this._permisos=this.US._permisos[i];
+      }
+    }
     this._categorias=this.IN._categorias;
     this.catInter = this.filter.valueChanges.pipe(
       startWith(''),
@@ -64,6 +73,8 @@ export class CategoriesComponent implements OnInit {
         this.datosCategory=cat;
       }
     }
+    this.descAnt=this.datosCategory.DESCRIPCION
+    this.catAnt=this.datosCategory.CATEGORIA
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
 
@@ -73,15 +84,16 @@ export class CategoriesComponent implements OnInit {
       CATEGORIA: '',
       DESCRIPCION: ''
     }
+    this.enam=false
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
 
   agregarCat(){
-    console.log('datosCategory', this.datosCategory)
+    //console.log('datosCategory', this.datosCategory)
     this.IN.crearCategoria(this.datosCategory).subscribe((resp) => {
-      console.log('resp',resp);
+      //console.log('resp',resp);
       this.IN.obtenerCategorias();
-      if(resp[0]['CODIGO']==1){
+      if(resp['mensaje'][0]['CODIGO']==1){
         Swal.fire({
           title: `Bien hecho...`,
           text:  `Categoría creada exitosamente`,
@@ -116,10 +128,10 @@ export class CategoriesComponent implements OnInit {
   }
 
   actualizarCat(){
-    console.log('datosCategory', this.datosCategory)
+    //console.log('datosCategory', this.datosCategory)
     this.IN.actualizarCategoria(this.datosCategory, this.datosCategory.ID_CATEGORIA).subscribe((resp) => {
-      console.log('resp',resp);
-      if(resp[0]['CODIGO']==1){
+      //console.log('resp',resp);
+      if(resp['mensaje'][0]['CODIGO']==1){
         for (let i = 0; i < this._categorias.length; i++) {
           const element = this._categorias[i];
           if(element.ID_CATEGORIA==this.datosCategory.ID_CATEGORIA){
@@ -153,14 +165,24 @@ export class CategoriesComponent implements OnInit {
 
   evaluarDatos(opcion:any) {
     let cat=false;
-    if (this.datosCategory.CATEGORIA.length<3) {
+    let catR=false
+    if (this.verificacionDatos('nombre')) {
       cat=true;
-      this.msj='Nombre categoria muy corto'
+      this.msj='Nombre categoría invalido, debe tener al menos la inicial mayuscula y mas de tres letras'
     }
     if (this.datosCategory.DESCRIPCION.length==0) {
       this.datosCategory.DESCRIPCION='SIN DESCRIPCION'
     }
-    if(!cat){
+    for (let i = 0; i < this._categorias.length; i++) {
+      const element = this._categorias[i];
+      if(element.ID_CATEGORIA!=this.datosCategory.ID_CATEGORIA){
+        if (element.CATEGORIA==this.datosCategory.CATEGORIA) {
+          catR=true;
+          this.msj='Ya existe una categoría con este nombre'
+        }
+      }
+    }
+    if(!cat && !catR){
       if(opcion=='add'){
         this.agregarCat();
       }else{
@@ -170,5 +192,25 @@ export class CategoriesComponent implements OnInit {
     }else{
       this.enam=true;
     }
+  }
+
+  verificacionDatos(opcion:any){
+    let validation=false;
+    if(opcion=='nombre'){
+      const regex = /^([A-ZÁÉÍÓÚ]{1}[a-zA-ZñÑáéíóúÁÉÍÓÚ]{2,}[\s]{0,1})+$/;
+      if(regex.test(this.datosCategory.CATEGORIA)){
+        validation=false;
+      }else{
+        validation=true;
+      }
+    }
+    return validation
+  }
+
+  cancel(){
+    this.datosCategory.DESCRIPCION=this.descAnt
+    this.datosCategory.CATEGORIA=this.catAnt
+    this.msj=''
+    this.enam=false
   }
 }

@@ -9,6 +9,7 @@ import { InventarioService } from 'src/app/services/inventario.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { VentasService } from 'src/app/services/ventas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-card-sales',
@@ -19,7 +20,6 @@ export class CardSalesComponent implements OnInit {
   shopping = false;
   actionVal:any = 0;
   activo:any = true;
-  _obs:Permission[]=this.US._permisos;
   _productosCompletos:CompleteProduct[]=[];
   _productosExis:CompleteProduct[]=[];
   _ventas:any[]=[];
@@ -34,27 +34,18 @@ export class CardSalesComponent implements OnInit {
   page_number = 1;
   page_size = 4;
   collectionSize = 0;
-
-  ob:Permission = {
-    ID_OBJETO: 0,
-    ID_ROL: 0,
-    PERMISO_INSERCION: 0,
-    PERMISO_ELIMINACION: 0,
-    PERMISO_ACTUALIZACION: 0,
-    PERMISO_CONSULTAR: 0,
-    CREADO_POR: 0
-  }
+  _permisos:any;
 
   @Input() datosEncabezado:Sale={
-    ID_PAGO: 0,
+    ID_PAGO: 1,
     ID_USUARIO: 0,
-    ID_CLIENTE: 0,
+    ID_CLIENTE: 1,
     DESCRIPCION: ''
   }
 
   @Input() datosVenta:SaleInit={
     ID_VENTA: 0,
-    ID_PAGO: 0,
+    ID_PAGO: 1,
     FORMA_PAGO: '',
     ID_USUARIO: 0,
     USUARIO: '',
@@ -72,7 +63,6 @@ export class CardSalesComponent implements OnInit {
   constructor(private VS:VentasService, private MS:MantenimientoService, private IN:InventarioService, private modalService: NgbModal, private US:UsuariosService,  private datepipe:DatePipe) {
     let currentDateTime =this.datepipe.transform((new Date), 'yyyy-MM-dd');
     this.fechaAct=currentDateTime;
-    this._obs=this.US._permisos;
     this.IN.obtenerProductosCompletos();
     this.MS.obtenerMetodosPagos();
     this.US.obtenerUsuarios();
@@ -85,10 +75,9 @@ export class CardSalesComponent implements OnInit {
     this._usuarios = this.US._usuarios;
     this._clientes = this.VS._clientes;
 
-    for (let i = 0; i < this._obs.length; i++) {
-      if(this._obs[i].ID_OBJETO ==3){
-        this.ob = this._obs[i];
-        //console.log(this.ob)
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==2){
+        this._permisos=this.US._permisos[i];
       }
     }
     for (let i = 0; i < this._productosCompletos.length; i++) {
@@ -109,7 +98,7 @@ export class CardSalesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  actListadoCompras(){
+  actListadoVentas(){
     //console.log('entro a ac lista ventas', this._COMPRAS)
     this._ventas=this.VS._ventas;
     this.collectionSize = this.VS._ventas.length;
@@ -136,7 +125,7 @@ export class CardSalesComponent implements OnInit {
         this.VS.obtenerDetalleVenta(id);
         this.VS.datosVentAct=vent;
         this._listDetails=this.VS._detallesVenta;
-        console.log('detalles venta: ', this._listDetails)
+        //console.log('detalles venta: ', this._listDetails)
       }
     }
   }
@@ -153,21 +142,21 @@ export class CardSalesComponent implements OnInit {
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'xl' });
   }
 
-  actCompra(){
+  actVenta(){
     console.log('datosProducto a actualizar',this.datosVenta)
     this.modalService.dismissAll();
   }
 
-  crearCompra(){
+  crearVenta(){
     this.datosVenta.ID_USUARIO=this._usAct
     console.log('datosCrear',this.datosVenta);
-    /* this.VS.crearVentaEncabezado(this.datosVenta).subscribe((resp) => {
+    this.VS.crearVentaEncabezado(this.datosVenta).subscribe((resp) => {
       //console.log('resp',resp['mensaje']);
-      this.CP.obtenerListaCompras().subscribe((respu) => {
-        //console.log('compras lista',respu['proveedores']);
+      this.VS.obtenerListaVentas().subscribe((respu) => {
+        console.log('ventas lista',respu['usuario']);
         if(respu['mensaje'][0]['CODIGO']==1){
-          this._COMPRAS=respu['proveedores'];
-          this.actListadoCompras()
+          this.VS._ventas=respu['usuario'];
+          this.actListadoVentas()
         }else{
           //console.log('no',resp);
         }
@@ -175,18 +164,20 @@ export class CardSalesComponent implements OnInit {
       if(resp['mensaje'][0]['CODIGO']==1){
         Swal.fire({
           icon: 'success',
-          title: 'Crear compra',
-          text: 'La compra se creo exitosamente',
+          title: 'Crear venta',
+          text: 'La venta se creo exitosamente',
         })
+        this.modalService.dismissAll()
       }else{
         Swal.fire({
           icon: 'error',
-          title: 'Oops... No se pudo crear la compra',
+          title: 'Oops... No se pudo crear la venta',
           text: 'Algo salio mal!'
         })
+        this.modalService.dismissAll()
         //console.log('no',resp);
       }
-    }); */
+    });
   }
 
   actDatosVenta(datos:any){
@@ -214,5 +205,24 @@ export class CardSalesComponent implements OnInit {
 
   ProcesarListComp(lista:any){
     this._ventas2=lista;
+  }
+
+  cerrar(){
+    this.datosVenta={
+      ID_VENTA: 0,
+      ID_PAGO: 1,
+      FORMA_PAGO: '',
+      ID_USUARIO: 0,
+      USUARIO: '',
+      CANTIDAD_VENTA: 0,
+      FECHA_VENTA: '',
+      ID_CLIENTE: 1,
+      NOMBRE_CLIENTE: '',
+      ISV: 0,
+      TOTAL_VENTA: 0,
+      DESCRIPCION_VENTA: '',
+      ESTADO: 0,
+      COMISION_EMPLEADO: 0
+    }
   }
 }

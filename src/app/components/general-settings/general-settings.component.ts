@@ -15,7 +15,8 @@ export class GeneralSettingsComponent implements OnInit {
   rend=false;
   usAct=this.US._usuarioActual;
   _params:Parameter[]=[];
-  msjCheck='';
+  msj='';
+  enam=false
 
   @Input() datosParametros = {
     intentos_sesion:0,
@@ -34,6 +35,7 @@ export class GeneralSettingsComponent implements OnInit {
 
   actionAct(value:any){
     this.actionVal = value;
+    this.enam=false
   }
 
   obtenerParametros(){
@@ -47,7 +49,6 @@ export class GeneralSettingsComponent implements OnInit {
       this.rend=true;
     }else{
       //console.log('no',resp);
-      this.msjCheck=`No se pudo obtener la lista de parametros`
     }
   }
 
@@ -101,20 +102,61 @@ export class GeneralSettingsComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.actionAct(0);
-            localStorage.setItem('ruta', 'security');
-            this._Router.navigate(['/security/path?refresh=1']);
-          } else {
             console.log(`modal was dismissed by ${result.dismiss}`);
-            localStorage.setItem('ruta', 'security');
-            this._Router.navigate(['/security/path?refresh=1']);
+          } else {
+            this.actionAct(0);
+            console.log(`modal was dismissed by ${result.dismiss}`);
           }
         })
       }else{
         //console.log('no',resp);
-        this.msjCheck=`No se pudo actualizar los parametros`
       }
     });
 
   }
 
+  evaluarDatos(){
+    console.log('entro a evaluar')
+    let iS=false
+    let iR=false
+    let tD=false
+    let ISV=false
+    let cM=false
+    if(this.evaluarReg(this.datosParametros.intentos_sesion.toString())){
+      iS=true
+      this.msj='Intentos de sesión debe ser un entero positivo'
+    }
+    if(this.evaluarReg(this.datosParametros.intentos_recuperacion.toString())){
+      iR=true
+      this.msj='Intentos de recuperación debe ser un entero positivo'
+    }
+    if(this.evaluarReg(this.datosParametros.tiempo_duracion.toString())){
+      tD=true
+      this.msj='Tiempo de duración debe ser un entero positivo'
+    }
+    if(this.evaluarReg(this.datosParametros.ISV.toString())){
+      ISV=true
+      this.msj='ISV debe ser un entero positivo'
+    }
+    if(this.evaluarReg(this.datosParametros.comision.toString())){
+      cM=true
+      this.msj='Comisión debe ser un entero positivo'
+    }
+    if(!iS && !iR && !tD && !ISV && !cM){
+      this.actualizarParametros();
+    }else{
+      this.enam=true;
+    }
+  }
+
+  evaluarReg(dato:string){
+    let validation=false;
+    const regexi = /^([0-9]){1,}$/;
+    if(regexi.test(dato)){
+      validation=false;
+    }else{
+      validation=true;
+    }
+    return validation
+  }
 }

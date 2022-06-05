@@ -49,10 +49,9 @@
               <td>
                 <ngb-highlight [result]="prodDetail.SUB_TOTAL| number" [term]="filter.value"></ngb-highlight>
               </td>
-              <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2"
-                  (click)="openModalAct(editProductSales, prodDetail.ID_PRODUCTO)"><i class="fas fa-pen"></i></button>
+              <td><button class="btn btn-disable btn-sm btn-outline-primary ms-2" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click)="openModalAct(editProductSales, prodDetail.ID_PRODUCTO)"><i class="fas fa-pen"></i></button>
               </td>
-              <td><button class="btn-alert btn-sm btn-outline-alert ms-2"
+              <td><button class="btn-alert btn-sm btn-outline-alert ms-2" *ngIf="_permisos.PERMISO_ELIMINACION==1"
                   (click)="eliminarProd(prodDetail.ID_PRODUCTO)"><i class="fas fa-trash"></i></button></td>
             </tr>
           </tbody>
@@ -87,9 +86,9 @@
                 <th scope="col">#</th>
                 <th scope="col">NOMBRE</th>
                 <th scope="col">MARCA</th>
-                <th scope="col">DESCRIPCION</th>
-                <th scope="col">EXISTENCIA</th>
                 <th scope="col">CATEGORIA</th>
+                <th scope="col">EXISTENCIA</th>
+                <th scope="col">DESCRIPCION</th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +125,7 @@
 <ng-template #addProductSales let-modal>
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      <button type="button" id="closeAddProd" class="btn-close" (click)="modal.dismiss('Cross click');cerrar()"></button>
     </div>
     <div class="modal-body m-0 p-0">
       <div>
@@ -141,26 +140,21 @@
                   <form>
                     <div class="input-div">
                       <div class="i">
-                        <i class="fas fa-coins"></i>
-                      </div>
-                      <div class="div">
-                        <input class="" type="number" placeholder="Precio" name="precio" readonly>
-                      </div>
-                    </div>
-                    <div class="input-div">
-                      <div class="i">
                         <i class="fas fa-hashtag"></i>
                       </div>
                       <div class="div">
-                        <input class="" type="number" placeholder="Cantidad" name="cantidad">
+                        <input class="" type="number" min="1" [max]="datosVentProd.EXISTENCIA" placeholder="Cantidad" [(ngModel)]="datosDetalleProd.CANTIDAD_PRODUCTO" name="cantidad">
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
               <div class="col-6">
-                <input type="button" class="btn" value="Agregar producto">
+                <input type="button" class="btn" value="Agregar producto" (click)="evaluarDatos('add')">
               </div>
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="enam">
+                {{msj}}
             </div>
           </div>
         </div>
@@ -176,7 +170,7 @@
 <ng-template #editProductSales let-modal>
   <div class="modal-content">
     <div class="modal-header d-flex justify-content-end" style="text-align: center; display: block;">
-      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      <button type="button" id="closeActProd" class="btn-close" (click)="modal.dismiss('Cross click');cancel()"></button>
     </div>
     <div class="modal-body m-0 p-0">
       <div>
@@ -184,45 +178,28 @@
           <div class="row contenedor m-3"
             style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
             <!--Cuadro contenedor de informacion-->
-            <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar producto</h2>
+            <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar producto de la venta</h2>
             <div class="row">
               <div class="col-6">
                 <div class="login-content">
                   <form>
                     <div class="input-div">
                       <div class="i">
-                        <i class="fas fa-coins"></i>
-                      </div>
-                      <div class="div">
-                        <input class="" type="number" placeholder="Precio unitario" name="precio">
-                      </div>
-                    </div>
-                    <div class="input-div">
-                      <div class="i">
                         <i class="fas fa-hashtag"></i>
                       </div>
                       <div class="div">
-                        <input class="" type="number" placeholder="Cantidad" name="cantidad">
+                        <input class="" type="number" min="1" [max]="datosVentProd.EXISTENCIA" placeholder="Cantidad" [(ngModel)]="datosDetalleProd.CANTIDAD_PRODUCTO" name="cantidad">
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
               <div class="col-6">
-                <div class="login-content">
-                  <form>
-                    <div class="input-div">
-                      <div class="i">
-                        <i class="fas fa-info"></i>
-                      </div>
-                      <div class="div">
-                        <input type="text" placeholder="Descripción" name="descripcion">
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <input type="button" class="btn" value="Actualizar producto">
+                <input type="button" class="btn" value="Actualizar producto" (click)="evaluarDatos('act')">
               </div>
+            </div>
+            <div class="alert alert-danger p-2" role="alert" *ngIf="enam">
+                {{msj}}
             </div>
           </div>
         </div>

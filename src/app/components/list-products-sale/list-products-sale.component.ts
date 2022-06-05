@@ -9,6 +9,7 @@ import { ComprasService } from 'src/app/services/compras.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import Swal from 'sweetalert2';
 import { VentasService } from 'src/app/services/ventas.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 
 interface Country {
@@ -83,7 +84,7 @@ export class ListProductsSaleComponent implements OnInit {
   @Output() listaDetalleAct = new EventEmitter<SaleDetail>();
   @Output() detProdElim = new EventEmitter<any>();
   @Output() detProdAct = new EventEmitter<SaleDetail>();
-  @Output() datsVentaActual = new EventEmitter<any>();
+  @Output() datVentaAct = new EventEmitter<any>();
   existInter: Observable<CompleteProduct[]>;
   filter = new FormControl('');
   _productosExis:CompleteProduct[] = [];
@@ -95,9 +96,11 @@ export class ListProductsSaleComponent implements OnInit {
   tempISVComp=0;
   tempCTotComp=0;
   _isvPorcentaje:any;
+  _comision:any;
   msj='';
+  _permisos:any;
 
-  datosDetalle:SaleDetail={
+  @Input() datosDetalleProd:SaleDetail={
     ID_DETALLE_VENTA: 0,
     ID_PRODUCTO: 0,
     NOMBRE_PRODUCTO: '',
@@ -105,13 +108,14 @@ export class ListProductsSaleComponent implements OnInit {
     IMG_PRODUCTO: '',
     ID_VENTA: 0,
     MONTO_UNITARIO: 0,
-    CANTIDAD_PRODUCTO: 0,
+    CANTIDAD_PRODUCTO: 1,
     SUB_TOTAL: 0,
     TOTAL: 0
   }
 
-  datosVentProd:CompleteProduct={
+  @Input() datosVentProd:CompleteProduct={
     ID_PRODUCTO: 0,
+    ID_INVENTARIO: 0,
     NOMBRE_PRODUCTO: '',
     MARCA_PRODUCTO: '',
     DESCRIPCION_PRODUCTO: '',
@@ -122,6 +126,19 @@ export class ListProductsSaleComponent implements OnInit {
     NOMBRE_PROVEEDOR: '',
     ID_PROVEEDOR: 0,
     ESTADO: 0
+  }
+
+  datosTemp={
+    ID_DETALLE_VENTA: 0,
+    ID_PRODUCTO: 0,
+    NOMBRE_PRODUCTO: '',
+    MARCA_PRODUCTO: '',
+    IMG_PRODUCTO: '',
+    ID_VENTA: 0,
+    MONTO_UNITARIO: 0,
+    CANTIDAD_PRODUCTO: 1,
+    SUB_TOTAL: 0,
+    TOTAL: 0
   }
 
   ventaAct:SaleInit = {
@@ -141,9 +158,16 @@ export class ListProductsSaleComponent implements OnInit {
     COMISION_EMPLEADO: 0
   }
 
-  constructor( private VS:VentasService, private MS:MantenimientoService, private pipe: DecimalPipe, private modalService: NgbModal) {
+  constructor( private VS:VentasService,private US:UsuariosService, private MS:MantenimientoService, private pipe: DecimalPipe, private modalService: NgbModal) {
     this.ventaAct=this.VS.datosVentAct;
     this._isvPorcentaje=this.MS._params[0]['VALOR'];
+    this._comision=this.MS._params[1]['VALOR'];
+
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==2){
+        this._permisos=this.US._permisos[i];
+      }
+    }
 
     this.detalleInter = this.filter.valueChanges.pipe(
       startWith(''),
@@ -157,9 +181,6 @@ export class ListProductsSaleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log('lista-prods',this.listaProds)
-    //console.log('lista-detalle',this.listaDetalle)
-    //console.log('isvPorcentaje',this._isvPorcentaje)
     this.evaluarProds();
   }
 
@@ -185,64 +206,87 @@ export class ListProductsSaleComponent implements OnInit {
 
   openModalAddProd(content:Object, id:any){
     console.log('escogio prod con id: ',id);
-    this.datosVentProd.ID_PRODUCTO=id;
+    for (let i = 0; i < this.listaProds.length; i++) {
+      const element = this.listaProds[i];
+      if(element.ID_PRODUCTO==id){
+        this.datosVentProd=element;
+      }
+    }
+    this.datosDetalleProd.ID_PRODUCTO=id
+    this.datosDetalleProd.NOMBRE_PRODUCTO=this.datosVentProd.NOMBRE_PRODUCTO
+    this.datosDetalleProd.MARCA_PRODUCTO=this.datosVentProd.MARCA_PRODUCTO
+    this.datosDetalleProd.MONTO_UNITARIO=this.datosVentProd.PRECIO_UNITARIO
+    console.log('datosVentaProd: ', this.datosVentProd)
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
 
   openModalAct(content:Object, id:any){
     //console.log('escogio prod con id: ',id);
-    /* for (let i = 0; i < this.listaDetalle.length; i++) {
+    for (let i = 0; i < this.listaDetalle.length; i++) {
       const element = this.listaDetalle[i];
       if(element.ID_PRODUCTO==id){
-        for (let j = 0; j < this.listaProds.length; j++) {
-          const elem = this.listaProds[j];
-          if(element.ID_PRODUCTO==elem.ID_PRODUCTO){
-            this.datosVentProd.DESCRIPCION_PRODUCTO=elem.DESCRIPCION_PRODUCTO;
-            this.datosVentProd.ID_PRODUCTO=id;
-            this.datosVentProd.PRECIO_UNITARIO=element.PRECIO_UNITARIO;
-            this.datosVentProd.can=element.CANTIDAD_PRODUCTO;
-          }
-        }
+        this.datosDetalleProd=element;
       }
-    } */
+    }
+    for (let i = 0; i < this.listaProds.length; i++) {
+      const element = this.listaProds[i];
+      if(element.ID_PRODUCTO==id){
+        this.datosVentProd=element;
+      }
+    }
+    this.datosTemp={
+      ID_DETALLE_VENTA: 0,
+      ID_PRODUCTO: 0,
+      NOMBRE_PRODUCTO: this.datosVentProd.NOMBRE_PRODUCTO,
+      MARCA_PRODUCTO: this.datosVentProd.MARCA_PRODUCTO,
+      IMG_PRODUCTO: '',
+      ID_VENTA: 0,
+      MONTO_UNITARIO: this.datosVentProd.PRECIO_UNITARIO,
+      CANTIDAD_PRODUCTO: this.datosDetalleProd.CANTIDAD_PRODUCTO,
+      SUB_TOTAL: 0,
+      TOTAL: 0
+    }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
 
   agregarProd(){
-    console.log('lista-hijo',this.listaProds)
-    /* for (let i = 0; i < this.listaProds.length; i++) {
-      const element = this.listaProds[i];
-      if(element.ID_PRODUCTO==this.datosProdComp.ID_PRODUCTO){
-        this.datosDetalle.ID_PRODUCTO=this.datosProdComp.ID_PRODUCTO
-        this.datosDetalle.NOMBRE_PRODUCTO=element.NOMBRE_PRODUCTO
-        this.datosDetalle.MARCA_PRODUCTO=element.MARCA_PRODUCTO
-        this.datosDetalle.PRECIO_UNITARIO=this.datosProdComp.PRECIO_UNITARIO
-        this.datosDetalle.CANTIDAD_PRODUCTO=this.datosProdComp.CANTIDAD
-        this.datosDetalle.SUB_TOTAL=this.datosProdComp.PRECIO_UNITARIO*this.datosProdComp.CANTIDAD
-      }
-    }
-    this.datosProdComp.ID_COMPRA =  this.CP.datosCompAct.ID_COMPRA
-    this.CP.agregarProdCompra(this.datosProdComp).subscribe((resp) => {
-      //console.log('resp',resp['mensaje']);
+    //console.log('lista-hijo',this.listaProds)
+    this.datosDetalleProd.SUB_TOTAL=this.datosDetalleProd.CANTIDAD_PRODUCTO*this.datosDetalleProd.MONTO_UNITARIO;
+    //console.log('prodEnviado ', this.datosDetalleProd)
+    this.VS.anadirProducto(this.datosDetalleProd, this.ventaAct.ID_VENTA).subscribe((resp) => {
+      console.log('resp addProd',resp);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._compAct.ISV_COMPRA+= this.datosDetalle.SUB_TOTAL*(this._isvPorcentaje/100);
-        this._compAct.TOTAL_COMPRA+= this.datosDetalle.SUB_TOTAL;
-        this.tempCTotComp=this._compAct.TOTAL_COMPRA;
-        this.tempISVComp=this._compAct.ISV_COMPRA;
-        this.datsVentaActual.emit(this._compAct);
-        this.listaDetalleAct.emit(this.datosDetalle);
-        this.listaAddBool=[];
-        this.evaluarProds();
-        let dc = document.getElementById("closeAddProd");
-        dc?.click()
-
-        this.datosProdComp={
-          ID_PRODUCTO: 0,
-          ID_COMPRA: 0,
-          PRECIO_UNITARIO: 1,
-          DESCRIPCION: '',
-          CANTIDAD: 1
-        }
+        this.VS.obtenerVenta(this.ventaAct.ID_VENTA).subscribe((respu) => {
+          console.log('resp obt venta por id: ',respu['usuario']);
+          if(respu['mensaje'][0]['CODIGO']==1){
+            this.ventaAct=respu['usuario'][0]
+            this.datVentaAct.emit(this.ventaAct);
+            this.listaDetalleAct.emit(this.datosDetalleProd);
+            this.listaAddBool=[];
+            this.evaluarProds();
+            Swal.fire({
+              icon: 'success',
+              title: 'Producto agregado con exito'
+            })
+            let dc = document.getElementById("closeAddProd");
+            dc?.click()
+            this.datosDetalleProd={
+              ID_DETALLE_VENTA: 0,
+              ID_PRODUCTO: 0,
+              NOMBRE_PRODUCTO: '',
+              MARCA_PRODUCTO: '',
+              IMG_PRODUCTO: '',
+              ID_VENTA: 0,
+              MONTO_UNITARIO: 0,
+              CANTIDAD_PRODUCTO: 1,
+              SUB_TOTAL: 0,
+              TOTAL: 0
+            }
+            this.enam=false
+          }else{
+            //console.log('no',resp);
+          }
+        });
       }else{
         Swal.fire({
           icon: 'error',
@@ -251,115 +295,149 @@ export class ListProductsSaleComponent implements OnInit {
         })
         let dc = document.getElementById("closeAddProd");
         dc?.click()
+        this.enam=false
         //console.log('no',resp);
       }
-    }); */
+    });
   }
 
   eliminarProd(id:any){
-    /* let isv=0;
-    let subTot=0;
     let js={
       "ID_PRODUCTO":id,
-      "ID_COMPRA":this.CP.datosCompAct.ID_COMPRA,
+      "ID_VENTA":this.ventaAct.ID_VENTA
     }
-    for (let i = 0; i < this.listaDetalle.length; i++) {
-      const element = this.listaDetalle[i];
-      if(element.ID_PRODUCTO==id){
-        isv=element.SUB_TOTAL*(this._isvPorcentaje/100);
-        subTot=element.SUB_TOTAL
-      }
-    }
-    this.CP.eliminarProducto(js).subscribe((resp) => {
+    this.VS.eliminarProducto(js, this.ventaAct.ID_VENTA).subscribe((resp) => {
       //console.log('resp',resp['mensaje']);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._compAct.ISV_COMPRA-= isv;
-        this._compAct.TOTAL_COMPRA-= (subTot);
-        this.tempCTotComp=this._compAct.TOTAL_COMPRA;
-        this.tempISVComp=this._compAct.ISV_COMPRA;
-        this.datsVentaActual.emit(this._compAct);
-        this.detProdElim.emit(js);
-        this.listaAddBool=[];
-        this.evaluarProds();
+        this.VS.obtenerVenta(this.ventaAct.ID_VENTA).subscribe((respu) => {
+          console.log('resp obt venta por id: ',respu['usuario']);
+          if(respu['mensaje'][0]['CODIGO']==1){
+            this.ventaAct=respu['usuario'][0]
+            this.datVentaAct.emit(this.ventaAct);
+            this.detProdElim.emit(js);
+            this.listaAddBool=[];
+            this.evaluarProds();
+          }else{
+            //console.log('no',resp);
+          }
+        });
       }else{
         //console.log('no',resp);
       }
-    }); */
+    });
   }
 
   actualizarProd(){
-    /* let isv=0;
-    let subTot=0;
-    for(let i = 0; i < this.listaDetalle.length; i++) {
-      const element = this.listaDetalle[i];
-      if(element.ID_PRODUCTO==this.datosProdComp.ID_PRODUCTO){
-        isv=element.SUB_TOTAL*(this._isvPorcentaje/100);
-        subTot=element.SUB_TOTAL
-      }
-    }
-
-    for (let i = 0; i < this.listaProds.length; i++) {
-      const element = this.listaProds[i];
-      if(element.ID_PRODUCTO==this.datosProdComp.ID_PRODUCTO){
-        this.datosDetalle.ID_PRODUCTO=this.datosProdComp.ID_PRODUCTO
-        this.datosDetalle.NOMBRE_PRODUCTO=element.NOMBRE_PRODUCTO
-        this.datosDetalle.MARCA_PRODUCTO=element.MARCA_PRODUCTO
-        this.datosDetalle.PRECIO_UNITARIO=this.datosProdComp.PRECIO_UNITARIO
-        this.datosDetalle.CANTIDAD_PRODUCTO=this.datosProdComp.CANTIDAD
-        this.datosDetalle.SUB_TOTAL=this.datosProdComp.PRECIO_UNITARIO*this.datosProdComp.CANTIDAD
-      }
-    }
-    this.datosProdComp.ID_COMPRA=this.CP.datosCompAct.ID_COMPRA;
-    this.CP.actualizarProducto(this.datosProdComp).subscribe((resp) => {
+    this.datosDetalleProd.SUB_TOTAL=this.datosDetalleProd.CANTIDAD_PRODUCTO*this.datosDetalleProd.MONTO_UNITARIO
+    this.datosDetalleProd.ID_VENTA=this.VS.datosVentAct.ID_VENTA;
+    this.VS.actualizarProducto(this.datosDetalleProd, this.ventaAct.ID_VENTA).subscribe((resp) => {
       //console.log('resp',resp['mensaje']);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._compAct.ISV_COMPRA-= isv;
-        this._compAct.TOTAL_COMPRA-= (subTot);
-        this._compAct.ISV_COMPRA+=this.datosDetalle.SUB_TOTAL*(this._isvPorcentaje/100)
-        this._compAct.TOTAL_COMPRA+=((this.datosDetalle.SUB_TOTAL))
-        this.datsVentaActual.emit(this._compAct);
-        this.detProdAct.emit(this.datosDetalle);
-        this.listaAddBool=[];
-        this.evaluarProds();
-        let dc = document.getElementById("closeActProd");
-        dc?.click()
+        this.VS.obtenerVenta(this.ventaAct.ID_VENTA).subscribe((respu) => {
+          console.log('resp obt venta por id: ',respu['usuario']);
+          if(respu['mensaje'][0]['CODIGO']==1){
+            this.ventaAct=respu['usuario'][0]
+            this.datVentaAct.emit(this.ventaAct);
+            this.detProdAct.emit(this.datosDetalleProd);
+            this.listaAddBool=[];
+            this.evaluarProds();
+            Swal.fire({
+              icon: 'success',
+              title: 'Producto actualizado con exito'
+            })
+            let dc = document.getElementById("closeActProd");
+            dc?.click()
 
-        this.datosProdComp={
-          ID_PRODUCTO: 0,
-          ID_COMPRA: 0,
-          PRECIO_UNITARIO: 1,
-          DESCRIPCION: '',
-          CANTIDAD: 1
-        }
-        this.enam=true
+            this.datosDetalleProd={
+              ID_DETALLE_VENTA: 0,
+              ID_PRODUCTO: 0,
+              NOMBRE_PRODUCTO: '',
+              MARCA_PRODUCTO: '',
+              IMG_PRODUCTO: '',
+              ID_VENTA: 0,
+              MONTO_UNITARIO: 0,
+              CANTIDAD_PRODUCTO: 1,
+              SUB_TOTAL: 0,
+              TOTAL: 0
+            }
+            this.enam=false
+          }else{
+            //console.log('no',resp);
+          }
+        });
       }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops... No se pudo actualizar el producto',
+          text: 'El manager de inventario debe activar el producto para su compra y venta'
+        })
+        this.enam=false
         //console.log('no',resp);
       }
-    }); */
+    });
   }
 
   evaluarDatos(opcion:any) {
-    /* let pU=false;
     let cD=false;
-    if (this.datosProdComp.PRECIO_UNITARIO<0.01) {
-      pU=true;
-    }
-    if (this.datosProdComp.CANTIDAD<1) {
-      cD=true;
-    }
-    if (this.datosProdComp.DESCRIPCION='') {
-      this.datosProdComp.DESCRIPCION='SIN DESCRIPCION'
-    }
-    if(!pU && !cD){
-      if(opcion=='add'){
-        this.agregarProd();
-      }else{
-        this.actualizarProd();
-      }
-      this.enam=false
-    }else{
+    let dC=false;
+    if(this.datosDetalleProd.CANTIDAD_PRODUCTO==null){
+      this.msj='La cantidad no puede ir vacía'
       this.enam=true;
-      this.msj="Datos Incorrectos"
-    }*/
+    }else{
+      if (this.verificacionDatos('cantidad')) {
+        cD=true;
+        this.msj='La cantidad debe ser un entero positivo mayor que cero'
+      }
+      if (this.datosDetalleProd.CANTIDAD_PRODUCTO>this.datosVentProd.EXISTENCIA) {
+        cD=true;
+        this.msj=`La cantidad no puede ser mayor que la existencia del producto`
+      }
+      if(!cD && !dC){
+        if(opcion=='add'){
+          this.agregarProd();
+        }else{
+          this.actualizarProd();
+        }
+        this.enam=false
+      }else{
+        this.enam=true;
+      }
+    }
+  }
+
+  verificacionDatos(opcion:any){
+    let validation=false;
+    if(opcion=='cantidad'){
+      const regexi = /^([1-9]){1,}$/;
+      if(regexi.test(this.datosDetalleProd.CANTIDAD_PRODUCTO.toString())){
+        validation=false;
+      }else{
+        validation=true;
+      }
+    }
+    return validation
+  }
+
+  cerrar(){
+    this.datosDetalleProd={
+      ID_DETALLE_VENTA: 0,
+      ID_PRODUCTO: 0,
+      NOMBRE_PRODUCTO: '',
+      MARCA_PRODUCTO: '',
+      IMG_PRODUCTO: '',
+      ID_VENTA: 0,
+      MONTO_UNITARIO: 0,
+      CANTIDAD_PRODUCTO: 1,
+      SUB_TOTAL: 0,
+      TOTAL: 0
+    }
+    this.msj=''
+    this.enam=false
+  }
+
+  cancel(){
+    this.datosDetalleProd.CANTIDAD_PRODUCTO=this.datosTemp.CANTIDAD_PRODUCTO
+    this.msj=''
+    this.enam=false
   }
 }

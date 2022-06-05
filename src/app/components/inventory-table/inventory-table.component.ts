@@ -1,33 +1,57 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, PipeTransform } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Proveedor } from 'src/app/interfaces/characters.interface';
-import { Category, CompleteProduct, Object, Permission, Product, Role } from 'src/app/interfaces/objects.interface';
+import { MantenimientoService } from 'src/app/services/mantenimiento.service';
+import { Category, CompleteProduct, Permission, Product } from 'src/app/interfaces/objects.interface';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 import { ComprasService } from 'src/app/services/compras.service';
 import { InventarioService } from 'src/app/services/inventario.service';
-import { MantenimientoService } from 'src/app/services/mantenimiento.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { Proveedor } from 'src/app/interfaces/characters.interface';
+
+function search(PRODUCT: any, text: string, pipe: PipeTransform): CompleteProduct[] {
+  //console.log('ob',PRODUCT);
+  return PRODUCT.filter(pro => {
+    const term = text.toLowerCase();
+    return pro.NOMBRE_PRODUCTO.toLowerCase().includes(term)
+        || pro.MARCA_PRODUCTO.toLowerCase().includes(term)
+        || pro.DESCRIPCION_PRODUCTO.toLowerCase().includes(term)
+        || pipe.transform(pro.PRECIO_VENTA).includes(term)
+        || pipe.transform(pro.PRECIO_UNITARIO).includes(term)
+        || pipe.transform(pro.EXISTENCIA).includes(term)
+        || pro.CATEGORIA.toLowerCase().includes(term)
+        || pro.NOMBRE_PROVEEDOR.toLowerCase().includes(term);
+  });
+}
 
 @Component({
-  selector: 'app-card-inventory',
-  templateUrl: './card-inventory.component.html',
-  styleUrls: ['./card-inventory.component.css']
+  selector: 'app-inventory-table',
+  templateUrl: './inventory-table.component.html',
+  styleUrls: ['./inventory-table.component.css'],
+  providers: [DecimalPipe]
 })
-export class CardInventoryComponent implements OnInit {
-  actionVal:any = 0;
-  activo:any = true;
-  _obs:Permission[]=this.US._permisos;
+
+export class InventoryTableComponent implements OnInit {
+  ProductsInter:Observable<CompleteProduct[]>
+  filter = new FormControl('');
   _productosCP:Product[]=[];
-  _productos:any[]=[];
   _productos2:any[]=[];
+  _productos:any[]=[];
   _proveedores:Proveedor[]=[];
   _categorias:Category[]=[];
   enam=false;
   msj='';
+  invValue = 0;
+  id_inventario_act=0;
+  _permisos:any;
 
   _jsExist={
     "PRECIO_VENTA":0.00,
-    "ESTADO":0
+    "ESTADO": 0
   }
 
   page_number = 1;
@@ -36,29 +60,35 @@ export class CardInventoryComponent implements OnInit {
   modal=false;
   condition=false;
 
-  ob:Permission = {
-    ID_OBJETO: 0,
-    ID_ROL: 0,
-    PERMISO_INSERCION: 0,
-    PERMISO_ELIMINACION: 0,
-    PERMISO_ACTUALIZACION: 0,
-    PERMISO_CONSULTAR: 0,
-    CREADO_POR: 0
+  constructor( private IN:InventarioService, private US:UsuariosService, private CP:ComprasService, private pipe: DecimalPipe, private modalService: NgbModal, private _Router:Router) {
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==4){
+        this._permisos=this.US._permisos[i];
+      }
+    }
+    this.CP.obtenerProductos();
+    this.IN.obtenerProductosCompletos();
+    this.CP.obtenerProveedores();
+    this.IN.obtenerInventario();
+    this.IN.obtenerCategorias();
+    this._productosCP = this.CP._products;
+    this._productos2 = this.IN._products;
+    this._productos = this.IN._products;
+    this._proveedores = this.CP._proveedores;
+    this._categorias = this.IN._categorias;
+
+    this.ProductsInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this._productos2, text, this.pipe))
+    );
   }
 
-  @Input() datosProd:Product={
-    ID_PRODUCTO: 0,
-    ID_PROVEEDOR: 0,
-    NOMBRE_PRODUCTO: '',
-    MARCA_PRODUCTO: '',
-    DESCRIPCION_PRODUCTO: '',
-    IMG_PRODUCTO: '',
-    ESTADO: 0,
-    ID_CATEGORIA: 0
+  ngOnInit(): void {
   }
 
   @Input() datosProdExist:CompleteProduct={
     ID_PRODUCTO: 0,
+    ID_INVENTARIO:0,
     NOMBRE_PRODUCTO: '',
     MARCA_PRODUCTO: '',
     DESCRIPCION_PRODUCTO: '',
@@ -71,78 +101,31 @@ export class CardInventoryComponent implements OnInit {
     ESTADO: 0
   }
 
-  constructor(private MS:MantenimientoService, private IN:InventarioService, private CP:ComprasService, private modalService: NgbModal, private US:UsuariosService) {
-    this._obs=this.US._permisos;
-    this.CP.obtenerProductos();
-    this.IN.obtenerProductosCompletos();
-    this.CP.obtenerProveedores();
-    this.IN.obtenerInventario();
-    this.IN.obtenerCategorias();
-    this._productos = this.IN._products;
-    this._productos2 = this.IN._products;
-    this._proveedores = this.CP._proveedores;
-    this._productosCP = this.CP._products;
-    this._categorias = this.IN._categorias;
-    this.collectionSize = this.IN._products.length;
-    this._obs=this.US._permisos;
-    for (let i = 0; i < this._obs.length; i++) {
-      if(this._obs[i].ID_OBJETO ==3){
-        this.ob = this._obs[i];
-        this.condition=true;
-        //console.log(this.ob)
+  @Input() datosProd:Product={
+    ID_PRODUCTO: 0,
+    ID_PROVEEDOR: 0,
+    NOMBRE_PROVEEDOR: '',
+    NOMBRE_PRODUCTO: '',
+    MARCA_PRODUCTO: '',
+    DESCRIPCION_PRODUCTO: '',
+    ID_CATEGORIA: 0,
+    CATEGORIA: '',
+    ESTADO: 0,
+    IMG_PRODUCTO: ''
+  }
+
+  crearProd(datos:any){
+    this._productos2 = datos;
+    for (let i = 0; i < this._productos2.length; i++) {
+      const element = this._productos2[i];
+      if(element.PRECIO_VENTA==0){
+        element.PRECIO_VENTA=0.01;
       }
     }
-    //console.log('products', this._productos2)
-  }
-
-  ngOnInit(): void {
-  }
-
-  getInventario(){
-    this.CP.obtenerProductos();
-    this.IN.obtenerProductosCompletos();
-    this.CP.obtenerProveedores();
-    this.IN.obtenerInventario();
-    this.IN.obtenerCategorias();
-    this._productos = this.IN._products;
-    this._productos2 = this.IN._products;
-    this._proveedores = this.CP._proveedores;
-    this._productosCP = this.CP._products;
-    this._categorias = this.IN._categorias;
-    this.collectionSize = this.IN._products.length;
-  }
-
-  refreshProducts() {
-    this._productos = this._productos2
-      .map((prod, i) => ({id: i + 1, ...prod}))
-      .slice((this.page_number - 1) * this.page_size, (this.page_number - 1) * this.page_size + this.page_size);
-  }
-
-  openModl(id:any){
-    for(let prod of this._productos2){
-      if(prod.ID_PRODUCTO==id){
-        this.datosProdExist=prod;
-      }
-    }
-    for(let prod of this._productosCP){
-      if(prod.ID_PRODUCTO==id){
-        this.datosProd=prod;
-        this.modal=true;
-      }
-    }
-    //console.log('escogio la card con id: ',id);
-  }
-
-  actionAct(value:any){
-    this.actionVal = value;
-  }
-
-  activOption(value:Boolean){
-    if(value){
-      this.datosProd.ESTADO=1
-    }else{
-      this.datosProd.ESTADO=0
-    }
+    this.ProductsInter = this.filter.valueChanges.pipe(
+      startWith(''),
+      map(text => search(this._productos2, text, this.pipe))
+    );
   }
 
   openModal(content:any) {
@@ -157,20 +140,20 @@ export class CardInventoryComponent implements OnInit {
       MARCA_PRODUCTO: this.datosProd.MARCA_PRODUCTO,
       DESCRIPCION_PRODUCTO: this.datosProd.DESCRIPCION_PRODUCTO,
       IMG_PRODUCTO: this.datosProd.IMG_PRODUCTO,
-      ESTADO: this.datosProd.ESTADO,
+      ESTADO: 1,
       ID_CATEGORIA: this.datosProd.ID_CATEGORIA,
       EXISTENCIA: this.datosProdExist.EXISTENCIA,
       PRECIO_VENTA: this.datosProdExist.PRECIO_VENTA,
       PRECIO_UNITARIO: this.datosProdExist.PRECIO_UNITARIO
     }
-    this._jsExist={
-      "PRECIO_VENTA":this.datosProdExist.PRECIO_VENTA,
-      "ESTADO":this.datosProd.ESTADO
-    }
+
+    this._jsExist.PRECIO_VENTA = this.datosProdExist.PRECIO_VENTA;
+    this._jsExist.ESTADO = this.invValue;
+
     console.log('datosProducto a actualizar',js)
     this.IN.actualizarProducto(js, js.ID_PRODUCTO).subscribe((resp) => {
       //console.log('resp',resp);
-      this.IN.actualizarInventarioProducto(this._jsExist, js.ID_PRODUCTO).subscribe((resp) => {});
+      this.IN.actualizarInventarioProducto(this._jsExist, this.id_inventario_act).subscribe((resp) => {});
       if(resp[0]['CODIGO']==1){
         Swal.fire({
           icon: 'success',
@@ -202,23 +185,28 @@ export class CardInventoryComponent implements OnInit {
             }
           }
         }
-        this.modalService.dismissAll()
+
+        for (let i = 0; i < this._productos2.length; i++) {
+          const element = this._productos2[i];
+          if(element.ID_PRODUCTO == js.ID_PRODUCTO){
+            element.ESTADO = this.invValue;
+          }
+        }
+
+        this.modalService.dismissAll();
+        this.ProductsInter = this.filter.valueChanges.pipe(
+          startWith(''),
+          map(text => search(this._productos2, text, this.pipe))
+        );
       }else{
         Swal.fire({
           icon: 'error',
           title: 'Oops... No se pudo actualizar el producto',
           text: 'Algo salio mal!'
-        })
+        });
         //console.log('no',resp);
       }
     });
-  }
-
-  crearProd(datos:any){
-    this._productos2=datos;
-    this._productos = this._productos2
-      .map((prod, i) => ({id: i + 1, ...prod}))
-      .slice((this.page_number - 1) * this.page_size, (this.page_number - 1) * this.page_size + this.page_size);
   }
 
   evaluarDatos() {
@@ -291,4 +279,27 @@ export class CardInventoryComponent implements OnInit {
       return true;
     }
   }
+
+  activOption(value:any){
+    this.invValue = value;
+  }
+
+  openModl(id:any, value:any, id_inv:any){
+    console.log('idProd:', id)
+    this.invValue = value;
+    this.id_inventario_act = id_inv;
+    for(let prod of this._productos2){
+      if(prod.ID_PRODUCTO==id){
+        this.datosProdExist=prod;
+      }
+    }
+    for(let prod of this._productosCP){
+      if(prod.ID_PRODUCTO==id){
+        this.datosProd=prod;
+        this.modal=true;
+      }
+    }
+    //console.log('escogio la card con id: ',id);
+  }
+
 }

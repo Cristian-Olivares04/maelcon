@@ -8,7 +8,7 @@ import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 
 
 function search(BITACORA: any, text: string, pipe: PipeTransform): Bitacora[] {
-  console.log(BITACORA);
+  //console.log(BITACORA);
   return BITACORA.filter(bita => {
     const term = text.toLowerCase();
     if( bita.INFORMACION_ANTERIOR == null){

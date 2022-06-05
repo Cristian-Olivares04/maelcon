@@ -14,7 +14,7 @@
         </div>
         <div class="col-8 d-flex" >
             <div class="col pt-3 pb-3" style="text-align-last:right;">
-                <button class="btn-success m-3" style="text-align-last:auto;" (click)="openModal(newShopping)"><i class="fas fa-plus"></i> Nueva compra</button>
+                <button class="btn-success m-3" style="text-align-last:auto;" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModal(newShopping)"><i class="fas fa-plus"></i> Nueva compra</button>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
               <div class="p-2" style="text-align-last: center;">
                 <h4 style="color: #0846ffff; margin-top: 20px;">Compra#{{comp.ID_COMPRA}}</h4>
                 <p class="text-muted">Información tarjeta de almacen</p>
-                <div *ngIf="!comp.ESTADO && comp.ID_USUARIO==_usAct">
+                <div *ngIf="!comp.ESTADO && comp.ID_USUARIO==_usAct && _permisos.PERMISO_ACTUALIZACION==1">
                   <button class="btn-xs btn-edit" (mouseover)="openModl(comp.ID_COMPRA)" (click)="openModal(editCard)"><i class="fas fa-pen"></i></button>
                 </div>
               </div>

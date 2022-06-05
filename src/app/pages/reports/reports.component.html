@@ -8,6 +8,32 @@
   <ngb-panel>
     <ng-template ngbPanelHeader let-opened="opened">
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Reporte Ventas</b></span>
+        <span>
+            <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#ventasReport"><i class="fas fa-download"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Reporte Compras</b></span>
+        <span>
+            <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#comprasReport"><i class="fas fa-download"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
         <span><b>Descargar kardex</b></span>
         <span>
             <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#productReport"><i class="fas fa-download"></i></button>
@@ -47,37 +73,173 @@
       <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
         <span><b>Backup de bitacora</b></span>
         <span>
-          <button ngbPanelToggle class="btn btn-sm btn-outline-success ms-2"><i class="fas fa-download"></i></button>
+          <button class="btn btn-sm btn-outline-success ms-2" data-bs-toggle="modal" data-bs-target="#bitacoraReport"><i class="fas fa-download"></i></button>
         </span>
       </div>
     </ng-template>
     <ng-template ngbPanelContent>
-      <app-backup></app-backup>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
 
 <!--Modal producto kardex-->
-<div class="modal lg fade" id="productReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+<div class="modal lg fade" id="productReport" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body m-3">
+              <form>
                 <p class="text-muted">Seleccione el producto a solicitar kardex</p>
-                <select class="form-control" name="producto">
-                    <option value="">Seleccione un producto</option>
-                    <option value="Foco 1">Foco 1</option>
-                    <option value="Laminas">Laminas</option>
-                    <option value="Otro">Otro</option>
-                    <option value="etc...">etc...</option>
-                  </select>
-                  <button class="btn btn-success pt-2 pb-2 justify-content-end">Crear reporte</button>
+                <select class="form-control mb-3" [(ngModel)]="datosProd.ID_PRODUCTO" name="producto">
+                  <option disabled>Seleccione un producto</option>
+                  <option *ngFor="let prod of productos" [ngValue]="prod.ID_PRODUCTO">{{prod.NOMBRE_PRODUCTO}}</option>
+                </select>
+                <button class="btn btn-success pt-2 pb-2 m-3justify-content-end" (click)="crearKardex()">Crear reporte</button>
+              </form>
             </div>
-            <div class="row">
+            <div class="row p-3">
                 <p class="text-muted text-center">Generar reporte de producto, Maelcon S de R. L.</p>
             </div>
         </div>
     </div>
+</div>
+
+<!--Modal reporte ventas-->
+<div class="modal lg fade" id="ventasReport" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrar()"></button>
+            </div>
+            <div class="modal-body m-3">
+              <form>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="input-div one">
+                      <div class="i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      <div class="div">
+                          <input class="form-control" type="date" [max]="fechaAct" [(ngModel)]="datosFechas.fechaIni" name="fechaIniVentas">
+                      </div>
+                      <span class="text-muted details">Fecha inicial</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="input-div one">
+                      <div class="i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      <div class="div">
+                          <input class="form-control" type="date" [min]="datosFechas.fechaIni" [max]="fechaAct" [(ngModel)]="datosFechas.fechaFin" name="fechaFinVentas">
+                      </div>
+                      <span class="text-muted details">Fecha final</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-success pt-2 pb-2 m-3 justify-content-end" (click)="evaluarDatos('ventas')">Crear reporte</button>
+              </form>
+              <div class="alert alert-danger m-2" role="alert" *ngIf="enam">
+                {{msj}}
+              </div>
+            </div>
+            <div class="row p-3">
+                <p class="text-muted text-center">Generar reporte de ventas, Maelcon S de R. L.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal reporte compras-->
+<div class="modal lg fade" id="comprasReport" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrar()"></button>
+            </div>
+            <div class="modal-body m-3">
+              <form>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="input-div one">
+                      <div class="i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      <div class="div">
+                          <input class="form-control" type="date" [max]="fechaAct" [(ngModel)]="datosFechas.fechaIni" name="fechaIniCompras">
+                      </div>
+                      <span class="text-muted details">Fecha inicial</span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="input-div one">
+                      <div class="i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      <div class="div">
+                          <input class="form-control" type="date" [min]="datosFechas.fechaIni" [max]="fechaAct" [(ngModel)]="datosFechas.fechaFin" name="fechaFinCompras">
+                      </div>
+                      <span class="text-muted details">Fecha final</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-success pt-2 pb-2 m-3 justify-content-end" (click)="evaluarDatos('compras')">Crear reporte</button>
+              </form>
+              <div class="alert alert-danger m-2" role="alert" *ngIf="enam">
+                {{msj}}
+              </div>
+            </div>
+            <div class="row p-3">
+                <p class="text-muted text-center">Generar reporte de compras, Maelcon S de R. L.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal reporte bitacora-->
+<div class="modal lg fade" id="bitacoraReport" data-bs-keyboard="false" tabindex="-1" aria-hidden="false">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+          <div class="modal-header d-flex justify-content-between" style="text-align: center; display: block;">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cerrar()"></button>
+          </div>
+          <div class="modal-body m-3">
+            <form>
+              <div class="row">
+                <div class="col-6">
+                  <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="div">
+                        <input class="form-control" type="date" [max]="fechaAct" [(ngModel)]="datosFechas.fechaIni" name="fechaIniVentas">
+                    </div>
+                    <span class="text-muted details">Fecha inicial</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="div">
+                        <input class="form-control" type="date" [min]="datosFechas.fechaIni" [max]="fechaAct" [(ngModel)]="datosFechas.fechaFin" name="fechaFinVentas">
+                    </div>
+                    <span class="text-muted details">Fecha final</span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-success pt-2 pb-2 m-3 justify-content-end" (click)="evaluarDatos('bitacora')">Crear reporte</button>
+            </form>
+            <div class="alert alert-danger m-2" role="alert" *ngIf="enam">
+              {{msj}}
+            </div>
+          </div>
+          <div class="row p-3">
+              <p class="text-muted text-center">Generar reporte de bitacora, Maelcon S de R. L.</p>
+          </div>
+      </div>
   </div>
+</div>

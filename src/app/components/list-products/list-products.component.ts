@@ -8,6 +8,7 @@ import { CompleteProduct, PurchaseDetail, purchaseProduct } from 'src/app/interf
 import { ComprasService } from 'src/app/services/compras.service';
 import { MantenimientoService } from 'src/app/services/mantenimiento.service';
 import Swal from 'sweetalert2';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 function searchDetProd(DETALLE, text: string, pipe: PipeTransform): PurchaseDetail[] {
   return DETALLE.filter(det => {
@@ -58,6 +59,7 @@ export class ListProductsComponent implements OnInit {
   tempCTotComp=0;
   _isvPorcentaje:any;
   msj='';
+  _permisos:any;
 
   @Input() datosProdComp:purchaseProduct={
     ID_PRODUCTO: 0,
@@ -79,6 +81,14 @@ export class ListProductsComponent implements OnInit {
     SUB_TOTAL: 0
   }
 
+  datosTemp={
+    ID_PRODUCTO: 0,
+    ID_COMPRA: 0,
+    PRECIO_UNITARIO: 1,
+    DESCRIPCION: '',
+    CANTIDAD: 1
+  }
+
   _compAct = {
     ID_COMPRA: 0,
     ID_USUARIO: 0,
@@ -94,11 +104,17 @@ export class ListProductsComponent implements OnInit {
     ESTADO: 0
   }
 
-  constructor( private CP:ComprasService, private MS:MantenimientoService, private pipe: DecimalPipe, private modalService: NgbModal) {
+  constructor( private CP:ComprasService, private MS:MantenimientoService, private US:UsuariosService, private pipe: DecimalPipe, private modalService: NgbModal) {
     this._compAct=this.CP.datosCompAct;
     this.tempCTotComp=this._compAct.TOTAL_COMPRA;
     this.tempISVComp=this._compAct.ISV_COMPRA;
     this._isvPorcentaje=this.MS._params[0]['VALOR'];
+
+    for (let i = 0; i < this.US._permisos.length; i++) {
+      if(this.US._permisos[i].ID_OBJETO==2){
+        this._permisos=this.US._permisos[i];
+      }
+    }
     this.detalleInter = this.filter.valueChanges.pipe(
       startWith(''),
       map(text => searchDetProd(this.listaDetalle ,text, this.pipe))
@@ -159,6 +175,14 @@ export class ListProductsComponent implements OnInit {
         }
       }
     }
+
+    this.datosTemp={
+      ID_PRODUCTO: 0,
+      ID_COMPRA: 0,
+      PRECIO_UNITARIO: this.datosProdComp.PRECIO_UNITARIO,
+      DESCRIPCION: this.datosProdComp.DESCRIPCION,
+      CANTIDAD: this.datosProdComp.CANTIDAD
+    }
     this.modalService.open(content, {backdropClass: 'light-red-backdrop', size: 'lg', centered: true });
   }
 
@@ -177,26 +201,28 @@ export class ListProductsComponent implements OnInit {
     }
     this.datosProdComp.ID_COMPRA =  this.CP.datosCompAct.ID_COMPRA
     this.CP.agregarProdCompra(this.datosProdComp).subscribe((resp) => {
-      //console.log('resp',resp['mensaje']);
+      console.log('resp',resp['mensaje']);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._compAct.ISV_COMPRA+= this.datosDetalle.SUB_TOTAL*(this._isvPorcentaje/100);
-        this._compAct.TOTAL_COMPRA+= this.datosDetalle.SUB_TOTAL;
-        this.tempCTotComp=this._compAct.TOTAL_COMPRA;
-        this.tempISVComp=this._compAct.ISV_COMPRA;
-        this.datsCompActual.emit(this._compAct);
-        this.listaDetalleAct.emit(this.datosDetalle);
-        this.listaAddBool=[];
-        this.evaluarProds();
-        let dc = document.getElementById("closeAddProd");
-        dc?.click()
+        this.CP.obtenerCompra( this.CP.datosCompAct.ID_COMPRA).subscribe((res)=>{
+          if(resp['mensaje'][0]['CODIGO']==1){
+            this._compAct=res['inventario'][0];
+            this.datsCompActual.emit(this._compAct);
+            this.listaDetalleAct.emit(this.datosDetalle);
+            this.listaAddBool=[];
+            this.evaluarProds();
+            let dc = document.getElementById("closeAddProd");
+            dc?.click()
 
-        this.datosProdComp={
-          ID_PRODUCTO: 0,
-          ID_COMPRA: 0,
-          PRECIO_UNITARIO: 1,
-          DESCRIPCION: '',
-          CANTIDAD: 1
-        }
+            this.datosProdComp={
+              ID_PRODUCTO: 0,
+              ID_COMPRA: 0,
+              PRECIO_UNITARIO: 1,
+              DESCRIPCION: '',
+              CANTIDAD: 1
+            }
+            this.enam=false
+          }
+        })
       }else{
         Swal.fire({
           icon: 'error',
@@ -227,14 +253,15 @@ export class ListProductsComponent implements OnInit {
     this.CP.eliminarProducto(js).subscribe((resp) => {
       //console.log('resp',resp['mensaje']);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._compAct.ISV_COMPRA-= isv;
-        this._compAct.TOTAL_COMPRA-= (subTot);
-        this.tempCTotComp=this._compAct.TOTAL_COMPRA;
-        this.tempISVComp=this._compAct.ISV_COMPRA;
-        this.datsCompActual.emit(this._compAct);
-        this.detProdElim.emit(js);
-        this.listaAddBool=[];
-        this.evaluarProds();
+        this.CP.obtenerCompra( this.CP.datosCompAct.ID_COMPRA).subscribe((res)=>{
+          if(resp['mensaje'][0]['CODIGO']==1){
+            this._compAct=res['inventario'][0];
+            this.datsCompActual.emit(this._compAct);
+            this.detProdElim.emit(js);
+            this.listaAddBool=[];
+            this.evaluarProds();
+          }
+        })
       }else{
         //console.log('no',resp);
       }
@@ -242,16 +269,6 @@ export class ListProductsComponent implements OnInit {
   }
 
   actualizarProd(){
-    let isv=0;
-    let subTot=0;
-    for(let i = 0; i < this.listaDetalle.length; i++) {
-      const element = this.listaDetalle[i];
-      if(element.ID_PRODUCTO==this.datosProdComp.ID_PRODUCTO){
-        isv=element.SUB_TOTAL*(this._isvPorcentaje/100);
-        subTot=element.SUB_TOTAL
-      }
-    }
-
     for (let i = 0; i < this.listaProds.length; i++) {
       const element = this.listaProds[i];
       if(element.ID_PRODUCTO==this.datosProdComp.ID_PRODUCTO){
@@ -267,25 +284,26 @@ export class ListProductsComponent implements OnInit {
     this.CP.actualizarProducto(this.datosProdComp).subscribe((resp) => {
       //console.log('resp',resp['mensaje']);
       if(resp['mensaje'][0]['CODIGO']==1){
-        this._compAct.ISV_COMPRA-= isv;
-        this._compAct.TOTAL_COMPRA-= (subTot);
-        this._compAct.ISV_COMPRA+=this.datosDetalle.SUB_TOTAL*(this._isvPorcentaje/100)
-        this._compAct.TOTAL_COMPRA+=((this.datosDetalle.SUB_TOTAL))
-        this.datsCompActual.emit(this._compAct);
-        this.detProdAct.emit(this.datosDetalle);
-        this.listaAddBool=[];
-        this.evaluarProds();
-        let dc = document.getElementById("closeActProd");
-        dc?.click()
+        this.CP.obtenerCompra( this.CP.datosCompAct.ID_COMPRA).subscribe((res)=>{
+          if(resp['mensaje'][0]['CODIGO']==1){
+            this._compAct=res['inventario'][0];
+            this.datsCompActual.emit(this._compAct);
+            this.detProdAct.emit(this.datosDetalle);
+            this.listaAddBool=[];
+            this.evaluarProds();
+            let dc = document.getElementById("closeActProd");
+            dc?.click()
 
-        this.datosProdComp={
-          ID_PRODUCTO: 0,
-          ID_COMPRA: 0,
-          PRECIO_UNITARIO: 1,
-          DESCRIPCION: '',
-          CANTIDAD: 1
-        }
-        this.enam=true
+            this.datosProdComp={
+              ID_PRODUCTO: 0,
+              ID_COMPRA: 0,
+              PRECIO_UNITARIO: 1,
+              DESCRIPCION: '',
+              CANTIDAD: 1
+            }
+            this.enam=false
+          }
+        })
       }else{
         //console.log('no',resp);
       }
@@ -295,25 +313,87 @@ export class ListProductsComponent implements OnInit {
   evaluarDatos(opcion:any) {
     let pU=false;
     let cD=false;
-    if (this.datosProdComp.PRECIO_UNITARIO<0.01) {
-      pU=true;
-    }
-    if (this.datosProdComp.CANTIDAD<1) {
-      cD=true;
-    }
-    if (this.datosProdComp.DESCRIPCION='') {
-      this.datosProdComp.DESCRIPCION='SIN DESCRIPCION'
-    }
-    if(!pU && !cD){
-      if(opcion=='add'){
-        this.agregarProd();
-      }else{
-        this.actualizarProd();
-      }
-      this.enam=false
+    console.log('entro evaluar', this.datosProdComp)
+    if(this.datosProdComp.CANTIDAD==null || this.datosProdComp.PRECIO_UNITARIO==null){
+      this.msj='Cantidad y precio unitario no pueden estar vacíos'
+      this.enam=true
     }else{
-      this.enam=true;
-      this.msj="Datos Incorrectos"
+      if (this.verificacionDatos('precio')) {
+        pU=true;
+        this.msj='Precio unitario debe ser un entero positivo mayor que 0.01 con solo dos decimales'
+      }
+      if (this.verificacionDatos('cantidad')) {
+        cD=true;
+        this.msj='La cantidad debe ser un entero positivo mayor que 0'
+      }
+      if (this.datosProdComp.DESCRIPCION='') {
+        this.datosProdComp.DESCRIPCION='SIN DESCRIPCION'
+      }
+      if(!pU && !cD){
+        if(opcion=='add'){
+          this.agregarProd();
+        }else{
+          console.log('entro a act else')
+          this.actualizarProd();
+        }
+        this.enam=false
+      }else{
+        this.enam=true;
+      }
     }
+  }
+
+  verificacionDatos(opcion:any){
+    let validation=false;
+    if(opcion=='cantidad'){
+      const regexi = /^([1-9]){1,}$/;
+      if(regexi.test(this.datosProdComp.CANTIDAD.toString())){
+        validation=false;
+      }else{
+        validation=true;
+      }
+    }else if(opcion=='precio'){
+      if(this.datosProdComp.PRECIO_UNITARIO<1){
+        if(this.datosProdComp.PRECIO_UNITARIO>=0.01){
+          const regexi = /^([0]{1}\.[0-9]{1,2})$/;
+          if(regexi.test(this.datosProdComp.PRECIO_UNITARIO.toString())){
+            validation=false;
+          }else{
+            validation=true;
+          }
+        }else{
+          validation=true;
+        }
+      }else{
+        const regexi = /^([0-9]{1,}\.?[0-9]{0,2})$/;
+        if(regexi.test(this.datosProdComp.PRECIO_UNITARIO.toString())){
+          validation=false;
+        }else{
+          validation=true;
+        }
+
+      }
+    }
+    return validation
+  }
+
+  cerrar(){
+    this.datosProdComp={
+      ID_PRODUCTO: 0,
+      ID_COMPRA: 0,
+      PRECIO_UNITARIO: 1,
+      DESCRIPCION: '',
+      CANTIDAD: 1
+    }
+    this.msj=''
+    this.enam=false
+  }
+
+  cancel(){
+    this.datosProdComp.DESCRIPCION=this.datosTemp.DESCRIPCION;
+    this.datosProdComp.PRECIO_UNITARIO=this.datosTemp.PRECIO_UNITARIO;
+    this.datosProdComp.CANTIDAD=this.datosTemp.CANTIDAD;
+    this.msj=''
+    this.enam=false
   }
 }
