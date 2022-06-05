@@ -1,0 +1,50 @@
+<div *ngIf = "binnacle; else downloadBinnacle">
+  <div class="row">
+    <div class="col">
+      <h3 class="text-muted"><b>Historial de actividades</b></h3>
+      <p class="text-muted">Registro general de las actividades realizadas dentro del sistema Maelcon.</p>
+    </div>
+  </div>
+
+
+  <form>
+    <div class="mb-3 row">
+      <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
+      <div class="col-xs-3 col-sm-auto">
+        <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+      </div>
+    </div>
+  </form>
+  <div class="" style="width: auto; height: 400px; overflow: scroll;">
+      <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">USUARIO</th>
+            <th scope="col">OBJETO</th>
+            <th scope="col">ACCION</th>
+            <th scope="col">DESCRIPCION</th>
+            <th scope="col">INFORMACION ANTERIOR</th>
+            <th scope="col">INFORMACIONA CTUAL</th>
+            <th scope="col">FECHA BITACORA</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bit of bitacoraInter | async; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td><ngb-highlight [result]="bit.USUARIO" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.OBJETOS" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.ACCION" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.DESCRIPCION" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.INFORMACION_ANTERIOR" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.INFORMACION_ACTUAL" [term]="filter.value"></ngb-highlight></td>
+              <td><ngb-highlight [result]="bit.FECHA_BITACORA" [term]="filter.value"></ngb-highlight></td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+</div>
+
+<ng-template #downloadBinnacle>
+  <app-download [INFORMATION] = bitacora2 [HEADERS] = headersArray></app-download>
+</ng-template>

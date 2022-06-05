@@ -1,0 +1,42 @@
+<div class=" contenedor p-4 m-4">
+    <div class="row">
+        <div class="col-8">
+            <h4 class="text-muted"><b>Comisión por ventas finalizadas</b></h4>
+            <p class="text-muted">comisión de los usuarios por ventas finalizadas en el sistema.</p>
+        </div>
+        <div class="col-12">
+            <form>
+                <div class="mb-2 mt-2 row">
+                  <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Filtrar:</label>
+                  <div class="col-xs-3 col-sm-auto">
+                    <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+                  </div>
+                </div>
+              </form>
+              <div class="" style="width: auto; height: 400px; overflow: scroll;">
+                  <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">USUARIO</th>
+                        <th scope="col">CORREO ELECTRONICO</th>
+                        <th scope="col">COMISION EMPLEADO</th>
+                        <th scope="col">ID VENTA</th>
+                        <th scope="col">TOTAL VENTA</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let com of comisionesInter | async; index as i">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td><ngb-highlight [result]="com.USUARIO" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="com.CORREO_ELECTRONICO" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="com.COMISION_EMPLEADO | number" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="com.ID_VENTA | number" [term]="filter.value"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="com.TOTAL_VENTA | number" [term]="filter.value"></ngb-highlight></td>
+                      </tr>
+                      </tbody>
+                    </table>
+              </div>
+        </div>
+    </div>
+</div>

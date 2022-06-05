@@ -1,0 +1,272 @@
+<div class="text-muted p-3">
+    <h2><b>Módulo de Ayudad e Información general</b></h2>
+    <p>Manuales y tutoriales detallados al alcance de tu mano para asegurar la gestión eficiente del sistema.</p>
+    <hr>
+</div>
+
+<ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
+  <ngb-panel  id="custom-panel-1">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>¿Cómo administrar las variables y opciones del sistema?</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <!--Seccion completa-->
+      <section id="about" class="about">
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-center position-relative">
+              <iframe width="560" height="315" [src]="Help[0].ENLACE | safe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+              <h3>¿Qué es Maelcon web?</h3>
+              <p>Maelcon tiene por proposito brindar un entorno de gestión automatizado de los productos y servicios brindados por la empresa, nuestros servicios estan orientados al control eficiente de los recursos y atención primaria a nuestros usuarios.</p>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-fingerprint"></i></div>
+                <h4 class="title"><a [href]="">Módulo de seguridad</a></h4>
+                <p class="description">La seguridad es nuestra prioridad por lo que desde el sistema podrá manejar las variables generales, como el ISV a aplicar, intentos de sesión, y las configuraciones de conectividad.</p>
+              </div>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-tools"></i></div>
+                <h4 class="title"><a [href]="">Módulo de administración</a></h4>
+                <p class="description">La gestión adecuada de usuarios y el acceso al sistema será responsabilidad de los administradores, asignando roles con permisos independientes del resto asegurando que su acceso será el necesario.</p>
+              </div>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-file-csv"></i></div>
+                <h4 class="title"><a [href]="">Respaldos y reportes</a></h4>
+                <p class="description">Según sean la necesidades se realizará de forma solicitada por quien compete respaldo de la base de datos, reporte de bitacoras de las acciones en el sistema y reportes de las entradas y salidas de producto.</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+      <!---->
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>¿Cómo es la gestión de productos he inventarios?</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <!--Seccion completa-->
+      <section id="about" class="about">
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-center position-relative">
+              <iframe width="560" height="315" [src]="Help[1].ENLACE | safe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+              <h3>Gestión de inventarios</h3>
+              <p>En nuestro sistema cada producto esta registrado de forma única en una combinación irrepetible de proveedor-producto-marca con lo cual tendremos una clasificación detallada de lo que se requiere.</p>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-boxes"></i></div>
+                <h4 class="title"><a [href]="">Módulo de inventario</a></h4>
+                <p class="description">Cada producto cuenta con una tarjeta de almacen registrada en el inventario, mediante la cual se llevara un control del precio de venta, existencia, precio unitario registrado además de un enlace a un control de entradas y salidas mediante el registro en kardex.</p>
+              </div>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-shopping-cart"></i></div>
+                <h4 class="title"><a [href]="">Sobre los productos</a></h4>
+                <p class="description">Cada producto tiene control independiente aunque su marca y nombre sean el mismo debido al control de proveedores del mismo, el ecocistema de gestión de productos brinda una organización facil de manejar y navegar en ella garacias a la categorización de los mismos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!---->
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>¿Cúal es el proceso de compras y administración de proveedores?</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <!--Seccion completa-->
+      <section id="about" class="about">
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-center position-relative">
+              <iframe width="560" height="315" [src]="Help[2].ENLACE | safe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+              <h3>Proceso de compras</h3>
+              <p>El proceso de compra de productos para abastecer la organización es de suma importancia y facil de manejar, los usuarios autorizados podran comenzar un nuevo proceso de compra con un proveedor especifico y agregar los productos necesarios indicando las caracteristicas solicitadas para registrar en el sistema.</p>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-shopping-cart"></i></div>
+                <h4 class="title"><a [href]="">Comenzar la compra</a></h4>
+                <p class="description">El comienzo de una compra es tan facil como seleccionar el proveedor y ver los productos a agregar o actualizar los existentes en la lista de la compra, para un mayor control solo se permite 1 proveedor por compra.</p>
+              </div>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fa fa-refresh"></i></div>
+                <h4 class="title"><a [href]="">Autonomía</a></h4>
+                <p class="description">Al finalizar una compra no debes de preocuparte más, cada proceso finalizado conlleva un subproceso riguroso que involucra el registro de los nuevos productos en almacen, el registro en bitacoras, actualización de exitencia y precio de inventario además del registro de una kardex por ingreso de producto.</p>
+              </div>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fas fa-handshake"></i></div>
+                <h4 class="title"><a [href]="">Sobre los proveedores</a></h4>
+                <p class="description">De forma socialmente respondable cada proveedor de productos debera ser registrado en el sistema brindando el RTN, telefono y correo electronico oficial con la finalidad de mantener el contacto constante con nuestros aliados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!---->
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel>
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>¿Cúal es el proceso de ventas y administración de clientes?</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <!--Seccion completa-->
+      <section id="about" class="about">
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-center position-relative">
+              <iframe width="560" height="315" [src]="Help[3].ENLACE | safe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+              <h3>Proceso de ventas</h3>
+              <p>Mediante el proceso de ventas se prioriza la atención al cliente y facil busqueda de los productos solicitados, por lo que al crear una nueva venta basta con buscar los productos y asignar la cantidad necesaria, estos serán cargados bajo los precios de venta establecidos en inventario.</p>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fas fa-cash-register"></i></div>
+                <h4 class="title"><a [href]="">Sobre las ventas</a></h4>
+                <p class="description">El proceso de ventas constituye subprocesos automatizados por lo que los riesgos de errores tieneden a ser minimos, las ventas al igual que las ventas pueden ser guardadas como cotizaciones y retomadas en cualquier momento, puediedo tener variaciones en precio o existencia pasado el tiempo.</p>
+              </div>
+
+              <div class="icon-box">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <h4 class="title"><a [href]="">Sobre los clientes</a></h4>
+                <p class="description">Constituyen parte  fundamental de la organización para ello se brinda la oportunidad de ser registrados en el sistema para mantener un control de ventas y posibles voletines informativos de promociones.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!---->
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel id="custom-panel-3">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>Manual de usuario</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div class="row justify-content-between">
+        <div class="col-12 row justify-content-center">
+            <!--Lector de pdf-->
+            <iframe [src]="Help[4].ENLACE | safe" style="width:80%; height:700px;" frameborder="0" ></iframe>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-panel>
+
+  <ngb-panel id="custom-panel-2">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="accordion-button custom-header justify-content-between" [class.collapsed]="!opened">
+        <span><b>¡Tengo más dudas!</b></span>
+        <span>
+          <button *ngIf="!opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye"></i></button>
+          <button *ngIf="opened" ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2"><i class="fas fa-eye-slash"></i></button>
+        </span>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <!--Seccion completa-->
+      <section id="about" class="about">
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-center position-relative">
+              <iframe width="800" height="400" [src]="Help[5].ENLACE | safe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5 text-center">
+              <h3>Obten atención personalizada</h3>
+              <p>Nuestras redes soliciales y diferentes medios de comunicación estan habilitados para brindar información de forma precisa, puedes seguirnos en nuestras redes sociales.</p>
+
+              <div class=" d-flex justify-content-between" style="padding-left: 100px; padding-right: 100px;">
+                <div class="icon-box">
+                    <a [href]="Help[6].ENLACE | safe">
+                        <div class="icon"><i class="fa fa-facebook"></i></div>
+                    </a>
+                  </div>
+                  <div class="icon-box">
+                    <a [href]="Help[7].ENLACE | safe">
+                        <div class="icon"><i class="fa fa-whatsapp"></i></div>
+                    </a>
+                  </div>
+                  <div class="icon-box">
+                    <a [href]="Help[8].ENLACE | safe">
+                        <div class="icon"><i class="fa fa-twitter"></i></div>
+                    </a>
+                  </div>
+                  <div class="icon-box">
+                    <a [href]="Help[9].ENLACE | safe">
+                        <div class="icon"><i class="fab fa-facebook-messenger"></i></div>
+                    </a>
+                  </div>
+                  <div class="icon-box">
+                    <a [href]="Help[10].ENLACE | safe">
+                        <div class="icon"><i class="fa fa-at"></i></div>
+                    </a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!---->
+    </ng-template>
+  </ngb-panel>
+
+</ngb-accordion>

@@ -1,0 +1,38 @@
+.btn-download{
+    display: flexbox;
+	width: 70px;
+	height: 70px;
+	border-radius: 100%;
+	background-image: linear-gradient(to right, rgb(17, 173, 64), rgb(20, 209, 67), rgb(0, 160, 13));
+    background-size: 200%;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	margin: 1rem 0;
+	cursor: pointer;
+	transition: .5s;
+	border-width: 0;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-cancel{
+    display: flexbox;
+	width: 60px;
+	height: 60px;
+	border-radius: 100%;
+	background-image: linear-gradient(to right, rgb(200, 0, 0), rgb(138, 1, 1), rgba(214, 0, 0, 0.527));
+    background-size: 200%;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	margin: 1rem 0;
+	cursor: pointer;
+	transition: .5s;
+	border-width: 0;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-position{
+    justify-content: end;
+    align-items: center;
+}

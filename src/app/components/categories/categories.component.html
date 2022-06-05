@@ -1,0 +1,168 @@
+<div class="m-4">
+    <div class="contenedor p-4" style=" align-items: center; background-color: #fff; border-radius: 15px;">
+      <div class="row">
+        <div class="col-6">
+          <h3 class="text-muted"><b>Categorías de producto</b></h3>
+          <p class="text-muted">Lista oficial de categorías de productos para la empresa.</p>
+        </div>
+        <div class="col-6">
+          <button class="btn m-3" *ngIf="_permisos.PERMISO_CREACION==1" (click)="openModalAdd(addCategory)"><i class="fa fa-gear"></i> Crear Categoría</button>
+        </div>
+      </div>
+      <div class="row">
+        <form>
+          <div class="mb-3 mt-3 row">
+            <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Busqueda por palabras clave:</label>
+            <div class="col-xs-3 col-sm-auto">
+              <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="">
+        <div class="" style="width: 100%; height: 400px; overflow: scroll;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">CATEGORIA</th>
+                <th scope="col">DESCRIPCION</th>
+                <th scope="col">EDITAR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cat of catInter | async; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  <ngb-highlight [result]="cat.CATEGORIA" [term]="filter.value"></ngb-highlight>
+                </td>
+                <td>
+                  <ngb-highlight [result]="cat.DESCRIPCION" [term]="filter.value"></ngb-highlight>
+                </td>
+                <td><button class="btn btn-sm btn-outline-primary ms-1 float" style="margin: 0%; height: 35px;" *ngIf="_permisos.PERMISO_ACTUALIZACION==1" (click)="openModalEdit(editCategory, cat.ID_CATEGORIA)"><i class="fas fa-pen"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+  <ng-template #editCategory let-modal>
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+          <button type="button" id="closeActCat" class="btn-close" (click)="modal.dismiss('Cross click');cancel()"></button>
+        </div>
+        <div class="m-3">
+          <div class="row">
+            <div class="row contenedor p-3"
+              style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+              <!--Cuadro contenedor de informacion-->
+              <h2 style="color: #0846ffff; margin-top: 20px;">Actualizar Categoría</h2>
+              <p class="text-muted">Actualización de información de una categoría</p>
+              <!--Columna 1 de informacion-->
+              <div class="col-12 p-3">
+                <div class="login-content">
+                  <form>
+                    <div class="input-div one">
+                      <div class="i">
+                        <i class="fas fa-sitemap"></i>
+                      </div>
+                      <div class="div">
+                        <input type="text" minlength="3" placeholder="Nombre Categoría" [(ngModel)]="datosCategory.CATEGORIA" name="categoria">
+                      </div>
+                    </div>
+
+                    <div class="input-div one">
+                      <div class="i">
+                        <i class="fas fa-info"></i>
+                      </div>
+                      <div class="div">
+                        <input class="" type="text" placeholder="Descripción" [(ngModel)]="datosCategory.DESCRIPCION" name="descripcion">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="col-12 row justify-content-between">
+                <div class="col-6">
+                  <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click');cancel()">
+                </div>
+                <div class="col-6">
+                  <input type="button" class="btn" value="Actualizar" (click)="evaluarDatos('act')">
+                </div>
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf="enam">
+                  {{msj}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pb-3">
+          <p class="text-muted text-center">Sistema de Inventario Maelcon S de R. L.</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #addCategory let-modal>
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="modal-header d-flex justify-content-end p-3" style="text-align: center; display: block;">
+          <button type="button" id="closeAddCat" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="m-3">
+          <div class="row">
+            <div class="row contenedor p-3"
+              style="text-align: center;  align-items: center; display: flex; background-color: #fff; border-radius: 15px;">
+              <!--Cuadro contenedor de informacion-->
+              <h2 style="color: #0846ffff; margin-top: 20px;">Crear categoría</h2>
+              <p class="text-muted">Crear nueva información de una categoría</p>
+              <!--Columna 1 de informacion-->
+              <div class="col-12 p-3">
+                <div class="login-content">
+                  <form>
+                    <div class="input-div one">
+                      <div class="i">
+                        <i class="fas fa-sitemap"></i>
+                      </div>
+                      <div class="div">
+                        <input type="text" minlength="3" placeholder="Nombre Categoría" [(ngModel)]="datosCategory.CATEGORIA"
+                          name="categoria">
+                      </div>
+                    </div>
+
+                    <div class="input-div one">
+                      <div class="i">
+                        <i class="fas fa-info"></i>
+                      </div>
+                      <div class="div">
+                        <input class="" type="text" placeholder="Descripción" [(ngModel)]="datosCategory.DESCRIPCION"
+                          name="descripcion">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="col-12 row justify-content-between">
+                <div class="col-6">
+                  <input type="button" class="btn btn-cancel" value="Cancelar" (click)="modal.dismiss('Cross click')">
+                </div>
+                <div class="col-6">
+                  <input type="button" class="btn" value="Crear" (click)="evaluarDatos('add')">
+                </div>
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf="enam">
+                  {{msj}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pb-3">
+          <p class="text-muted text-center">Sistema de Inventario Maelcon S de R. L.</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
