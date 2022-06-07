@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { DownloadComponent } from './components/download/download.component';
 import { GeneralSettingsComponent } from './components/general-settings/general-settings.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -32,10 +31,6 @@ const routes: Routes = [
   {
     path: 'recovery-password/:token',
     component: RecoveryPasswordComponent
-  },
-  {
-      path: 'sign-up',
-      component: SignupComponent
   },
   {
       path: 'sales',
@@ -106,5 +101,5 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {}
-export const ArrayOfComponents = [LoginComponent, SignupComponent]
+export const ArrayOfComponents = [LoginComponent]
 

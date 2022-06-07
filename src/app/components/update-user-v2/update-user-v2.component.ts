@@ -37,7 +37,8 @@ export class UpdateUserV2Component implements OnInit {
     ESTADO: 0,
     SUELDO: 0,
     NOMBRE_PERSONA: '',
-    APELLIDO_PERSONA: ''
+    APELLIDO_PERSONA: '',
+    MODIFICADO_POR: 0
   }
 
   constructor(private US:UsuariosService, private MS:MantenimientoService) {

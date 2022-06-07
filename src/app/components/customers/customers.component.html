@@ -2,7 +2,6 @@
     <div class="row">
         <div class="col-8">
             <h4 class="text-muted"><b>Clientes registrados</b></h4>
-            <p class="text-muted">Lista general de clientes regisytados en el sistema para ventas.</p>
         </div>
         <div class="col-4">
             <button class="btn btn-sm btn-primary ms-2" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModal(createCustomer)"><i class="fa fa-user-plus"></i> Crear</button>

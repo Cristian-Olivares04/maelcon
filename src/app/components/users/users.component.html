@@ -4,7 +4,6 @@
       <div class="row">
         <div class="col-6">
           <h3 class="text-muted"><b>Lista de usuarios</b></h3>
-          <p class="text-muted">Lista General de usuarios en la base de datos de la organización.</p>
         </div>
         <div class="col-6">
           <button class="btn-header m-3" *ngIf="_permisos.PERMISO_INSERCION==1" (click)="openModalAdd(addUser)"><i class="fa fa-plus"></i> Crear Usuario</button>
@@ -83,75 +82,76 @@
                   <div class="login-content">
                       <!--Formulario Registro-->
                       <form>
-                          <!--Input Nombre-->
-                          <div class="input-div one">
-                              <div class="i">
-                                  <i class="fas fa-user"></i>
-                              </div>
-                              <div class="div">
-                                  <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
-                              </div>
-                          </div>
+                        <!--Input Nombre-->
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="div">
+                                <input class="" type="text" placeholder="Nombre" [(ngModel)]="datosUsuario.NOMBRE_PERSONA" name="nombre">
+                            </div>
+                        </div>
 
-                          <!--Input Apellido-->
-                          <div class="input-div one">
-                              <div class="i">
-                                  <i class="fas fa-user"></i>
-                              </div>
-                              <div class="div">
-                                  <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
-                              </div>
-                          </div>
+                        <!--Input Apellido-->
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="div">
+                                <input class="" type="text" placeholder="Apellido" [(ngModel)]="datosUsuario.APELLIDO_PERSONA" name="apellido">
+                            </div>
+                        </div>
 
-                          <!--Nombre de usuario-->
-                          <div class="input-div one">
-                              <div class="i">
-                                  <i class="fas fa-user"></i>
-                              </div>
-                              <div class="div">
-                                  <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario">
-                              </div>
+                        <!--Input de Genero-->
+                        <div class="input-div one">
+                          <div class="i">
+                            <i class="fas fa-venus-mars"></i>
                           </div>
+                          <div class="div">
+                            <select class="form-control" placeholder="Genero" [(ngModel)]="datosUsuario.GENERO" name="genero">
+                              <option disabled>Genero</option>
+                              <option *ngFor="let g of _generos" [value]="g.VALOR">{{g.VALOR}}</option>
+                            </select>
+                          </div>
+                        </div>
 
-                          <!--Nombre de usuario-->
-                          <div class="input-div one">
-                              <div class="i">
-                                  <i class="fas fa-id-card"></i>
-                              </div>
-                              <div class="div">
-                                  <input class="d-block" type="text" minlength="14" maxlength="14" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn">
-                              </div>
-                          </div>
-                          <!--Input numero de telefono-->
-                          <div class="input-div one">
-                              <div class="i">
-                                  <i class="fas fa-phone-alt"></i>
-                              </div>
-                              <div class="div">
-                                  <input type="text" minlength="8" maxlength="8" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
-                              </div>
-                          </div>
-                          <!--Input de contraseña-->
-                          <div class="input-div one">
-                              <div class="i">
-                                  <i class="fas fa-envelope"></i>
-                              </div>
-                              <div class="div">
-                                  <input type="email" placeholder="Correo Electronico" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO">
-                              </div>
-                          </div>
-                          <!--Input de Genero-->
-                          <div class="input-div one">
-                              <div class="i">
-                                <i class="fas fa-venus-mars"></i>
-                              </div>
-                              <div class="div">
-                                <select class="form-control" placeholder="Genero" [(ngModel)]="datosUsuario.GENERO" name="genero">
-                                  <option disabled>Genero</option>
-                                  <option *ngFor="let g of _generos" [value]="g.VALOR">{{g.VALOR}}</option>
-                                </select>
-                              </div>
-                          </div>
+                        <!--Input numero de telefono-->
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="div">
+                                <input type="text" minlength="8" maxlength="8" placeholder="Telefono" [(ngModel)]="datosUsuario.TELEFONO" name="telefono">
+                            </div>
+                        </div>
+
+                        <!--Input de contraseña-->
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="div">
+                                <input type="email" placeholder="Correo Electronico" name="correo" [(ngModel)]="datosUsuario.CORREO_ELECTRONICO">
+                            </div>
+                        </div>
+                        <!--Nombre de usuario-->
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="div">
+                                <input class="d-block" type="text" minlength="14" maxlength="14" placeholder="RTN" [(ngModel)]="datosUsuario.RTN" name="rtn">
+                            </div>
+                        </div>
+                        <!--Nombre de usuario-->
+                        <div class="input-div one">
+                            <div class="i">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="div">
+                                <input class="d-block" type="text" placeholder="Nombre de usuario" [(ngModel)]="datosUsuario.USUARIO" name="nombreUsuario">
+                            </div>
+                        </div>
                       </form>
                   </div>
               </div>

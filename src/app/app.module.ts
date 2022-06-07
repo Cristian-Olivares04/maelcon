@@ -13,7 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { SalesComponent } from './pages/sales/sales.component';
 import { ShoppingComponent } from './pages/shopping/shopping.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -54,7 +53,6 @@ import { ViewProductsSaleComponent } from './components/view-products-sale/view-
 import { PeopleManagerComponent } from './pages/people-manager/people-manager.component';
 import { InventoryV2Component } from './pages/inventory-v2/inventory-v2.component';
 import { InventoryTableComponent } from './components/inventory-table/inventory-table.component';
-import { SignupAdmonComponent } from './auth/signup-admon/signup-admon.component';
 import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-password.component';
 
 @NgModule({
@@ -62,7 +60,6 @@ import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-pa
     AppComponent,
     SidebarComponent,
     LoginComponent,
-    SignupComponent,
     SalesComponent,
     ShoppingComponent,
     NavbarComponent,
@@ -102,7 +99,6 @@ import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-pa
     PeopleManagerComponent,
     InventoryV2Component,
     InventoryTableComponent,
-    SignupAdmonComponent,
     RecoveryPasswordComponent
   ],
   imports: [
