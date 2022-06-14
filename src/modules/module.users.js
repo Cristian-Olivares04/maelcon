@@ -26,7 +26,16 @@ export const createUser = async (req, res) => {
     RESPUESTA,
     ESTADO,
   } = req.body;
-  const pass2 = await encrypt.encryptPassword(CONTRASENA);
+
+  let CONTRASENA1 = "";
+
+  if(CONTRASENA === ""){
+    CONTRASENA1 = Math.floor(Math.random() * (999999 - 100000) + 100000);
+  }else{
+    CONTRASENA1 = CONTRASENA;
+  }
+
+  const pass2 = await encrypt.encryptPassword(CONTRASENA1.toString());
   const answer = await encrypt.encryptPassword(RESPUESTA);
 
   let img = "";
@@ -62,6 +71,7 @@ export const createUser = async (req, res) => {
       answer,
     ]
   );
+
   const mensaje = JSON.parse(JSON.stringify(objetos[0]));
   let info = JSON.parse(JSON.stringify(mensaje));
   let contentHTML;
@@ -91,6 +101,7 @@ export const createUser = async (req, res) => {
               <li>Administrador de sistema.</li>
               <li>Control de inventarios y productos.</li>
             </ul>
+            <h3><b>Contraseña provicional: ${CONTRASENA1}</b></h3>
             <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
@@ -609,11 +620,16 @@ export const verifyRecoveryToken = async (req, res) => {
       [decoded["correo"]]
     );
     const userData = JSON.parse(JSON.stringify(user[0][0]));
-    console.log(userData["ID_USUARIO"]);
     const updatedPassword = await pool.query(
       "CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);",
       [userData["ID_USUARIO"], userData["ID_USUARIO"], password]
     );
+
+    const ingreso = await pool.query("CALL ACTUALIZAR_PRIMER_INGRESO(?,?)", [
+      userData["ID_USUARIO"],
+      1
+    ]);
+
     res.json(updatedPassword[0]);
   } catch (error) {
     const mensaje = await pool.query(
@@ -714,3 +730,80 @@ export const getMyUser = async (req, res) => {
     });
   }
 };
+
+export const getTokenByEmailSimple = async (req, res) =>{
+  try {
+    const { CORREO } = req.params;
+    const user = await pool.query(
+      "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
+      [CORREO]
+    );
+    const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
+    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+
+    const password = await encrypt.encryptPassword(CONTRASENA.toString());
+    const tokenSQL = jwt.sign(
+      { id: userData[0], password: password, correo: CORREO },
+      config.SECRET,
+      {
+        expiresIn: 86400 * 1,
+      }
+    );
+
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    const confirmacion = JSON.parse(JSON.stringify(mensaje));
+    res.json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] }
+      ],
+      token: tokenSQL
+    });
+
+  } catch (error) {
+    const mensaje = await pool.query(
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
+    );
+    if (error.message == "jwt expired")
+      return res.json({
+        mensaje: [
+          {
+            MENSAJE: "El token ha expirado, restablecer contraseña de nuevo",
+            CODIGO: 0,
+          },
+        ],
+      });
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+}
+
+//Verificar primer ingreso 
+export const getFirstLogin = async (req, res) => {
+  try {
+    const { CORREO_ELECTRONICO } = req.params;
+    const ingreso = await pool.query("CALL PRIMER_INGRESO(?)", [
+      CORREO_ELECTRONICO,
+    ]);
+
+    res.json({
+      mensaje: [
+        { MENSAJE: 'Datos obtenidos', CODIGO: ingreso[0][0].PRIMER_INGRESO },
+      ]
+    });
+    
+  } catch (error) {
+    const mensaje = {
+      mensaje: 'Ha ocurrido un error inesperado',
+      codigo: 0
+    }
+
+    res.status(401).json({
+      error: error.message,
+      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+}

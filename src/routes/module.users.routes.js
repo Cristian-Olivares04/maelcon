@@ -55,4 +55,14 @@ router.post(
   moduleUserCtrl.verifyRecoveryToken
 );
 
+router.get(
+  "/firstLogin/:CORREO_ELECTRONICO",
+  moduleUserCtrl.getFirstLogin
+);
+
+router.get(
+  "/tokenSimple/:CORREO",
+  moduleUserCtrl.getTokenByEmailSimple
+);
+
 export default router;

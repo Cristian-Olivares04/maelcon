@@ -58,7 +58,14 @@ export const singUpSQL = async (req, res) => {
       RESPUESTA,
     } = req.body;
 
-    const password = await encrypt.encryptPassword(CONTRASENA);
+    let CONTRASENA1 = "";
+    if(CONTRASENA == ""){
+     CONTRASENA1 = Math.floor(Math.random() * (999999 - 100000) + 100000);
+    }else{
+      CONTRASENA1 = CONTRASENA;
+    }
+
+    const password = await encrypt.encryptPassword(CONTRASENA1.toString());
     const answer = await encrypt.encryptPassword(RESPUESTA);
     let img;
     //Guarda foto
@@ -123,6 +130,7 @@ export const singUpSQL = async (req, res) => {
               <li>Administrador de sistema.</li>
               <li>Control de inventarios y productos.</li>
             </ul>
+            <h3><b>Contraseña provicional: ${CONTRASENA1}</b></h3>
             <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
               <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
             </div>
