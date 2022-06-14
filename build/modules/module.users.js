@@ -33,58 +33,63 @@ var email = require("../utils/email");
 
 var createUser = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var _req$body, ID_PUESTO, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, pass2, img, objetos, mensaje, info, contentHTML;
+    var _req$body, ID_PUESTO, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, CONTRASENA, IMG_USUARIO, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, PREGUNTA, RESPUESTA, ESTADO, pass2, answer, img, objetos, mensaje, info, contentHTML;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, ID_PUESTO = _req$body.ID_PUESTO, NOMBRE_PERSONA = _req$body.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body.APELLIDO_PERSONA, GENERO = _req$body.GENERO, RTN = _req$body.RTN, TELEFONO = _req$body.TELEFONO, SUELDO = _req$body.SUELDO, ID_ROL = _req$body.ID_ROL, USUARIO = _req$body.USUARIO, CONTRASENA = _req$body.CONTRASENA, IMG_USUARIO = _req$body.IMG_USUARIO, CORREO_ELECTRONICO = _req$body.CORREO_ELECTRONICO, CREADO_POR = _req$body.CREADO_POR, FECHA_VENCIMIENTO = _req$body.FECHA_VENCIMIENTO;
+            _req$body = req.body, ID_PUESTO = _req$body.ID_PUESTO, NOMBRE_PERSONA = _req$body.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body.APELLIDO_PERSONA, GENERO = _req$body.GENERO, RTN = _req$body.RTN, TELEFONO = _req$body.TELEFONO, SUELDO = _req$body.SUELDO, ID_ROL = _req$body.ID_ROL, USUARIO = _req$body.USUARIO, CONTRASENA = _req$body.CONTRASENA, IMG_USUARIO = _req$body.IMG_USUARIO, CORREO_ELECTRONICO = _req$body.CORREO_ELECTRONICO, CREADO_POR = _req$body.CREADO_POR, FECHA_VENCIMIENTO = _req$body.FECHA_VENCIMIENTO, PREGUNTA = _req$body.PREGUNTA, RESPUESTA = _req$body.RESPUESTA, ESTADO = _req$body.ESTADO;
             _context.next = 3;
             return encrypt.encryptPassword(CONTRASENA);
 
           case 3:
             pass2 = _context.sent;
+            _context.next = 6;
+            return encrypt.encryptPassword(RESPUESTA);
+
+          case 6:
+            answer = _context.sent;
             img = ""; //Guarda foto
 
             if (!req.file) {
-              _context.next = 11;
+              _context.next = 14;
               break;
             }
 
-            _context.next = 8;
+            _context.next = 11;
             return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
 
-          case 8:
+          case 11:
             img = _context.sent;
-            _context.next = 12;
+            _context.next = 15;
             break;
 
-          case 11:
+          case 14:
             img = "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
 
-          case 12:
-            _context.next = 14;
-            return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_PUESTO, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, pass2, img, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO]);
+          case 15:
+            _context.next = 17;
+            return _databaseSQL["default"].query("CALL CREAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_PUESTO, NOMBRE_PERSONA, APELLIDO_PERSONA, GENERO, RTN, TELEFONO, SUELDO, ID_ROL, USUARIO, pass2, img, CORREO_ELECTRONICO, CREADO_POR, FECHA_VENCIMIENTO, PREGUNTA, answer]);
 
-          case 14:
+          case 17:
             objetos = _context.sent;
             mensaje = JSON.parse(JSON.stringify(objetos[0]));
             info = JSON.parse(JSON.stringify(mensaje));
 
             if (!(info[0]["CODIGO"] == 1)) {
-              _context.next = 21;
+              _context.next = 24;
               break;
             }
 
-            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649635374/Maelcon/BLG2011-YM-AMS-VirtualWelcome-Card_ufn1k5.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Hola ".concat(NOMBRE_PERSONA, " ").concat(APELLIDO_PERSONA, "!</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Bienvenido al sistema de Maelcon, al recibir este correo se confirma la creaci\xF3n de su usuario el cual\n              quedar\xE1 a la espera de ser dado de alta por un administrador, los modulos de trabajo son variados y el \n              administrador ser\xE1 el encargado de asignar tus areas.\n              <b>Posibles areas de trabajo:</b></p>\n            <ul style=\"font-size: 15px;  margin: 10px 0\">\n              <li>Modulo de compras.</li>\n              <li>Modulo de ventas.</li>\n              <li>Administrador de usuarios.</li>\n              <li>Administrador de sistema.</li>\n              <li>Control de inventarios y productos.</li>\n            </ul>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
-            _context.next = 21;
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649635374/Maelcon/BLG2011-YM-AMS-VirtualWelcome-Card_ufn1k5.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Hola ".concat(NOMBRE_PERSONA, " ").concat(APELLIDO_PERSONA, "!</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Bienvenido al sistema de Maelcon, al recibir este correo se confirma la creaci\xF3n de su usuario el cual\n              quedar\xE1 a la espera de ser dado de alta por un administrador, los modulos de trabajo son variados y el \n              administrador ser\xE1 el encargado de asignar tus areas.\n              <b>Posibles areas de trabajo:</b></p>\n            <ul style=\"font-size: 15px;  margin: 10px 0\">\n              <li>Modulo de compras.</li>\n              <li>Modulo de ventas.</li>\n              <li>Administrador de usuarios.</li>\n              <li>Administrador de sistema.</li>\n              <li>Control de inventarios y productos.</li>\n            </ul>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://maelcon.live/\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            _context.next = 24;
             return email.sendEmail(CORREO_ELECTRONICO, "Confirmación de creación de cuenta ✔", contentHTML);
 
-          case 21:
+          case 24:
             res.json(info);
 
-          case 22:
+          case 25:
           case "end":
             return _context.stop();
         }
@@ -173,22 +178,43 @@ exports.getUserById = getUserById;
 
 var updateUserById = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var ID_USUARIO, id;
+    var ID_USUARIO, _req$body2, ID_PUESTO, NOMBRE_PERSONA, APELLIDO_PERSONA, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, objetos, mensaje, info;
+
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             ID_USUARIO = req.params.ID_USUARIO;
-            id = parseInt(ID_USUARIO, 10);
-            _context4.next = 4;
-            return _databaseSQL["default"].query("UPDATE tbl_ms_usuario set ? WHERE ID_USUARIO = ?", [req.body, id]);
+            _req$body2 = req.body, ID_PUESTO = _req$body2.ID_PUESTO, NOMBRE_PERSONA = _req$body2.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body2.APELLIDO_PERSONA, TELEFONO = _req$body2.TELEFONO, SUELDO = _req$body2.SUELDO, ID_ROL = _req$body2.ID_ROL, IMG_USUARIO = _req$body2.IMG_USUARIO, MODIFICADO_POR = _req$body2.MODIFICADO_POR;
+            img = ""; //Guarda foto
 
-          case 4:
-            res.json({
-              message: "El usuario ha sido actualizado"
-            });
+            if (!req.file) {
+              _context4.next = 9;
+              break;
+            }
 
-          case 5:
+            _context4.next = 6;
+            return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
+
+          case 6:
+            img = _context4.sent;
+            _context4.next = 10;
+            break;
+
+          case 9:
+            img = "https://res.cloudinary.com/maelcon/image/upload/v1649551517/Maelcon/Perfiles/tgjtgsblxyubftltsxra.png";
+
+          case 10:
+            _context4.next = 12;
+            return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE_PERSONA, APELLIDO_PERSONA, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, img, MODIFICADO_POR]);
+
+          case 12:
+            objetos = _context4.sent;
+            mensaje = JSON.parse(JSON.stringify(objetos[0]));
+            info = JSON.parse(JSON.stringify(mensaje));
+            res.json(objetos);
+
+          case 16:
           case "end":
             return _context4.stop();
         }
@@ -238,7 +264,7 @@ exports.deleteUserById = deleteUserById;
 
 var updateUserByIdPA = /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var ID_USUARIO, _req$body2, NOMBRE_PERSONA, APELLIDO_PERSONA, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, usuarioAct, objetos, mensaje;
+    var ID_USUARIO, _req$body3, NOMBRE_PERSONA, APELLIDO_PERSONA, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR, img, usuarioAct, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
@@ -246,37 +272,36 @@ var updateUserByIdPA = /*#__PURE__*/function () {
           case 0:
             _context6.prev = 0;
             ID_USUARIO = req.params.ID_USUARIO;
-            _req$body2 = req.body, NOMBRE_PERSONA = _req$body2.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body2.APELLIDO_PERSONA, ID_PUESTO = _req$body2.ID_PUESTO, TELEFONO = _req$body2.TELEFONO, SUELDO = _req$body2.SUELDO, ID_ROL = _req$body2.ID_ROL, IMG_USUARIO = _req$body2.IMG_USUARIO, MODIFICADO_POR = _req$body2.MODIFICADO_POR;
-            console.log(ID_USUARIO, NOMBRE, APELLIDO, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, IMG_USUARIO, MODIFICADO_POR);
+            _req$body3 = req.body, NOMBRE_PERSONA = _req$body3.NOMBRE_PERSONA, APELLIDO_PERSONA = _req$body3.APELLIDO_PERSONA, ID_PUESTO = _req$body3.ID_PUESTO, TELEFONO = _req$body3.TELEFONO, SUELDO = _req$body3.SUELDO, ID_ROL = _req$body3.ID_ROL, IMG_USUARIO = _req$body3.IMG_USUARIO, MODIFICADO_POR = _req$body3.MODIFICADO_POR;
 
             if (!req.file) {
-              _context6.next = 11;
+              _context6.next = 10;
               break;
             }
 
-            _context6.next = 7;
+            _context6.next = 6;
             return cloudinary_services.uploadImage(req.file.path, "Maelcon/Perfiles");
 
-          case 7:
+          case 6:
             img = _context6.sent;
             console.log(img);
-            _context6.next = 16;
+            _context6.next = 15;
             break;
 
-          case 11:
-            _context6.next = 13;
+          case 10:
+            _context6.next = 12;
             return _databaseSQL["default"].query("CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)", [ID_USUARIO]);
 
-          case 13:
+          case 12:
             usuarioAct = _context6.sent;
             console.log(usuarioAct);
             img = usuarioAct[0][0].IMG_USUARIO;
 
-          case 16:
-            _context6.next = 18;
+          case 15:
+            _context6.next = 17;
             return _databaseSQL["default"].query("CALL ACTUALIZAR_MS_USUARIO(?,?,?,?,?,?,?,?,?,@MENSAJE,@CODIGO);", [ID_USUARIO, NOMBRE_PERSONA, APELLIDO_PERSONA, ID_PUESTO, TELEFONO, SUELDO, ID_ROL, img, MODIFICADO_POR]);
 
-          case 18:
+          case 17:
             objetos = _context6.sent;
             mensaje = JSON.parse(JSON.stringify(objetos[0]));
             res.json({
@@ -285,20 +310,20 @@ var updateUserByIdPA = /*#__PURE__*/function () {
                 CODIGO: mensaje[0]["CODIGO"]
               }]
             });
-            _context6.next = 26;
+            _context6.next = 25;
             break;
 
-          case 23:
-            _context6.prev = 23;
+          case 22:
+            _context6.prev = 22;
             _context6.t0 = _context6["catch"](0);
             res.json(_context6.t0);
 
-          case 26:
+          case 25:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 23]]);
+    }, _callee6, null, [[0, 22]]);
   }));
 
   return function updateUserByIdPA(_x11, _x12) {
@@ -310,7 +335,7 @@ exports.updateUserByIdPA = updateUserByIdPA;
 
 var securityQA = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
-    var ID_USUARIO, _req$body3, PREGUNTA, RESPUESTA, CREADO_POR, pass, objetos, mensaje;
+    var ID_USUARIO, _req$body4, PREGUNTA, RESPUESTA, CREADO_POR, pass, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
@@ -318,14 +343,14 @@ var securityQA = /*#__PURE__*/function () {
           case 0:
             _context7.prev = 0;
             ID_USUARIO = req.params.ID_USUARIO;
-            _req$body3 = req.body, PREGUNTA = _req$body3.PREGUNTA, RESPUESTA = _req$body3.RESPUESTA, CREADO_POR = _req$body3.CREADO_POR;
+            _req$body4 = req.body, PREGUNTA = _req$body4.PREGUNTA, RESPUESTA = _req$body4.RESPUESTA, CREADO_POR = _req$body4.CREADO_POR;
             _context7.next = 5;
             return encrypt.encryptPassword(RESPUESTA);
 
           case 5:
             pass = _context7.sent;
             _context7.next = 8;
-            return _databaseSQL["default"].query("CALL CREAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);", [ID_USUARIO, PREGUNTA, RESPUESTA, CREADO_POR]);
+            return _databaseSQL["default"].query("CALL CREAR_MS_PREGUNTA_RECUPERACION(?,?,?,?,@MENSAJE, @CODIGO);", [ID_USUARIO, PREGUNTA, pass, CREADO_POR]);
 
           case 8:
             objetos = _context7.sent;
@@ -361,7 +386,7 @@ exports.securityQA = securityQA;
 
 var updateSecurytyQA = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res) {
-    var ID_USUARIO, _req$body4, PREGUNTA, RESPUESTA, MODIFICADO_POR, pass, objetos, mensaje;
+    var ID_USUARIO, _req$body5, PREGUNTA, RESPUESTA, MODIFICADO_POR, pass, objetos, mensaje;
 
     return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
@@ -369,7 +394,7 @@ var updateSecurytyQA = /*#__PURE__*/function () {
           case 0:
             _context8.prev = 0;
             ID_USUARIO = req.params.ID_USUARIO;
-            _req$body4 = req.body, PREGUNTA = _req$body4.PREGUNTA, RESPUESTA = _req$body4.RESPUESTA, MODIFICADO_POR = _req$body4.MODIFICADO_POR;
+            _req$body5 = req.body, PREGUNTA = _req$body5.PREGUNTA, RESPUESTA = _req$body5.RESPUESTA, MODIFICADO_POR = _req$body5.MODIFICADO_POR;
             _context8.next = 5;
             return encrypt.encryptPassword(RESPUESTA);
 
@@ -412,7 +437,7 @@ exports.updateSecurytyQA = updateSecurytyQA;
 
 var updatePassword = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res) {
-    var ID_USUARIO, _req$body5, MODIFICADO_POR, CONTRASENA, password, objetos, mensaje, info, contentHTML, mensaje2, usuarioAct, correo;
+    var ID_USUARIO, _req$body6, MODIFICADO_POR, CONTRASENA, password, objetos, mensaje, info, contentHTML, mensaje2, usuarioAct, correo;
 
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
@@ -420,7 +445,7 @@ var updatePassword = /*#__PURE__*/function () {
           case 0:
             _context9.prev = 0;
             ID_USUARIO = req.params.ID_USUARIO;
-            _req$body5 = req.body, MODIFICADO_POR = _req$body5.MODIFICADO_POR, CONTRASENA = _req$body5.CONTRASENA;
+            _req$body6 = req.body, MODIFICADO_POR = _req$body6.MODIFICADO_POR, CONTRASENA = _req$body6.CONTRASENA;
             _context9.next = 5;
             return encrypt.encryptPassword(CONTRASENA);
 
@@ -450,7 +475,7 @@ var updatePassword = /*#__PURE__*/function () {
               break;
             }
 
-            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un cambio de contrase\xF1a para tu usuario, si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ";
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un cambio de contrase\xF1a para tu usuario, si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://maelcon.live/\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ";
             _context9.next = 22;
             return email.sendEmail(correo, "Cambio de contraseña exitoso ✔", contentHTML);
 
@@ -563,57 +588,82 @@ exports.getSecurityAnswer = getSecurityAnswer;
 
 var getSecurityQuestionByEmail = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res) {
-    var _CORREO, user, userData, pregunta, mensaje, processedQuestion, _mensaje;
+    var CORREO, user, userData, pregunta, mensaje, processedQuestion, _mensaje;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.prev = 0;
-            _CORREO = req.params.CORREO;
+            CORREO = req.params.CORREO;
             _context12.next = 4;
-            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [_CORREO]);
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [CORREO]);
 
           case 4:
             user = _context12.sent;
-            userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
-            _context12.next = 8;
-            return _databaseSQL["default"].query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [userData[0]]);
+            userData = JSON.parse(JSON.stringify(user[0][0]));
+
+            if (!(userData["CODIGO"] == 0)) {
+              _context12.next = 8;
+              break;
+            }
+
+            return _context12.abrupt("return", res.json({
+              mensaje: [userData]
+            }));
 
           case 8:
+            _context12.next = 10;
+            return _databaseSQL["default"].query("CALL OBTENER_PREGUNTA_SEGURIDAD(?)", [userData["ID_USUARIO"]]);
+
+          case 10:
             pregunta = _context12.sent;
-            _context12.next = 11;
+            _context12.next = 13;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 11:
+          case 13:
             mensaje = _context12.sent;
             processedQuestion = Object.values(JSON.parse(JSON.stringify(pregunta[0][0])));
+
+            if (!(processedQuestion == "")) {
+              _context12.next = 17;
+              break;
+            }
+
+            return _context12.abrupt("return", res.json({
+              mensaje: [{
+                MENSAJE: "El usuario seleccionado no cuenta con una pregunta de seguridad",
+                CODIGO: 0
+              }]
+            }));
+
+          case 17:
             res.json({
               mensaje: JSON.parse(JSON.stringify(mensaje)),
               pregunta: processedQuestion
             });
-            _context12.next = 22;
+            _context12.next = 26;
             break;
 
-          case 16:
-            _context12.prev = 16;
+          case 20:
+            _context12.prev = 20;
             _context12.t0 = _context12["catch"](0);
-            _context12.next = 20;
+            _context12.next = 24;
             return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
 
-          case 20:
+          case 24:
             _mensaje = _context12.sent;
             res.status(401).json({
               error: _context12.t0.message,
               mensaje: JSON.parse(JSON.stringify(_mensaje))
             });
 
-          case 22:
+          case 26:
           case "end":
             return _context12.stop();
         }
       }
-    }, _callee12, null, [[0, 16]]);
+    }, _callee12, null, [[0, 20]]);
   }));
 
   return function getSecurityQuestionByEmail(_x23, _x24) {
@@ -625,17 +675,17 @@ exports.getSecurityQuestionByEmail = getSecurityQuestionByEmail;
 
 var getAnswerByEmail = /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res) {
-    var _CORREO2, RESPUESTA, user, userData, respuesta, mensaje, processedAnswer, validatePassword, CONTRASENA, password, tokenSQL, contentHTML, confirmacion, _mensaje2;
+    var CORREO, RESPUESTA, user, userData, respuesta, mensaje, processedAnswer, validatePassword, CONTRASENA, password, tokenSQL, contentHTML, confirmacion, _mensaje2;
 
     return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
             _context13.prev = 0;
-            _CORREO2 = req.params.CORREO;
+            CORREO = req.params.CORREO;
             RESPUESTA = req.body.RESPUESTA;
             _context13.next = 5;
-            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [_CORREO2]);
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [CORREO]);
 
           case 5:
             user = _context13.sent;
@@ -663,7 +713,7 @@ var getAnswerByEmail = /*#__PURE__*/function () {
               break;
             }
 
-            return _context13.abrupt("return", res.status(401).json({
+            return _context13.abrupt("return", res.json({
               mensaje: "Respuesta a pregunta de seguridad erronea"
             }));
 
@@ -677,7 +727,7 @@ var getAnswerByEmail = /*#__PURE__*/function () {
             tokenSQL = _jsonwebtoken["default"].sign({
               id: userData[0],
               password: password,
-              correo: _CORREO2
+              correo: CORREO
             }, _config["default"].SECRET, {
               expiresIn: 86400 * 7
             });
@@ -688,9 +738,9 @@ var getAnswerByEmail = /*#__PURE__*/function () {
               break;
             }
 
-            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un reestablecimiento de contrase\xF1a para tu usuario, la duracion de este enlace es de 7 dias,\n               si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <a href=\"http://localhost:3000/module/users/passwordRecoveryToken/".concat(tokenSQL, "\" style=\"\" target=\"_blank\">Haz click en este enlace para ingresar tu nueva contrase\xF1a</a>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un reestablecimiento de contrase\xF1a para tu usuario, la duracion de este enlace es de 7 dias,\n               si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <a href=\"https://maelcon.live/#/recovery-password/".concat(tokenSQL, "\" style=\"\" target=\"_blank\">Haz click en este enlace para ingresar tu nueva contrase\xF1a</a>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://maelcon.live/\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
             _context13.next = 30;
-            return email.sendEmail(_CORREO2, "Reestablecimiento de contraseña exitoso ✔", contentHTML);
+            return email.sendEmail(CORREO, "Reestablecimiento de contraseña exitoso ✔", contentHTML);
 
           case 30:
             res.json({
@@ -730,16 +780,16 @@ exports.getAnswerByEmail = getAnswerByEmail;
 
 var generatePasswordRecoveryTokenByEmail = /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res) {
-    var _CORREO3, user, userData, CONTRASENA, password, tokenSQL, contentHTML, mensaje, confirmacion, _mensaje3;
+    var CORREO, user, userData, CONTRASENA, password, tokenSQL, contentHTML, mensaje, confirmacion, _mensaje3;
 
     return _regenerator["default"].wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.prev = 0;
-            _CORREO3 = req.params.CORREO;
+            CORREO = req.params.CORREO;
             _context14.next = 4;
-            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [_CORREO3]);
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [CORREO]);
 
           case 4:
             user = _context14.sent;
@@ -753,7 +803,7 @@ var generatePasswordRecoveryTokenByEmail = /*#__PURE__*/function () {
             tokenSQL = _jsonwebtoken["default"].sign({
               id: userData[0],
               password: password,
-              correo: _CORREO3
+              correo: CORREO
             }, _config["default"].SECRET, {
               expiresIn: 86400 * 7
             });
@@ -769,9 +819,9 @@ var generatePasswordRecoveryTokenByEmail = /*#__PURE__*/function () {
               break;
             }
 
-            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un reestablecimiento de contrase\xF1a para tu usuario, la duracion de este enlace es de 7 dias,\n               si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <a href=\"http://localhost:3000/module/users/passwordRecoveryToken/".concat(tokenSQL, "\" style=\"\" target=\"_blank\">Haz click en este enlace para ingresar tu nueva contrase\xF1a</a>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://www.google.com\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
+            contentHTML = "\n      <table style=\"max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;\">\n      <tr>\n        <td style=\"padding: 0\">\n          <img style=\"padding: 0; display: block\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png\" width=\"100%\">\n        </td>\n      </tr>\n      \n      <tr>\n        <td style=\"background-color: #ecf0f1\">\n          <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif\">\n            <h2 style=\"color: #e67e22; margin: 0 0 7px\">Cambio de contrase\xF1a \uD83D\uDD12</h2>\n            <p style=\"margin: 2px; font-size: 15px\">\n              Se ha registrado un reestablecimiento de contrase\xF1a para tu usuario, la duracion de este enlace es de 7 dias,\n               si no has sido tu reporte de forma inmediata esta actividad\n              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>\n            <a href=\"https://maelcon.live/recovery-password/".concat(tokenSQL, "\" style=\"\" target=\"_blank\">Haz click en este enlace para ingresar tu nueva contrase\xF1a</a>\n            <div style=\"width: 100%;margin:20px 0; display: inline-block;text-align: center\">\n              <img style=\"padding: 0; width: 150px; margin: 5px\" src=\"https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg\">\n            </div>\n            <div style=\"width: 100%; text-align: center\">\n              <a style=\"text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db\" href=\"https://maelcon.live/\">Ir a la p\xE1gina</a>\t\n            </div>\n            <p style=\"color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0\">Maelcon S de R.L. 2022</p>\n          </div>\n        </td>\n      </tr>\n    </table>\n      ");
             _context14.next = 19;
-            return email.sendEmail(_CORREO3, "Reestablecimiento de contraseña exitoso ✔", contentHTML);
+            return email.sendEmail(CORREO, "Reestablecimiento de contraseña exitoso ✔", contentHTML);
 
           case 19:
             res.json(tokenSQL);
@@ -808,16 +858,22 @@ exports.generatePasswordRecoveryTokenByEmail = generatePasswordRecoveryTokenByEm
 
 var verifyRecoveryToken = /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(req, res) {
-    var token, decoded, user, userData, mensaje;
+    var token, CONTRASENA, password, decoded, user, userData, updatedPassword, mensaje;
     return _regenerator["default"].wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
             _context15.prev = 0;
             token = req.params.token;
+            CONTRASENA = req.body.CONTRASENA;
+            _context15.next = 5;
+            return encrypt.encryptPassword(CONTRASENA);
+
+          case 5:
+            password = _context15.sent;
 
             if (token) {
-              _context15.next = 4;
+              _context15.next = 8;
               break;
             }
 
@@ -825,37 +881,57 @@ var verifyRecoveryToken = /*#__PURE__*/function () {
               mensaje: "No se ha enviado ningun token"
             }));
 
-          case 4:
+          case 8:
             decoded = _jsonwebtoken["default"].verify(token, _config["default"].SECRET);
-            _context15.next = 7;
-            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [CORREO]);
+            _context15.next = 11;
+            return _databaseSQL["default"].query("CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)", [decoded["correo"]]);
 
-          case 7:
+          case 11:
             user = _context15.sent;
-            userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
-            res.json(decoded);
-            _context15.next = 18;
-            break;
-
-          case 12:
-            _context15.prev = 12;
-            _context15.t0 = _context15["catch"](0);
+            userData = JSON.parse(JSON.stringify(user[0][0]));
+            console.log(userData["ID_USUARIO"]);
             _context15.next = 16;
-            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+            return _databaseSQL["default"].query("CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);", [userData["ID_USUARIO"], userData["ID_USUARIO"], password]);
 
           case 16:
+            updatedPassword = _context15.sent;
+            res.json(updatedPassword[0]);
+            _context15.next = 28;
+            break;
+
+          case 20:
+            _context15.prev = 20;
+            _context15.t0 = _context15["catch"](0);
+            _context15.next = 24;
+            return _databaseSQL["default"].query("SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;");
+
+          case 24:
             mensaje = _context15.sent;
+
+            if (!(_context15.t0.message == "jwt expired")) {
+              _context15.next = 27;
+              break;
+            }
+
+            return _context15.abrupt("return", res.json({
+              mensaje: [{
+                MENSAJE: "El token ha expirado, restablecer contraseña de nuevo",
+                CODIGO: 0
+              }]
+            }));
+
+          case 27:
             res.status(401).json({
               error: _context15.t0.message,
               mensaje: JSON.parse(JSON.stringify(mensaje))
             });
 
-          case 18:
+          case 28:
           case "end":
             return _context15.stop();
         }
       }
-    }, _callee15, null, [[0, 12]]);
+    }, _callee15, null, [[0, 20]]);
   }));
 
   return function verifyRecoveryToken(_x29, _x30) {
