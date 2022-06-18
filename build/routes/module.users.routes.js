@@ -28,7 +28,7 @@ router.get("/",
 moduleUserCtrl.getUsersSQL);
 router.get("/:ID_USUARIO", //[authJwt.verifyToken, authJwt.isAdmin],
 moduleUserCtrl.getUserSQL);
-router.get("/myinfo/userInfo", [_middlewares.authJwt.verifyTokenSQL, _middlewares.authJwt.verifyAuth(5, 4)], moduleUserCtrl.getMyUser);
+router.get("/myinfo/userInfo", [_middlewares.authJwt.verifyTokenSQL], moduleUserCtrl.getMyUser);
 router["delete"]("/:ID_USUARIO", //[authJwt.verifyToken, authJwt.isAdmin],
 moduleUserCtrl.deleteUserById);
 router.put("/:ID_USUARIO", //[authJwt.verifyToken, authJwt.isAdmin],
@@ -39,8 +39,8 @@ router.put("/uptPWD/:ID_USUARIO", moduleUserCtrl.updatePassword);
 router.get("/getSQ/:ID_USUARIO", moduleUserCtrl.getSecurityQuestion);
 router.get("/getSA/:ID_USUARIO", moduleUserCtrl.getSecurityAnswer);
 router.get("/lostPassword/:CORREO", moduleUserCtrl.getSecurityQuestionByEmail);
-router.get("/lostPasswordA/:CORREO", moduleUserCtrl.getAnswerByEmail);
+router.post("/lostPasswordA/:CORREO", moduleUserCtrl.getAnswerByEmail);
 router.get("/passwordRecovery/:CORREO", moduleUserCtrl.generatePasswordRecoveryTokenByEmail);
-router.get("/passwordRecoveryToken/:token", moduleUserCtrl.verifyRecoveryToken);
+router.post("/passwordRecoveryToken/:token", moduleUserCtrl.verifyRecoveryToken);
 var _default = router;
 exports["default"] = _default;
