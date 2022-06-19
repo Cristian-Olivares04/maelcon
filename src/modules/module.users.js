@@ -29,9 +29,9 @@ export const createUser = async (req, res) => {
 
   let CONTRASENA1 = "";
 
-  if(CONTRASENA === ""){
+  if (CONTRASENA === "") {
     CONTRASENA1 = Math.floor(Math.random() * (999999 - 100000) + 100000);
-  }else{
+  } else {
     CONTRASENA1 = CONTRASENA;
   }
 
@@ -627,7 +627,7 @@ export const verifyRecoveryToken = async (req, res) => {
 
     const ingreso = await pool.query("CALL ACTUALIZAR_PRIMER_INGRESO(?,?)", [
       userData["ID_USUARIO"],
-      1
+      1,
     ]);
 
     res.json(updatedPassword[0]);
@@ -731,7 +731,7 @@ export const getMyUser = async (req, res) => {
   }
 };
 
-export const getTokenByEmailSimple = async (req, res) =>{
+export const getTokenByEmailSimple = async (req, res) => {
   try {
     const { CORREO } = req.params;
     const user = await pool.query(
@@ -739,7 +739,7 @@ export const getTokenByEmailSimple = async (req, res) =>{
       [CORREO]
     );
     const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
-    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) + 100000);
 
     const password = await encrypt.encryptPassword(CONTRASENA.toString());
     const tokenSQL = jwt.sign(
@@ -756,11 +756,10 @@ export const getTokenByEmailSimple = async (req, res) =>{
     const confirmacion = JSON.parse(JSON.stringify(mensaje));
     res.json({
       mensaje: [
-        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] }
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
       ],
-      token: tokenSQL
+      token: tokenSQL,
     });
-
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -779,9 +778,9 @@ export const getTokenByEmailSimple = async (req, res) =>{
       mensaje: JSON.parse(JSON.stringify(mensaje)),
     });
   }
-}
+};
 
-//Verificar primer ingreso 
+//Verificar primer i
 export const getFirstLogin = async (req, res) => {
   try {
     const { CORREO_ELECTRONICO } = req.params;
@@ -791,19 +790,18 @@ export const getFirstLogin = async (req, res) => {
 
     res.json({
       mensaje: [
-        { MENSAJE: 'Datos obtenidos', CODIGO: ingreso[0][0].PRIMER_INGRESO },
-      ]
+        { MENSAJE: "Datos obtenidos", CODIGO: ingreso[0][0].PRIMER_INGRESO },
+      ],
     });
-    
   } catch (error) {
     const mensaje = {
-      mensaje: 'Ha ocurrido un error inesperado',
-      codigo: 0
-    }
+      mensaje: "Ha ocurrido un error inesperado",
+      codigo: 0,
+    };
 
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
     });
   }
-}
+};
