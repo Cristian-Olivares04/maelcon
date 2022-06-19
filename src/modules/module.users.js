@@ -507,7 +507,7 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
   try {
     const { CORREO } = req.params;
     const user = await pool.query(
-      "CALL COMPROBAR_USUARIO(?,@MENSAJE, @CODIGO)",
+      "CALL COMPROBAR_USUARIO_EMAIL(?,@MENSAJE, @CODIGO)",
       [CORREO]
     );
     const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
@@ -515,7 +515,7 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
 
     const password = await encrypt.encryptPassword(CONTRASENA.toString());
     const tokenSQL = jwt.sign(
-      { id: userData[0], password: password, correo: CORREO },
+      { id: userData[2], password: password, correo: CORREO },
       config.SECRET,
       {
         expiresIn: 86400 * 7,
@@ -523,11 +523,8 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
     );
 
     let contentHTML;
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
-    const confirmacion = JSON.parse(JSON.stringify(mensaje));
-    if (confirmacion[0]["CODIGO"] == 1) {
+    const confirmacion = JSON.parse(JSON.stringify(user[0][0]));
+    if (confirmacion.CODIGO == 1) {
       contentHTML = `
       <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
       <tr>
@@ -565,19 +562,14 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
       );
     }
     
-    console.log(confirmacion);
     res.json({
-      mensaje: confirmacion,
+      mensaje: [{MENSAJE: confirmacion.MENSAJE, CODIGO: confirmacion.CODIGO}],
       token: tokenSQL
     });
   } catch (error) {
-    const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
-    );
 
-    res.status(401).json({
-      error: error.message,
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
+    res.json({
+      mensaje:[{MENSAJE: "Error", CODIGO: 0}],
       CODIGO: 0,
     });
   }
