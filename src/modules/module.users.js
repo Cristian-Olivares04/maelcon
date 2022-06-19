@@ -29,9 +29,9 @@ export const createUser = async (req, res) => {
 
   let CONTRASENA1 = "";
 
-  if(CONTRASENA === ""){
+  if (CONTRASENA === "") {
     CONTRASENA1 = Math.floor(Math.random() * (999999 - 100000) + 100000);
-  }else{
+  } else {
     CONTRASENA1 = CONTRASENA;
   }
 
@@ -461,7 +461,10 @@ export const getAnswerByEmail = async (req, res) => {
     );
 
     if (!validatePassword) {
-      return res.json({ MENSAJE: "Respuesta a pregunta de seguridad erronea", CODIGO: 0 });
+      return res.json({
+        MENSAJE: "Respuesta a pregunta de seguridad erronea",
+        CODIGO: 0,
+      });
     }
     const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
 
@@ -479,9 +482,9 @@ export const getAnswerByEmail = async (req, res) => {
         mensaje: JSON.parse(JSON.stringify(mensaje)),
         CODIGO: 1,
         respuesta: validatePassword,
-        token: tokenSQL
-      }); 
-    }else{
+        token: tokenSQL,
+      });
+    } else {
       res.status(401).json({
         error: error.message,
         mensaje: JSON.parse(JSON.stringify(mensaje)),
@@ -564,8 +567,15 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
     
     console.log(confirmacion);
     res.json({
+<<<<<<< HEAD
       mensaje: confirmacion,
       token: tokenSQL});
+=======
+      MENSAJE: confirmacion[0]["MENSAJE"],
+      CODIGO: confirmacion[0]["CODIGO"],
+      token: tokenSQL,
+    });
+>>>>>>> 2538e13f79e9b9cfb2d99d4d9f0f90efb5822ca4
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -574,7 +584,7 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
-      CODIGO: 0
+      CODIGO: 0,
     });
   }
 };
@@ -603,7 +613,7 @@ export const verifyRecoveryToken = async (req, res) => {
 
     const ingreso = await pool.query("CALL ACTUALIZAR_PRIMER_INGRESO(?,?)", [
       userData["ID_USUARIO"],
-      1
+      1,
     ]);
 
     res.json(updatedPassword[0]);
@@ -707,7 +717,7 @@ export const getMyUser = async (req, res) => {
   }
 };
 
-export const getTokenByEmailSimple = async (req, res) =>{
+export const getTokenByEmailSimple = async (req, res) => {
   try {
     const { CORREO } = req.params;
     const user = await pool.query(
@@ -715,7 +725,7 @@ export const getTokenByEmailSimple = async (req, res) =>{
       [CORREO]
     );
     const userData = Object.values(JSON.parse(JSON.stringify(user[0][0])));
-    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
+    const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) + 100000);
 
     const password = await encrypt.encryptPassword(CONTRASENA.toString());
     const tokenSQL = jwt.sign(
@@ -732,11 +742,10 @@ export const getTokenByEmailSimple = async (req, res) =>{
     const confirmacion = JSON.parse(JSON.stringify(mensaje));
     res.json({
       mensaje: [
-        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] }
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
       ],
-      token: tokenSQL
+      token: tokenSQL,
     });
-
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -755,9 +764,9 @@ export const getTokenByEmailSimple = async (req, res) =>{
       mensaje: JSON.parse(JSON.stringify(mensaje)),
     });
   }
-}
+};
 
-//Verificar primer ingreso 
+//Verificar primer i
 export const getFirstLogin = async (req, res) => {
   try {
     const { CORREO_ELECTRONICO } = req.params;
@@ -767,28 +776,27 @@ export const getFirstLogin = async (req, res) => {
 
     res.json({
       mensaje: [
-        { MENSAJE: 'Datos obtenidos', CODIGO: ingreso[0][0].PRIMER_INGRESO },
-      ]
+        { MENSAJE: "Datos obtenidos", CODIGO: ingreso[0][0].PRIMER_INGRESO },
+      ],
     });
-    
   } catch (error) {
     const mensaje = {
-      mensaje: 'Ha ocurrido un error inesperado',
-      codigo: 0
-    }
+      mensaje: "Ha ocurrido un error inesperado",
+      codigo: 0,
+    };
 
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
     });
   }
-}
+};
 
 //Comparar contraseñas
 export const uptPasswordGestion = async (req, res) => {
   try {
     const { CORREO } = req.params;
-    const {MODIFICADO_POR, CONTRASENA_ACTUAL, NUEVA_CONTRASENA} = req.body;
+    const { MODIFICADO_POR, CONTRASENA_ACTUAL, NUEVA_CONTRASENA } = req.body;
 
     const usuario = await pool.query(
       "CALL COMPROBAR_USUARIO(?,@MENSAJE,@CODIGO)",
@@ -805,10 +813,12 @@ export const uptPasswordGestion = async (req, res) => {
     );
 
     if (!validatePassword)
-      return res
-        .json({ mensaje: "La contraseña ingresada no coincide.", CODIGO: 0 });
+      return res.json({
+        mensaje: "La contraseña ingresada no coincide.",
+        CODIGO: 0,
+      });
 
-    if(validatePassword){
+    if (validatePassword) {
       const password = await encrypt.encryptPassword(NUEVA_CONTRASENA);
       const updatedPassword = await pool.query(
         "CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);",
@@ -817,15 +827,14 @@ export const uptPasswordGestion = async (req, res) => {
 
       res.json({
         mensaje: [
-          { MENSAJE: 'Contraseña actualizada exitosamente.', CODIGO: 1 },
-        ]
+          { MENSAJE: "Contraseña actualizada exitosamente.", CODIGO: 1 },
+        ],
       });
     }
   } catch (error) {
     res.json({
       error: error.message,
-      mensaje: {MENSAJE: "Contraseña no actualizada.", CODIGO: 0},
+      mensaje: { MENSAJE: "Contraseña no actualizada.", CODIGO: 0 },
     });
   }
-}
-
+};
