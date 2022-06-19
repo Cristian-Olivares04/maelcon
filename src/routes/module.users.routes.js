@@ -65,4 +65,9 @@ router.get(
   moduleUserCtrl.getTokenByEmailSimple
 );
 
+router.put(
+  "/updatePassGestion/:CORREO",
+  moduleUserCtrl.uptPasswordGestion
+);
+
 export default router;

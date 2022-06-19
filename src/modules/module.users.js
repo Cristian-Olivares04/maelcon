@@ -461,7 +461,10 @@ export const getAnswerByEmail = async (req, res) => {
     );
 
     if (!validatePassword) {
-      return res.json({ mensaje: "Respuesta a pregunta de seguridad erronea" });
+      return res.json({
+        MENSAJE: "Respuesta a pregunta de seguridad erronea",
+        CODIGO: 0,
+      });
     }
     const CONTRASENA = Math.floor(Math.random() * (999999 - 100000) - 100000);
 
@@ -473,49 +476,21 @@ export const getAnswerByEmail = async (req, res) => {
         expiresIn: 86400 * 7,
       }
     );
-    let contentHTML;
     const confirmacion = JSON.parse(JSON.stringify(mensaje));
     if (confirmacion[0]["CODIGO"] == 1) {
-      contentHTML = `
-      <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
-      <tr>
-        <td style="padding: 0">
-          <img style="padding: 0; display: block" src="https://res.cloudinary.com/maelcon/image/upload/v1649633845/Maelcon/strong_password_qmm0kb.png" width="100%">
-        </td>
-      </tr>
-      
-      <tr>
-        <td style="background-color: #ecf0f1">
-          <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
-            <h2 style="color: #e67e22; margin: 0 0 7px">Cambio de contraseña 🔒</h2>
-            <p style="margin: 2px; font-size: 15px">
-              Se ha registrado un reestablecimiento de contraseña para tu usuario, la duracion de este enlace es de 7 dias,
-               si no has sido tu reporte de forma inmediata esta actividad
-              irregular con el superior inmediato, de lo contrario ignore la advertencia.</p>
-            <a href="https://maelcon.live/#/recovery-password/${tokenSQL}" style="" target="_blank">Haz click en este enlace para ingresar tu nueva contraseña</a>
-            <div style="width: 100%;margin:20px 0; display: inline-block;text-align: center">
-              <img style="padding: 0; width: 150px; margin: 5px" src="https://res.cloudinary.com/maelcon/image/upload/v1649559247/Maelcon/descarga_oxoktv.jpg">
-            </div>
-            <div style="width: 100%; text-align: center">
-              <a style="text-decoration: none; border-radius: 5px; padding: 20px; color: white; background-color: #3498db" href="https://maelcon.live/">Ir a la página</a>	
-            </div>
-            <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Maelcon S de R.L. 2022</p>
-          </div>
-        </td>
-      </tr>
-    </table>
-      `;
-
-      await email.sendEmail(
-        CORREO,
-        "Reestablecimiento de contraseña exitoso ✔",
-        contentHTML
-      );
+      res.json({
+        mensaje: JSON.parse(JSON.stringify(mensaje)),
+        CODIGO: 1,
+        respuesta: validatePassword,
+        token: tokenSQL,
+      });
+    } else {
+      res.status(401).json({
+        error: error.message,
+        mensaje: JSON.parse(JSON.stringify(mensaje)),
+        CODIGO: 0,
+      });
     }
-    res.json({
-      mensaje: JSON.parse(JSON.stringify(mensaje)),
-      respuesta: validatePassword,
-    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -590,7 +565,11 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
       );
     }
 
-    res.json(tokenSQL);
+    res.json({
+      MENSAJE: confirmacion[0]["MENSAJE"],
+      CODIGO: confirmacion[0]["CODIGO"],
+      token: tokenSQL,
+    });
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
@@ -599,6 +578,7 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
+      CODIGO: 0,
     });
   }
 };
@@ -802,6 +782,53 @@ export const getFirstLogin = async (req, res) => {
     res.status(401).json({
       error: error.message,
       mensaje: JSON.parse(JSON.stringify(mensaje)),
+    });
+  }
+};
+
+//Comparar contraseñas
+export const uptPasswordGestion = async (req, res) => {
+  try {
+    const { CORREO } = req.params;
+    const { MODIFICADO_POR, CONTRASENA_ACTUAL, NUEVA_CONTRASENA } = req.body;
+
+    const usuario = await pool.query(
+      "CALL COMPROBAR_USUARIO(?,@MENSAJE,@CODIGO)",
+      [CORREO]
+    );
+    const user = JSON.parse(JSON.stringify(usuario[0]));
+    if (!user) {
+      return res.status(400).json({ mensaje: "usuario SQL no encontrado" });
+    }
+
+    const validatePassword = await encrypt.comparePassword(
+      CONTRASENA_ACTUAL,
+      user[0].CONTRASENA
+    );
+
+    if (!validatePassword)
+      return res.json({
+        mensaje: "La contraseña ingresada no coincide.",
+        CODIGO: 0,
+      });
+
+    if (validatePassword) {
+      const password = await encrypt.encryptPassword(NUEVA_CONTRASENA);
+      const updatedPassword = await pool.query(
+        "CALL MODIFICAR_CONTRASENA(?,?,?, @MENSAJE, @CODIGO);",
+        [parseInt(user[0].ID_USUARIO), MODIFICADO_POR, password]
+      );
+
+      res.json({
+        mensaje: [
+          { MENSAJE: "Contraseña actualizada exitosamente.", CODIGO: 1 },
+        ],
+      });
+    }
+  } catch (error) {
+    res.json({
+      error: error.message,
+      mensaje: { MENSAJE: "Contraseña no actualizada.", CODIGO: 0 },
     });
   }
 };
