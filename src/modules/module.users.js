@@ -567,15 +567,9 @@ export const generatePasswordRecoveryTokenByEmail = async (req, res) => {
     
     console.log(confirmacion);
     res.json({
-<<<<<<< HEAD
       mensaje: confirmacion,
-      token: tokenSQL});
-=======
-      MENSAJE: confirmacion[0]["MENSAJE"],
-      CODIGO: confirmacion[0]["CODIGO"],
-      token: tokenSQL,
+      token: tokenSQL
     });
->>>>>>> 2538e13f79e9b9cfb2d99d4d9f0f90efb5822ca4
   } catch (error) {
     const mensaje = await pool.query(
       "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO;"
