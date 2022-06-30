@@ -168,4 +168,15 @@ router.put(
   moduleAdminCtrl.updateUserByAdmin
 );
 
+//Crear pregunta en el catalogo
+router.post("/createQuestionList/", moduleAdminCtrl.crateQuestionList);
+
+//Actualizar pregunta en el catalogo
+router.put("/updateQuestionList/:ID_PREGUNTA", moduleAdminCtrl.putQuestionList);
+
+//Obtener preguntas en el catalogo
+router.get("/getQuestionList/", moduleAdminCtrl.getQuestionList);
+
+
+
 export default router;

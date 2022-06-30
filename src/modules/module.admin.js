@@ -781,6 +781,78 @@ export const getJobs = async (req, res) => {
   }
 };
 
+//obtener catalogo de preguntas
+export const getQuestionList = async (req, res) => {
+  try {
+    const preguntas = await pool.query(
+      "CALL OBTENER_CATALOGO_PREGUNTAS(@MENSAJE, @CODIGO);"
+    );
+    const mensaje = JSON.parse(JSON.stringify(preguntas[0]));
+
+    res.status(200).json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+      preguntas: JSON.parse(JSON.stringify(preguntas))[0],
+    });
+  } catch (error) {
+    res.status(401).json({
+      error: error.message,
+      mensaje: {MENSAJE: "Error al obtner preguntas.", CODIGO: 0},
+    });
+  }
+};
+
+//Crear elemento en catalogo de preguntas
+export const crateQuestionList = async (req, res) => {
+  try {
+    console.log("Hola");
+    const {PREGUNTA, CREADO_POR} = req.body;
+
+    const pregunta = await pool.query(
+      "CALL CREAR_PREGUNTA_CATALOGO(?,?,@MENSAJE, @CODIGO);",
+      [PREGUNTA, CREADO_POR]
+    );
+    const mensaje = JSON.parse(JSON.stringify(pregunta[0]));
+
+    res.status(200).json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
+  } catch (error) {
+    res.status(401).json({
+      error: error.message,
+      mensaje: {MENSAJE: "Error inesperado, pregunta no registrada.", CODIGO: 0},
+    });
+  }
+};
+
+//Actualizar elemento en catalogo de preguntas
+export const putQuestionList = async (req, res) => {
+  try {
+    const { PREGUNTA, MODIFICADO_POR} = req.body;
+    const { ID_PREGUNTA } = req.params;
+
+    const pregunta = await pool.query(
+      "CALL MODIFICAR_PREGUNTA_CATALOGO(?,?,?,@MENSAJE, @CODIGO);",
+      [ID_PREGUNTA, PREGUNTA, MODIFICADO_POR]
+    );
+    const mensaje = JSON.parse(JSON.stringify(pregunta[0]));
+
+    res.status(200).json({
+      mensaje: [
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+      ],
+    });
+  } catch (error) {
+    res.status(401).json({
+      error: error.message,
+      mensaje: {MENSAJE: "Error inesperado, pregunta no actualizada.", CODIGO: 0},
+    });
+  }
+};
+
 //Actualizar usuario
 export const updateUserByAdmin = async (req, res) => {
   try {
