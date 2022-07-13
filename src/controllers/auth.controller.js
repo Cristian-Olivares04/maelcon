@@ -29,6 +29,11 @@ export const singInSQL = async (req, res) => {
       );
       return res.status(401).json({ mensaje: fail[0], token: null });
     }
+
+    await pool.query(
+      "CALL RES_INTENTOS_SESION(?,@MENSAJE,@CODIGO, @INT_REST);",
+      [user[0].ID_USUARIO]
+    );
     const tokenSQL = jwt.sign({ id: user[0].ID_USUARIO }, config.SECRET, {
       expiresIn: 84600,
     });
