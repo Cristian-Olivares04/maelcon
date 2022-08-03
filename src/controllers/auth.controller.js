@@ -22,10 +22,18 @@ export const singInSQL = async (req, res) => {
       user[0].CONTRASENA
     );
 
-    if (!validatePassword)
-      return res
-        .status(401)
-        .json({ mensaje: "Contrasena SQL erronea", token: null });
+    if (!validatePassword) {
+      const fail = await pool.query(
+        "CALL INTENTOS_SESION(?,@MENSAJE,@CODIGO, @INT_REST);",
+        [user[0].ID_USUARIO]
+      );
+      return res.status(401).json({ mensaje: fail[0], token: null });
+    }
+
+    await pool.query(
+      "CALL RES_INTENTOS_SESION(?,@MENSAJE,@CODIGO, @INT_REST);",
+      [user[0].ID_USUARIO]
+    );
     const tokenSQL = jwt.sign({ id: user[0].ID_USUARIO }, config.SECRET, {
       expiresIn: 84600,
     });
@@ -59,9 +67,9 @@ export const singUpSQL = async (req, res) => {
     } = req.body;
 
     let CONTRASENA1 = "";
-    if(CONTRASENA == ""){
-     CONTRASENA1 = Math.floor(Math.random() * (999999 - 100000) + 100000);
-    }else{
+    if (CONTRASENA == "") {
+      CONTRASENA1 = Math.floor(Math.random() * (999999 - 100000) + 100000);
+    } else {
       CONTRASENA1 = CONTRASENA;
     }
 
