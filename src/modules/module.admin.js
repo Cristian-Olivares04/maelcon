@@ -1,3 +1,4 @@
+require("dotenv").config({ path: "../.env" });
 import { async } from "regenerator-runtime";
 import pool from "../databaseSQL";
 import backup from "../utils/backup";
@@ -875,9 +876,10 @@ export const updateUserByAdmin = async (req, res) => {
       RESPUESTA,
     } = req.body;
 
+    console.log(process.env.CLOUDINARY_CLOUD_NAME);
+
     let img;
     if (req.file) {
-      console.log(req.file);
       img = await cloudinary_services.uploadImage(
         req.file.path,
         "Maelcon/Perfiles"
@@ -887,7 +889,6 @@ export const updateUserByAdmin = async (req, res) => {
         "CALL OBTENER_USUARIO(?, @MENSAJE, @CODIGO)",
         [ID_USUARIO]
       );
-      console.log(usuarioAct);
       img = usuarioAct[0][0].IMG_USUARIO;
     }
 

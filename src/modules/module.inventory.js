@@ -31,10 +31,10 @@ export const createCategory = async (req, res) => {
 export const updateCategory = async (req, res) => {
   try {
     const { ID_CATEGORIA } = req.params;
-    const { CATEGORIA, DESCRIPCION } = req.body;
+    const { CATEGORIA, DESCRIPCION, ESTADO } = req.body;
     const objetos = await pool.query(
-      "CALL MODIFICAR_CATEGORIA(?,?,?,@MENSAJE, @CODIGO)",
-      [ID_CATEGORIA, CATEGORIA, DESCRIPCION]
+      "CALL MODIFICAR_CATEGORIA(?,?,?, ?,@MENSAJE, @CODIGO)",
+      [ID_CATEGORIA, CATEGORIA, DESCRIPCION, ESTADO]
     );
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
     res.json({

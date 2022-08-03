@@ -65,7 +65,7 @@ export const createSaleHeader = async (req, res) => {
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
     res.json({
       mensaje: [
-        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"], ID_VENTA: mensaje[0]["ID_VENTA"] },
       ],
     });
   } catch (error) {

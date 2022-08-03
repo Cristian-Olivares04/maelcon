@@ -66,19 +66,19 @@ export const createSupplyHeader = async (req, res) => {
   try {
     const { ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION_COMPRA } = req.body;
     const objetos = await pool.query(
-      "CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO, @ID)",
+      "CALL ENCABEZADO_COMPRA(?,?,?,?,@MENSAJE, @CODIGO)",
       [ID_USUARIO, ID_PROVEEDOR, ID_PAGO, OBSERVACION_COMPRA]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
     res.json({
       mensaje: [
-        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"] },
+        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"], ID_COMPRA: mensaje[0]["ID_COMPRA"] },
       ],
     });
   } catch (error) {
     const mensaje = await pool.query(
-      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO, @ID as ID;"
+      "SELECT @MENSAJE as MENSAJE, @CODIGO as CODIGO"
     );
 
     res.status(401).json({

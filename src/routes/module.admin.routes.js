@@ -164,7 +164,8 @@ router.put(
 //Para actualizar usuario
 router.put(
   "/updateUser/:ID_USUARIO",
-  [authJwt.verifyTokenSQL, upload.uploadUserIMG],
+  //[authJwt.verifyTokenSQL],
+  upload.uploadUserIMG,
   moduleAdminCtrl.updateUserByAdmin
 );
 
