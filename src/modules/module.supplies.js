@@ -2,11 +2,26 @@ import pool from "../databaseSQL";
 
 export const createSupplier = async (req, res) => {
   try {
-    const { RTN, NOMBRE_PROVEEDOR, TELEFONO_PROVEEDOR, CORREO_PROVEEDOR } =
-      req.body;
+    const {
+      RTN,
+      NOMBRE_PROVEEDOR,
+      TELEFONO_PROVEEDOR,
+      CORREO_PROVEEDOR,
+      TELEFONO_REPRESENTANTE,
+      CORREO_REPRESENTANTE,
+      NOMBRE_REPRESENTANTE,
+    } = req.body;
     const objetos = await pool.query(
-      "CALL CREAR_PROVEEDOR(?,?,?,?,@MENSAJE, @CODIGO)",
-      [RTN, NOMBRE_PROVEEDOR , TELEFONO_PROVEEDOR, CORREO_PROVEEDOR]
+      "CALL CREAR_PROVEEDOR(?,?,?,?,?,?,?,@MENSAJE, @CODIGO)",
+      [
+        RTN,
+        NOMBRE_PROVEEDOR,
+        TELEFONO_PROVEEDOR,
+        CORREO_PROVEEDOR,
+        NOMBRE_REPRESENTANTE,
+        TELEFONO_REPRESENTANTE,
+        CORREO_REPRESENTANTE,
+      ]
     );
 
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
@@ -30,16 +45,26 @@ export const createSupplier = async (req, res) => {
 export const updateSupplier = async (req, res) => {
   try {
     const { ID_PROVEEDOR } = req.params;
-    const { RTN, NOMBRE_PROVEEDOR, TELEFONO_PROVEEDOR, CORREO_PROVEEDOR } =
-      req.body;
+    const {
+      RTN,
+      NOMBRE_PROVEEDOR,
+      TELEFONO_PROVEEDOR,
+      CORREO_PROVEEDOR,
+      NOMBRE_REPRESENTANTE,
+      TELEFONO_REPRESENTANTE,
+      CORREO_REPRESENTANTE,
+    } = req.body;
     const objetos = await pool.query(
-      "CALL MODIFICAR_PROVEEDOR(?,?,?,?,?,@MENSAJE, @CODIGO)",
+      "CALL MODIFICAR_PROVEEDOR(?,?,?,?,?,?,?,?,@MENSAJE, @CODIGO)",
       [
         ID_PROVEEDOR,
         RTN,
         NOMBRE_PROVEEDOR,
         TELEFONO_PROVEEDOR,
         CORREO_PROVEEDOR,
+        NOMBRE_REPRESENTANTE,
+        TELEFONO_REPRESENTANTE,
+        CORREO_REPRESENTANTE,
       ]
     );
 
@@ -73,7 +98,11 @@ export const createSupplyHeader = async (req, res) => {
     const mensaje = JSON.parse(JSON.stringify(objetos[0]));
     res.json({
       mensaje: [
-        { MENSAJE: mensaje[0]["MENSAJE"], CODIGO: mensaje[0]["CODIGO"], ID_COMPRA: mensaje[0]["ID_COMPRA"] },
+        {
+          MENSAJE: mensaje[0]["MENSAJE"],
+          CODIGO: mensaje[0]["CODIGO"],
+          ID_COMPRA: mensaje[0]["ID_COMPRA"],
+        },
       ],
     });
   } catch (error) {
